@@ -220,9 +220,9 @@ async function fetchNaverHtml(code) {
       },
     });
 
-    // 关键：Naver 返回 EUC-KR 编码，必须手动解码
+    // Naver 实际返回 UTF-8 编码（验证于 2026.04.09）
     const buf = await resp.arrayBuffer();
-    const html = new TextDecoder('euc-kr').decode(buf);
+    const html = new TextDecoder('utf-8').decode(buf);
     const result = {};
 
     // ---- 方法1: 实时价格 — blind span 内 (用于反算前收盘) ----
@@ -285,20 +285,21 @@ async function fetchNaverHtml(code) {
       }
     }
 
-    // ---- 方法5: 流通股数 + 市值 ----
-    // Naver HTML 的 em 标签中包含流通股数(7~9位整数)，市值 = 股价 × 股数
-    // 格式: <em>58,984,340</em> (Shift Up)
-    const allEmTags = [...html.matchAll(/<em[^>]*>([\d,]+)<\/em>/g)];
-    for (const m of allEmTags) {
-      const num = parseInt(m[1].replace(/,/g, ''));
-      // 流通股数通常在 1000万 ~ 10亿 之间
-      if (num > 10000000 && num < 1000000000) {
-        result.sharesOutstanding = num;
-        break;  // 找到第一个符合条件的就停止
-      }
+    // ---- 方法5: 市值 시가총액(억) ----
+    // HTML 结构: <th>시가총액(억)</th>...<td>19,582</td>
+    // 注意: 这是"比较表格"，第一个 td 是目标公司，后面是同行对比
+    const capMatch = html.match(/시가총액\(억\)[\s\S]*?<\/th>\s*<td[^>]*>\s*([\d,]+)\s*<\/td>/s);
+    if (capMatch) {
+      // 单位是 억원（亿韩元），转为 원（乘1亿）
+      result.marketCap = parseInt(capMatch[1].replace(/,/g, '')) * 100000000;
+      console.log(`  ✅ [NaverHTML-MarketCap] marketCap=${result.marketCap} (${parseInt(capMatch[1].replace(/,/,''))}억원)`);
     }
-    if (result.sharesOutstanding) {
-      console.log(`  ✅ [NaverHTML] shares=${result.sharesOutstanding.toLocaleString()}`);
+
+    // ---- 方法6: 流通股数 상장주식수 ----
+    const shareMatch = html.match(/상장주식수[\s\S]*?<\/th>\s*<td[^>]*>\s*<em>([\d,]+)<\/em>\s*<\/td>/s);
+    if (shareMatch) {
+      result.sharesOutstanding = parseInt(shareMatch[1].replace(/,/g, ''));
+      console.log(`  ✅ [NaverHTML-Shares] shares=${result.sharesOutstanding.toLocaleString()}`);
     }
 
     if (result.price) {
