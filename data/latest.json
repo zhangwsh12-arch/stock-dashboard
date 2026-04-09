@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260409",
     "dateDisplay": "4月（截至9日）",
-    "fetchedAt": "2026-04-09T03:27:27.745Z",
+    "fetchedAt": "2026-04-09T03:33:27.268Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 5
   },
@@ -28,7 +28,7 @@
       "name": "Krafton",
       "nameKr": "크래프톤",
       "color": "#f59e0b",
-      "price": "231,000",
+      "price": "231,500",
       "change": "-",
       "changeClass": "neutral",
       "per": "01"
@@ -38,7 +38,7 @@
       "name": "NCSoft",
       "nameKr": "엔씨소프트",
       "color": "#3b82f6",
-      "price": "229,500",
+      "price": "232,500",
       "change": "-",
       "changeClass": "neutral",
       "per": "3"
@@ -58,7 +58,7 @@
       "name": "Pearl Abyss",
       "nameKr": "펄어비스",
       "color": "#ec4899",
-      "price": "55,500",
+      "price": "55,800",
       "change": "-",
       "changeClass": "neutral",
       "per": "9"
@@ -68,7 +68,7 @@
       "name": "Netmarble",
       "nameKr": "넷마블",
       "color": "#ef4444",
-      "price": "49,850",
+      "price": "50,100",
       "change": "-",
       "changeClass": "neutral",
       "per": "-"
@@ -79,7 +79,7 @@
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "231,000",
+      "price": "231,500",
       "per": 1,
       "perRaw": "01"
     },
@@ -87,7 +87,7 @@
       "code": "036570",
       "name": "NCSoft",
       "color": "#3b82f6",
-      "price": "229,500",
+      "price": "232,500",
       "per": 3,
       "perRaw": "3"
     },
@@ -103,7 +103,7 @@
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "55,500",
+      "price": "55,800",
       "per": 9,
       "perRaw": "9"
     }
