@@ -480,8 +480,8 @@ async function main() {
   };
 
   // 图表数据 (使用 Shift Up 的历史数据)
-  if (su && su._allHistory && su._allHistory.length > 0) {
-    dashboardData.chartData = su._allHistory.map(h => ({
+  if (realShiftUp && realShiftUp._allHistory && realShiftUp._allHistory.length > 0) {
+    dashboardData.chartData = realShiftUp._allHistory.map(h => ({
       date: h.date,
       label: `${parseInt(h.date.slice(4,6))}/${parseInt(h.date.slice(6,8))}`,
       price: h.close,
