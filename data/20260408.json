@@ -2,7 +2,11 @@
   "meta": {
     "date": "20260408",
     "dateDisplay": "4月（截至8日）",
+<<<<<<< HEAD
     "fetchedAt": "2026-04-09T08:02:22.961Z",
+=======
+    "fetchedAt": "2026-04-09T08:31:29.911Z",
+>>>>>>> 9d721c5 (fix(v11): 修复K线API编码问题 - 股价33,000→33,400 + 折线图恢复)
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -11,16 +15,20 @@
     "name": "Shift Up",
     "nameKr": "시프트업",
     "color": "#ff6b9d",
-    "price": "33,000",
-    "previousClose": "-",
-    "high": "33,000",
-    "low": "33,000",
-    "change": "200",
-    "changePercent": "0.60",
+    "price": "33,400",
+    "previousClose": "32,000",
+    "high": "33,650",
+    "low": "30,950",
+    "change": "1,400",
+    "changePercent": "4.38",
     "changeClass": "up",
     "per": "10.89",
     "pbr": "2.24",
+<<<<<<< HEAD
     "marketCap": "≈ 1.9兆元"
+=======
+    "marketCap": "≈ 2.0兆元"
+>>>>>>> 9d721c5 (fix(v11): 修复K线API编码问题 - 股价33,000→33,400 + 折线图恢复)
   },
   "companies": [
     {
@@ -29,8 +37,8 @@
       "nameKr": "크래프톤",
       "color": "#f59e0b",
       "price": "234,000",
-      "change": "0.00%",
-      "changeClass": "neutral",
+      "change": "+0.43%",
+      "changeClass": "up",
       "per": "11.01"
     },
     {
@@ -39,7 +47,7 @@
       "nameKr": "엔씨소프트",
       "color": "#3b82f6",
       "price": "218,000",
-      "change": "+7.34%",
+      "change": "+3.81%",
       "changeClass": "up",
       "per": "13.53"
     },
@@ -48,8 +56,8 @@
       "name": "Netmarble",
       "nameKr": "넷마블",
       "color": "#ef4444",
-      "price": "49,800",
-      "change": "+0.40%",
+      "price": "50,200",
+      "change": "+3.08%",
       "changeClass": "up",
       "per": "18.43"
     },
@@ -59,7 +67,7 @@
       "nameKr": "넥슨게임즈",
       "color": "#22c55e",
       "price": "11,320",
-      "change": "+3.36%",
+      "change": "+1.43%",
       "changeClass": "up",
       "per": "28.03"
     },
@@ -69,8 +77,8 @@
       "nameKr": "펄어비스",
       "color": "#ec4899",
       "price": "56,500",
-      "change": "0.00%",
-      "changeClass": "neutral",
+      "change": "-1.57%",
+      "changeClass": "down",
       "per": "29.49"
     }
   ],
@@ -79,7 +87,7 @@
       "code": "462870",
       "name": "Shift Up",
       "color": "#ff6b9d",
-      "price": "33,000",
+      "price": "33,400",
       "per": 10.89,
       "perRaw": "10.89"
     },
@@ -103,7 +111,7 @@
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "49,800",
+      "price": "50,200",
       "per": 18.43,
       "perRaw": "18.43"
     },
@@ -124,5 +132,81 @@
       "perRaw": "29.49"
     }
   ],
-  "chartData": []
+  "chartData": [
+    {
+      "date": "20260320",
+      "label": "3/20",
+      "price": 30350
+    },
+    {
+      "date": "20260323",
+      "label": "3/23",
+      "price": 29150
+    },
+    {
+      "date": "20260324",
+      "label": "3/24",
+      "price": 29800
+    },
+    {
+      "date": "20260325",
+      "label": "3/25",
+      "price": 31500
+    },
+    {
+      "date": "20260326",
+      "label": "3/26",
+      "price": 31100
+    },
+    {
+      "date": "20260327",
+      "label": "3/27",
+      "price": 32300
+    },
+    {
+      "date": "20260330",
+      "label": "3/30",
+      "price": 31650
+    },
+    {
+      "date": "20260331",
+      "label": "3/31",
+      "price": 32050
+    },
+    {
+      "date": "20260401",
+      "label": "4/1",
+      "price": 33900
+    },
+    {
+      "date": "20260402",
+      "label": "4/2",
+      "price": 32250
+    },
+    {
+      "date": "20260403",
+      "label": "4/3",
+      "price": 33000
+    },
+    {
+      "date": "20260406",
+      "label": "4/6",
+      "price": 32900
+    },
+    {
+      "date": "20260407",
+      "label": "4/7",
+      "price": 32000
+    },
+    {
+      "date": "20260408",
+      "label": "4/8",
+      "price": 33400
+    },
+    {
+      "date": "20260409",
+      "label": "4/9",
+      "price": 33200
+    }
+  ]
 }

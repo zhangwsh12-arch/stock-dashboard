@@ -127,14 +127,21 @@ async function fetchNaverChart(code) {
     
     const resp = await fetchWithRetry(url);
     const buf = await resp.arrayBuffer();
-    let text = new TextDecoder('euc-kr').decode(buf);
     
-    // requestType=0 返回格式可能包含前后空白/引号，需要清理
+    // Naver K线 API 返回 UTF-8 编码 + 单引号格式（验证于 2026.04.09）
+    // 原始格式: [['날짜', '시가', ...], ["20260408", 33400, ...], ...]
+    // 需要将单引号替换为双引号后才能 JSON.parse
+    let text = new TextDecoder('utf-8').decode(buf);
+    
+    // 清理前后空白
     text = text.trim();
     
     // 找到第一个 '[' 开始的位置（跳过可能的 BOM 或前导字符）
     const startIdx = text.indexOf('[');
     if (startIdx > 0) text = text.substring(startIdx);
+
+    // 单引号 → 双引号（Naver API 返回的是单引号格式，不是标准 JSON）
+    text = text.replace(/'/g, '"');
 
     // 解析 JSON
     const data = JSON.parse(text);
