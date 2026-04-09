@@ -68,9 +68,9 @@ function formatPrice(p) {
 function formatWon(n) {
   if (!n || isNaN(n)) return '-';
   const num = Number(n);
-  if (num >= 1000000000000) return `≈ ${(num / 1000000000000).toFixed(1)}兆元`;
-  if (num >= 100000000) return `≈ ${(num / 100000000).toFixed(1)}亿元`;
-  if (num >= 10000) return `≈ ${Math.round(num / 10000).toLocaleString()}亿 ₩`;
+  if (num >= 1000000000000) return `${(num / 1000000000000).toFixed(2)}兆元`;
+  if (num >= 100000000) return `${(num / 100000000).toFixed(2)}亿元`;
+  if (num >= 10000) return `${Math.round(num / 10000).toLocaleString()}亿 ₩`;
   return `≈ ${Math.round(num).toLocaleString()}₩`;
 }
 
@@ -481,10 +481,12 @@ async function main() {
       high: formatPrice(realShiftUp.high || realShiftUp.price),
       low: formatPrice(realShiftUp.low || realShiftUp.price),
       change: realShiftUp.change ? Number(realShiftUp.change).toLocaleString() : '-',
-      changePercent: realShiftUp.changePercent || '-',
+      changePercent: realShiftUp.changePercent
+        ? (parseFloat(realShiftUp.changePercent) > 0 ? '+' : '') + realShiftUp.changePercent + '%'
+        : '-',
       changeClass: changeClass(realShiftUp.change),
-      per: realShiftUp.per || '-',
-      pbr: realShiftUp.pbr || '-',
+    per: (realShiftUp.per && parseFloat(realShiftUp.per) > 0) ? realShiftUp.per : 'N/A',
+    pbr: realShiftUp.pbr || '-',
       marketCap: formatWon(realShiftUp.marketCap),
     } : null,
 
@@ -498,12 +500,12 @@ async function main() {
         price: formatPrice(r.price),
         change: r.changePercent ? `${changeClass(r.change) === 'up' ? '+' : ''}${r.changePercent}%` : '-',
         changeClass: changeClass(r.change),
-        per: r.per || '-',
+        per: (r.per && parseFloat(r.per) > 0) ? r.per : 'N/A',
       }))
       .sort((a, b) => (parseFloat(a.per) || 999) - (parseFloat(b.per) || 999)),
 
     perComparison: stockResults
-      .filter(r => r && r.per)
+      .filter(r => r && r.per && parseFloat(r.per) > 0)
       .map(r => ({
         code: r.code,
         name: r.name,
@@ -518,8 +520,15 @@ async function main() {
   };
 
   // 图表数据 (使用 Shift Up 的历史数据)
+  // 只保留本月交易日数据，不包含今日盘中数据(最后一条)
   if (realShiftUp && realShiftUp._allHistory && realShiftUp._allHistory.length > 0) {
-    dashboardData.chartData = realShiftUp._allHistory.map(h => ({
+    const currentMonth = String(targetDate.getMonth() + 1).padStart(2, '0');
+    // 过滤: 本月 + 排除今日盘中数据(取到倒数第2条)
+    const monthData = realShiftUp._allHistory
+      .slice(0, -1) // 去掉最后一条(今日盘中)
+      .filter(h => h.date.slice(4, 6) === currentMonth);
+    
+    dashboardData.chartData = monthData.map(h => ({
       date: h.date,
       label: `${parseInt(h.date.slice(4,6))}/${parseInt(h.date.slice(6,8))}`,
       price: h.close,

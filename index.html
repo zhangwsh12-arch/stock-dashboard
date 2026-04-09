@@ -314,7 +314,7 @@ function renderDashboard() {
   
   // Render sections
   renderStockPriceSection();
-  renderPerCompareSection();
+  // renderPerCompareSection(); // 已移除: PER信息在其他公司表格中展示，不需要重复
   renderCompanyAnalysisSection();
   renderNewsSection();
 }
@@ -493,47 +493,11 @@ function renderCompaniesTable() {
     </tr>`).join('');
 }
 
-// --- Section 2: PER 对比 ---
+// --- Section 2: PER 对比 (已禁用) ---
 function renderPerCompareSection() {
-  if (!currentData.perComparison) return;
-
-  const perMax = Math.max(...currentData.perComparison.map(p => p.per), 1);
-
+  // PER信息已在"其他主要游戏公司收盘"表格中展示，不再需要单独的横向对比
   const container = document.getElementById('sectionPerCompare');
-  container.innerHTML = `
-<div class="full-width-grid">
-    <div class="card">
-        <div class="card-header">
-            <span>📊 PER (市盈率) 横向对比 — Naver Finance</span>
-            <span style="font-size:11px;color:var(--text-muted)" id="perStats"></span>
-        </div>
-        <div class="card-body" style="padding:4px 20px">
-            <div id="perCompareRows"></div>
-            <div style="margin-top:12px;font-size:11px;color:var(--text-muted);text-align:right">
-                PER越低 → 越被低估 | 条形长度 = 相对比例
-            </div>
-        </div>
-    </div>
-</div>`;
-
-  const rowsEl = document.getElementById('perCompareRows');
-  rowsEl.innerHTML = currentData.perComparison.map(p => {
-    const widthPercent = Math.max((p.per / perMax) * 100, 10);
-    let note = '';
-    if (p.per === perMax) note = `<br><span style="color:var(--accent-orange)">最高</span>`;
-    else if (p.per === perMin()) note = `<br><span style="color:var(--accent-green)">★ 最低</span>`;
-    
-    return `
-    <div class="per-compare-row">
-        <div class="per-company-name"><div class="per-dot" style="background:${p.color}"></div>${p.name}</div>
-        <div class="per-bar-container"><div class="per-bar-fill" style="width:${widthPercent}%;background:${p.color};opacity:.75"><span class="per-num">${p.perRaw}</span></div></div>
-        <div class="per-detail-col">收盘: ₩${p.price}${note}</div>
-    </div>`;
-  }).join('');
-
-  // Update stats
-  document.getElementById('perStats').textContent =
-    `平均 ${(currentData.perComparison.reduce((s,p)=>s+p.per,0)/currentData.perComparison.length).toFixed(1)} | 最低 ${perMin().name}(${perMin().per}) | 最高 ${perMaxName().name}(${perMaxName().per})`;
+  if (container) container.innerHTML = '';
 }
 
 function perMin() {
@@ -731,14 +695,14 @@ function renderCompareChart() {
   compareChartInstance = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['4/1', '4/2', '4/3', '4/6', '4/7'],
+      labels: ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8'],
       datasets: [
-        { label: 'Shift Up', data: [-2.64,-1.76,-2.09,-2.29,+2.66], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-        { label: 'Nexon', data: [+0.63,+0.54,-0.80,+0.36,-0.09], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-        { label: 'Netmarble', data: [-0.96,-1.42,-1.03,-0.21,-1.39], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-        { label: 'NCSoft', data: [-0.67,-0.85,-0.57,+0.21,-1.06], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-        { label: 'Krafton', data: [+0.42,+0.19,-0.37,+0.30,-0.37], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-        { label: 'P.Abyss', data: [+5.73,+3.11,+3.42,+17.93,-17.38], borderColor: '#ec4899', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ec4899', tension: .3, fill: false },
+        { label: 'Shift Up', data: [-2.64,-1.76,-2.09,-2.29,+2.66,+4.38], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+        { label: 'Nexon', data: [+0.63,+0.54,-0.80,+0.36,-0.09,+1.43], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+        { label: 'Netmarble', data: [-0.96,-1.42,-1.03,-0.21,-1.39,+3.08], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+        { label: 'NCSoft', data: [-0.67,-0.85,-0.57,+0.21,-1.06,+3.81], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+        { label: 'Krafton', data: [+0.42,+0.19,-0.37,+0.30,-0.37,+0.43], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+        { label: 'P.Abyss', data: [+5.73,+3.11,+3.42,+17.93,-17.38,-1.57], borderColor: '#ec4899', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ec4899', tension: .3, fill: false },
       ]
     },
     options: {

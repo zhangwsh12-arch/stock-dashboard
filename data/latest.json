@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260408",
     "dateDisplay": "4月（截至8日）",
-    "fetchedAt": "2026-04-09T08:35:24.150Z",
+    "fetchedAt": "2026-04-09T08:52:30.379Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -16,11 +16,11 @@
     "high": "33,650",
     "low": "30,950",
     "change": "1,400",
-    "changePercent": "4.38",
+    "changePercent": "+4.38%",
     "changeClass": "up",
     "per": "10.89",
     "pbr": "2.24",
-    "marketCap": "≈ 2.0兆元"
+    "marketCap": "1.97兆元"
   },
   "companies": [
     {
@@ -126,46 +126,6 @@
   ],
   "chartData": [
     {
-      "date": "20260320",
-      "label": "3/20",
-      "price": 30350
-    },
-    {
-      "date": "20260323",
-      "label": "3/23",
-      "price": 29150
-    },
-    {
-      "date": "20260324",
-      "label": "3/24",
-      "price": 29800
-    },
-    {
-      "date": "20260325",
-      "label": "3/25",
-      "price": 31500
-    },
-    {
-      "date": "20260326",
-      "label": "3/26",
-      "price": 31100
-    },
-    {
-      "date": "20260327",
-      "label": "3/27",
-      "price": 32300
-    },
-    {
-      "date": "20260330",
-      "label": "3/30",
-      "price": 31650
-    },
-    {
-      "date": "20260331",
-      "label": "3/31",
-      "price": 32050
-    },
-    {
       "date": "20260401",
       "label": "4/1",
       "price": 33900
@@ -194,11 +154,6 @@
       "date": "20260408",
       "label": "4/8",
       "price": 33400
-    },
-    {
-      "date": "20260409",
-      "label": "4/9",
-      "price": 33200
     }
   ]
 }
