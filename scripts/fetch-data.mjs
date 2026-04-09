@@ -118,12 +118,17 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 // ============================================================
 
 async function fetchNaverChart(code) {
+  // KOSDAQ 股票代码需要加前缀 (KQ后缀市场)
+  const isKosdaq = ['391740', '259960'].includes(code);
+  
   try {
     const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=5&requestType=1`;
-    console.log(`  📊 [NaverChart] Fetching: ${code}`);
+    console.log(`  📊 [NaverChart] Fetching: ${code}${isKosdaq ? ' (KOSDAQ)' : ''}`);
     
     const resp = await fetchWithRetry(url);
     const text = await resp.text();
+    
+    console.log(`  🔍 [NaverChart] Response length: ${text.length}, preview: ${text.substring(0, 200)}`);
     
     // 解析每行JSON数组
     const lines = text.trim().split('\n').filter(l => l.startsWith('['));
@@ -166,7 +171,7 @@ async function fetchNaverChart(code) {
       changePercent: prevClose > 0 ? ((latest.close - prevClose) / prevClose * 100).toFixed(2) : null,
       volume: latest.volume,
       _source: 'naver_chart_api',
-      _allHistory: allData.slice(-30), // 最近30天用于图表
+      _allHistory: allData.slice(-30),
     };
   } catch (err) {
     console.error(`  ❌ [NaverChart] Failed for ${code}: ${err.message}`);

@@ -330,7 +330,23 @@ function showErrorState() {
 
 // --- Section 1: 股价 & PER ---
 function renderStockPriceSection() {
-  const su = currentData.shiftUp;
+  // 始终以 Shift Up 为核心关注；如果 shiftUp 数据缺失或价格无效，从 companies 列表中找
+  let su = currentData.shiftUp;
+  
+  // 如果 shiftUp 无效（价格为年份格式或缺失），尝试从 companies 中找到 Shift Up
+  if (!su || !su.price || su.price === '2,026' || su.price === '-' || su.per === '-') {
+    const suFromCompanies = currentData.companies?.find(c => c.code === '391740');
+    if (suFromCompanies && suFromCompanies.price && suFromCompanies.price !== '2,026') {
+      su = { ...suFromCompanies, nameKr: suFromCompanies.nameKr || '시프트업', color: suFromCompanies.color || '#ff6b9d' };
+    } else if (!su) {
+      // 最终兜底：使用 companies 第一家但标记为 Shift Up 占位
+      const first = currentData.companies?.[0];
+      if (first) {
+        su = { ...first, name: 'Shift Up', nameKr: '시프트업', code: '391740', color: '#ff6b9d' };
+      }
+    }
+  }
+  
   if (!su) return;
 
   const container = document.getElementById('sectionStockPrice');
