@@ -2,24 +2,24 @@
   "meta": {
     "date": "20260409",
     "dateDisplay": "4月（截至9日）",
-    "fetchedAt": "2026-04-09T03:33:27.268Z",
+    "fetchedAt": "2026-04-09T03:45:16.506Z",
     "source": "Naver Finance / Multi-source v3",
-    "updateCount": 5
+    "updateCount": 6
   },
   "shiftUp": {
-    "code": "042700",
-    "name": "Nexon",
-    "nameKr": "넥슨게임즈",
-    "color": "#22c55e",
-    "price": "276,000",
+    "code": "462870",
+    "name": "Shift Up",
+    "nameKr": "시프트업",
+    "color": "#ff6b9d",
+    "price": "32,950",
     "previousClose": "-",
-    "high": "276,000",
-    "low": "276,000",
+    "high": "32,950",
+    "low": "32,950",
     "change": "-",
     "changePercent": "-",
     "changeClass": "neutral",
-    "per": "05",
-    "pbr": "0.45",
+    "per": "0.89",
+    "pbr": "0",
     "marketCap": "-"
   },
   "companies": [
@@ -28,10 +28,20 @@
       "name": "Krafton",
       "nameKr": "크래프톤",
       "color": "#f59e0b",
-      "price": "231,500",
+      "price": "230,500",
       "change": "-",
       "changeClass": "neutral",
       "per": "01"
+    },
+    {
+      "code": "225570",
+      "name": "Nexon Games",
+      "nameKr": "넥슨게임즈",
+      "color": "#22c55e",
+      "price": "11,450",
+      "change": "-",
+      "changeClass": "neutral",
+      "per": "03"
     },
     {
       "code": "036570",
@@ -44,21 +54,11 @@
       "per": "3"
     },
     {
-      "code": "042700",
-      "name": "Nexon",
-      "nameKr": "넥슨게임즈",
-      "color": "#22c55e",
-      "price": "276,000",
-      "change": "-",
-      "changeClass": "neutral",
-      "per": "05"
-    },
-    {
       "code": "263750",
       "name": "Pearl Abyss",
       "nameKr": "펄어비스",
       "color": "#ec4899",
-      "price": "55,800",
+      "price": "56,200",
       "change": "-",
       "changeClass": "neutral",
       "per": "9"
@@ -68,7 +68,7 @@
       "name": "Netmarble",
       "nameKr": "넷마블",
       "color": "#ef4444",
-      "price": "50,100",
+      "price": "50,000",
       "change": "-",
       "changeClass": "neutral",
       "per": "-"
@@ -76,12 +76,28 @@
   ],
   "perComparison": [
     {
+      "code": "462870",
+      "name": "Shift Up",
+      "color": "#ff6b9d",
+      "price": "32,950",
+      "per": 0.89,
+      "perRaw": "0.89"
+    },
+    {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "231,500",
+      "price": "230,500",
       "per": 1,
       "perRaw": "01"
+    },
+    {
+      "code": "225570",
+      "name": "Nexon Games",
+      "color": "#22c55e",
+      "price": "11,450",
+      "per": 3,
+      "perRaw": "03"
     },
     {
       "code": "036570",
@@ -92,18 +108,10 @@
       "perRaw": "3"
     },
     {
-      "code": "042700",
-      "name": "Nexon",
-      "color": "#22c55e",
-      "price": "276,000",
-      "per": 5,
-      "perRaw": "05"
-    },
-    {
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "55,800",
+      "price": "56,200",
       "per": 9,
       "perRaw": "9"
     }
