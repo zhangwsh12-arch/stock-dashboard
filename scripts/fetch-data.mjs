@@ -199,67 +199,62 @@ async function fetchNaverHtml(code) {
       },
     });
 
-    const html = await resp.text();
+    // 关键：Naver 返回 EUC-KR 编码，必须手动解码
+    const buf = await resp.arrayBuffer();
+    const html = new TextDecoder('euc-kr').decode(buf);
     const result = {};
 
-    // ---- 方法A: 从内嵌 JS 变量提取 ----
-    // Naver 页面通常在 script 标签里有 _itemInfo 或类似变量
+    // ---- 方法1: 股价 — blind span 内 (最准确) ----
+    // <span class="blind">33,200</span> 在 no_today > em 内部
+    let m = html.match(/class="no_today"[\s\S]*?<span class="blind">([,\d]+)<\/span>/s);
+    if (m) {
+      result.price = parseInt(m[1].replace(/,/g, ''));
+      console.log(`  ✅ [NaverHTML-blind] price=${result.price}`);
+    }
+
+    // ---- 方法2: 涨跌额 + 涨跌幅% (no_exday 区域的 blind span) ----
+    // 涨跌额: no_exday > em > span.blind (第一个)
+    m = html.match(/class="no_exday"[\s\S]*?<span class="blind">([-\d,]+)<\/span>/s);
+    if (m) {
+      result.change = parseInt(m[1].replace(/,/g, ''));
+    }
+    // 涨跌幅%: no_exday > 第二个 em > span.blind
+    m = html.match(/class="no_exday"[\s\S]*?<span class="blind">([-\d,]+)<\/span>[\s\S]*?<span class="blind">([-\d.]+)<\/span>/s);
+    if (m) {
+      result.change = parseInt(m[1].replace(/,/g, ''));
+      result.changePercent = m[2];
+    }
     
-    // 模式1: _itemContent = {...}
-    let m = html.match(/_itemContent\s*=\s*(\{[^;]+?\});/s);
-    if (m) {
-      try {
-        const cleaned = m[1].replace(/(\w+)\s*:/g, '"$1":').replace(/'/g, '"');
-        const content = JSON.parse(cleaned);
-        if (content.cv) result.price = Number(content.cv);       // 当前价
-        if (content.nv) result.yesterdayClose = Number(content.nv);
-        if (content.hv) result.high = Number(content.hv);
-        if (content.lv) result.low = Number(content.lv);
-        if (content.cr) result.change = Number(content.cr);
-        if (content.ra) result.changePercent = content.ra;
-        if (content.per) result.per = String(content.per);
-        if (content.pbr) result.pbr = String(content.pbr);
-        if (content.mv) result.marketCap = Number(content.mv);
-        console.log(`  ✅ [NaverHTML-ItemContent] Found embedded data`);
-      } catch (e) {
-        console.log(`  ⚠️ [NaverHTML] ItemContent parse failed: ${e.message}`);
-      }
+    // 前日收盘：从涨跌反算
+    if (result.price && result.change) {
+      result.yesterdayClose = result.price - result.change;
+      console.log(`  ✅ [NaverHTML-exday] change=${result.change}, changePercent=${result.changePercent || '-'}%, yesterdayClose=${result.yesterdayClose}`);
     }
 
-    // ---- 方法B: 当前价 no_today em 内的数字 ----
-    if (!result.price) {
-      m = html.match(/class="no_today"[^>]*>[\s\S]*?<em[^>]*>([,\d]+)<\/em>/s);
-      if (!m) m = html.match(/no_today.*?(\d[\d,]*)\s*/s);
-      if (m) {
-        result.price = parseInt(m[1].replace(/,/g, ''));
-        console.log(`  ✅ [NaverHTML-no_today] price=${result.price}`);
-      }
+    // ---- 方法3: PER — <strong>PER(배)</strong></th 后面的 <td> 纯文本 ----
+    // 实际结构: <td class="">\n\t\t24.89\n\t\t</td>
+    m = html.match(/<strong>PER[^<]*<\/strong><\/th>[\s\S]*?<td[^>]*>(?:&nbsp;|\s*-?\s*)?<\/td>[\s\S]*?<td[^>]*>\s*([\d.]+)\s*<\/td>/s);
+    // 备用：找 PER th 后最近的非空 td
+    if (!m) {
+      m = html.match(/<strong>PER[^<]*<\/strong>(?:<\/th>|<br>)\s*[\s\S]*?<td[^>]*>\s*([\d.]+|-?)\s*<\/td>/s);
+    }
+    if (m && m[1] && m[1] !== '-') {
+      result.per = m[1];
+      console.log(`  ✅ [NaverHTML-PER] per=${result.per}`);
     }
 
-    // ---- 方法C: 前日对比 no_exday 区域 (涨跌额 + 涨跌幅%) ----
-    m = html.match(/전일대비[^0-9\-]*?([-\d,]+)[^0-9\-]*?([-\d.]+)\s*퍼센트/s);
-    if (m) {
-      const chgVal = m[1].replace(/,/g, '');
-      if (!isNaN(chgVal)) {
-        if (!result.change) result.change = parseInt(chgVal);
-        if (!result.changePercent) result.changePercent = m[2];
-      }
+    // ---- 方法4: PBR —— 同理 ----
+    m = html.match(/<strong>PBR[^<]*<\/strong><\/th>[\s\S]*?<td[^>]*>(?:&nbsp;|\s*-?\s*)?<\/td>[\s\S]*?<td[^>]*>\s*([\d.]+)\s*<\/td>/s);
+    if (!m) {
+      m = html.match(/<strong>PBR[^<]*<\/strong>(?:<\/th>|<br>)\s*[\s\S]*?<td[^>]*>\s*([\d.]+|-?)\s*<\/td>/s);
+    }
+    if (m && m[1] && m[1] !== '-') {
+      result.pbr = m[1];
+      console.log(`  ✅ [NaverHTML-PBR] pbr=${result.pbr}`);
     }
 
-    // ---- 方法D: PER — "PER" 行 <em>数字</em>배 ----
-    if (!result.per) {
-      m = html.match(/PER[^>]*?<em>(\d+\.?\d*)<\/em>/s);
-      if (m) result.per = m[1];
-    }
-
-    // ---- 方法E: PBR — "PBR" 行 <em>数字</em>배 ----
-    if (!result.pbr) {
-      m = html.match(/PBR[^>]*?<em>(\d+\.?\d*)<\/em>/s);
-      if (m) result.pbr = m[1];
-    }
-
-    // ---- 方法F: 市值 시가총액 — 支持 조 + 억원 格式 ----
-    m = html.match(/시가총액[^<]*?(?:<em>)?([^<]*?)(?:<\/em>)?\s*억원/s);
+    // ---- 方法5: 市值 시가총액 ----
+    m = html.match(/시가총액[\s\S]*?<em>([,\d조억원\s]+)<\/em>/s);
     if (m) {
       const capText = m[1].trim();
       const joMatch = capText.match(/(\d+)\s*조\s*(\d[\d,]*)?/);
@@ -268,21 +263,21 @@ async function fetchNaverHtml(code) {
         const eok = joMatch[2] ? parseInt(joMatch[2].replace(/,/g, '')) * 100000000 : 0;
         result.marketCap = jo + eok;
       } else {
-        const eokVal = parseInt(capText.replace(/,/g, ''));
+        const eokVal = parseInt(capText.replace(/[,조억원\s]/g, ''));
         if (!isNaN(eokVal)) result.marketCap = eokVal * 100000000;
       }
+      if (result.marketCap) console.log(`  ✅ [NaverHTML-MarketCap] marketCap=${result.marketCap}`);
     }
 
-    // 如果至少拿到了价格就认为成功
     if (result.price) {
-      result._source = 'naver_html_parse';
-      console.log(`  ✅ [NaverHTML] ${code}: price=${result.price}, PER=${result.per || '-'}, PBR=${result.pbr || '-'}`);
+      result._source = 'naver_html_euckr';
+      console.log(`  ✅ [NaverHTML] ${code}: price=${result.price}, PER=${result.per || '-'}, PBR=${result.pbr || '-'}, change=${result.change || '-'}`);
       return result;
     }
     
-    throw new Error('Could not extract any data from HTML');
+    throw new Error('Could not extract price from HTML');
   } catch (err) {
-    console.error(`  ❌ [NaverHTML] Parse failed for ${code}: ${err.message}`);
+    console.error(`  ❌ [NaverHTML] Failed for ${code}: ${err.message}`);
     return null;
   }
 }
