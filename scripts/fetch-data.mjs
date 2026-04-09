@@ -385,10 +385,11 @@ async function main() {
 function updateDatesList(newDate) {
   const datesFile = join(DATA_DIR, 'dates.json');
   let dates = [];
-  
+
   if (existsSync(datesFile)) {
     try {
-      dates = JSON.parse(readFileSync(datesFile, 'utf-8'));
+      const raw = JSON.parse(readFileSync(datesFile, 'utf-8'));
+      dates = Array.isArray(raw) ? raw : (raw.dates || []);
     } catch {}
   }
 
