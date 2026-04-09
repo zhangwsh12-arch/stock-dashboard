@@ -41,8 +41,9 @@ function getLatestTradingDay() {
   // 韩国时间 UTC+9，上午9点到下午3点为交易时间
   const koreaHour = d.getUTCHours() + 9;
   
+  // 始终取前一个交易日收盘（看板显示昨收数据）
   // 如果还没到当天收盘(韩国时间15点=UTC 6点)，取前一个交易日
-  if (koreaHour < 6) d.setUTCDate(d.getUTCDate() - 1);
+  if (koreaHour >= 6) d.setUTCDate(d.getUTCDate() - 1);
   
   const day = d.getUTCDay();
   // 周末回退到周五
@@ -112,66 +113,86 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 }
 
 // ============================================================
-// 数据源1: Naver K线图 JSON API (最可靠)
-// URL: https://fchart.stock.naver.com/siseJson.naver?symbol=CODE&timeframe=day&count=5&requestType=1
-// 返回: [[日期, 开盘, 高, 低, 收盘, 成交量], ...]
+// 数据源1: Naver K线图 JSON API
+// URL: https://fchart.stock.naver.com/siseJson.naver?symbol=CODE&timeframe=day&count=15&requestType=0
+// requestType=0 返回完整历史数据 (requestType=1 在新规则下只返回表头)
+// 返回: [[日期, 开盘, 高, 低, 收盘, 成交量, 外国人持股率], ...]
 // ============================================================
 
 async function fetchNaverChart(code) {
-  // KOSDAQ 股票代码需要加前缀 (KQ后缀市场)
-  const isKosdaq = ['462870', '259960'].includes(code);
-  
   try {
-    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=5&requestType=1`;
-    console.log(`  📊 [NaverChart] Fetching: ${code}${isKosdaq ? ' (KOSDAQ)' : ''}`);
+    // requestType=0 + count=15 拿最近15天数据（含今天）
+    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=15&requestType=0`;
+    console.log(`  📊 [NaverChart] Fetching: ${code} (requestType=0, count=15)`);
     
     const resp = await fetchWithRetry(url);
-    const text = await resp.text();
+    const buf = await resp.arrayBuffer();
+    let text = new TextDecoder('euc-kr').decode(buf);
     
-    console.log(`  🔍 [NaverChart] Response length: ${text.length}, preview: ${text.substring(0, 200)}`);
+    // requestType=0 返回格式可能包含前后空白/引号，需要清理
+    text = text.trim();
     
-    // 解析每行JSON数组
-    const lines = text.trim().split('\n').filter(l => l.startsWith('['));
+    // 找到第一个 '[' 开始的位置（跳过可能的 BOM 或前导字符）
+    const startIdx = text.indexOf('[');
+    if (startIdx > 0) text = text.substring(startIdx);
+
+    // 解析 JSON
+    const data = JSON.parse(text);
+    if (!Array.isArray(data) || data.length === 0) throw new Error('No data');
+
+    // 第一行是表头 ["날짜", "시가", ...]，后续是数据行
     const allData = [];
-    
-    for (const line of lines) {
-      try {
-        const row = JSON.parse(line);
-        if (Array.isArray(row)) {
-          for (let i = 1; i < row.length; i++) {
-            const item = row[i];
-            allData.push({
-              date: item[0],
-              open: parseInt(item[1]),
-              high: parseInt(item[2]),
-              low: parseInt(item[3]),
-              close: parseInt(item[4]),
-              volume: parseInt(item[5] || 0),
-            });
-          }
-        }
-      } catch {}
+    for (const item of data) {
+      if (Array.isArray(item) && item.length >= 5 && /^\d{8}$/.test(String(item[0]))) {
+        allData.push({
+          date: String(item[0]),
+          open: parseInt(item[1]),
+          high: parseInt(item[2]),
+          low: parseInt(item[3]),
+          close: parseInt(item[4]),
+          volume: parseInt(item[5]) || 0,
+          foreignRate: parseFloat(item[6]) || 0,
+        });
+      }
     }
 
-    if (allData.length === 0) throw new Error('No data rows');
+    if (allData.length === 0) throw new Error('No data rows after parse');
     
-    // 最新的一条就是当前交易日数据
-    const latest = allData[allData.length - 1];
-    const prevClose = allData.length > 1 ? allData[allData.length - 2].close : latest.open;
+    // 核心逻辑：取倒数第2条(前一个交易日收盘价)
+    // 最后一条是今天的盘中数据，倒数第二条才是昨天收盘
+    const today = allData[allData.length - 1];
+    const yesterday = allData[allData.length - 2];
+    const dayBefore = allData.length > 2 ? allData[allData.length - 3] : yesterday;
     
-    console.log(`  ✅ [NaverChart] ${code}: close=${latest.close}, high=${latest.high}, low=${latest.low}`);
+    // price = 前一日收盘价 (看板要求显示昨收，非实时价格)
+    const targetPrice = yesterday.close;
+    const prevPrice = dayBefore.close;
+
+    console.log(`  ✅ [NaverChart] ${code}: 昨收(${yesterday.date})=${targetPrice.toLocaleString()}, change=${targetPrice - prevPrice}`);
     
     return {
-      price: latest.close,
-      open: latest.open,
-      high: latest.high,
-      low: latest.low,
-      yesterdayClose: prevClose,
-      change: latest.close - prevClose,
-      changePercent: prevClose > 0 ? ((latest.close - prevClose) / prevClose * 100).toFixed(2) : null,
-      volume: latest.volume,
-      _source: 'naver_chart_api',
-      _allHistory: allData.slice(-30),
+      price: targetPrice,                    // 前一日收盘价（主显示）
+      date: yesterday.date,                  // 数据日期
+      open: yesterday.open,
+      high: yesterday.high,
+      low: yesterday.low,
+      yesterdayClose: prevPrice,             // 前前日收盘（用于算变化）
+      change: targetPrice - prevPrice,       // 较前日涨跌额
+      changePercent: prevPrice > 0 ? (((targetPrice - prevPrice) / prevPrice) * 100).toFixed(2) : null,
+      volume: yesterday.volume,
+      _source: 'naver_chart_api_v2',
+      _allHistory: allData.slice(-30),       // 走势图用
+      _todayData: today,                     // 今日数据备用
+    };
+  } catch (err) {
+    console.error(`  ❌ [NaverChart] Failed for ${code}: ${err.message}`);
+    return null;
+  }
+}
+      volume: yesterday.volume,
+      _source: 'naver_chart_api_v2',
+      _allHistory: allData.slice(-30),       // 走势图用
+      _todayData: today,                     // 今日数据备用
     };
   } catch (err) {
     console.error(`  ❌ [NaverChart] Failed for ${code}: ${err.message}`);
@@ -264,20 +285,20 @@ async function fetchNaverHtml(code) {
       }
     }
 
-    // ---- 方法5: 市值 시가총액 ----
-    m = html.match(/시가총액[\s\S]*?<em>([,\d조억원\s]+)<\/em>/s);
-    if (m) {
-      const capText = m[1].trim();
-      const joMatch = capText.match(/(\d+)\s*조\s*(\d[\d,]*)?/);
-      if (joMatch) {
-        const jo = parseInt(joMatch[1]) * 100000000;
-        const eok = joMatch[2] ? parseInt(joMatch[2].replace(/,/g, '')) * 100000000 : 0;
-        result.marketCap = jo + eok;
-      } else {
-        const eokVal = parseInt(capText.replace(/[,조억원\s]/g, ''));
-        if (!isNaN(eokVal)) result.marketCap = eokVal * 100000000;
+    // ---- 方法5: 流通股数 + 市值 ----
+    // Naver HTML 的 em 标签中包含流通股数(7~9位整数)，市值 = 股价 × 股数
+    // 格式: <em>58,984,340</em> (Shift Up)
+    const allEmTags = [...html.matchAll(/<em[^>]*>([\d,]+)<\/em>/g)];
+    for (const m of allEmTags) {
+      const num = parseInt(m[1].replace(/,/g, ''));
+      // 流通股数通常在 1000万 ~ 10亿 之间
+      if (num > 10000000 && num < 1000000000) {
+        result.sharesOutstanding = num;
+        break;  // 找到第一个符合条件的就停止
       }
-      if (result.marketCap) console.log(`  ✅ [NaverHTML-MarketCap] marketCap=${result.marketCap}`);
+    }
+    if (result.sharesOutstanding) {
+      console.log(`  ✅ [NaverHTML] shares=${result.sharesOutstanding.toLocaleString()}`);
     }
 
     if (result.price) {
@@ -358,7 +379,7 @@ async function fetchStockData(comp) {
   }
   if (htmlData) {
     // 用 htmlData 补充 chartData 缺少的字段
-    for (const key of ['per', 'pbr', 'marketCap']) {
+    for (const key of ['per', 'pbr', 'sharesOutstanding']) {
       if (htmlData[key] && !merged[key]) {
         merged[key] = htmlData[key];
       }
@@ -370,6 +391,12 @@ async function fetchStockData(comp) {
       merged.changePercent = htmlData.changePercent;
       merged._source = 'naver_html_only';
     }
+  }
+  
+  // 计算市值: 股价 × 流通股数
+  if (merged.price && merged.sharesOutstanding && !merged.marketCap) {
+    merged.marketCap = merged.price * merged.sharesOutstanding;
+    console.log(`  💰 [Calc] marketCap=${merged.marketCap} (price ${merged.price} × shares ${merged.sharesOutstanding})`);
   }
   if (yahooData) {
     merged = { ...yahooData };
