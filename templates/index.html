@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韩国游戏股价看板 | PER估值分析</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-content">
+        <h1>
+            🎮 韩国游戏股价看板
+            <span>KOSPI Game Stocks Dashboard</span>
+        </h1>
+        <div class="header-meta">
+            <div class="date" id="headerDate">加载中...</div>
+            <div class="header-sub" id="headerSub">
+                <span id="dataSourceBadge" class="badge badge-naver">Naver Finance</span>
+                <span style="color:rgba(16,185,129,0.8)">T1=官方/权威媒体 T2=行业媒体</span>
+                <span style="margin-left:12px;color:var(--text-muted)">|</span>
+                <span>每天 10:00 KST 自动更新</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 日期选择器 -->
+    <div class="date-picker-bar">
+        <div class="date-picker-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            历史数据查阅
+        </div>
+        <select id="dateSelector" class="date-select">
+            <option value="">-- 选择日期 --</option>
+        </select>
+        <button id="goLatestBtn" class="btn-go-latest" onclick="goLatest()">
+            返回最新
+        </button>
+        <span class="date-hint" id="dateHint"></span>
+    </div>
+</header>
+
+<div class="main-container" id="mainContainer">
+
+    <!-- ========== 股价展示Part（由JS动态渲染）========== -->
+    <div class="section-title">
+        股价 &amp; PER 估值
+        <span class="badge">Stock Price &amp; Valuation</span>
+    </div>
+
+    <!-- Shift Up 主卡片 + 折线图 -->
+    <div class="su-section" id="suSection">
+        <!-- 由 JS 动态渲染 -->
+    </div>
+
+    <!-- 其他公司股价表 + 对比折线图 -->
+    <div class="others-section" id="othersSection">
+        <!-- 由 JS 动态渲染 -->
+    </div>
+
+    <!-- PER 横向对比条形模块（新增） -->
+    <div class="full-width-grid" id="perSection">
+        <!-- 由 JS 动态渲染 -->
+    </div>
+
+
+    <!-- ========== 资讯Part（保留静态）========== -->
+    <div class="section-title" style="margin-top:8px">
+        资讯 Part
+        <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green)">News & Events</span>
+    </div>
+
+    <!-- 行业信息 + 公司事件 -->
+    <div class="info-grid">
+        <!-- 行业重要信息 -->
+        <div class="card">
+            <div class="card-header">
+                <span>游戏领域的重要信息</span>
+                <span style="font-size:11px;color:var(--text-muted)">(政策/法规/大盘影响)</span>
+            </div>
+            <div class="card-body" style="padding:0;overflow-x:auto">
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th style="width:55%">资讯摘要</th>
+                            <th style="width:18%">日期</th>
+                            <th style="width:27%">类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="https://www.etoday.co.kr/news/view/2485262" target="_blank" class="news-link"><span class="news-title">韩国游戏产业AI转型加速，多家公司布局AIGC工具链</span><div class="news-source">来源：이코노미뉴스 / 4月5日</div></a></td>
+                            <td style="color:var(--text-muted);font-size:13px">04.05</td>
+                            <td><span class="tag-impact tag-info">行业趋势</span></td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.yna.co.kr/" target="_blank" class="news-link"><span class="news-title">KOSPI科技板块整体回调，外资连续5日净卖出韩国股票</span><div class="news-source">来源：연합뉴스 (韩联社) / 4月4日</div></a></td>
+                            <td style="color:var(--text-muted);font-size:13px">04.04</td>
+                            <td><span class="tag-impact tag-up">宏观影响</span></td>
+                        </tr>
+                        <tr>
+                            <td><a href="http://www.ftc.go.kr" target="_blank" class="news-link"><span class="news-title">韩国公平交易委员会讨论平台佣金上限规则修改提案</span><div class="news-source">来源：머니S (MoneyS) / 4月3日</div></a></td>
+                            <td style="color:var(--text-muted);font-size:13px">04.03</td>
+                            <td><span class="tag-impact tag-info">法规动态</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 公司事件 - 带翻页 -->
+        <div class="card" id="eventCard">
+            <div class="card-header"><span>主要游戏公司影响股价的事件</span><span style="font-size:11px;color:var(--text-muted)">(股东大会·董事会·新品等)</span></div>
+            <div class="card-body" style="padding:0;overflow-x:auto">
+                <table class="info-table">
+                    <thead><tr><th style="width:35%">公司</th><th style="width:45%">事件摘要</th><th style="width:20%">日期</th></tr></thead>
+                    <tbody id="eventTableBody"></tbody>
+                </table>
+            </div>
+            <div class="pagination-wrap">
+                <div class="pagination-info"><span id="eventPageInfo">第 1/2 页，共 8 条</span></div>
+                <div class="pagination-btns">
+                    <button class="page-btn" id="eventPrevBtn" onclick="changeEventPage(-1)" disabled>&#8249;</button>
+                    <div class="page-dot-group" id="eventDots"></div>
+                    <button class="page-btn" id="eventNextBtn" onclick="changeEventPage(1)">&#8250;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 其他常规资讯 -->
+    <div class="card info-single" id="normalNewsCard">
+        <div class="card-header"><span>其他常规资讯</span><span style="font-size:11px;color:var(--text-muted)">(版本更新·线下活动·社区动态)</span></div>
+        <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="info-table">
+                <thead><tr><th style="width:45%">资讯摘要</th><th style="width:30%">日期</th><th style="width:25%">相关公司</th></tr></thead>
+                <tbody id="normalTableBody"></tbody>
+            </table>
+        </div>
+        <div class="pagination-wrap">
+            <div class="pagination-info"><span id="normalPageInfo">第 1/2 页，共 9 条</span></div>
+            <div class="pagination-btns">
+                <button class="page-btn" id="normalPrevBtn" onclick="changeNormalPage(-1)" disabled>&#8249;</button>
+                <div class="page-dot-group" id="normalDots"></div>
+                <button class="page-btn" id="normalNextBtn" onclick="changeNormalPage(1)">&#8250;</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div>🇰🇷 韩国证券交易所 KRX 数据 · Naver Finance 实时抓取</div>
+        <div style="margin-top:4px;font-size:12px;color:var(--text-muted)">
+            数据仅供参考，不构成投资建议 | 自动更新: 每天 10:00 KST
+        </div>
+    </div>
+</footer>
+
+<script src="/static/app.js"></script>
+<script>
+// ============================================================
+// 服务端注入的数据
+// ============================================================
+const SERVER_DATA = {{ snapshot | tojson | safe if snapshot else 'null' }};
+const AVAILABLE_DATES = {{ available_dates | tojson | safe if available_dates else '[]' }};
+const CURRENT_DATE = '{{ current_date or "" }}';
+
+// ============================================================
+// 初始化
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // 渲染日期选择器
+    renderDateSelector();
+
+    // 加载数据
+    if (SERVER_DATA) {
+        renderDashboard(SERVER_DATA);
+    }
+
+    // 初始化静态翻页表格
+    initStaticTables();
+});
+</script>
+</body>
+</html>
