@@ -2,11 +2,7 @@
   "meta": {
     "date": "20260408",
     "dateDisplay": "4月（截至8日）",
-<<<<<<< HEAD
-    "fetchedAt": "2026-04-09T08:02:22.961Z",
-=======
-    "fetchedAt": "2026-04-09T08:31:29.911Z",
->>>>>>> 9d721c5 (fix(v11): 修复K线API编码问题 - 股价33,000→33,400 + 折线图恢复)
+    "fetchedAt": "2026-04-09T08:35:24.150Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -24,11 +20,7 @@
     "changeClass": "up",
     "per": "10.89",
     "pbr": "2.24",
-<<<<<<< HEAD
-    "marketCap": "≈ 1.9兆元"
-=======
     "marketCap": "≈ 2.0兆元"
->>>>>>> 9d721c5 (fix(v11): 修复K线API编码问题 - 股价33,000→33,400 + 折线图恢复)
   },
   "companies": [
     {
