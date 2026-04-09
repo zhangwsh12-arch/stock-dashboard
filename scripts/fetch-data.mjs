@@ -25,12 +25,12 @@ const DATA_DIR = join(__dirname, '..', 'data');
 // 公司配置
 // ============================================================
 const COMPANIES = [
-  { code: '391740', name: 'Shift Up',     nameKr: '시프트업',    color: '#ff6b9d', yahoo: '391740.KQ' },
-  { code: '042700', name: 'Nexon',         nameKr: '넥슨게임즈',   color: '#22c55e', yahoo: '042700.KS' },
-  { code: '251270', name: 'Netmarble',     nameKr: '넷마블',        color: '#ef4444', yahoo: '251270.KS' },
-  { code: '036570', name: 'NCSoft',        nameKr: '엔씨소프트',    color: '#3b82f6', yahoo: '036570.KS' },
-  { code: '259960', name: 'Krafton',       nameKr: '크래프톤',     color: '#f59e0b', yahoo: '259960.KQ' },
-  { code: '263750', name: 'Pearl Abyss',   nameKr: '펄어비스',     color: '#ec4899', yahoo: '263750.KS' },
+  { code: '462870', name: 'Shift Up',       nameKr: '시프트업',    color: '#ff6b9d', yahoo: '462870.KQ' },
+  { code: '225570', name: 'Nexon Games',    nameKr: '넥슨게임즈',   color: '#22c55e', yahoo: '225570.KS' },
+  { code: '251270', name: 'Netmarble',      nameKr: '넷마블',        color: '#ef4444', yahoo: '251270.KS' },
+  { code: '036570', name: 'NCSoft',         nameKr: '엔씨소프트',    color: '#3b82f6', yahoo: '036570.KS' },
+  { code: '259960', name: 'Krafton',        nameKr: '크래프톤',     color: '#f59e0b', yahoo: '259960.KQ' },
+  { code: '263750', name: 'Pearl Abyss',    nameKr: '펄어비스',     color: '#ec4899', yahoo: '263750.KS' },
 ];
 
 // ============================================================
@@ -119,7 +119,7 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 
 async function fetchNaverChart(code) {
   // KOSDAQ 股票代码需要加前缀 (KQ后缀市场)
-  const isKosdaq = ['391740', '259960'].includes(code);
+  const isKosdaq = ['462870', '259960'].includes(code);
   
   try {
     const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=5&requestType=1`;
@@ -420,8 +420,9 @@ async function main() {
   }
 
   // 构建看板数据包
-  const su = stockResults.find(r => r?.code === '391740') || stockResults.find(r => r !== null);
-
+  // Shift Up (462870) 必须是真正的 Shift Up 数据，绝不回退到其他公司
+  const realShiftUp = stockResults.find(r => r?.code === '462870');
+  
   const dashboardData = {
     meta: {
       date: dateStr,
@@ -431,25 +432,26 @@ async function main() {
       updateCount: successCount,
     },
 
-    shiftUp: su ? {
-      code: su.code,
-      name: su.name,
-      nameKr: su.nameKr,
-      color: su.color,
-      price: formatPrice(su.price),
-      previousClose: formatPrice(su.yesterdayClose),
-      high: formatPrice(su.high || su.price),
-      low: formatPrice(su.low || su.price),
-      change: su.change ? Number(su.change).toLocaleString() : '-',
-      changePercent: su.changePercent || '-',
-      changeClass: changeClass(su.change),
-      per: su.per || '-',
-      pbr: su.pbr || '-',
-      marketCap: formatWon(su.marketCap),
+    // shiftUp 只用真实数据，失败则为 null 让前端展示"暂无"
+    shiftUp: realShiftUp ? {
+      code: '462870',   // 固定为 Shift Up 的代码
+      name: 'Shift Up', // 固定名称
+      nameKr: '시프트업',
+      color: '#ff6b9d',  // 固定颜色
+      price: formatPrice(realShiftUp.price),
+      previousClose: formatPrice(realShiftUp.yesterdayClose),
+      high: formatPrice(realShiftUp.high || realShiftUp.price),
+      low: formatPrice(realShiftUp.low || realShiftUp.price),
+      change: realShiftUp.change ? Number(realShiftUp.change).toLocaleString() : '-',
+      changePercent: realShiftUp.changePercent || '-',
+      changeClass: changeClass(realShiftUp.change),
+      per: realShiftUp.per || '-',
+      pbr: realShiftUp.pbr || '-',
+      marketCap: formatWon(realShiftUp.marketCap),
     } : null,
 
     companies: stockResults
-      .filter(r => r && r.code !== '391740')
+      .filter(r => r && r.code !== '462870')
       .map(r => ({
         code: r.code,
         name: r.name,

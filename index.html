@@ -330,24 +330,13 @@ function showErrorState() {
 
 // --- Section 1: 股价 & PER ---
 function renderStockPriceSection() {
-  // 始终以 Shift Up 为核心关注；如果 shiftUp 数据缺失或价格无效，从 companies 列表中找
-  let su = currentData.shiftUp;
+  const su = currentData.shiftUp;
   
-  // 如果 shiftUp 无效（价格为年份格式或缺失），尝试从 companies 中找到 Shift Up
-  if (!su || !su.price || su.price === '2,026' || su.price === '-' || su.per === '-') {
-    const suFromCompanies = currentData.companies?.find(c => c.code === '391740');
-    if (suFromCompanies && suFromCompanies.price && suFromCompanies.price !== '2,026') {
-      su = { ...suFromCompanies, nameKr: suFromCompanies.nameKr || '시프트업', color: suFromCompanies.color || '#ff6b9d' };
-    } else if (!su) {
-      // 最终兜底：使用 companies 第一家但标记为 Shift Up 占位
-      const first = currentData.companies?.[0];
-      if (first) {
-        su = { ...first, name: 'Shift Up', nameKr: '시프트업', code: '391740', color: '#ff6b9d' };
-      }
-    }
+  // Shift Up 无真实数据时，显示暂无状态（不回退到其他公司）
+  if (!su || !su.price || su.price === '2,026' || su.price === '-') {
+    renderShiftUpEmptyState();
+    return;
   }
-  
-  if (!su) return;
 
   const container = document.getElementById('sectionStockPrice');
   const changeIconHtml = su.changeClass !== 'neutral'
@@ -571,8 +560,8 @@ function renderCompanyAnalysisSection() {
 
 function renderAnalysisItems(compMap) {
   const items = [
-    {code:'042700',name:'Nexon',nameKr:'넥슨게임즈',color:'#22c55e',
-     text:`核心IP <strong>Blue Archive（블루 아카이브）</strong> IP扩展战略公布。IP许可负责人披露了2026年持续扩大IP业务范围的战略方向。该IP在日本等全球市场长期畅销。<strong>PER ${compMap['042700']?.per||'-'} 为行业中较低水平</strong>。`,
+    {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e',
+     text:`核心IP <strong>Blue Archive（블루 아카이브）</strong> IP扩展战略公布。IP许可负责人披露了2026年持续扩大IP业务范围的战略方向。该IP在日本等全球市场长期畅销。<strong>PER ${compMap['225570']?.per||'-'} 为行业中较低水平</strong>。`,
      tier:1,url:'https://news.jkn.co.kr/post/869567'},
     {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444',
      text:`公告<strong>₩1,500亿追加收购Coway股权</strong>计划，引发治理争议。Align Partners 公开批评此举构成"利益冲突"。市场对资金使用效率担忧。<strong>但 PER 仅 ${compMap['251270']?.per||'-'} 为全行业最低</strong>，安全边际充足。`,
