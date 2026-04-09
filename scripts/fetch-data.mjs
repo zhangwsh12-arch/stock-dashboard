@@ -204,31 +204,35 @@ async function fetchNaverHtml(code) {
     const html = new TextDecoder('euc-kr').decode(buf);
     const result = {};
 
-    // ---- 方法1: 股价 — blind span 内 (最准确) ----
+    // ---- 方法1: 实时价格 — blind span 内 (用于反算前收盘) ----
     // <span class="blind">33,200</span> 在 no_today > em 内部
     let m = html.match(/class="no_today"[\s\S]*?<span class="blind">([,\d]+)<\/span>/s);
     if (m) {
-      result.price = parseInt(m[1].replace(/,/g, ''));
-      console.log(`  ✅ [NaverHTML-blind] price=${result.price}`);
+      result.currentPrice = parseInt(m[1].replace(/,/g, ''));
+      console.log(`  ✅ [NaverHTML-blind] currentPrice=${result.currentPrice}`);
     }
 
     // ---- 方法2: 涨跌额 + 涨跌幅% (no_exday 区域的 blind span) ----
-    // 涨跌额: no_exday > em > span.blind (第一个)
     m = html.match(/class="no_exday"[\s\S]*?<span class="blind">([-\d,]+)<\/span>/s);
     if (m) {
       result.change = parseInt(m[1].replace(/,/g, ''));
     }
-    // 涨跌幅%: no_exday > 第二个 em > span.blind
     m = html.match(/class="no_exday"[\s\S]*?<span class="blind">([-\d,]+)<\/span>[\s\S]*?<span class="blind">([-\d.]+)<\/span>/s);
     if (m) {
       result.change = parseInt(m[1].replace(/,/g, ''));
       result.changePercent = m[2];
     }
     
-    // 前日收盘：从涨跌反算
-    if (result.price && result.change) {
-      result.yesterdayClose = result.price - result.change;
-      console.log(`  ✅ [NaverHTML-exday] change=${result.change}, changePercent=${result.changePercent || '-'}%, yesterdayClose=${result.yesterdayClose}`);
+    // ---- 核心逻辑：price = 前一日收盘价（非实时价格）----
+    // 看板显示的是前收盘价，通过 实时价 - 涨跌额 反算
+    if (result.currentPrice && result.change) {
+      result.price = result.currentPrice - result.change;  // 前收盘 = 当前 - 涨跌
+      result.yesterdayClose = result.price;                 // 昨收就是 price 本身
+      console.log(`  ✅ [NaverHTML] price(前收盘)=${result.price}, currentPrice=${result.currentPrice}, change=${result.change} (${result.changePercent || '-'}%)`);
+    } else if (result.currentPrice) {
+      // 没有涨跌数据时，用实时价格作为 fallback（交易中可能还没更新涨跌）
+      result.price = result.currentPrice;
+      console.log(`  ⚠️ [NaverHTML] 无涨跌数据，使用当前价=${result.price}`);
     }
 
     // ---- 方法3: PER — Naver 表格有多列(当期/当期累计等)，取最后一个有效数值列 ----
