@@ -226,44 +226,51 @@ async function fetchNaverHtml(code) {
       }
     }
 
-    // 模式2: 搜索 no_today 类 (当前价)
+    // ---- 方法B: 当前价 no_today em 内的数字 ----
     if (!result.price) {
-      m = html.match(/class="no_today"[^>]*>[\s\S]*?<span[\s\S]*?>([,\d]+)</s);
-      if (!m) m = html.match(/no_today.*?(\d[\d,]*)\s*</s);
+      m = html.match(/class="no_today"[^>]*>[\s\S]*?<em[^>]*>([,\d]+)<\/em>/s);
+      if (!m) m = html.match(/no_today.*?(\d[\d,]*)\s*/s);
       if (m) {
         result.price = parseInt(m[1].replace(/,/g, ''));
         console.log(`  ✅ [NaverHTML-no_today] price=${result.price}`);
       }
     }
 
-    // 模式3: blind class 用于当前价
-    if (!result.price) {
-      m = html.match(/<span class="blind">현재가<\/span>\s*([\d,]+)/s);
-      if (m) {
-        result.price = parseInt(m[1].replace(/,/g, ''));
+    // ---- 方法C: 前日对比 no_exday 区域 (涨跌额 + 涨跌幅%) ----
+    m = html.match(/전일대비[^0-9\-]*?([-\d,]+)[^0-9\-]*?([-\d.]+)\s*퍼센트/s);
+    if (m) {
+      const chgVal = m[1].replace(/,/g, '');
+      if (!isNaN(chgVal)) {
+        if (!result.change) result.change = parseInt(chgVal);
+        if (!result.changePercent) result.changePercent = m[2];
       }
     }
 
-    // 模式4: 提取涨跌幅
-    if (!result.changePercent) {
-      m = html.match(/<span class="blind">등락률<\/span>\s*([+-]?[\d.]+%?)/s);
-      if (m) {
-        result.changePercent = m[1];
-      }
-    }
-
-    // 模式5: 提取 PER (搜索表格中的PER行)
+    // ---- 方法D: PER — "PER" 行 <em>数字</em>배 ----
     if (!result.per) {
-      m = html.match(/PER[^<]*<td[^>]*>(\d+\.?\d*)/s);
-      if (!m) m = html.match(/PER\s*\(배\)[^0-]*(\d+\.?\d*)/s);
+      m = html.match(/PER[^>]*?<em>(\d+\.?\d*)<\/em>/s);
       if (m) result.per = m[1];
     }
 
-    // 模式6: 提取 PBR
+    // ---- 方法E: PBR — "PBR" 行 <em>数字</em>배 ----
     if (!result.pbr) {
-      m = html.match(/PBR[^<]*<td[^>]*>(\d+\.?\d*)/s);
-      if (!m) m = html.match(/PBR\s*\(배\)[^0-]*(\d+\.?\d*)/s);
+      m = html.match(/PBR[^>]*?<em>(\d+\.?\d*)<\/em>/s);
       if (m) result.pbr = m[1];
+    }
+
+    // ---- 方法F: 市值 시가총액 — 支持 조 + 억원 格式 ----
+    m = html.match(/시가총액[^<]*?(?:<em>)?([^<]*?)(?:<\/em>)?\s*억원/s);
+    if (m) {
+      const capText = m[1].trim();
+      const joMatch = capText.match(/(\d+)\s*조\s*(\d[\d,]*)?/);
+      if (joMatch) {
+        const jo = parseInt(joMatch[1]) * 100000000;
+        const eok = joMatch[2] ? parseInt(joMatch[2].replace(/,/g, '')) * 100000000 : 0;
+        result.marketCap = jo + eok;
+      } else {
+        const eokVal = parseInt(capText.replace(/,/g, ''));
+        if (!isNaN(eokVal)) result.marketCap = eokVal * 100000000;
+      }
     }
 
     // 如果至少拿到了价格就认为成功
@@ -345,7 +352,7 @@ async function fetchStockData(comp) {
   }
   if (htmlData) {
     // 用 htmlData 补充 chartData 缺少的字段
-    for (const key of ['per', 'pbr', 'marketCap', 'foreignRatio']) {
+    for (const key of ['per', 'pbr', 'marketCap']) {
       if (htmlData[key] && !merged[key]) {
         merged[key] = htmlData[key];
       }
