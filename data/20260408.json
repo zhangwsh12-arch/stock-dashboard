@@ -2,78 +2,127 @@
   "meta": {
     "date": "20260408",
     "dateDisplay": "4月（截至8日）",
-    "fetchedAt": "2026-04-09T03:17:16.538Z",
-    "source": "Naver Finance"
+    "fetchedAt": "2026-04-09T07:46:54.765Z",
+    "source": "Naver Finance / Multi-source v3",
+    "updateCount": 6
   },
   "shiftUp": {
-    "code": "391740",
+    "code": "462870",
     "name": "Shift Up",
     "nameKr": "시프트업",
     "color": "#ff6b9d",
-    "price": "2,026",
+    "price": "33,000",
     "previousClose": "-",
-    "high": "-",
-    "low": "-",
-    "change": "-",
-    "changePercent": "-",
-    "changeClass": "neutral",
-    "per": "-",
-    "pbr": "-",
-    "marketCap": "-",
-    "foreignRatio": "-"
+    "high": "33,000",
+    "low": "33,000",
+    "change": "200",
+    "changePercent": "0.60",
+    "changeClass": "up",
+    "per": "10.89",
+    "pbr": "2.24",
+    "marketCap": "≈ 1.9조원"
   },
   "companies": [
     {
-      "code": "042700",
-      "name": "Nexon",
-      "nameKr": "넥슨게임즈",
-      "color": "#22c55e",
-      "price": "2,026",
-      "change": "-",
+      "code": "259960",
+      "name": "Krafton",
+      "nameKr": "크래프톤",
+      "color": "#f59e0b",
+      "price": "234,000",
+      "change": "0.00%",
       "changeClass": "neutral",
-      "per": "-"
-    },
-    {
-      "code": "251270",
-      "name": "Netmarble",
-      "nameKr": "넷마블",
-      "color": "#ef4444",
-      "price": "2,026",
-      "change": "-",
-      "changeClass": "neutral",
-      "per": "-"
+      "per": "11.01"
     },
     {
       "code": "036570",
       "name": "NCSoft",
       "nameKr": "엔씨소프트",
       "color": "#3b82f6",
-      "price": "2,026",
-      "change": "-",
-      "changeClass": "neutral",
-      "per": "-"
+      "price": "218,000",
+      "change": "+7.34%",
+      "changeClass": "up",
+      "per": "13.53"
     },
     {
-      "code": "259960",
-      "name": "Krafton",
-      "nameKr": "크래프톤",
-      "color": "#f59e0b",
-      "price": "2,026",
-      "change": "-",
-      "changeClass": "neutral",
-      "per": "-"
+      "code": "251270",
+      "name": "Netmarble",
+      "nameKr": "넷마블",
+      "color": "#ef4444",
+      "price": "49,800",
+      "change": "+0.40%",
+      "changeClass": "up",
+      "per": "18.43"
+    },
+    {
+      "code": "225570",
+      "name": "Nexon Games",
+      "nameKr": "넥슨게임즈",
+      "color": "#22c55e",
+      "price": "11,320",
+      "change": "+3.36%",
+      "changeClass": "up",
+      "per": "28.03"
     },
     {
       "code": "263750",
       "name": "Pearl Abyss",
       "nameKr": "펄어비스",
       "color": "#ec4899",
-      "price": "2,026",
-      "change": "-",
+      "price": "56,500",
+      "change": "0.00%",
       "changeClass": "neutral",
-      "per": "-"
+      "per": "29.49"
     }
   ],
-  "perComparison": [],
+  "perComparison": [
+    {
+      "code": "462870",
+      "name": "Shift Up",
+      "color": "#ff6b9d",
+      "price": "33,000",
+      "per": 10.89,
+      "perRaw": "10.89"
+    },
+    {
+      "code": "259960",
+      "name": "Krafton",
+      "color": "#f59e0b",
+      "price": "234,000",
+      "per": 11.01,
+      "perRaw": "11.01"
+    },
+    {
+      "code": "036570",
+      "name": "NCSoft",
+      "color": "#3b82f6",
+      "price": "218,000",
+      "per": 13.53,
+      "perRaw": "13.53"
+    },
+    {
+      "code": "251270",
+      "name": "Netmarble",
+      "color": "#ef4444",
+      "price": "49,800",
+      "per": 18.43,
+      "perRaw": "18.43"
+    },
+    {
+      "code": "225570",
+      "name": "Nexon Games",
+      "color": "#22c55e",
+      "price": "11,320",
+      "per": 28.03,
+      "perRaw": "28.03"
+    },
+    {
+      "code": "263750",
+      "name": "Pearl Abyss",
+      "color": "#ec4899",
+      "price": "56,500",
+      "per": 29.49,
+      "perRaw": "29.49"
+    }
+  ],
   "chartData": []
 }

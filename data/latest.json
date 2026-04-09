@@ -1,8 +1,8 @@
 {
   "meta": {
-    "date": "20260409",
-    "dateDisplay": "4月（截至9日）",
-    "fetchedAt": "2026-04-09T07:18:20.414Z",
+    "date": "20260408",
+    "dateDisplay": "4月（截至8日）",
+    "fetchedAt": "2026-04-09T07:46:54.765Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -20,7 +20,7 @@
     "changeClass": "up",
     "per": "10.89",
     "pbr": "2.24",
-    "marketCap": "-"
+    "marketCap": "≈ 1.9조원"
   },
   "companies": [
     {
