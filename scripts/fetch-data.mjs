@@ -68,9 +68,9 @@ function formatPrice(p) {
 function formatWon(n) {
   if (!n || isNaN(n)) return '-';
   const num = Number(n);
-  if (num >= 1000000000000) return `≈ ${(num / 1000000000000).toFixed(1)}조원`;
-  if (num >= 100000000) return `≈ ${(num / 100000000).toFixed(1)}억원`;
-  if (num >= 10000) return `≈ ${Math.round(num / 10000).toLocaleString()}억 ₩`;
+  if (num >= 1000000000000) return `≈ ${(num / 1000000000000).toFixed(1)}兆元`;
+  if (num >= 100000000) return `≈ ${(num / 100000000).toFixed(1)}亿元`;
+  if (num >= 10000) return `≈ ${Math.round(num / 10000).toLocaleString()}亿 ₩`;
   return `≈ ${Math.round(num).toLocaleString()}₩`;
 }
 

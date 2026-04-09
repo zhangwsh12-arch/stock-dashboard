@@ -394,8 +394,8 @@ function renderStockPriceSection() {
                 </div>
             </div>
 
-            <!-- PER/PBR/市值/外资 -->
-            <div class="metric-grid">
+            <!-- PER/PBR/市值 (3列，去掉外资) -->
+            <div class="metric-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="metric-card mc-per">
                     <div class="mlabel">PER (市盈率) ⭐</div>
                     <div class="mval">${su.per}</div>
@@ -407,14 +407,9 @@ function renderStockPriceSection() {
                     <div class="msub">Price-to-Book Ratio</div>
                 </div>
                 <div class="metric-card mc-cap">
-                    <div class="mlabel">市值 (시가총액)</div>
-                    <div class="mval">${su.marketCap.replace(/≈ /,'')}</div>
-                    <div class="msub">${su.marketCap.includes('조') ? '' : su.marketCap}</div>
-                </div>
-                <div class="metric-card mc-fx">
-                    <div class="mlabel">外资持股比例</div>
-                    <div class="mval">${su.foreignRatio}</div>
-                    <div class="msub">Foreign Holding Rate</div>
+                    <div class="mlabel">市值</div>
+                    <div class="mval">${su.marketCap.includes('≈') ? su.marketCap.replace(/≈ /,'') : su.marketCap}</div>
+                    <div class="msub">${su.marketCap.includes('兆') || su.marketCap.includes('亿') ? '' : su.marketCap}</div>
                 </div>
             </div>
 

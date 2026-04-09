@@ -107,8 +107,8 @@ function renderSUSection(data) {
                 </div>
             </div>
 
-            <!-- 关键指标：PER / PBR / 市值 -->
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px">
+            <!-- 关键指标：PER / PBR / 市值 (3列，无外资) -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">
                 <div class="metric-card metric-per">
                     <div class="metric-label">PER (市盈率)</div>
                     <div class="metric-value">${perVal}</div>
@@ -121,13 +121,8 @@ function renderSUSection(data) {
                 </div>
                 <div class="metric-card metric-cap">
                     <div class="metric-label">市值</div>
-                    <div class="metric-value">≈ ${capVal}</div>
+                    <div class="metric-value">${capVal}</div>
                     <div class="metric-sub">亿 ₩</div>
-                </div>
-                <div class="metric-card metric-fx">
-                    <div class="metric-label">外资持股比</div>
-                    <div class="metric-value">${pd.foreign_rate !== undefined ? pd.foreign_rate.toFixed(1)+'%' : '-'}</div>
-                    <div class="metric-sub">Naver</div>
                 </div>
             </div>
 
