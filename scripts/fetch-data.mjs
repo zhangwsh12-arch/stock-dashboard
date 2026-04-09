@@ -189,16 +189,6 @@ async function fetchNaverChart(code) {
     return null;
   }
 }
-      volume: yesterday.volume,
-      _source: 'naver_chart_api_v2',
-      _allHistory: allData.slice(-30),       // 走势图用
-      _todayData: today,                     // 今日数据备用
-    };
-  } catch (err) {
-    console.error(`  ❌ [NaverChart] Failed for ${code}: ${err.message}`);
-    return null;
-  }
-}
 
 
 // ============================================================
