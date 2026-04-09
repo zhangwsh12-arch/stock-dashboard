@@ -231,26 +231,33 @@ async function fetchNaverHtml(code) {
       console.log(`  ✅ [NaverHTML-exday] change=${result.change}, changePercent=${result.changePercent || '-'}%, yesterdayClose=${result.yesterdayClose}`);
     }
 
-    // ---- 方法3: PER — <strong>PER(배)</strong></th 后面的 <td> 纯文本 ----
-    // 实际结构: <td class="">\n\t\t24.89\n\t\t</td>
-    m = html.match(/<strong>PER[^<]*<\/strong><\/th>[\s\S]*?<td[^>]*>(?:&nbsp;|\s*-?\s*)?<\/td>[\s\S]*?<td[^>]*>\s*([\d.]+)\s*<\/td>/s);
-    // 备用：找 PER th 后最近的非空 td
-    if (!m) {
-      m = html.match(/<strong>PER[^<]*<\/strong>(?:<\/th>|<br>)\s*[\s\S]*?<td[^>]*>\s*([\d.]+|-?)\s*<\/td>/s);
-    }
-    if (m && m[1] && m[1] !== '-') {
-      result.per = m[1];
-      console.log(`  ✅ [NaverHTML-PER] per=${result.per}`);
+    // ---- 方法3: PER — Naver 表格有多列(当期/当期累计等)，取最后一个有效数值列 ----
+    // 实际结构: <strong>PER(배)</strong></th> 后面跟多个 <td>, 第3个 td 是最新准确值
+    // 例如 Shift Up: [空] | 23.34 | 10.89(investing=9.80) → 取 10.89
+    const perMatch = html.match(/<strong>PER/);
+    if (perMatch) {
+      // 从 PER 开始，提取该行所有 td 的值
+      const perArea = html.substring(perMatch.index, perMatch.index + 800);
+      const allTdValues = [...perArea.matchAll(/<td[^>]*>\s*([\d.]+|-|&nbsp;)\s*<\/td>/g)]
+        .map(m => m[1])
+        .filter(v => v !== '-' && v !== '&nbsp;' && v !== '');
+      if (allTdValues.length > 0) {
+        result.per = allTdValues[allTdValues.length - 1];  // 取最后一列
+        console.log(`  ✅ [NaverHTML-PER] per=${result.per} (all cols: [${allTdValues.join(', ')}])`);
+      }
     }
 
-    // ---- 方法4: PBR —— 同理 ----
-    m = html.match(/<strong>PBR[^<]*<\/strong><\/th>[\s\S]*?<td[^>]*>(?:&nbsp;|\s*-?\s*)?<\/td>[\s\S]*?<td[^>]*>\s*([\d.]+)\s*<\/td>/s);
-    if (!m) {
-      m = html.match(/<strong>PBR[^<]*<\/strong>(?:<\/th>|<br>)\s*[\s\S]*?<td[^>]*>\s*([\d.]+|-?)\s*<\/td>/s);
-    }
-    if (m && m[1] && m[1] !== '-') {
-      result.pbr = m[1];
-      console.log(`  ✅ [NaverHTML-PBR] pbr=${result.pbr}`);
+    // ---- 方法4: PBR —— 同理，取最后一列 ----
+    const pbrMatch = html.match(/<strong>PBR/);
+    if (pbrMatch) {
+      const pbrArea = html.substring(pbrMatch.index, pbrMatch.index + 600);
+      const allPbrValues = [...pbrArea.matchAll(/<td[^>]*>\s*([\d.]+|-|&nbsp;)\s*<\/td>/g)]
+        .map(m => m[1])
+        .filter(v => v !== '-' && v !== '&nbsp;' && v !== '');
+      if (allPbrValues.length > 0) {
+        result.pbr = allPbrValues[allPbrValues.length - 1];  // 取最后一列
+        console.log(`  ✅ [NaverHTML-PBR] pbr=${result.pbr} (all cols: [${allPbrValues.join(', ')}])`);
+      }
     }
 
     // ---- 方法5: 市值 시가총액 ----
