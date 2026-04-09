@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * 数据抓取脚本 v2 — 使用 Naver Finance 内部 API 获取韩国游戏股数据
+ * 数据抓取脚本 v3 — 多源容错策略
  * 
- * 数据来源:
- *   1. finance.naver.com/item/info.naver (官方内部API, 返回完整JSON)
- *   2. fchart.stock.naver.com (K线历史数据)
+ * 数据来源 (按优先级):
+ *   1. Naver K线图 JSON API (fchart.stock.naver.com) - 历史价格
+ *   2. Naver 主页面 HTML (带完整浏览器headers) - 实时数据
+ *   3. Yahoo Finance API (备用) - 全球股票数据
  * 
  * 输出: data/YYYYMMDD.json (每日快照)
  *       data/latest.json  (最新数据)
@@ -24,24 +25,30 @@ const DATA_DIR = join(__dirname, '..', 'data');
 // 公司配置
 // ============================================================
 const COMPANIES = [
-  { code: '391740', name: 'Shift Up',     nameKr: '시프트업',    color: '#ff6b9d' },
-  { code: '042700', name: 'Nexon',         nameKr: '넥슨게임즈',   color: '#22c55e' },
-  { code: '251270', name: 'Netmarble',     nameKr: '넷마블',        color: '#ef4444' },
-  { code: '036570', name: 'NCSoft',        nameKr: '엔씨소프트',    color: '#3b82f6' },
-  { code: '259960', name: 'Krafton',       nameKr: '크래프톤',     color: '#f59e0b' },
-  { code: '263750', name: 'Pearl Abyss',   nameKr: '펄어비스',     color: '#ec4899' },
+  { code: '391740', name: 'Shift Up',     nameKr: '시프트업',    color: '#ff6b9d', yahoo: '391740.KQ' },
+  { code: '042700', name: 'Nexon',         nameKr: '넥슨게임즈',   color: '#22c55e', yahoo: '042700.KS' },
+  { code: '251270', name: 'Netmarble',     nameKr: '넷마블',        color: '#ef4444', yahoo: '251270.KS' },
+  { code: '036570', name: 'NCSoft',        nameKr: '엔씨소프트',    color: '#3b82f6', yahoo: '036570.KS' },
+  { code: '259960', name: 'Krafton',       nameKr: '크래프톤',     color: '#f59e0b', yahoo: '259960.KQ' },
+  { code: '263750', name: 'Pearl Abyss',   nameKr: '펄어비스',     color: '#ec4899', yahoo: '263750.KS' },
 ];
 
 // ============================================================
 // 工具函数
 // ============================================================
-function getYesterday() {
+function getLatestTradingDay() {
   const d = new Date();
-  const utcH = d.getUTCHours();
-  if (utcH < 8) d.setUTCDate(d.getUTCDate() - 1);
+  // 韩国时间 UTC+9，上午9点到下午3点为交易时间
+  const koreaHour = d.getUTCHours() + 9;
+  
+  // 如果还没到当天收盘(韩国时间15点=UTC 6点)，取前一个交易日
+  if (koreaHour < 6) d.setUTCDate(d.getUTCDate() - 1);
+  
   const day = d.getUTCDay();
-  if (day === 0) d.setUTCDate(d.getUTCDate() - 2);
-  if (day === 6) d.setUTCDate(d.getUTCDate() - 1);
+  // 周末回退到周五
+  if (day === 0) d.setUTCDate(d.getUTCDate() - 2);  // 周日 -> 周五
+  if (day === 6) d.setUTCDate(d.getUTCDate() - 1);  // 周六 -> 周五
+  
   return d;
 }
 
@@ -61,7 +68,7 @@ function formatWon(n) {
   if (!n || isNaN(n)) return '-';
   const num = Number(n);
   if (num >= 1000000000000) return `≈ ${(num / 1000000000000).toFixed(1)}조원`;
-  if (num >= 100000000) return `≈ ${(num / 100000000).toFixed(1)}조원`;
+  if (num >= 100000000) return `≈ ${(num / 100000000).toFixed(1)}억원`;
   if (num >= 10000) return `≈ ${Math.round(num / 10000).toLocaleString()}억 ₩`;
   return `≈ ${Math.round(num).toLocaleString()}₩`;
 }
@@ -73,252 +80,352 @@ function changeClass(change) {
   return 'neutral';
 }
 
+/**
+ * 通用 fetch 封装，带重试和完整浏览器 headers
+ */
+async function fetchWithRetry(url, options = {}, retries = 3) {
+  const defaultHeaders = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Cache-Control': 'no-cache',
+    ...options.headers,
+  };
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      const resp = await fetch(url, { ...options, headers: defaultHeaders });
+      if (resp.ok) return resp;
+      
+      // 如果不是 429/503，不要重试
+      if (resp.status !== 429 && resp.status !== 503 && resp.status !== 502) {
+        throw new Error(`HTTP ${resp.status}`);
+      }
+      
+      // 指数退避等待
+      await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      await new Promise(r => setTimeout(r, 1500 * (i + 1)));
+    }
+  }
+}
+
 // ============================================================
-// Naver Finance API 数据抓取 (v2 — 使用内部JSON API)
+// 数据源1: Naver K线图 JSON API (最可靠)
+// URL: https://fchart.stock.naver.com/siseJson.naver?symbol=CODE&timeframe=day&count=5&requestType=1
+// 返回: [[日期, 开盘, 高, 低, 收盘, 成交量], ...]
 // ============================================================
 
-/**
- * 方法1: 使用 Naver Finance itemInfo API (最可靠，返回完整JSON)
- * URL格式: https://finance.naver.com/item/info.naver?code=XXXXXX
- */
-async function fetchViaItemInfo(code) {
+async function fetchNaverChart(code) {
   try {
-    const url = `https://finance.naver.com/item/info.naver?code=${code}`;
-    console.log(`  📡 [API] Fetching itemInfo: ${code}`);
+    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=5&requestType=1`;
+    console.log(`  📊 [NaverChart] Fetching: ${code}`);
     
-    const resp = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': '*/*',
-        'Referer': `https://finance.naver.com/item/main.naver?code=${code}`,
-      },
-    });
-    
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const resp = await fetchWithRetry(url);
     const text = await resp.text();
     
-    // itemInfo 返回的是 JavaScript 变量赋值格式
-    // 需要提取其中的 JSON 对象
-    // 格式类似: _itemInfo = {"cd":"391740","nm":"시프트업",...};
-    const match = text.match(/_itemInfo\s*=\s*(\{[\s\S]+?\});?\s*<\/script>/i);
-    if (!match) throw new Error('No _itemInfo found in response');
+    // 解析每行JSON数组
+    const lines = text.trim().split('\n').filter(l => l.startsWith('['));
+    const allData = [];
     
-    const jsonStr = match[1].replace(/'/g, '"');
-    const data = JSON.parse(jsonStr);
-    
-    return data;
-  } catch (err) {
-    console.error(`  ❌ [API] itemInfo failed for ${code}: ${err.message}`);
-    return null;
-  }
-}
-
-/**
- * 方法2 (备用): 使用 main 页面 + 正则解析 HTML
- */
-async function fetchViaHtmlParse(code) {
-  try {
-    const url = `https://finance.naver.com/item/main.naver?code=${code}`;
-    console.log(`  📡 [HTML] Fetching main page: ${code}`);
-    
-    const resp = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8',
-      },
-    });
-    
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const html = await resp.text();
-    
-    const result = {};
-    
-    // 尝试从内嵌的 JavaScript 变量中提取数据
-    // 模式1: _itemContent 变量
-    let m = html.match(/_itemContent\s*[:=]\s*(\{[^}]+\})/s);
-    if (m) {
-      try {
-        const content = JSON.parse(m[1].replace(/'/g, '"'));
-        if (content.price) result.price = content.price;
-      } catch {}
-    }
-    
-    // 模式2: 直接从 HTML 中提取数字
-    // 收盘价 - 在 <dd> 标签中的大数字
-    if (!result.price) {
-      m = html.match(/<dd[^>]*>\s*([\d,]+)\s*<\/dd>/);
-      if (m) result.price = m[1].replace(/,/g, '');
-    }
-    
-    // 前日收盘
-    m = html.match(/전일종가<\/(?:td|th)[^>]*>.*?<(?:td|th)[^>]*>([\d,]+)/s);
-    if (m) result.yesterdayClose = m[1].replace(/,/g, '');
-    
-    // 涨跌额 (_upDown)
-    m = html.match(/id="_upDown"[^>]*>([+-]?[\d,]+)/);
-    if (m) result.change = m[1].replace(/,/g, '');
-    
-    // 涨跌幅% (_rate)
-    m = html.match(/id="_rate"[^>]*>([+-]?[\d.]+)/);
-    if (m) result.changePercent = m[1];
-    
-    // 最高价
-    m = html.match(/고가<\/(?:td|th)[^>]*>.*?<(?:td|th)[^>]*>([\d,]+)/s);
-    if (m) result.high = m[1].replace(/,/g, '');
-    
-    // 最低价
-    m = html.match(/저가<\/(?:td|th)[^>]*>.*?<(?:td|th)[^>]*>([\d,]+)/s);
-    if (m) result.low = m[1].replace(/,/g, '');
-    
-    // PER
-    m = html.match(/PER\s*\([^)]*\)[^<]*(?:<[^>]+>)*\s*(\d+\.?\d*)/);
-    if (m) result.per = m[1];
-    
-    // PBR
-    m = html.match(/PBR\s*\([^)]*\)[^<]*(?:<[^>]+>)*\s*(\d+\.?\d*)/);
-    if (m) result.pbr = m[1];
-    
-    // 如果有 price 字段就返回
-    if (result.price) return result;
-    return null;
-  } catch (err) {
-    console.error(`  ❌ [HTML] Parse failed for ${code}: ${err.message}`);
-    return null;
-  }
-}
-
-/**
- * 统一的股票数据获取入口
- */
-async function fetchStockData(code) {
-  // 优先尝试方法1 (itemInfo API)
-  let apiData = await fetchViaItemInfo(code);
-  
-  if (apiData && apiData.cv) {
-    // itemInfo API 返回的数据字段映射:
-    // cv = 当前价格 (current value), nv = 昨收, hv = 高价, lv = 低价
-    // cr = 涨跌额, ra = 涨跌幅%, per = PER, pbr = PBR, mv = 市值, fr = 外资持股比
-    return {
-      price: apiData.cv,
-      yesterdayClose: apiData.nv,
-      high: apiData.hv,
-      low: apiData.lv,
-      change: apiData.cr,
-      changePercent: apiData.ra,
-      per: apiData.per,
-      pbr: apiData.pbr,
-      marketCap: apiData.mv,
-      foreignRatio: apiData.fr,
-      _source: 'itemInfo_api',
-    };
-  }
-
-  // 回退到方法2 (HTML 解析)
-  const htmlData = await fetchViaHtmlParse(code);
-  if (htmlData) {
-    return { ...htmlData, _source: 'html_parse' };
-  }
-  
-  return null;
-}
-
-/**
- * 获取月度历史数据（用于走势图）
- */
-async function fetchMonthlyHistory(code) {
-  try {
-    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=30&requestType=1`;
-    console.log(`  📈 [Chart] Fetching history: ${code}`);
-    
-    const resp = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0',
-        'Referer': `https://finance.naver.com/item/sise.naver?code=${code}`,
-      },
-    });
-    
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const text = await resp.text();
-    
-    const lines = text.trim().split('\n');
-    const data = [];
     for (const line of lines) {
       try {
         const row = JSON.parse(line);
         if (Array.isArray(row)) {
           for (let i = 1; i < row.length; i++) {
-            const [date, , high, low, close, volume] = row[i];
-            data.push({ date, close: parseInt(close), high: parseInt(high), low: parseInt(low), volume: parseInt(volume || 0) });
+            const item = row[i];
+            allData.push({
+              date: item[0],
+              open: parseInt(item[1]),
+              high: parseInt(item[2]),
+              low: parseInt(item[3]),
+              close: parseInt(item[4]),
+              volume: parseInt(item[5] || 0),
+            });
           }
         }
       } catch {}
     }
-    return data;
+
+    if (allData.length === 0) throw new Error('No data rows');
+    
+    // 最新的一条就是当前交易日数据
+    const latest = allData[allData.length - 1];
+    const prevClose = allData.length > 1 ? allData[allData.length - 2].close : latest.open;
+    
+    console.log(`  ✅ [NaverChart] ${code}: close=${latest.close}, high=${latest.high}, low=${latest.low}`);
+    
+    return {
+      price: latest.close,
+      open: latest.open,
+      high: latest.high,
+      low: latest.low,
+      yesterdayClose: prevClose,
+      change: latest.close - prevClose,
+      changePercent: prevClose > 0 ? ((latest.close - prevClose) / prevClose * 100).toFixed(2) : null,
+      volume: latest.volume,
+      _source: 'naver_chart_api',
+      _allHistory: allData.slice(-30), // 最近30天用于图表
+    };
   } catch (err) {
-    console.error(`  ❌ [Chart] History failed for ${code}: ${err.message}`);
-    return [];
+    console.error(`  ❌ [NaverChart] Failed for ${code}: ${err.message}`);
+    return null;
   }
 }
+
+
+// ============================================================
+// 数据源2: Naver 主页面 HTML 解析 (获取 PER/PBR 等估值指标)
+// 使用更完整的浏览器模拟
+// ============================================================
+
+async function fetchNaverHtml(code) {
+  try {
+    const url = `https://finance.naver.com/item/main.naver?code=${code}`;
+    console.log(`  🌐 [NaverHTML] Fetching main page: ${code}`);
+
+    const resp = await fetchWithRetry(url, {
+      headers: {
+        'Referer': 'https://finance.naver.com/',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+      },
+    });
+
+    const html = await resp.text();
+    const result = {};
+
+    // ---- 方法A: 从内嵌 JS 变量提取 ----
+    // Naver 页面通常在 script 标签里有 _itemInfo 或类似变量
+    
+    // 模式1: _itemContent = {...}
+    let m = html.match(/_itemContent\s*=\s*(\{[^;]+?\});/s);
+    if (m) {
+      try {
+        const cleaned = m[1].replace(/(\w+)\s*:/g, '"$1":').replace(/'/g, '"');
+        const content = JSON.parse(cleaned);
+        if (content.cv) result.price = Number(content.cv);       // 当前价
+        if (content.nv) result.yesterdayClose = Number(content.nv);
+        if (content.hv) result.high = Number(content.hv);
+        if (content.lv) result.low = Number(content.lv);
+        if (content.cr) result.change = Number(content.cr);
+        if (content.ra) result.changePercent = content.ra;
+        if (content.per) result.per = String(content.per);
+        if (content.pbr) result.pbr = String(content.pbr);
+        if (content.mv) result.marketCap = Number(content.mv);
+        console.log(`  ✅ [NaverHTML-ItemContent] Found embedded data`);
+      } catch (e) {
+        console.log(`  ⚠️ [NaverHTML] ItemContent parse failed: ${e.message}`);
+      }
+    }
+
+    // 模式2: 搜索 no_today 类 (当前价)
+    if (!result.price) {
+      m = html.match(/class="no_today"[^>]*>[\s\S]*?<span[\s\S]*?>([,\d]+)</s);
+      if (!m) m = html.match(/no_today.*?(\d[\d,]*)\s*</s);
+      if (m) {
+        result.price = parseInt(m[1].replace(/,/g, ''));
+        console.log(`  ✅ [NaverHTML-no_today] price=${result.price}`);
+      }
+    }
+
+    // 模式3: blind class 用于当前价
+    if (!result.price) {
+      m = html.match(/<span class="blind">현재가<\/span>\s*([\d,]+)/s);
+      if (m) {
+        result.price = parseInt(m[1].replace(/,/g, ''));
+      }
+    }
+
+    // 模式4: 提取涨跌幅
+    if (!result.changePercent) {
+      m = html.match(/<span class="blind">등락률<\/span>\s*([+-]?[\d.]+%?)/s);
+      if (m) {
+        result.changePercent = m[1];
+      }
+    }
+
+    // 模式5: 提取 PER (搜索表格中的PER行)
+    if (!result.per) {
+      m = html.match(/PER[^<]*<td[^>]*>(\d+\.?\d*)/s);
+      if (!m) m = html.match(/PER\s*\(배\)[^0-]*(\d+\.?\d*)/s);
+      if (m) result.per = m[1];
+    }
+
+    // 模式6: 提取 PBR
+    if (!result.pbr) {
+      m = html.match(/PBR[^<]*<td[^>]*>(\d+\.?\d*)/s);
+      if (!m) m = html.match(/PBR\s*\(배\)[^0-]*(\d+\.?\d*)/s);
+      if (m) result.pbr = m[1];
+    }
+
+    // 如果至少拿到了价格就认为成功
+    if (result.price) {
+      result._source = 'naver_html_parse';
+      console.log(`  ✅ [NaverHTML] ${code}: price=${result.price}, PER=${result.per || '-'}, PBR=${result.pbr || '-'}`);
+      return result;
+    }
+    
+    throw new Error('Could not extract any data from HTML');
+  } catch (err) {
+    console.error(`  ❌ [NaverHTML] Parse failed for ${code}: ${err.message}`);
+    return null;
+  }
+}
+
+
+// ============================================================
+// 数据源3: Yahoo Finance API (备用方案)
+// 注意: Yahoo 对韩国股票的支持有限，KOSDAQ 股票可能不可用
+// ============================================================
+
+async function fetchYahooFinance(yahooSymbol, code) {
+  try {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?interval=1d&range=5d`;
+    console.log(`  📈 [YahooFinance] Fetching: ${yahooSymbol} (${code})`);
+    
+    const resp = await fetchWithRetry(url, {
+      headers: {
+        'Referer': 'https://finance.yahoo.com/',
+      },
+    });
+    
+    const json = await resp.json();
+    const quote = json?.chart?.result?.[0]?.meta;
+    if (!quote) throw new Error('No quote data');
+    
+    console.log(`  ✅ [YahooFinance] ${code}: close=${quote.regularMarketPrice}, prev=${quote.chartPreviousClose}`);
+    
+    return {
+      price: quote.regularMarketPrice,
+      yesterdayClose: quote.chartPreviousClose,
+      change: quote.regularMarketPrice - quote.chartPreviousClose,
+      changePercent: ((quote.regularMarketPrice - quote.chartPreviousClose) / quote.chartPreviousClose * 100).toFixed(2),
+      marketCap: quote.marketCap,
+      _source: 'yahoo_finance',
+    };
+  } catch (err) {
+    console.error(`  ⚠️ [YahooFinance] Failed for ${code} (${yahooSymbol}): ${err.message}`);
+    return null;
+  }
+}
+
+
+// ============================================================
+// 统一的数据获取入口 — 三级降级策略
+// ============================================================
+
+async function fetchStockData(comp) {
+  const { code, yahoo } = comp;
+
+  // --- 第一级: Naver K线图 API (获取价格、高低点) ---
+  let chartData = await fetchNaverChart(code);
+
+  // --- 第二级: Naver HTML (获取 PER/PBR 等估值指标) ---
+  let htmlData = await fetchNaverHtml(code);
+
+  // --- 第三级: Yahoo Finance (如果上面两个都失败) ---
+  let yahooData = null;
+  if (!chartData && !htmlData) {
+    yahooData = await fetchYahooFinance(yahoo, code);
+  }
+
+  // 合并数据 (优先级: Chart > HTML > Yahoo)
+  let merged = {};
+  
+  if (chartData) {
+    merged = { ...chartData };
+  }
+  if (htmlData) {
+    // 用 htmlData 补充 chartData 缺少的字段
+    for (const key of ['per', 'pbr', 'marketCap', 'foreignRatio']) {
+      if (htmlData[key] && !merged[key]) {
+        merged[key] = htmlData[key];
+      }
+    }
+    // 如果 chartData 没拿到但 htmlData 有价格
+    if (!merged.price && htmlData.price) {
+      merged.price = htmlData.price;
+      merged.change = htmlData.change;
+      merged.changePercent = htmlData.changePercent;
+      merged._source = 'naver_html_only';
+    }
+  }
+  if (yahooData) {
+    merged = { ...yahooData };
+  }
+
+  if (merged.price) {
+    return merged;
+  }
+  
+  return null;
+}
+
 
 // ============================================================
 // 主流程
 // ============================================================
 
 async function main() {
-  console.log('='.repeat(50));
-  console.log('🎮 韩国游戏股价看板 — 数据抓取 v2');
+  console.log('='.repeat(55));
+  console.log('🎮 韩国游戏股价看板 — 数据抓取 v3');
   console.log(`🕒 运行时间: ${new Date().toISOString()}`);
-  console.log('='.repeat(50));
+  console.log('='.repeat(55));
 
-  const targetDate = getYesterday();
+  const targetDate = getLatestTradingDay();
   const dateStr = formatDate(targetDate);
 
   console.log(`\n📅 目标日期: ${dateStr} (${targetDate.getMonth() + 1}月${targetDate.getDate()}日)`);
   
-  // 确保数据目录存在
   if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
   // 并行抓取所有公司数据
-  console.log('\n📡 正在抓取 Naver Finance 数据...\n');
+  console.log('\n📡 正在抓取股价数据...\n');
   const stockResults = await Promise.all(
     COMPANIES.map(async (comp) => {
       console.log(`\n  ┌─ ${comp.name} (${comp.code})`);
-      const data = await fetchStockData(comp.code);
+      const data = await fetchStockData(comp);
       if (data) {
+        data.code = comp.code;
         data.name = comp.name;
         data.nameKr = comp.nameKr;
         data.color = comp.color;
-        console.log(`  │ ✅ 价格: ₩${formatPrice(data.price)}, PER: ${data.per || '-'}, 来源: ${data._source}`);
+        console.log(
+          `  │ ✅ 价格: ₩${formatPrice(data.price)}, ` +
+          `PER: ${data.per || '-'}, PBR: ${data.pbr || '-'}, ` +
+          `来源: ${data._source}`
+        );
       } else {
-        console.log(`  │ ❌ 抓取失败`);
+        console.log(`  │ ❌ 所有数据源均失败`);
       }
       console.log(`  └─`);
       return data;
     })
   );
 
-  // 检查是否所有公司都获取成功
   const successCount = stockResults.filter(r => r !== null).length;
   console.log(`\n📊 成功: ${successCount}/${COMPANIES.length} 家公司`);
   
   if (successCount === 0) {
-    console.error('\n❌ 所有公司数据获取失败，退出！');
+    console.error('\n❌ 所有公司数据获取失败！请检查网络或数据源是否可用。');
     process.exit(1);
   }
 
-  // 构建 Shift Up 核心数据
+  // 构建看板数据包
   const su = stockResults.find(r => r?.code === '391740') || stockResults.find(r => r !== null);
 
-  // 构建完整看板数据包
   const dashboardData = {
     meta: {
       date: dateStr,
       dateDisplay: `${targetDate.getMonth() + 1}月（截至${targetDate.getDate()}日）`,
       fetchedAt: new Date().toISOString(),
-      source: 'Naver Finance',
+      source: 'Naver Finance / Multi-source v3',
       updateCount: successCount,
     },
+
     shiftUp: su ? {
       code: su.code,
       name: su.name,
@@ -326,71 +433,75 @@ async function main() {
       color: su.color,
       price: formatPrice(su.price),
       previousClose: formatPrice(su.yesterdayClose),
-      high: formatPrice(su.high),
-      low: formatPrice(su.low),
+      high: formatPrice(su.high || su.price),
+      low: formatPrice(su.low || su.price),
       change: su.change ? Number(su.change).toLocaleString() : '-',
       changePercent: su.changePercent || '-',
       changeClass: changeClass(su.change),
       per: su.per || '-',
       pbr: su.pbr || '-',
       marketCap: formatWon(su.marketCap),
-      foreignRatio: su.foreignRatio ? `${su.foreignRatio}%` : '-',
     } : null,
 
-    companies: stockResults.filter(r => r && r.code !== '391740').map(r => ({
-      code: r.code,
-      name: r.name,
-      nameKr: r.nameKr,
-      color: r.color,
-      price: formatPrice(r.price),
-      change: r.changePercent ? `${changeClass(r.change) === 'up' ? '+' : ''}${r.changePercent}` : '-',
-      changeClass: changeClass(r.change),
-      per: r.per || '-',
-    })).sort((a, b) => (parseFloat(a.per) || 999) - (parseFloat(b.per) || 999)),
+    companies: stockResults
+      .filter(r => r && r.code !== '391740')
+      .map(r => ({
+        code: r.code,
+        name: r.name,
+        nameKr: r.nameKr,
+        color: r.color,
+        price: formatPrice(r.price),
+        change: r.changePercent ? `${changeClass(r.change) === 'up' ? '+' : ''}${r.changePercent}%` : '-',
+        changeClass: changeClass(r.change),
+        per: r.per || '-',
+      }))
+      .sort((a, b) => (parseFloat(a.per) || 999) - (parseFloat(b.per) || 999)),
 
-    // PER 对比数据（用于条形图）
-    perComparison: stockResults.filter(r => r && r.per).map(r => ({
-      code: r.code,
-      name: r.name,
-      color: r.color,
-      price: formatPrice(r.price),
-      per: parseFloat(r.per),
-      perRaw: r.per,
-    })).sort((a, b) => a.per - b.per),
+    perComparison: stockResults
+      .filter(r => r && r.per)
+      .map(r => ({
+        code: r.code,
+        name: r.name,
+        color: r.color,
+        price: formatPrice(r.price),
+        per: parseFloat(r.per),
+        perRaw: r.per,
+      }))
+      .sort((a, b) => a.per - b.per),
 
-    // 月度走势数据（Shift Up）
     chartData: [],
   };
 
-  // 获取 Shift Up 月度走势
-  const ym = `${targetDate.getFullYear()}${String(targetDate.getMonth() + 1).padStart(2, '0')}`;
-  const history = await fetchMonthlyHistory('391740');
-  if (history.length > 0) {
-    dashboardData.chartData = history.map(h => ({
+  // 图表数据 (使用 Shift Up 的历史数据)
+  if (su && su._allHistory && su._allHistory.length > 0) {
+    dashboardData.chartData = su._allHistory.map(h => ({
       date: h.date,
       label: `${parseInt(h.date.slice(4,6))}/${parseInt(h.date.slice(6,8))}`,
       price: h.close,
     }));
   }
 
-  // 写入每日快照文件
+  // 写入文件
   const outFile = join(DATA_DIR, `${dateStr}.json`);
   writeFileSync(outFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
   console.log(`\n✅ 数据已保存: ${outFile}`);
 
-  // 更新 latest.json
   const latestFile = join(DATA_DIR, 'latest.json');
   writeFileSync(latestFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
   console.log(`✅ 最新数据已更新: latest.json`);
 
-  // 更新 dates.json（可用日期列表）
   updateDatesList(dateStr);
   
   console.log(`\n🎉 完成! 共更新 ${successCount}/${COMPANIES.length} 家公司`);
   if (dashboardData.shiftUp) {
-    console.log(`   Shift Up 价格: ₩${dashboardData.shiftUp.price}, PER: ${dashboardData.shiftUp.per}, PBR: ${dashboardData.shiftUp.pbr}`);
+    console.log(
+      `   Shift Up: ₩${dashboardData.shiftUp.price}, ` +
+      `PER: ${dashboardData.shiftUp.per}, PBR: ${dashboardData.shiftUp.pbr}`
+    );
   }
-  console.log(`   其他公司: ${dashboardData.companies.map(c => `${c.name}:${c.price}`).join(', ')}`);
+  console.log(
+    `   其他: ${dashboardData.companies.map(c => `${c.name}:${c.price}`).join(', ')}`
+  );
 }
 
 function updateDatesList(newDate) {
