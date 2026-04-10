@@ -452,6 +452,23 @@ function renderDailySummary() {
     if (downers.length > 0) {
       analysisText += `，<strong>${topLoser.name}</strong>领跌<span style="color:#f87171;font-weight:600">${topLoser.changePercent}</span>`;
     }
+    
+    // 按公司匹配当日事件作为个股原因
+    const datePrefix = (currentData.meta?.date || '').slice(4);
+    const todayEvents = EVENT_DATA.filter(e => e.date.includes(datePrefix.replace(/^0/, '')));
+    
+    if (todayEvents.length > 0) {
+      analysisText += `<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>` +
+        todayEvents.map(e => {
+          const matchedStock = allStocks.find(s =>
+            s.name.toLowerCase().includes(e.company.toLowerCase()) ||
+            e.company.toLowerCase().includes(s.name.toLowerCase())
+          );
+          return `<span style="color:${e.color};font-size:13px">${e.company}</span><span style="font-size:13px"> — ${e.title}</span>` + 
+            (matchedStock ? ` <span style="color:${matchedStock.changeClass==='up'?'#34d399':matchedStock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${matchedStock.changePercent})</span>` : '');
+        }).join('；') + '。';
+    }
+    
     analysisText += '，板块无明显方向性趋势。';
   }
 
@@ -821,7 +838,10 @@ function renderIndustryMacro() {
     return;
   }
 
-  el.innerHTML = INDUSTRY_MACRO_DATA.map((item, idx) => {
+  // 按日期降序排列（最新在上）
+  const sorted = [...INDUSTRY_MACRO_DATA].sort((a, b) => b.date.localeCompare(a.date));
+
+  el.innerHTML = sorted.map((item, idx) => {
     const impactStyle = item.impact === 'positive' ? 'color:#34d399' : item.impact === 'negative' ? 'color:#f87171' : 'color:#9aa0b3';
     const impactLabel = item.impact === 'positive' ? '利好' : item.impact === 'negative' ? '利空' : '中性';
     const impactBg = item.impact === 'positive' ? 'rgba(16,185,129,0.1)' : item.impact === 'negative' ? 'rgba(239,68,68,0.1)' : 'rgba(107,113,133,0.12)';
