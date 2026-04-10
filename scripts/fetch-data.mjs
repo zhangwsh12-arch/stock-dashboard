@@ -253,32 +253,99 @@ async function fetchNaverHtml(code) {
       console.log(`  ⚠️ [NaverHTML] 无涨跌数据，使用当前价=${result.price}`);
     }
 
-    // ---- 方法3: PER — Naver 表格有多列(当期/当期累计等)，取最后一个有效数值列 ----
-    // 实际结构: <strong>PER(배)</strong></th> 后面跟多个 <td>, 第3个 td 是最新准确值
-    // 例如 Shift Up: [空] | 23.34 | 10.89(investing=9.80) → 取 10.89
-    const perMatch = html.match(/<strong>PER/);
-    if (perMatch) {
-      // 从 PER 开始，提取该行所有 td 的值
-      const perArea = html.substring(perMatch.index, perMatch.index + 800);
-      const allTdValues = [...perArea.matchAll(/<td[^>]*>\s*([\d.]+|-|&nbsp;)\s*<\/td>/g)]
-        .map(m => m[1])
-        .filter(v => v !== '-' && v !== '&nbsp;' && v !== '');
-      if (allTdValues.length > 0) {
-        result.per = allTdValues[allTdValues.length - 1];  // 取最后一列
-        console.log(`  ✅ [NaverHTML-PER] per=${result.per} (all cols: [${allTdValues.join(', ')}])`);
+    // ---- 方法3: PER — 使用 PER(%) 同业对比表格（右侧 종합정보 显示的值）----
+    // Naver Finance 有两个 PER 表格：
+    //   表1: <strong>PER(배)</strong> → 多期历史数据，列含义复杂不准确
+    //   表2: <span>PER(%)</span> → **同行对比PER**，这是右侧栏显示的正确值！
+    // 策略：优先用表2 PER(%)，回退到表1
+    let perFound = false;
+
+    // 策略1：PER(%) 同业对比表格（最准确，与右侧栏一致）
+    const perPercentMatch = html.match(/<span>PER\(%\)<\/span><\/th>\s*<td>([\d.\-&;]+)<\/td>/);
+    if (perPercentMatch) {
+      let val = perPercentMatch[1].replace(/&nbsp;/g, '').trim();
+      if (val && val !== '-') {
+        const num = parseFloat(val);
+        // 负数或极大负数 → N/A（EPS为负时Naver显示无意义的大负数如-420.61）
+        if (num < 0 || isNaN(num)) {
+          result.per = null;
+          console.log(`  ✅ [NaverHTML-PER(%)] per=N/A (val=${val}, EPS likely negative)`);
+        } else {
+          result.per = val;
+          console.log(`  ✅ [NaverHTML-PER(%)] per=${result.per} (同业对比表格)`);
+        }
+        perFound = true;
       }
     }
 
-    // ---- 方法4: PBR —— 同理，取最后一列 ----
-    const pbrMatch = html.match(/<strong>PBR/);
-    if (pbrMatch) {
-      const pbrArea = html.substring(pbrMatch.index, pbrMatch.index + 600);
-      const allPbrValues = [...pbrArea.matchAll(/<td[^>]*>\s*([\d.]+|-|&nbsp;)\s*<\/td>/g)]
-        .map(m => m[1])
-        .filter(v => v !== '-' && v !== '&nbsp;' && v !== '');
-      if (allPbrValues.length > 0) {
-        result.pbr = allPbrValues[allPbrValues.length - 1];  // 取最后一列
-        console.log(`  ✅ [NaverHTML-PBR] pbr=${result.pbr} (all cols: [${allPbrValues.join(', ')}])`);
+    // 策略2：如果 PER(%) 未匹配到，尝试从摘要区获取 "XX.XX배"
+    if (!perFound) {
+      const summaryPer = html.match(/(\d+\.\d{2})배\s*l\s*/);
+      if (summaryPer) {
+        result.per = summaryPer[1];
+        console.log(`  ✅ [NaverHTML-PER-摘要] per=${result.per}`);
+        perFound = true;
+      }
+    }
+
+    // 策略3：最终回退到 PER(배) 表格的 cell_strong
+    if (!perFound) {
+      const perMatch = html.match(/<strong>PER/);
+      if (perMatch) {
+        const perArea = html.substring(perMatch.index, perMatch.index + 1000);
+        let strongMatch = perArea.match(/class="[^"]*cell_strong[^"]*"[^>]*>\s*([\d.\-]+|&nbsp;)\s*</);
+        if (strongMatch) {
+          const val = strongMatch[1];
+          if (val !== '&nbsp;' && val !== '-' && val !== '') {
+            result.per = val;
+            console.log(`  ⚠️ [NaverHTML-PER(배)-fallback] per=${result.per} (cell_strong)`);
+          } else {
+            result.per = null;
+            console.log(`  ⚠️ [NaverHTML-PER(배)] per=N/A`);
+          }
+        }
+      }
+    }
+
+    // ---- 方法4: PBR — 摘要区 "XX.XX배" 格式（与右侧栏一致）----
+    // PBR 没有 PBR(%) 对比表格，但摘要区有 "X.XX배 | XX,XXX원" 的格式
+    let pbrFound = false;
+    
+    // 策略1：摘要区的 PBR "<em id="_pbr">X.XX</em>배" 格式
+    const summaryPbr = html.match(/id="_pbr">\s*([\d.\-]+)\s*</);
+    if (summaryPbr) {
+      result.pbr = summaryPbr[1];
+      console.log(`  ✅ [NaverHTML-PBR-摘要] pbr=${result.pbr}`);
+      pbrFound = true;
+    }
+
+    // 策略2：回退到 PBR(배) 表格
+    if (!pbrFound) {
+      const pbrMatch = html.match(/<strong>PBR/);
+      if (pbrMatch) {
+        const pbrArea = html.substring(pbrMatch.index, pbrMatch.index + 800);
+        
+        // 优先找 cell_strong 列
+        let strongMatch = pbrArea.match(/class="[^"]*cell_strong[^"]*"[^>]*>\s*([\d.\-]+|&nbsp;)\s*/);
+        if (strongMatch) {
+          const val = strongMatch[1];
+          if (val !== '&nbsp;' && val !== '-' && val !== '') {
+            result.pbr = val;
+            console.log(`  ⚠️ [NaverHTML-PBR(배)-fallback] pbr=${result.pbr} (cell_strong)`);
+          } else {
+            result.pbr = null;
+            console.log(`  ⚠️ [NaverHTML-PBR(배)] PBR=N/A`);
+          }
+        } else {
+          // 取最后一列
+          const allPbrValues = [...pbrArea.matchAll(/<td[^>]*>\s*([\d.]+|-|&nbsp;)\s*<\/td>/g)]
+            .map(m => m[1])
+            .filter(v => v !== '-' && v !== '&nbsp;' && v !== '');
+          if (allPbrValues.length > 0) {
+            result.pbr = allPbrValues[allPbrValues.length - 1];
+            console.log(`  ✅ [NaverHTML-PBR(배)] pbr=${result.pbr} (fallback last col)`);
+          }
+        }
       }
     }
 

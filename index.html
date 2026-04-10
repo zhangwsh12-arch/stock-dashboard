@@ -14,14 +14,15 @@
             --border-color: #2e3347; --text-primary: #e8eaed; --text-secondary: #9aa0b3;
             --text-muted: #6b7185; --accent-blue: #3b82f6; --accent-green: #10b981;
             --accent-red: #ef4444; --accent-orange: #f59e0b; --accent-purple: #8b5cf6;
-            --accent-cyan: #06b6d4; --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4; --accent-pink: #f43f5e;
             --gradient-start: #667eea; --gradient-end: #764ba2;
         }
         *{margin:0;padding:0;box-sizing:border-box}
         body{
-            font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
             background:var(--bg-primary);color:var(--text-primary);min-height:100vh;line-height:1.6;
         }
+        *,*::before,*::after{font-family:inherit}
 
         /* Loading */
         .loading-overlay{
@@ -88,6 +89,7 @@
         .metric-card .msub{font-size:11px;color:var(--text-secondary);margin-top:2px}
         .mc-per{background:rgba(139,92,246,0.05);border-color:rgba(139,92,246,0.12)}.mc-per .mval{color:var(--accent-purple)}
         .mc-cap{background:rgba(6,182,212,0.05);border-color:rgba(6,182,212,0.12)}.mc-cap .mval{color:var(--accent-cyan)}
+        .mc-mkt{background:rgba(245,158,11,0.05);border-color:rgba(245,158,11,0.12)}.mc-mkt .mval{color:var(--accent-orange)}
         .mc-fx{background:rgba(236,72,153,0.05);border-color:rgba(236,72,153,0.12)}.mc-fx .mval{color:var(--accent-pink)}
 
         /* Analysis */
@@ -147,6 +149,10 @@
         .data-error{text-align:center;padding:60px 20px;color:var(--text-muted)}
         .data-error-icon{font-size:48px;margin-bottom:16px;opacity:.5}
         .data-error-text{font-size:16px}
+    
+        .news-link{text-decoration:none;color:inherit;transition:opacity .2s}.news-link:hover{opacity:.7}.news-title{font-size:13px;line-height:1.5}
+    
+        .news-source{font-size:11.5px;color:var(--text-muted);margin-top:3px}
     </style>
 </head>
 <body>
@@ -160,7 +166,7 @@
 <!-- Header -->
 <header class="header">
     <div class="header-content">
-        <h1>🎮 韩国游戏股价看板 <span id="versionBadge">PER估值分析</span></h1>
+        <h1>🎮 韩国游戏股价看板</h1>
         <div class="header-meta">
             <div class="date" id="headerDate">加载中...</div>
             <div><span class="badge-naver">Naver Finance</span> <span id="headerSourceInfo">数据来源 · 每天 10:00 KST 自动更新</span></div>
@@ -313,7 +319,7 @@ function renderDashboard() {
   
   // Update header
   document.getElementById('headerDate').textContent =
-    meta.dateDisplay ? `${new Date().getFullYear()}年${meta.dateDisplay}收盘数据` : `数据日期: ${meta.date}`;
+    meta.dateDisplay ? `${meta.dateDisplay}收盘数据` : `数据日期: ${meta.date}`;
   
   // Render sections
   renderStockPriceSection();
@@ -379,13 +385,12 @@ function renderStockPriceSection() {
         </div>
         <div class="card-body">
             <div class="su-stock-main">
-                <div class="company-badge">${su.name.substring(0,2).toUpperCase()}</div>
+                <div class="company-badge" style="padding:0;background:linear-gradient(135deg,#ff6b9d,#c026d3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;letter-spacing:-1px; border:none">SU</div>
                 <div class="stock-info">
                     <div class="stock-price-row">
                         <span class="stock-price">${su.price}</span>
                         <span class="stock-currency">₩</span>
                         <span class="stock-change ${su.changeClass}">
-                            ${changeIconHtml}
                             ${su.changePercent}
                         </span>
                     </div>
@@ -409,7 +414,7 @@ function renderStockPriceSection() {
                     <div class="mval">${su.pbr}</div>
                     <div class="msub">Price-to-Book Ratio</div>
                 </div>
-                <div class="metric-card mc-cap">
+                <div class="metric-card mc-mkt">
                     <div class="mlabel">市值</div>
                     <div class="mval">${su.marketCap.includes('≈') ? su.marketCap.replace(/≈ /,'') : su.marketCap}</div>
                     <div class="msub">${su.marketCap.includes('兆') || su.marketCap.includes('亿') ? '' : su.marketCap}</div>
@@ -423,9 +428,7 @@ function renderStockPriceSection() {
                     本月变动原因分析
                 </h4>
                 <div class="analysis-text">
-                    <strong>4/8 收盘涨+4.38%(₩33,400)</strong> — 主要受Krafton×Stellar Blade联动利好 + NIKKE新角色更新催化。
-                    NH证券维持BUY评级(目标价₩40,000)，但指出2026年新作空窗期风险。
-                    本月累计波动较大，<strong>PER ${su.per}</strong>，PUBG联动有望短期提振IP关注度。
+                    对比4月1日(₩33,900)，本月<strong>累计下跌约2.1%</strong>(₩33,200)。PUBG×Stellar Blade联动(Eve角色+服装上线)利好消化后维持高位震荡，NH证券维持BUY评级(目标价₩40,000)。
                     <span class="src-speculate">事实+有限推断</span>
                 </div>
             </div>
@@ -489,8 +492,8 @@ function renderCompaniesTable() {
   tbody.innerHTML = currentData.companies.map(c => `
     <tr>
         <td><div class="company-cell"><div class="company-dot" style="background:${c.color}"></div>${c.name}<span class="code-tag">${c.code}</span></div></td>
-        <td style="font-family:monospace;color:var(--text-muted)">${c.code}</td>
-        <td style="font-weight:600;font-family:monospace">${c.price}</td>
+        <td style="color:var(--text-muted)">${c.code}</td>
+        <td style="font-weight:600">${c.price}</td>
         <td><span class="stock-change ${c.changeClass}" style="font-size:13px">${c.change}</span></td>
         <td><strong style="color:var(--accent-cyan)">${c.per}</strong></td>
     </tr>`).join('');
@@ -535,19 +538,19 @@ function renderCompanyAnalysisSection() {
 function renderAnalysisItems(compMap) {
   const items = [
     {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e',
-     text:`核心IP <strong>Blue Archive（블루 아카이브）</strong> IP扩展战略公布。IP许可负责人披露了2026年持续扩大IP业务范围的战略方向。该IP在日本等全球市场长期畅销。<strong>PER ${compMap['225570']?.per||'-'} 为行业中较低水平</strong>。`,
+     text:`核心IP <strong>Blue Archive（블루 아카이브）</strong> IP扩展战略公布。IP许可负责人披露了2026年持续扩大IP业务范围的战略方向。该IP在日本等全球市场长期畅销。`,
      tier:1,url:'https://news.jkn.co.kr/post/869567'},
     {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444',
-     text:`公告<strong>₩1,500亿追加收购Coway股权</strong>计划，引发治理争议。Align Partners 公开批评此举构成"利益冲突"。市场对资金使用效率担忧。<strong>但 PER 仅 ${compMap['251270']?.per||'-'} 为全行业最低</strong>，安全边际充足。`,
+     text:`公告<strong>₩1,500亿追加收购Coway股权</strong>计划，引发治理争议。Align Partners 公开批评此举构成"利益冲突"。市场对资金使用效率担忧。`,
      tier:1,url:'https://www.inews24.com/view/1958083'},
     {code:'036570',name:'NCSoft',nameKr:'엔씨소프트',color:'#3b82f6',
-     text:`正式<strong>起诉YouTuber '영래기'</strong>，指控散布《리니지 클래식》虚假事实并妨碍业务运营。累计制裁账户接近600万，反作弊力度加大。<strong>PER ${compMap['036570']?.per||'-'}</strong>`,
+     text:`正式<strong>起诉YouTuber '영래기'</strong>，指控散布《리니지 클래식(Lineage Classic)》虚假事实并妨碍业务运营。累计制裁账户接近600万，反作弊力度加大。`,
      tier:1,url:'https://about.ncsoft.com/news/article/news_update_260407'},
     {code:'259960',name:'Krafton',nameKr:'크래프톤',color:'#f59e0b',
-     text:`<strong>PUBG Mobile × 캐치! 티니핑 联动开启</strong> + AI模型"Raon"开源模型上线 + 《어센드투제로》新作公布(Xbox+Steam)。多条利好与大盘科技股回调相互抵消。<strong>PER ${compMap['259960']?.per||'-'}</strong>`,
+     text:`<strong>PUBG Mobile × 캐치! 티니핑 联动开启</strong> + AI模型"Raon"开源模型上线 + 《어센드투제로(Ascend Zero)》新作公布(Xbox+Steam)。多条利好与大盘科技股回调相互抵消。`,
      tier:2,url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
-    {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#ec4899',
-     text:`《붉은사막》(Crimson Desert) Steam评价升至<strong>"好评如潮"</strong>，全球销量突破<strong>400万套</strong>。前期暴涨后获利了结卖压仍存。<strong>PER ${compMap['263750']?.per||'-'} 全行业最高</strong>。`,
+    {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#a855f7',
+     text:`《붉은사막(Crimson Desert / 红色沙漠)》Steam评价升至<strong>"好评如潮"</strong>，全球销量突破<strong>400万套</strong>。前期暴涨后获利了结卖压仍存。`,
      tier:2,url:'https://news.jkn.co.kr/post/869556'},
   ];
 
@@ -589,9 +592,9 @@ function renderNewsSection() {
             <table class="info-table">
                 <thead><tr><th style="width:55%">资讯摘要</th><th style="width:18%">日期</th><th style="width:27%">类型</th></tr></thead>
                 <tbody>
-                    <tr><td><a href="https://www.gameple.co.kr/news/articleView.html?idxno=215351" target="_blank" class="news-link"><span class="news-title">Krafton×Shift Up重磅联动：PUBG引入Stellar Blade主角Eve，IP协作新模式</span><div class="news-source">게임플 / 4月8日</div></a></td><td>04.08</td><td><span class="tag-impact tag-up" style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;background:rgba(239,68,68,0.12);color:#ef4444">行业动态</span></td></tr>
-                    <tr><td><a href="https://www.inven.co.kr/webzine/news/?news=315234&site=nikke" target="_blank" class="news-link"><span class="news-title">《NIKKE》新SSR角色白鹤登场，Shift Up持续内容更新拉动用户活跃</span><div class="news-source">인벤 / 4月9日</div></a></td><td>04.09</td><td><span class="tag-impact tag-info" style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;background:rgba(59,130,246,0.12);color:#3b82f6">产品更新</span></td></tr>
-                    <tr><td><a href="https://www.cbci.co.kr/news/articleView.html?idxno=566389" target="_blank" class="news-link"><span class="news-title">Netmarble大举增持Coway至29%股权，Align Partners公开批评"损害股东利益"</span><div class="news-source">CBci / 4月7日</div></a></td><td>04.07</td><td><span class="tag-impact tag-up" style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;background:rgba(239,68,68,0.12);color:#ef4444">公司治理</span></td></tr>
+                    <tr><td><a href="https://www.gameple.co.kr/news/articleView.html?idxno=215351" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">Krafton×Shift Up重磅联动：PUBG引入Stellar Blade主角Eve，IP协作新模式</span><div class="news-source">게임플 / 4月8日</div></a></td><td>04.08</td><td><span class="tag-impact tag-up" style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;background:rgba(239,68,68,0.08);color:#f87171;border:1px solid rgba(239,68,68,0.15)">行业动态</span></td></tr>
+                    <tr><td><a href="https://www.inven.co.kr/webzine/news/?news=315234&site=nikke" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">《NIKKE》新SSR角色白鹤登场，Shift Up持续内容更新拉动用户活跃</span><div class="news-source">인벤 / 4月9日</div></a></td><td>04.09</td><td><span class="tag-impact tag-info" style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;background:rgba(59,130,246,0.08);color:rgba(200,210,230,0.85);border:1px solid rgba(100,120,160,0.2)">产品更新</span></td></tr>
+                    <tr><td><a href="https://www.cbci.co.kr/news/articleView.html?idxno=566389" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">Netmarble大举增持Coway至29%股权，Align Partners公开批评"损害股东利益"</span><div class="news-source">CBci / 4月7日</div></a></td><td>04.07</td><td><span class="tag-impact tag-up" style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;background:rgba(239,68,68,0.08);color:#f87171;border:1px solid rgba(239,68,68,0.15)">公司治理</span></td></tr>
                 </tbody>
             </table>
         </div>
@@ -693,19 +696,19 @@ function renderCompareChart() {
 
   if (compareChartInstance) compareChartInstance.destroy();
 
-  // Static compare data (can be made dynamic later)
+  // 每日环比涨跌幅（对比前一天的变化率），4/1 为基准起点 0%
   const ctx = canvas.getContext('2d');
   compareChartInstance = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8'],
+      labels: ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9'],
       datasets: [
-        { label: 'Shift Up', data: [-2.64,-1.76,-2.09,-2.29,+2.66,+4.38], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-        { label: 'Nexon', data: [+0.63,+0.54,-0.80,+0.36,-0.09,+1.43], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-        { label: 'Netmarble', data: [-0.96,-1.42,-1.03,-0.21,-1.39,+3.08], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-        { label: 'NCSoft', data: [-0.67,-0.85,-0.57,+0.21,-1.06,+3.81], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-        { label: 'Krafton', data: [+0.42,+0.19,-0.37,+0.30,-0.37,+0.43], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-        { label: 'P.Abyss', data: [+5.73,+3.11,+3.42,+17.93,-17.38,-1.57], borderColor: '#ec4899', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ec4899', tension: .3, fill: false },
+        { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+        { label: 'Nexon', data: [0,-4.82,-0.70,0.00,-1.76,+1.43,+3.36], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+        { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+        { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+        { label: 'Krafton', data: [0,-5.54,-1.62,-2.88,-1.48,+0.43,0.00], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+        { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
       ]
     },
     options: {
@@ -721,7 +724,7 @@ function renderCompareChart() {
         y: { min: -25, max: 25,
           grid: { color: 'rgba(46,51,71,0.3)', drawBorder: false },
           ticks: { color: '#6b7185', font: { size: 11 }, callback: v => v + '%' },
-          title: { display: true, text: '日环比涨跌幅 (%)', color: '#6b7185', font: { size: 11 } }}
+          title: { display: true, text: '每日 vs 前一日变化率 (%)', color: '#6b7185', font: { size: 11 } }}
       }
     }
   });
@@ -734,27 +737,23 @@ function renderCompareChart() {
 const EVENT_DATA = [
   { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动上线！"이브"空降艾伦格，舞蹈视频引爆社区', source: '게임플/비즈니스포스트', date: '04.08~09', url: 'https://www.gameple.co.kr/news/articleView.html?idxno=215351' },
   { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학"(白鹤)登场 + 新Side Story更新', source: '인벤/게임조선', date: '04.09', url: 'https://www.inven.co.kr/webzine/news/?news=315234&site=nikke' },
-  { company: 'Krafton', color: '#f59e0b', title: 'Krafton × 넵튠 休闲游戏征集大赛4/21起报名，拓展休闲游戏生态', source: '게임메카', date: '04.09', url: '' },
-  { company: 'Shift Up', color: '#ff6b9d', title: 'NH证券新报告：目标价↓₩40,000/Buy，主题"痛苦期间"', source: '뉴스핌', date: '04.07', url: 'https://www.newspim.com/news/view/20260407000081' },
-  { company: 'Netmarble', color: '#ef4444', title: '₩1,500亿追加收购Coway股权遭Align Partners强烈批评', source: '아이뉴스24', date: '04.07', url: 'https://www.inews24.com/view/1958083' },
-  { company: 'NCSoft', color: '#3b82f6', title: "正式起诉YouTuber '영래기'（散布虚假事实+妨碍业务）", source: '스포츠경향', date: '04.08', url: 'https://sports.khan.co.kr/article/20260408033500' },
-  { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略公布 → 股价强稳+0.54%', source: '재경일보', date: '04.07', url: 'https://news.jkn.co.kr/post/869567' },
-  { company: 'Netmarble', color: '#ef4444', title: '新作《SOL: enchant》发售日延至6月 — 官方称"提高完成度"', source: '인벤', date: '04.08', url: '' },
-  { company: 'Krafton', color: '#f59e0b', title: 'PUBG Mobile × 캐치! 티니핑 跨界联动正式开启', source: '더쎈뉴스', date: '04.07', url: 'https://www.mhns.co.kr/news/articleView.html?idxno=743979' },
+  { company: 'NCSoft', color: '#3b82f6', title: "正式起诉YouTuber '영래기'（散布虚假事实+妨碍业务），股价4/9大涨+7.35%", source: '스포츠경향', date: '04.08~09', url: 'https://sports.khan.co.kr/article/20260408033500' },
+  { company: 'Netmarble', color: '#ef4444', title: '₩1,500亿追加收购Coway股权遭Align Partners强烈批评，4/9续跌-0.4%', source: '아이뉴스24', date: '04.07~09', url: 'https://www.inews24.com/view/1958083' },
+  { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略公布 → 股价稳中有升+0.85%', source: '재경일보', date: '04.07~09', url: 'https://news.jkn.co.kr/post/869567' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》Steam在线峰值27万+口碑反转，4/9持平收₩56,500', source: '펄어비스 공식/SteamDB', date: '04.07~09', url: '' },
+  { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌"Raon(라온)"，首批4款开源模型上线HuggingFace', source: 'Krafton AI', date: '04.02~09', url: '' },
   { company: 'Shift Up', color: '#ff6b9d', title: '完成Unbound Games（三上真司工作室）100%收购整合', source: '인벤', date: '04.01', url: 'https://www.inven.co.kr/webzine/news/?news=314941' },
 ];
 
 const NORMAL_DATA = [
-  { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
-  { company: 'Pearl Abyss', color: '#ec4899', title: '《붉은사막》全球销量突破400万套，Steam在线峰值27万，口碑反转升至"好评如潮"', source: '펄어비스 공식', date: '03.30~04.07', url: 'https://www.pearlabyss.com/' },
+  { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格地图', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》全球销量突破400万套，Steam在线峰值27万，口碑反转升至"好评如潮"', source: '펄어비스 공식', date: '03.30~04.09', url: 'https://www.pearlabyss.com/' },
   { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE》新SSR"백학"登场 — 防御型角色(回血+贯穿)，更新至4/22', source: '레벨인피니트', date: '04.09~22', url: '' },
-  { company: 'Netmarble', color: '#ef4444', title: '《칠대죄: Origin》亮相香港 CON-CON 2026 展会', source: 'HaveAGoodHoliday', date: '04.04~05', url: '' },
+  { company: 'NCSoft', color: '#3b82f6', title: '《리니지 클래식(Lineage Classic)》累计制裁近600万账户，打击非法程序力度持续加强', source: 'NCSoft官方', date: '04.07', url: 'https://about.ncsoft.com/news/article/news_update_260407' },
   { company: 'Netmarble', color: '#ef4444', title: '《SOL: enchant》发售日从春季延至6月，官方称"为提高完成度"', source: '인벤', date: '04.08', url: '' },
-  { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌 "Raon(라온)"，首批4款开源模型上线', source: 'Krafton AI', date: '04.02', url: '' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '完成Unbound Games 100%收购整合——开发商→发行商战略转型标志事件', source: '인벤', date: '04.01', url: '' },
+  { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌"Raon(라온)"，首批4款开源模型上线', source: 'Krafton AI', date: '04.02', url: '' },
   { company: 'Nexon', color: '#22c55e', title: '2026 NDC(개발자 컨퍼런스) 演讲者招募截止', source: 'MSN', date: '03.04~04.04', url: '' },
-  { company: 'NCSoft', color: '#3b82f6', title: '《리니지 클래식》累计制裁近600万账户，打击非法程序力度持续加强', source: 'NCSoft官方', date: '04.07', url: 'https://about.ncsoft.com/news/article/news_update_260407' },
-  { company: 'Krafton', color: '#f59e0b', title: '《어센드투제로》新作动作Roguelike公布，Xbox+Steam同步发行', source: 'Krafton官方', date: '04月初', url: '' },
+  { company: 'Shift Up', color: '#ff6b9d', title: '完成Unbound Games 100%收购整合——开发商→发行商战略转型标志事件', source: '인벤', date: '04.01', url: '' },
 ];
 
 const PAGE_SIZE = 5;
@@ -769,7 +768,7 @@ function renderEventTable() {
   const tb = document.getElementById('eventTableBody'); if (!tb) return;
   const s = (eventCurrentPage - 1) * PAGE_SIZE;
   tb.innerHTML = EVENT_DATA.slice(s, s + PAGE_SIZE).map(i =>
-    `<tr><td><strong style="color:${i.color}">${i.company}</strong></td><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:13px">${i.date}</td></tr>`
+    `<tr><td><strong style="color:${i.color}">${i.company}</strong></td><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:13px">${i.date}</td></tr>`
   ).join('');
   const tp = Math.ceil(EVENT_DATA.length / PAGE_SIZE);
   const pi = document.getElementById('eventPageInfo');
@@ -783,7 +782,7 @@ function renderNormalTable() {
   const tb = document.getElementById('normalTableBody'); if (!tb) return;
   const s = (normalCurrentPage - 1) * PAGE_SIZE;
   tb.innerHTML = NORMAL_DATA.slice(s, s + PAGE_SIZE).map(i =>
-    `<tr><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:13px">${i.date}</td><td><strong style="color:${i.color}">${i.company}</strong></td></tr>`
+    `<tr><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:13px">${i.date}</td><td><strong style="color:${i.color}">${i.company}</strong></td></tr>`
   ).join('');
   const tp = Math.ceil(NORMAL_DATA.length / PAGE_SIZE);
   const pi = document.getElementById('normalPageInfo');

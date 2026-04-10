@@ -1,8 +1,8 @@
 {
   "meta": {
-    "date": "20260408",
-    "dateDisplay": "4月（截至8日）",
-    "fetchedAt": "2026-04-09T09:52:46.425Z",
+    "date": "20260409",
+    "dateDisplay": "4月（截至9日）",
+    "fetchedAt": "2026-04-10T03:04:24.768Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -11,57 +11,57 @@
     "name": "Shift Up",
     "nameKr": "시프트업",
     "color": "#ff6b9d",
-    "price": "33,400",
-    "previousClose": "32,000",
-    "high": "33,650",
-    "low": "30,950",
-    "change": "1,400",
-    "changePercent": "+4.38%",
-    "changeClass": "up",
-    "per": "10.89",
-    "pbr": "2.24",
-    "marketCap": "1.97兆元"
+    "price": "33,200",
+    "previousClose": "33,400",
+    "high": "33,500",
+    "low": "32,650",
+    "change": "-200",
+    "changePercent": "-0.60%",
+    "changeClass": "down",
+    "per": "10.09",
+    "pbr": "2.10",
+    "marketCap": "1.96兆元"
   },
   "companies": [
+    {
+      "code": "036570",
+      "name": "NCSoft",
+      "nameKr": "엔씨소프트",
+      "color": "#3b82f6",
+      "price": "234,000",
+      "change": "+7.34%",
+      "changeClass": "up",
+      "per": "15.29"
+    },
     {
       "code": "259960",
       "name": "Krafton",
       "nameKr": "크래프톤",
       "color": "#f59e0b",
       "price": "234,000",
-      "change": "+0.43%",
-      "changeClass": "up",
-      "per": "11.01"
-    },
-    {
-      "code": "036570",
-      "name": "NCSoft",
-      "nameKr": "엔씨소프트",
-      "color": "#3b82f6",
-      "price": "218,000",
-      "change": "+3.81%",
-      "changeClass": "up",
-      "per": "13.53"
+      "change": "0.00%",
+      "changeClass": "neutral",
+      "per": "15.35"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "nameKr": "넷마블",
       "color": "#ef4444",
-      "price": "50,200",
-      "change": "+3.08%",
-      "changeClass": "up",
-      "per": "18.43"
+      "price": "50,000",
+      "change": "-0.40%",
+      "changeClass": "down",
+      "per": "19.14"
     },
     {
       "code": "225570",
       "name": "Nexon Games",
       "nameKr": "넥슨게임즈",
       "color": "#22c55e",
-      "price": "11,320",
-      "change": "+1.43%",
+      "price": "11,700",
+      "change": "+3.36%",
       "changeClass": "up",
-      "per": "28.03"
+      "per": "N/A"
     },
     {
       "code": "263750",
@@ -69,9 +69,9 @@
       "nameKr": "펄어비스",
       "color": "#ec4899",
       "price": "56,500",
-      "change": "-1.57%",
-      "changeClass": "down",
-      "per": "29.49"
+      "change": "0.00%",
+      "changeClass": "neutral",
+      "per": "N/A"
     }
   ],
   "perComparison": [
@@ -79,49 +79,33 @@
       "code": "462870",
       "name": "Shift Up",
       "color": "#ff6b9d",
-      "price": "33,400",
-      "per": 10.89,
-      "perRaw": "10.89"
+      "price": "33,200",
+      "per": 10.09,
+      "perRaw": "10.09"
+    },
+    {
+      "code": "036570",
+      "name": "NCSoft",
+      "color": "#3b82f6",
+      "price": "234,000",
+      "per": 15.29,
+      "perRaw": "15.29"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "234,000",
-      "per": 11.01,
-      "perRaw": "11.01"
-    },
-    {
-      "code": "036570",
-      "name": "NCSoft",
-      "color": "#3b82f6",
-      "price": "218,000",
-      "per": 13.53,
-      "perRaw": "13.53"
+      "per": 15.35,
+      "perRaw": "15.35"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "50,200",
-      "per": 18.43,
-      "perRaw": "18.43"
-    },
-    {
-      "code": "225570",
-      "name": "Nexon Games",
-      "color": "#22c55e",
-      "price": "11,320",
-      "per": 28.03,
-      "perRaw": "28.03"
-    },
-    {
-      "code": "263750",
-      "name": "Pearl Abyss",
-      "color": "#ec4899",
-      "price": "56,500",
-      "per": 29.49,
-      "perRaw": "29.49"
+      "price": "50,000",
+      "per": 19.14,
+      "perRaw": "19.14"
     }
   ],
   "chartData": [
@@ -154,6 +138,11 @@
       "date": "20260408",
       "label": "4/8",
       "price": 33400
+    },
+    {
+      "date": "20260409",
+      "label": "4/9",
+      "price": 33200
     }
   ]
 }
