@@ -144,5 +144,9 @@
       "label": "4/9",
       "price": 33200
     }
-  ]
+  ],
+  "analysis": {
+    "suAnalysis": "对比4月1日(₩33,900)，本月<strong>累计下跌约2.1%</strong>(₩33,200)。PUBG×Stellar Blade联动(Eve角色+服装上线)利好消化后维持高位震荡，NH证券维持BUY评级(目标价₩40,000)。",
+    "suAnalysisSrc": "事实+有限推断"
+  }
 }

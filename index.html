@@ -421,15 +421,15 @@ function renderStockPriceSection() {
                 </div>
             </div>
 
-            <!-- 变动原因分析 (静态内容 - 后续可改为JSON驱动) -->
+            <!-- 变动原因分析 (从JSON数据动态读取) -->
             <div class="analysis-block">
                 <h4>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
                     本月变动原因分析
                 </h4>
                 <div class="analysis-text">
-                    对比4月1日(₩33,900)，本月<strong>累计下跌约2.1%</strong>(₩33,200)。PUBG×Stellar Blade联动(Eve角色+服装上线)利好消化后维持高位震荡，NH证券维持BUY评级(目标价₩40,000)。
-                    <span class="src-speculate">事实+有限推断</span>
+                    ${(currentData.analysis?.suAnalysis || '暂无分析数据')}
+                    <span class="src-speculate">${currentData.analysis?.suAnalysisSrc || ''}</span>
                 </div>
             </div>
         </div>
@@ -696,21 +696,40 @@ function renderCompareChart() {
 
   if (compareChartInstance) compareChartInstance.destroy();
 
+  // 完整数据（7天），根据当前选中日期动态截断
+  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9'];
+  const ALL_DATASETS = [
+    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.82,-0.70,0.00,-1.76,+1.43,+3.36], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+    { label: 'Krafton', data: [0,-5.54,-1.62,-2.88,-1.48,+0.43,0.00], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
+  ];
+
+  // 根据当前数据的日期确定截断位置
+  const currentDateStr = currentData?.meta?.date || '';
+  let cutoffIndex = ALL_LABELS.length; // 默认显示全部
+  if (currentDateStr.length === 8) {
+    // 将日期格式 20260403 → M/D 格式来匹配
+    const month = parseInt(currentDateStr.slice(4,6));
+    const day = parseInt(currentDateStr.slice(6,8));
+    const targetLabel = `${month}/${day}`;
+    const foundIdx = ALL_LABELS.indexOf(targetLabel);
+    if (foundIdx !== -1) cutoffIndex = foundIdx + 1;
+  }
+
+  const labels = ALL_LABELS.slice(0, cutoffIndex);
+  const datasets = ALL_DATASETS.map(ds => ({
+    ...ds,
+    data: ds.data.slice(0, cutoffIndex)
+  }));
+
   // 每日环比涨跌幅（对比前一天的变化率），4/1 为基准起点 0%
   const ctx = canvas.getContext('2d');
   compareChartInstance = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels: ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9'],
-      datasets: [
-        { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-        { label: 'Nexon', data: [0,-4.82,-0.70,0.00,-1.76,+1.43,+3.36], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-        { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-        { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-        { label: 'Krafton', data: [0,-5.54,-1.62,-2.88,-1.48,+0.43,0.00], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-        { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
-      ]
-    },
+    data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { intersect: false, mode: 'index' },
