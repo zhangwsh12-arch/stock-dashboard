@@ -226,6 +226,21 @@ async function loadLatestData() {
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     currentData = await resp.json();
     console.log('✅ Latest data loaded:', currentData.meta?.date);
+
+    // Fallback: 如果 latest.json 被 Actions 刷新后缺少 analysis，从对应历史文件补充
+    if (currentData?.meta?.date && !currentData.analysis?.suAnalysis) {
+      try {
+        const histResp = await fetch(`data/${currentData.meta.date}.json`);
+        if (histResp.ok) {
+          const histData = await histResp.json();
+          if (histData.analysis?.suAnalysis) {
+            currentData.analysis = histData.analysis;
+            console.log('📝 Analysis fallback: loaded from', currentData.meta.date + '.json');
+          }
+        }
+      } catch(e) { console.warn('⚠️ Could not load analysis fallback:', e.message); }
+    }
+
     return true;
   } catch (err) {
     console.error('❌ Failed to load latest data:', err);
@@ -238,6 +253,20 @@ async function loadDataByDate(dateStr) {
     const resp = await fetch(`data/${dateStr}.json`);
     if (!resp.ok) throw new Error('Not found');
     currentData = await resp.json();
+    
+    // Fallback: 如果历史文件缺少 analysis，尝试从 latest.json 补充
+    if (!currentData.analysis?.suAnalysis) {
+      try {
+        const latestResp = await fetch(LATEST_DATA_URL);
+        if (latestResp.ok) {
+          const latest = await latestResp.json();
+          if (latest.meta?.date === dateStr && latest.analysis?.suAnalysis) {
+            currentData.analysis = latest.analysis;
+          }
+        }
+      } catch(e) { /* ignore */ }
+    }
+
     return true;
   } catch (err) {
     console.error(`❌ Failed to load data for ${dateStr}:`, err);
