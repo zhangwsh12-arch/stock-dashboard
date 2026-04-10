@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260409",
     "dateDisplay": "4月（截至9日）",
-    "fetchedAt": "2026-04-10T06:06:28.399Z",
+    "fetchedAt": "2026-04-10T06:22:28.481Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,7 +18,7 @@
     "change": "-200",
     "changePercent": "-0.60%",
     "changeClass": "down",
-    "per": "10.13",
+    "per": "10.10",
     "pbr": "2.10",
     "marketCap": "1.96兆元"
   },
@@ -31,7 +31,7 @@
       "price": "234,000",
       "change": "+7.34%",
       "changeClass": "up",
-      "per": "14.98"
+      "per": "14.95"
     },
     {
       "code": "259960",
@@ -41,7 +41,7 @@
       "price": "234,000",
       "change": "0.00%",
       "changeClass": "neutral",
-      "per": "15.42"
+      "per": "15.35"
     },
     {
       "code": "251270",
@@ -80,24 +80,24 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "33,200",
-      "per": 10.13,
-      "perRaw": "10.13"
+      "per": 10.1,
+      "perRaw": "10.10"
     },
     {
       "code": "036570",
       "name": "NCSoft",
       "color": "#3b82f6",
       "price": "234,000",
-      "per": 14.98,
-      "perRaw": "14.98"
+      "per": 14.95,
+      "perRaw": "14.95"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "234,000",
-      "per": 15.42,
-      "perRaw": "15.42"
+      "per": 15.35,
+      "perRaw": "15.35"
     },
     {
       "code": "251270",
