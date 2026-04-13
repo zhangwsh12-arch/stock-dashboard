@@ -629,7 +629,7 @@ class StockDashboardService:
         # 输出摘要
         ok_count = sum(1 for s in result["stocks"] if s["status"] == "ok")
         log.info(f"\n{'='*50}")
-        log.info(f"✅ 完成: {ok_count}/{len(result['stocks']} 公司数据获取成功")
+        log.info(f"✅ 完成: {ok_count}/{len(result['stocks'])} 公司数据获取成功")
         log.info(f"📡 数据源分布: {result['data_source_summary']}")
         log.info(f"📅 交易日历: {result['calendar']['total_trading_days']} 个交易日 (方式: {result['calendar']['method']})")
         log.info(f"{'='*50}\n")

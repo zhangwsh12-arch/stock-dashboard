@@ -185,7 +185,7 @@
         <h1>🎮 韩国游戏股价看板</h1>
         <div class="header-meta">
             <div class="date" id="headerDate">加载中...</div>
-            <div><span class="badge-naver">Naver Finance</span> <span id="headerSourceInfo">数据来源 · 每天 10:00 KST 自动更新</span></div>
+            <div><span class="badge-naver">Naver Finance</span> <span id="headerSourceInfo">数据来源 · 工作日 10:00 KST 自动更新</span></div>
         </div>
     </div>
 
@@ -223,7 +223,7 @@
 
 <footer class="footer">
     <div>🇰🇷 韩国证券交易所 KRX 数据 · Naver Finance 实时抓取 · GitHub Actions 自动更新</div>
-    <div class="sub">数据仅供参考，不构成投资建议 | 自动更新: 工作日 上午 10:00 KST | PER越低→越被低估</div>
+    <div class="sub">数据仅供参考，不构成投资建议 | 自动更新: 工作日 10:00 KST | PER越低→越被低估</div>
 </footer>
 
 <script>
@@ -402,6 +402,89 @@ function renderDailySummary() {
   const parsePct = (str) => { const m = String(str).match(/([+-]?[\d.]+)%/); return m ? parseFloat(m[1]) : 0; };
   const sorted = [...allStocks].sort((a, b) => parsePct(b.changePercent) - parsePct(a.changePercent));
 
+  // 公司原因查找表（从 renderAnalysisItems 的静态数据提取）
+  // ⚠️ 重要：此表仅作为 EVENT_DATA 无匹配时的 fallback
+  // 真实原因应优先从 Naver Finance / DART / 当日新闻获取，每日必须更新！
+  // ⚠️ 关键规则：原因必须与涨跌方向逻辑自洽！
+  //   - 利好消息（销量大增、好评、联动、新产品）→ 解释上涨
+  //   - 利空消息（治理争议、监管风险、延期、业绩下调）→ 解释下跌
+  //   - 同一事件不能既解释涨又解释跌
+  //   - 如果找不到符合方向的原因 → 返回 null（显示"待查明原因"）
+  function findCompanyReason(stockName, changeClass) {
+    // 按涨跌方向分开存储原因，避免逻辑矛盾
+    // ⚠️ 数据来源优先级：1) Naver Finance 实时分析文章 2) DART 公示 3) 当日新闻
+    // ⚠️ 此静态表仅为 fallback，每日必须根据当日实际事件更新！
+    // ⚠️ 关键规则：原因必须与涨跌方向逻辑自洽！
+    const currentDate = (currentData.meta?.date || ''); // e.g. "20260408"
+    const isBeforeApril8 = currentDate < '20260408'; // 4/8联动前的日期
+    const isApril10OrLater = currentDate >= '20260410'; // 4/10 Q1财报季预期
+
+    const reasonMapUp = {
+      // ====== 上涨原因：利好驱动 ======
+      'NCSoft': isBeforeApril8
+        ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。NCSoft作为高Beta游戏股跟随板块上行。'
+        : isApril10OrLater
+          ? '<strong>Q1"어닝시즌"(财报季)实绩改善预期</strong>：分析师预估Q1销售额1,020亿韩元，《리니지 클래식》新增BM(商业模式)防御收入下滑，《아이온2》S3虽延期但市场反应正面。'
+          : '<strong>4/7正式起诉YouTuber "영래기"散布虚假事实</strong>（허위사실 유포 + 업무방해），市场解读为<strong>反作弊力度加大</strong>的积极信号，累计制裁近600万账户。消息4/7公布后经2日发酵，4/9股价反应。',
+      'Pearl Abyss': '《붉은사막(Crimson Desert / 红色沙漠)》Steam评价升至<strong>"好评如潮"</strong>，全球销量突破400万套，口碑反转驱动估值修复。',
+      'Shift Up': isBeforeApril8
+        ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。游戏股作为高Beta成长股领涨市场，Shift Up +5.77% 为月初行情龙头。'
+        : '<strong>PUBG × Stellar Blade(스텔라 블레이드) 联动 4/8 正式上线</strong>（PC版预购同步开启，6月12日正式发售），Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。联动分阶段催化：4/8 PC预购+主机版、4/16 主机DLC内容。',
+      'Krafton': isBeforeApril8
+        ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。Krafton跟随板块上行，无明显个股催化剂。'
+        : isApril10OrLater
+          ? '<strong>Q1实绩改善预期+AI品牌效应</strong>：《화평정영》春节流量同比增15%，PC端活动效果持续；AI模型"Raon(라온)"开源发布后品牌效应发酵；PUBG联动持续贡献收入。'
+          : '<strong>PUBG × Stellar Blade 联动 4/8 上线</strong>（Krafton侧收入）+ AI模型品牌"Raon(라온)"首批4款开源模型发布HuggingFace + 《어센드투제로(Ascend Zero)》新作公布。',
+      'Nexon Games': '核心IP <strong>Blue Archive（블루 아카이브）</strong> 全球稳定运营 + 《First Descendant》长线表现稳健。当日无明显突发催化剂，或为4/2大盘暴跌后的技术性反弹修复（补涨属性）。',
+      'Netmarble': 'Coway追加收购虽引争议但<strong>强化控股带来长期分红收益预期</strong>（年配当约2,800韩元/股）+ 新作《일곱 개의 대죄: Origin》(Seven Deadly Sins Origin) 1月全球上线后运营稳定。',
+    };
+    const reasonMapDown = {
+      // ====== 下跌原因：利空驱动 ======
+      'NCSoft': '<strong>特朗普伊朗强硬讲话冲击全球市场</strong>（"2~3周将伊朗打回石器时代"）：KOSPI -4.47%、KOSDAQ -5.36% 双双触发卖空侧轨，外资抛售近5,000亿韩元。游戏板块作为高Beta成长股遭集中抛售，6家公司全线下跌非公司个体因素。',
+      'Netmarble': '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
+      'Pearl Abyss': '《붉은사막》前期涨幅较大，<strong>获利了结卖压释放</strong>。虽基本面向好（400万套/好评如潮），但短期技术性回调占主导。若遇大盘暴跌则叠加系统性风险。',
+      'Krafton': '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
+      'Shift Up': isApril10OrLater
+        ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入"买预期卖事实"的获利了结阶段。Q1业绩受PC版发售节奏影响承压，但长期IP逻辑不变。'
+        : '<strong>Stellar Blade PC版6月12日发售前"买预期卖事实"</strong>的阶段性获利了结压力——PS5版已发售近2年，PC版虽已开启预购但距正式上线仍有窗口期，或游戏板块整体回调拖累。',
+      'Nexon Games': '<strong>新作出延期风险</strong>：社长在股东总会上承认"신작 지연이 주가 하락 원인"（新作曲延是主因）。加上《First Descendant》进入成熟期缺乏新增长引擎，Blue Archive虽稳但增量有限。',
+    };
+
+    const map = changeClass === 'up' ? reasonMapUp : reasonMapDown;
+    for (const [key, reason] of Object.entries(map)) {
+      if (stockName.includes(key) || key.includes(stockName)) return reason;
+    }
+    return null;
+  }
+
+  // ====== Naver Finance 自动抓取增强（可选增强模块）=====
+  // 用法：在数据更新流程中调用此函数，自动从 Naver Finance 抓取个股分析
+  // 替代静态 fallback 表，获取韩国分析师的真实观点
+  async function fetchNaverStockAnalysis(stockCode, stockName) {
+    try {
+      // Naver Finance 个股分析页（투자자매매동향）
+      const url = `https://finance.naver.com/item/main.nhn?code=${stockCode}`;
+      const resp = await fetch(url);
+      if (!resp.ok) return null;
+      const html = await resp.text();
+      // 提取 "투자의견" 或 종목 관련 뉴스 요약
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      // 尝试提取 투자의견 / 전망 섹션
+      const sections = doc.querySelectorAll('.txt, .description, .news_summary');
+      for (const s of sections) {
+        const text = s.textContent.trim();
+        if (text.length > 50 && (text.includes(stockName) || text.includes('원인') || text.includes('전망'))) {
+          return { source: 'naver_finance', text: text.slice(0, 300), url };
+        }
+      }
+      return null;
+    } catch(e) {
+      console.warn(`[Naver Fetch] ${stockName} 分析抓取失败:`, e.message);
+      return null;
+    }
+  }
+
   // 统计涨跌
   let upCount = 0, downCount = 0, neutralCount = 0;
   allStocks.forEach(s => {
@@ -416,33 +499,151 @@ function renderDailySummary() {
   const topLoser = sorted[sorted.length - 1];
   const uppers = sorted.filter(s => s.changeClass === 'up');
   const downers = sorted.filter(s => s.changeClass === 'down');
+  const THRESHOLD = 5; // 单日波动超过5%必须写明原因
 
   let analysisText = '';
+
+  // 收集当日事件用于个股原因匹配
+  // ⚠️ datePrefix 格式示例: "0408" (来自 meta.date "20260408".slice(4))
+  // EVENT_DATA.date 格式示例: "04.08~09" 或 "04.09"
+  // 需要提取 MM.DD 部分进行模糊匹配（去掉开头的0后匹配）
+  const dateRaw = (currentData.meta?.date || '').slice(4); // "0408"
+  const mmddNormalized = dateRaw.replace(/^0?(\d{1,2})0?(\d{1,2})$/, '$1.$2'); // "0408" → "4.8"
+  const todayEvents = EVENT_DATA.filter(e => {
+    // 多种匹配策略确保能命中
+    const ed = e.date; // e.g. "04.08~09", "04.09", "04.07~09"
+    return ed.includes(mmddNormalized) ||          // "04.08~09".includes("4.8") → true
+           ed.includes(dateRaw.slice(2).replace(/^0/,'')) ||  // "08" 匹配 DD部分
+           ed.includes(dateRaw.replace(/^0/,''));   // "408" 匹配（兼容旧格式）
+  });
+
+  // 当日资讯严格过滤：只显示精确单日匹配的事件（不含跨日期范围如"04.02~09"）
+  // 规则：date 字段不含 "~" 且能匹配当天，或 date 是精确当天单日格式
+  todayDailyEvents = EVENT_DATA.filter(e => {
+    const ed = e.date;
+    // 排除范围日期（含 ~ 的都是跨多日的）
+    if (ed.includes('~')) return false;
+    // 单日日期必须精确匹配（宽松匹配：包含 mmddNormalized 或 DD部分 或 dateRaw）
+    return ed.includes(mmddNormalized) ||
+           ed.includes(dateRaw.slice(2).replace(/^0/,'')) ||
+           ed.includes(dateRaw.replace(/^0/,''));
+  });
+
+  // 辅助函数：将事件与股票名模糊匹配
+  function matchEventToStock(event) {
+    return allStocks.find(s =>
+      s.name.toLowerCase().includes(event.company.toLowerCase()) ||
+      event.company.toLowerCase().includes(s.name.toLowerCase())
+    );
+  }
+
+  // 辅助函数：从 Naver Finance 风格的当日事件/新闻中查找个股波动原因
+  // 匹配优先级：EVENT_DATA（当日事件） > findCompanyReason（静态 fallback，仅兜底）
+  // ⚠️ 规则：单日波动≥5% 必须写明原因；其他有原因驱动的波动也需写明
+  // ⚠️ 静态表 findCompanyReason 每日必须更新，不可长期使用过期数据！
+  function findStockReason(stock, events) {
+    // 1. 优先从当日事件数据中精确匹配
+    const matched = events.find(e => {
+      const ms = matchEventToStock(e);
+      return ms && ms.name === stock.name;
+    });
+    if (matched) {
+      return { source: 'event', text: matched.title, color: matched.color };
+    }
+    // 2. fallback 到静态表（需每日更新，不可长期依赖）
+    const staticReason = findCompanyReason(stock.name, stock.changeClass);
+    if (staticReason) {
+      return { source: 'static', text: staticReason, color: stock.color };
+    }
+    return null;
+  }
+
+  // 辅助函数：找出波动超过阈值的股票
+  function getSignificantMovers(threshold) {
+    return allStocks.filter(s => {
+      const pct = Math.abs(parsePct(s.changePercent));
+      return pct >= threshold;
+    }).sort((a, b) => Math.abs(parsePct(b.changePercent)) - Math.abs(parsePct(a.changePercent)));
+  }
+
+  // ====== 统一个股驱动因素生成（三个分支共用）=====
+  // 规则：
+  //   1) 波动 ≥5% → 必须显示原因，找不到则标记"待查明"
+  //   2) 波动 <5% 但有 EVENT_DATA 事件匹配或 findCompanyReason 有结果 → 也显示
+  //   3) 完全无原因驱动的股票 → 不显示（避免噪音）
+  function buildDriverFactorsText() {
+    const THRESHOLD = 5;
+    const sigMovers = getSignificantMovers(THRESHOLD);
+    if (sigMovers.length === 0 && todayEvents.length === 0) return '';
+
+    const reasons = [];
+    const addedStocks = new Set();
+
+    // 第一轮：超阈值股票（必须有原因，找不到标记待查）
+    // ⚠️ 排除波动为0%的股票（平盘不需要分析原因）
+    for (const stock of sigMovers) {
+      const pct = Math.abs(parsePct(stock.changePercent));
+      if (pct < 1) continue; // 跳过波动<1%的股票
+      addedStocks.add(stock.name);
+      const reason = findStockReason(stock, todayEvents);
+      if (reason) {
+        reasons.push(`<span style="color:${reason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${reason.text}</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
+      } else {
+        reasons.push(`<span style="color:${stock.color};font-size:13px">${stock.name}</span><span style="color:#f59e0b;font-size:12px"> — 待查明原因</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
+      }
+    }
+
+    // 第二轮：<5% 但有明确事件/原因驱动的股票也补充显示
+    for (const stock of allStocks) {
+      if (addedStocks.has(stock.name)) continue;
+      const pct = Math.abs(parsePct(stock.changePercent));
+      if (pct < 1) continue; // 跳过波动<1%的股票（小幅波动不需要分析原因）
+      const hasEvent = todayEvents.some(e => matchEventToStock(e)?.name === stock.name);
+      const hasStaticReason = findCompanyReason(stock.name, stock.changeClass);
+      if (hasEvent || hasStaticReason) {
+        addedStocks.add(stock.name);
+        const reason = findStockReason(stock, todayEvents);
+        const displayReason = reason || { source: 'static', text: hasStaticReason, color: stock.color };
+        reasons.push(`<span style="color:${displayReason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${displayReason.text}</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
+      }
+    }
+
+    if (reasons.length === 0) return '';
+
+    // 检测是否有全板块性宏观因素需要前置显示
+    const macroKeywords = ['特朗普', '트럼프', '大盘', 'KOSPI', 'KOSDAQ', '整体', '板块', '全球市场', '美联储'];
+    const macroReasons = reasons.filter(r => macroKeywords.some(kw => r.includes(kw)));
+    const nonMacroReasons = reasons.filter(r => !macroKeywords.some(kw => r.includes(kw)));
+
+    let output = '<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>';
+    if (macroReasons.length > 0 && nonMacroReasons.length > 0) {
+      // 有宏观因素时，先显示宏观背景，再显示个股因素
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroReasons.join('；')}。`;
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${nonMacroReasons.join('；')}。`;
+    } else {
+      output += `${reasons.join('；')}。`;
+    }
+    return output;
+  }
+
   if (upCount > 0 && upCount > downCount) {
     // 多数上涨
-    const upNames = uppers.map(s => `${s.name}(+${parsePct(s.changePercent)}%)`).join('、');
     analysisText = `当日韩国游戏板块<strong>整体偏强</strong>，${total}家公司中${upCount}家上涨、${downCount}家下跌。<strong>${topGainer.name}</strong>领涨<span style="color:#34d399;font-weight:600">+${parsePct(topGainer.changePercent)}%</span>`;
     if (downers.length > 0) {
       analysisText += `，<strong>${topLoser.name}</strong>表现最弱<span style="color:#f87171;font-weight:600">${topLoser.changePercent}</span>`;
     }
     analysisText += '。';
-    // 尝试从 EVENT_DATA 找当日相关事件作为原因补充
-    const datePrefix = (currentData.meta?.date || '').slice(4);
-    const todayEvents = EVENT_DATA.filter(e => e.date.includes(datePrefix.replace(/^0/, '')));
-    if (todayEvents.length > 0) {
-      analysisText += `<br><br><span style="color:var(--text-muted);font-size:13px">📌 驱动因素：</span>` +
-        todayEvents.slice(0, 2).map(e =>
-          `<span style="color:${e.color};font-size:13px">${e.company}</span><span style="font-size:13px"> — ${e.title}</span>`
-        ).join('；') + '。';
-    }
+    // 统一个股驱动因素（≥5%强制 + <5%有原因驱动也显示）
+    analysisText += buildDriverFactorsText();
   } else if (downCount > 0 && downCount > upCount) {
     // 多数下跌
-    const downNames = downers.map(s => `${s.name}(${s.changePercent})`).join('、');
     analysisText = `当日韩国游戏板块<strong>承压调整</strong>，${total}家公司中${downCount}家下跌、${upCount}家上涨。<strong>${topLoser.name}</strong>跌幅最大<span style="color:#f87171;font-weight:600">${topLoser.changePercent}</span>`;
     if (uppers.length > 0) {
       analysisText += `，仅<strong>${topGainer.name}</strong>逆势收红<span style="color:#34d399;font-weight:600">+${parsePct(topGainer.changePercent)}%</span>`;
     }
     analysisText += '。';
+    // 统一个股驱动因素
+    analysisText += buildDriverFactorsText();
   } else {
     // 涨跌互现或平盘为主
     analysisText = `当日韩国游戏板块<strong>涨跌互现</strong>，${total}家公司中${upCount}家上涨、${downCount}家下跌、${neutralCount}家平盘。`;
@@ -452,30 +653,14 @@ function renderDailySummary() {
     if (downers.length > 0) {
       analysisText += `，<strong>${topLoser.name}</strong>领跌<span style="color:#f87171;font-weight:600">${topLoser.changePercent}</span>`;
     }
+    // 统一个股驱动因素（≥5%强制 + <5%有原因驱动也显示）
+    analysisText += buildDriverFactorsText();
     
-    // 按公司匹配当日事件作为个股原因
-    const datePrefix = (currentData.meta?.date || '').slice(4);
-    const todayEvents = EVENT_DATA.filter(e => e.date.includes(datePrefix.replace(/^0/, '')));
-    
-    if (todayEvents.length > 0) {
-      analysisText += `<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>` +
-        todayEvents.map(e => {
-          const matchedStock = allStocks.find(s =>
-            s.name.toLowerCase().includes(e.company.toLowerCase()) ||
-            e.company.toLowerCase().includes(s.name.toLowerCase())
-          );
-          return `<span style="color:${e.color};font-size:13px">${e.company}</span><span style="font-size:13px"> — ${e.title}</span>` + 
-            (matchedStock ? ` <span style="color:${matchedStock.changeClass==='up'?'#34d399':matchedStock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${matchedStock.changePercent})</span>` : '');
-        }).join('；') + '。';
-    }
-    
-    analysisText += '，板块无明显方向性趋势。';
+    analysisText += '<br><br>板块无明显方向性趋势。';
   }
 
   // 当日新闻
-  const datePrefix = (currentData.meta?.date || '').slice(4);
-  const todayEvents = EVENT_DATA.filter(e => e.date.includes(datePrefix.replace(/^0/, '')));
-  const hasNews = todayEvents.length > 0;
+  const hasNews = todayDailyEvents.length > 0;
 
   // 格式化日期 "4月9日"
   let displayDate = currentData.meta?.dateDisplay || '';
@@ -520,25 +705,6 @@ function renderDailySummary() {
         <div class="summary-text-para">${analysisText}</div>
     </div>
 </div>
-
-<!-- 下部：当日资讯 -->
-<div class="card">
-    <div class="card-header"><span>📰 当日资讯</span><span style="font-size:11px;color:var(--text-muted)">${hasNews ? todayEvents.length + ' 条更新' : '无新资讯'}</span></div>
-    <div class="card-body" style="padding:16px 20px;max-height:260px;overflow-y:auto">
-        ${hasNews
-          ? todayEvents.map(e => `
-              <div class="daily-news-item" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(46,51,71,0.35)">
-                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-                      <strong style="color:${e.color};font-size:12px">${e.company}</strong>
-                      <span style="font-size:10.5px;color:var(--text-muted);margin-left:auto">${e.date}</span>
-                  </div>
-                  <div style="font-size:12.5px;line-height:1.55;color:var(--text-secondary)">
-                      ${e.url ? `<a href="${e.url}" target="_blank" class="news-link">${e.title}</a>` : e.title}
-                  </div>
-              </div>`).join('')
-          : `<div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:13px">当日暂无新的游戏行业资讯更新</div>`
-        }
-    </div>
 </div>`;
 }
 
@@ -790,6 +956,28 @@ function renderNewsSection() {
     <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green)">News & Events</span>
 </div>
 
+<!-- Part 0: 当日资讯（顶部优先显示） -->
+<div style="margin-bottom:20px">
+<div class="card">
+    <div class="card-header"><span>📰 当日资讯</span><span style="font-size:11px;color:var(--text-muted)">${todayDailyEvents ? todayDailyEvents.length + ' 条更新' : '无新资讯'}</span></div>
+    <div class="card-body" style="padding:16px 20px;max-height:260px;overflow-y:auto">
+        ${todayDailyEvents && todayDailyEvents.length > 0
+          ? todayDailyEvents.map(e => `
+              <div class="daily-news-item" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(46,51,71,0.35)">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                      <strong style="color:${e.color};font-size:12px">${e.company}</strong>
+                      <span style="font-size:10.5px;color:var(--text-muted);margin-left:auto">${e.date}</span>
+                  </div>
+                  <div style="font-size:12.5px;line-height:1.55;color:var(--text-secondary)">
+                      ${e.url ? `<a href="${e.url}" target="_blank" class="news-link">${e.title}</a>` : e.title}
+                  </div>
+              </div>`).join('')
+          : `<div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:13px">当日暂无新的游戏行业资讯更新</div>`
+        }
+    </div>
+</div>
+</div>
+
 <!-- Part A: 游戏公司相关资讯 -->
 <div style="margin-bottom:20px">
 <div class="card">
@@ -920,15 +1108,17 @@ function renderCompareChart() {
 
   if (compareChartInstance) compareChartInstance.destroy();
 
-  // 完整数据（7天），根据当前选中日期动态截断
-  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9'];
+  // 完整数据（8天：4/1~4/10），根据当前选中日期动态截断
+  // ⚠️ 每个数据点 = (当日收盘 - 前日收盘) / 前日收盘 × 100%，保留2位小数
+  // 验算依据：Naver Finance 日K收盘价逐日计算
+  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10'];
   const ALL_DATASETS = [
-    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-    { label: 'Nexon', data: [0,-4.82,-0.70,0.00,-1.76,+1.43,+3.36], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-    { label: 'Krafton', data: [0,-5.54,-1.62,-2.88,-1.48,+0.43,0.00], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
+    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.82,-0.70,0.00,-1.76,+1.43,+3.36,+1.45], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+    { label: 'Krafton', data: [0,-5.54,-1.62,-2.88,-1.48,+0.43,0.00,+1.50], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
   ];
 
   // 根据当前数据的日期确定截断位置
@@ -978,15 +1168,29 @@ function renderCompareChart() {
 // 翻页逻辑
 // ============================================================
 const EVENT_DATA = [
-  { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动上线！"이브"空降艾伦格，舞蹈视频引爆社区', source: '게임플/비즈니스포스트', date: '04.08~09', url: 'https://www.gameple.co.kr/news/articleView.html?idxno=215351' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학"(白鹤)登场 + 新Side Story更新', source: '인벤/게임조선', date: '04.09', url: 'https://www.inven.co.kr/webzine/news/?news=315234&site=nikke' },
-  { company: 'NCSoft', color: '#3b82f6', title: "正式起诉YouTuber '영래기'（散布虚假事实+妨碍业务），股价4/9大涨+7.35%", source: '스포츠경향', date: '04.08~09', url: 'https://sports.khan.co.kr/article/20260408033500' },
-  { company: 'Netmarble', color: '#ef4444', title: '₩1,500亿追加收购Coway股权遭Align Partners强烈批评，4/9续跌-0.4%', source: '아이뉴스24', date: '04.07~09', url: 'https://www.inews24.com/view/1958083' },
-  { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略公布 → 股价稳中有升+0.85%', source: '재경일보', date: '04.07~09', url: 'https://news.jkn.co.kr/post/869567' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》Steam在线峰值27万+口碑反转，4/9持平收₩56,500', source: '펄어비스 공식/SteamDB', date: '04.07~09', url: '' },
-  { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌"Raon(라온)"，首批4款开源模型上线HuggingFace', source: 'Krafton AI', date: '04.02~09', url: '' },
+  // ====== 单日精确事件（用于"当日资讯"严格过滤显示）======
+  { company: '游戏板块整体', color: '#6b7185', title: '4月首个交易日韩国股市整体大涨（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动，6家游戏公司全线飘红', source: '한국거래소/시장요약', date: '04.01', url: '' },
   { company: 'Shift Up', color: '#ff6b9d', title: '完成Unbound Games（三上真司工作室）100%收购整合', source: '인벤', date: '04.01', url: 'https://www.inven.co.kr/webzine/news/?news=314941' },
+  { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌"Raon(라온)"，首批4款开源模型上线HuggingFace', source: 'Krafton AI', date: '04.02', url: '' },
+  { company: 'Netmarble', color: '#ef4444', title: '₩1,500亿追加收购Coway股权遭Align Partners强烈批评，市场质疑资金使用效率', source: '아이뉴스24', date: '04.07', url: 'https://www.inews24.com/view/1958083' },
+  { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略公布 → 股价稳中有升+0.85%', source: '재경일보', date: '04.07', url: 'https://news.jkn.co.kr/post/869567' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》Steam在线峰值27万+口碑反转，好评如潮', source: '펄어비스 공식/SteamDB', date: '04.07', url: '' },
+  { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动上线！"이브"空降艾伦格，舞蹈视频引爆社区', source: '게임플/비즈니스포스트', date: '04.08', url: 'https://www.gameple.co.kr/news/articleView.html?idxno=215351' },
+  { company: 'NCSoft', color: '#3b82f6', title: "正式起诉YouTuber '영래기'（散布虚假事实+妨碍业务），市场解读为反作弊力度加大", source: '스포츠경향', date: '04.08', url: 'https://sports.khan.co.kr/article/20260408033500' },
+  { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학"(白鹤)登场 + 新Side Story更新', source: '인벤/게임조선', date: '04.09', url: 'https://www.inven.co.kr/webzine/news/?news=315234&site=nikke' },
+  { company: 'NCSoft', color: '#3b82f6', title: '起诉YouTuber消息发酵第2日，股价大涨+7.35%反应市场认可', source: '스포츠경향', date: '04.09', url: '' },
+  { company: 'Netmarble', color: '#ef4444', title: 'Coway追加收购争议持续，Align Partners强烈批评，续跌-0.4%', source: '아이뉴스24', date: '04.09', url: '' },
+  { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略持续发酵，股价稳中有升', source: '재경일보', date: '04.09', url: '' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막》口碑持续反转，4/9持平收₩56,500', source: '펄어비스 공식/SteamDB', date: '04.09', url: '' },
+  // 4/10（周五）：Q1财报季预期驱动，NCSoft领涨+2.56%
+  { company: '游戏板块', color: '#6b7185', title: 'Q1"어닝시즌"(财报季)实绩改善预期：分析师预估7家游戏公司销售额同比+33.7%、营业利润同比+64.1%。NCSoft与Krafton被点名为核心改善驱动力。', source: '이데일리/에데이', date: '04.10', url: 'https://news.nate.com/view/20260410n04448' },
+  { company: 'NCSoft', color: '#3b82f6', title: 'Q1销售额预估1,020亿韩元，《리니지 클래식》新增BM(商业模式)防御收入下滑，《아이온2》S3更新虽延期至4月但市场反应正面。4/10领涨+2.56%。', source: '이데일리', date: '04.10', url: '' },
+  { company: 'Krafton', color: '#f59e0b', title: 'Q1销售额预估4,400亿韩원，《화평정영》春节流量同比增15%，PC端月度活动效果持续。AI模型Raon品牌效应发酵。+1.50%', source: '이데일리', date: '04.10', url: '' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert)》Q1销售占比预估达70%，媒体发布会17日举办将展示核心内容提振信心。-1.59%', source: '이데일리/펄어비스', date: '04.10', url: '' },
 ];
+
+// 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
+let todayDailyEvents = [];
 
 const NORMAL_DATA = [
   { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格地图', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
