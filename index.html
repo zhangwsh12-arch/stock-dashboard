@@ -424,30 +424,30 @@ function renderDailySummary() {
       'NCSoft': isBeforeApril8
         ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。NCSoft作为高Beta游戏股跟随板块上行。'
         : isApril10OrLater
-          ? '<strong>Q1"어닝시즌"(财报季)实绩改善预期</strong>：分析师预估Q1销售额1,020亿韩元，《리니지 클래식》新增BM(商业模式)防御收入下滑，《아이온2》S3虽延期但市场反应正面。'
+          ? '<strong>Q1财报季实绩改善预期</strong>：分析师预估销售额1,020亿韩元，《리니지 클래식(Lineage Classic)》新增BM防御收入下滑，《Aion 2(아이온2)》S3延期但市场反应正面。'
           : '<strong>4/7正式起诉YouTuber "영래기"散布虚假事实</strong>（허위사실 유포 + 업무방해），市场解读为<strong>反作弊力度加大</strong>的积极信号，累计制裁近600万账户。消息4/7公布后经2日发酵，4/9股价反应。',
       'Pearl Abyss': '《붉은사막(Crimson Desert / 红色沙漠)》Steam评价升至<strong>"好评如潮"</strong>，全球销量突破400万套，口碑反转驱动估值修复。',
       'Shift Up': isBeforeApril8
         ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。游戏股作为高Beta成长股领涨市场，Shift Up +5.77% 为月初行情龙头。'
-        : '<strong>PUBG × Stellar Blade(스텔라 블레이드) 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。联动分阶段催化：4/8 联动正式开启、4/16 主机DLC内容更新。PC版已于2025年6月全球发售，目前双平台稳定运营中。',
+        : '<strong>PUBG × Stellar Blade(스텔라 블레이드) 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。',
       'Krafton': isBeforeApril8
         ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。Krafton跟随板块上行，无明显个股催化剂。'
         : isApril10OrLater
-          ? '<strong>Q1实绩改善预期+AI品牌效应</strong>：《화평정영》春节流量同比增15%，PC端活动效果持续；AI模型"Raon(라온)"开源发布后品牌效应发酵；PUBG联动持续贡献收入。'
-          : '<strong>PUBG × Stellar Blade 联动 4/8 上线</strong>（Krafton侧收入）+ AI模型品牌"Raon(라온)"首批4款开源模型发布HuggingFace + 《어센드투제로(Ascend Zero)》新作公布。',
-      'Nexon Games': '核心IP <strong>Blue Archive（블루 아카이브）</strong> 全球稳定运营 + 《First Descendant》长线表现稳健。当日无明显突发催化剂，或为4/2大盘暴跌后的技术性反弹修复（补涨属性）。',
-      'Netmarble': 'Coway追加收购虽引争议但<strong>强化控股带来长期分红收益预期</strong>（年配当约2,800韩元/股）+ 新作《일곱 개의 대죄: Origin》(Seven Deadly Sins Origin) 1月全球上线后运营稳定。',
+          ? '<strong>Q1实绩改善预期+AI品牌效应</strong>：AI模型"Raon(라온)"开源发布后品牌效应发酵；PUBG联动持续贡献收入。'
+          : '<strong>PUBG × Stellar Blade 联动 4/8 上线</strong>（Krafton侧收入）+ AI模型"Raon(라온)"首批4款开源模型发布HuggingFace + 《Ascend Zero(어센드투제로)》新作公布。',
+      'Nexon Games': '<strong>无明显突发催化剂</strong>，或为4/2大盘暴跌后的技术性反弹修复（补涨属性）。',
+      'Netmarble': 'Coway追加收购虽引争议但<strong>强化控股带来长期分红收益预期</strong>（年配当约2,800韩元/股）+ 《Seven Deadly Sins Origin(일곱 개의 대죄: Origin)》1月上线后运营稳定。',
     };
     const reasonMapDown = {
       // ====== 下跌原因：利空驱动 ======
       'NCSoft': '<strong>特朗普伊朗强硬讲话冲击全球市场</strong>（"2~3周将伊朗打回石器时代"）：KOSPI -4.47%、KOSDAQ -5.36% 双双触发卖空侧轨，外资抛售近5,000亿韩元。游戏板块作为高Beta成长股遭集中抛售，6家公司全线下跌非公司个体因素。',
       'Netmarble': '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
-      'Pearl Abyss': '《붉은사막》前期涨幅较大，<strong>获利了结卖压释放</strong>。虽基本面向好（400万套/好评如潮），但短期技术性回调占主导。若遇大盘暴跌则叠加系统性风险。',
+      'Pearl Abyss': '《붉은사막(Crimson Desert / 红色沙漠)》前期涨幅较大，<strong>获利了结卖压释放</strong>。短期技术性回调占主导，若遇大盘暴跌则叠加系统性风险。',
       'Krafton': '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
       'Shift Up': isApril10OrLater
-        ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入"买预期卖事实"的获利了结阶段。PC版已于2025年6月发售，Q1业绩反映双平台稳定运营状态，长期IP逻辑不变。'
-        : '<strong>联动利好逐步消化后的技术性回调</strong>——Stellar Blade双平台（PS5+PC）稳定运营中，短期缺乏新催化剂，或受游戏板块整体回调拖累。',
-      'Nexon Games': '<strong>新作出延期风险</strong>：社长在股东总会上承认"신작 지연이 주가 하락 원인"（新作曲延是主因）。加上《First Descendant》进入成熟期缺乏新增长引擎，Blue Archive虽稳但增量有限。',
+        ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
+        : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
+      'Nexon Games': '<strong>新作延期风险</strong>：社长在股东总会上承认"新作曲延是主因(신작 지연이 주가 하락 원인)"。《First Descendant》进入成熟期缺乏新增长引擎。',
     };
 
     const map = changeClass === 'up' ? reasonMapUp : reasonMapDown;
@@ -1181,12 +1181,12 @@ const EVENT_DATA = [
   { company: 'NCSoft', color: '#3b82f6', title: '起诉YouTuber消息发酵第2日，股价大涨+7.35%反应市场认可', source: '스포츠경향', date: '04.09', url: '' },
   { company: 'Netmarble', color: '#ef4444', title: 'Coway追加收购争议持续，Align Partners强烈批评，续跌-0.4%', source: '아이뉴스24', date: '04.09', url: '' },
   { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略持续发酵，股价稳中有升', source: '재경일보', date: '04.09', url: '' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막》口碑持续反转，4/9持平收₩56,500', source: '펄어비스 공식/SteamDB', date: '04.09', url: '' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》口碑持续反转，4/9持平收₩56,500', source: '펄어비스 공식/SteamDB', date: '04.09', url: '' },
   // 4/10（周五）：Q1财报季预期驱动，NCSoft领涨+2.56%
   { company: '游戏板块', color: '#6b7185', title: 'Q1"어닝시즌"(财报季)实绩改善预期：分析师预估7家游戏公司销售额同比+33.7%、营业利润同比+64.1%。NCSoft与Krafton被点名为核心改善驱动力。', source: '이데일리/에데이', date: '04.10', url: 'https://news.nate.com/view/20260410n04448' },
-  { company: 'NCSoft', color: '#3b82f6', title: 'Q1销售额预估1,020亿韩元，《리니지 클래식》新增BM(商业模式)防御收入下滑，《아이온2》S3更新虽延期至4月但市场反应正面。4/10领涨+2.56%。', source: '이데일리', date: '04.10', url: '' },
-  { company: 'Krafton', color: '#f59e0b', title: 'Q1销售额预估4,400亿韩원，《화평정영》春节流量同比增15%，PC端月度活动效果持续。AI模型Raon品牌效应发酵。+1.50%', source: '이데일리', date: '04.10', url: '' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert)》Q1销售占比预估达70%，媒体发布会17日举办将展示核心内容提振信心。-1.59%', source: '이데일리/펄어비스', date: '04.10', url: '' },
+  { company: 'NCSoft', color: '#3b82f6', title: 'Q1销售额预估1,020亿韩元，《리니지 클래식(Lineage Classic)》新增BM(商业模式)防御收入下滑，《Aion 2(아이온2)》S3更新虽延期至4月但市场反应正面。4/10领涨+2.56%。', source: '이데일리', date: '04.10', url: '' },
+  { company: 'Krafton', color: '#f59e0b', title: 'Q1销售额预估4,400亿韩원，《화평정영(和平精英)》春节流量同比增15%，PC端月度活动效果持续。AI模型Raon品牌效应发酵。+1.50%', source: '이데일리', date: '04.10', url: '' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》Q1销售占比预估达70%，媒体发布会17日举办将展示核心内容提振信心。-1.59%', source: '이데일리/펄어비스', date: '04.10', url: '' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
@@ -1195,7 +1195,7 @@ let todayDailyEvents = [];
 const NORMAL_DATA = [
   { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格地图', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
   { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》全球销量突破400万套，Steam在线峰值27万，口碑反转升至"好评如潮"', source: '펄어비스 공식', date: '03.30~04.09', url: 'https://www.pearlabyss.com/' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE》新SSR"백학"登场 — 防御型角色(回血+贯穿)，更新至4/22', source: '레벨인피니트', date: '04.09~22', url: '' },
+  { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE》新SSR"백학(白鹤)"登场 — 防御型角色(回血+贯穿)，更新至4/22', source: '레벨인피니트', date: '04.09~22', url: '' },
   { company: 'NCSoft', color: '#3b82f6', title: '《리니지 클래식(Lineage Classic)》累计制裁近600万账户，打击非法程序力度持续加强', source: 'NCSoft官方', date: '04.07', url: 'https://about.ncsoft.com/news/article/news_update_260407' },
   { company: 'Netmarble', color: '#ef4444', title: '《SOL: enchant》发售日从春季延至6月，官方称"为提高完成度"', source: '인벤', date: '04.08', url: '' },
   { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌"Raon(라온)"，首批4款开源模型上线', source: 'Krafton AI', date: '04.02', url: '' },
