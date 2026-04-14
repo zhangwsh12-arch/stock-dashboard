@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260413",
     "dateDisplay": "4月（截至13日）",
-    "fetchedAt": "2026-04-14T03:22:26.028Z",
+    "fetchedAt": "2026-04-14T07:06:46.082Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,21 +18,11 @@
     "change": "-",
     "changePercent": "0.00%",
     "changeClass": "neutral",
-    "per": "10.32",
-    "pbr": "2.14",
+    "per": "10.35",
+    "pbr": "2.15",
     "marketCap": "1.94兆元"
   },
   "companies": [
-    {
-      "code": "036570",
-      "name": "NCSoft",
-      "nameKr": "엔씨소프트",
-      "color": "#3b82f6",
-      "price": "239,000",
-      "change": "-0.42%",
-      "changeClass": "down",
-      "per": "15.54"
-    },
     {
       "code": "259960",
       "name": "Krafton",
@@ -41,7 +31,17 @@
       "price": "241,500",
       "change": "+1.68%",
       "changeClass": "up",
-      "per": "15.74"
+      "per": "15.48"
+    },
+    {
+      "code": "036570",
+      "name": "NCSoft",
+      "nameKr": "엔씨소프트",
+      "color": "#3b82f6",
+      "price": "239,000",
+      "change": "-0.42%",
+      "changeClass": "down",
+      "per": "15.51"
     },
     {
       "code": "251270",
@@ -51,7 +51,7 @@
       "price": "50,200",
       "change": "-0.20%",
       "changeClass": "down",
-      "per": "19.40"
+      "per": "19.37"
     },
     {
       "code": "225570",
@@ -80,32 +80,32 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "32,850",
-      "per": 10.32,
-      "perRaw": "10.32"
-    },
-    {
-      "code": "036570",
-      "name": "NCSoft",
-      "color": "#3b82f6",
-      "price": "239,000",
-      "per": 15.54,
-      "perRaw": "15.54"
+      "per": 10.35,
+      "perRaw": "10.35"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "241,500",
-      "per": 15.74,
-      "perRaw": "15.74"
+      "per": 15.48,
+      "perRaw": "15.48"
+    },
+    {
+      "code": "036570",
+      "name": "NCSoft",
+      "color": "#3b82f6",
+      "price": "239,000",
+      "per": 15.51,
+      "perRaw": "15.51"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "50,200",
-      "per": 19.4,
-      "perRaw": "19.40"
+      "per": 19.37,
+      "perRaw": "19.37"
     }
   ],
   "chartData": [
