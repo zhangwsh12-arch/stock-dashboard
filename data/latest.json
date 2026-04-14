@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260413",
     "dateDisplay": "4月（截至13日）",
-    "fetchedAt": "2026-04-14T01:56:28.369Z",
+    "fetchedAt": "2026-04-14T02:31:01.144Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,7 +18,7 @@
     "change": "-",
     "changePercent": "0.00%",
     "changeClass": "neutral",
-    "per": "10.32",
+    "per": "10.30",
     "pbr": "2.14",
     "marketCap": "1.94兆元"
   },
@@ -31,7 +31,7 @@
       "price": "239,000",
       "change": "-0.42%",
       "changeClass": "down",
-      "per": "15.51"
+      "per": "15.60"
     },
     {
       "code": "259960",
@@ -51,7 +51,7 @@
       "price": "50,200",
       "change": "-0.20%",
       "changeClass": "down",
-      "per": "19.52"
+      "per": "19.56"
     },
     {
       "code": "225570",
@@ -80,16 +80,16 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "32,850",
-      "per": 10.32,
-      "perRaw": "10.32"
+      "per": 10.3,
+      "perRaw": "10.30"
     },
     {
       "code": "036570",
       "name": "NCSoft",
       "color": "#3b82f6",
       "price": "239,000",
-      "per": 15.51,
-      "perRaw": "15.51"
+      "per": 15.6,
+      "perRaw": "15.60"
     },
     {
       "code": "259960",
@@ -104,8 +104,8 @@
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "50,200",
-      "per": 19.52,
-      "perRaw": "19.52"
+      "per": 19.56,
+      "perRaw": "19.56"
     }
   ],
   "chartData": [
