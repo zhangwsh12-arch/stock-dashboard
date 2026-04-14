@@ -48,9 +48,9 @@
         .date-picker-label{font-size:13px;color:#c8cdd8;display:flex;align-items:center;gap:5px}
         .date-select{background:rgba(255,255,255,0.08);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:13px;padding:6px 30px 6px 12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239aa0b3' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .2s}
         .date-select:hover,.date-select:focus{border-color:var(--accent-blue);outline:none}
-        .btn-go-latest{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:var(--accent-blue);font-size:12px;font-weight:600;padding:5px 14px;border-radius:6px;cursor:pointer}
-        .btn-go-latest:hover{background:rgba(59,130,246,0.22)}
-        .badge-naver{font-size:11px;font-weight:600;padding:1px 8px;border-radius:4px;background:rgba(16,185,129,0.18);color:#34d399;border:1px solid rgba(16,185,129,0.25)}
+        .btn-go-latest{background:rgba(59,130,246,0.18);border:1px solid rgba(59,130,246,0.45);color:#60a5fa;font-size:12px;font-weight:600;padding:5px 14px;border-radius:6px;cursor:pointer;transition:all .2s}
+        .btn-go-latest:hover{background:rgba(59,130,246,0.28);border-color:rgba(96,165,250,0.5)}
+        .badge-naver{font-size:11px;font-weight:600;padding:2px 10px;border-radius:4px;background:rgba(16,185,129,0.22);color:#4ade80;border:1px solid rgba(74,222,128,0.35)}
 
         /* Layout */
         .main-container{max-width:1600px;margin:0 auto;padding:24px 32px}
@@ -161,6 +161,13 @@
         .news-link{text-decoration:none;color:inherit;transition:opacity .2s}.news-link:hover{opacity:.7}.news-title{font-size:13px;line-height:1.5}
     
         .news-source{font-size:11.5px;color:var(--text-muted);margin-top:3px}
+
+        /* News Table (游戏公司相关资讯) */
+        .info-table{width:100%;border-collapse:collapse}
+        .info-table thead th{text-align:left;padding:12px 18px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border-color)}
+        .info-table td{padding:14px 18px;font-size:13px;border-bottom:1px solid rgba(46,51,71,0.4);vertical-align:top;line-height:1.6}
+        .info-table tr:last-child td{border-bottom:none}
+        .info-table tr:hover td{background:rgba(255,255,255,0.015)}
 
         /* Daily Summary (上下结构) */
         .summary-text-para{font-size:14px;line-height:1.8;color:var(--text-secondary)}
@@ -984,12 +991,12 @@ function renderNewsSection() {
     <div class="card-header"><span>🎮 游戏公司相关资讯</span></div>
     <div class="card-body" style="padding:0;overflow-x:auto">
         <table class="info-table">
-            <thead><tr><th style="width:22%">公司</th><th style="width:63%">事件摘要</th><th style="width:15%">日期</th></tr></thead>
+            <thead><tr><th style="width:20%">公司</th><th style="width:65%">事件摘要</th><th style="width:15%">日期</th></tr></thead>
             <tbody>
-                ${EVENT_DATA.map(i => `<tr>
-                    <td><strong style="color:${i.color};font-size:12px">${i.company}</strong></td>
-                    <td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span>`}</td>
-                    <td style="color:var(--text-muted);font-size:12.5px">${i.date}</td>
+                ${[...EVENT_DATA].reverse().map(i => `<tr>
+                    <td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td>
+                    <td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td>
+                    <td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td>
                 </tr>`).join('')}
             </tbody>
         </table>
@@ -1215,7 +1222,7 @@ function renderEventTable() {
   const tb = document.getElementById('eventTableBody'); if (!tb) return;
   const s = (eventCurrentPage - 1) * PAGE_SIZE;
   tb.innerHTML = EVENT_DATA.slice(s, s + PAGE_SIZE).map(i =>
-    `<tr><td><strong style="color:${i.color}">${i.company}</strong></td><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:13px">${i.date}</td></tr>`
+    `<tr><td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td></tr>`
   ).join('');
   const tp = Math.ceil(EVENT_DATA.length / PAGE_SIZE);
   const pi = document.getElementById('eventPageInfo');
@@ -1229,7 +1236,7 @@ function renderNormalTable() {
   const tb = document.getElementById('normalTableBody'); if (!tb) return;
   const s = (normalCurrentPage - 1) * PAGE_SIZE;
   tb.innerHTML = NORMAL_DATA.slice(s, s + PAGE_SIZE).map(i =>
-    `<tr><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title" style="font-size:13px;line-height:1.5">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:13px">${i.date}</td><td><strong style="color:${i.color}">${i.company}</strong></td></tr>`
+    `<tr><td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td><td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td><td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td></tr>`
   ).join('');
   const tp = Math.ceil(NORMAL_DATA.length / PAGE_SIZE);
   const pi = document.getElementById('normalPageInfo');
