@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260414",
     "dateDisplay": "4月（截至14日）",
-    "fetchedAt": "2026-04-15T06:02:29.005Z",
+    "fetchedAt": "2026-04-15T07:08:53.524Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,7 +18,7 @@
     "change": "900",
     "changePercent": "+2.74%",
     "changeClass": "up",
-    "per": "10.13",
+    "per": "10.12",
     "pbr": "2.10",
     "marketCap": "1.99兆元"
   },
@@ -51,7 +51,7 @@
       "price": "50,700",
       "change": "+1.00%",
       "changeClass": "up",
-      "per": "19.48"
+      "per": "19.40"
     },
     {
       "code": "225570",
@@ -80,8 +80,8 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "33,750",
-      "per": 10.13,
-      "perRaw": "10.13"
+      "per": 10.12,
+      "perRaw": "10.12"
     },
     {
       "code": "036570",
@@ -104,8 +104,8 @@
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "50,700",
-      "per": 19.48,
-      "perRaw": "19.48"
+      "per": 19.4,
+      "perRaw": "19.40"
     }
   ],
   "chartData": [
