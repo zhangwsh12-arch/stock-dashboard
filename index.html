@@ -1365,11 +1365,18 @@ function hideLoading() { showLoading(false); }
 async function init() {
   console.log('🎮 韩国游戏股价看板 — 初始化...');
 
-  // Load latest data and dates list in parallel
-  const [dataOk] = await Promise.all([loadLatestData(), loadDatesList()]);
+  try {
+    // Load latest data and dates list in parallel
+    const [dataOk] = await Promise.all([loadLatestData(), loadDatesList()]);
 
-  if (dataOk && currentData) {
-    renderDashboard();
+    if (dataOk && currentData) {
+      renderDashboard();
+    }
+  } catch(err) {
+    console.error('❌ Init error:', err);
+    const el = document.getElementById('loadingOverlay');
+    if (el) el.innerHTML = '<div style="color:#f87171;padding:40px;text-align:center"><h2 style="margin-bottom:12px">⚠️ 页面加载出错</h2><pre style="text-align:left;background:rgba(0,0,0,0.3);padding:16px;border-radius:8px;margin-top:12px;font-size:13px">' + String(err.stack || err.message).replace(/</g,'&lt;') + '</pre></div>';
+    return;
   }
 
   hideLoading();
