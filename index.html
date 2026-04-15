@@ -394,30 +394,9 @@ function showErrorState() {
 }
 
 // --- Section 0: 今日总结（上下结构）---
-function renderDailySummary() {
-  const container = document.getElementById('sectionDailySummary');
-  if (!container || !currentData) return;
 
-  const su = currentData.shiftUp;
-  const companies = currentData.companies || [];
-
-  // 构建所有股票数据
-  const allStocks = [];
-  if (su) allStocks.push({ name: su.name, color: su.color, price: su.price, changePercent: su.changePercent, changeClass: su.changeClass });
-  companies.forEach(c => allStocks.push({ name: c.name, color: c.color, price: c.price, changePercent: c.change, changeClass: c.changeClass }));
-
-  const parsePct = (str) => { const m = String(str).match(/([+-]?[\d.]+)%/); return m ? parseFloat(m[1]) : 0; };
-  const sorted = [...allStocks].sort((a, b) => parsePct(b.changePercent) - parsePct(a.changePercent));
-
-  // 公司原因查找表（从 renderAnalysisItems 的静态数据提取）
-  // ⚠️ 重要：此表仅作为 EVENT_DATA 无匹配时的 fallback
-  // 真实原因应优先从 Naver Finance / DART / 当日新闻获取，每日必须更新！
-  // ⚠️ 关键规则：原因必须与涨跌方向逻辑自洽！
-  //   - 利好消息（销量大增、好评、联动、新产品）→ 解释上涨
-  //   - 利空消息（治理争议、监管风险、延期、业绩下调）→ 解释下跌
-  //   - 同一事件不能既解释涨又解释跌
-  //   - 如果找不到符合方向的原因 → 返回 null（显示"待查明原因"）
-  function findCompanyReason(stockName, changeClass) {
+// ====== findCompanyReason（移到顶层，供 generateSUAnalysis 和 renderDailySummary 共用）======
+function findCompanyReason(stockName, changeClass) {
     // 按涨跌方向分开存储原因，避免逻辑矛盾
     // ⚠️ 数据来源优先级：1) Naver Finance 实时分析文章 2) DART 公示 3) 当日新闻
     // ⚠️ 此静态表仅为 fallback，每日必须根据当日实际事件更新！
@@ -465,7 +444,7 @@ function renderDailySummary() {
       'Shift Up': isApril10OrLater
         ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
         : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
-      'Nexon Games': '<strong>新作延期风险</strong>：社长在股东总会上承认"新作曲延是主因(신작 지연이 주가 하락 원인)"。《First Descendant》进入成熟期缺乏新增长引擎。',
+      'Nexon Games': '<strong>新作延期风险</strong>：社长在股东总会上承认"新作曲延是主인(신작 지연이 주가 하락 원인)"。《First Descendant》进入成熟期缺乏新增长引擎。',
     };
 
     const map = changeClass === 'up' ? reasonMapUp : reasonMapDown;
@@ -473,53 +452,86 @@ function renderDailySummary() {
       if (stockName.includes(key) || key.includes(stockName)) return reason;
     }
     return null;
-  }
+}
 
-  // ====== 动态生成 Shift Up 本月变动原因分析 ======
-  // 不再依赖 latest.json 的 analysis 字段（该字段经常缺失）
-  // 改为根据当前数据日期 + SU当月涨跌 + findCompanyReason 动态生成
-  function generateSUAnalysis() {
-    const su = currentData.shiftUp;
-    if (!su) return '暂无分析数据';
-    
-    const suChangeClass = su.changeClass || 'neutral';
-    const suPct = su.changePercent || '0%';
-    const price = su.price || '-';
-    const prevClose = su.previousClose || '-';
-    
-    // 用 findCompanyReason 获取原因（fallback 静态表）
-    const reason = findCompanyReason('Shift Up', suChangeClass);
-    
-    // 计算月度累计涨跌（从 chartData 计算）
-    const chartData = currentData.chartData || [];
-    let monthChange = null;
-    let monthText = '';
-    if (chartData.length >= 2) {
-      const firstPrice = chartData[0].price;
-      const lastPrice = chartData[chartData.length - 1].price;
-      monthChange = ((lastPrice - firstPrice) / firstPrice * 100);
-      const mcSign = monthChange >= 0 ? '+' : '';
-      monthText = `本月累计 <strong style="color:${monthChange >= 0 ? '#34d399' : '#f87171'}">${mcSign}${monthChange.toFixed(2)}%</strong>（₩${firstPrice.toLocaleString()} → ₩${lastPrice.toLocaleString()}）`;
-    }
-    
-    // 构建分析文字
-    let html = '';
-    if (monthText) {
-      html += `<p>${monthText}</p>`;
-    }
-    
-    // 当日动态
-    html += `<p><strong>当日动态</strong>：收<strong>${price}</strong>（前日${prevClose}），变动<span style="color:${suChangeClass==='up'?'#34d399':suChangeClass==='down'?'#f87171':'#9aa0b3'};font-weight:600">${suPct}</span>。</p>`;
-    
-    // 原因分析
-    if (reason) {
-      html += `<p><strong>主要原因</strong>：${reason}</p>`;
-    } else {
-      html += '<p>无明显突发催化剂，技术性波动为主。</p>';
-    }
-    
-    return html;
+// ====== generateSUAnalysis（移到顶层） ======
+function generateSUAnalysis() {
+  const su = currentData?.shiftUp;
+  if (!su) return '暂无分析数据';
+  
+  const suChangeClass = su.changeClass || 'neutral';
+  const suPct = su.changePercent || '0%';
+  const price = su.price || '-';
+  const prevClose = su.previousClose || '-';
+  
+  // 用 findCompanyReason 获取原因（fallback 静态表）
+  const reason = findCompanyReason('Shift Up', suChangeClass);
+  
+  // 计算月度累计涨跌（从 chartData 计算）
+  const chartData = currentData.chartData || [];
+  let monthChange = null;
+  let monthText = '';
+  if (chartData.length >= 2) {
+    const firstPrice = chartData[0].price;
+    const lastPrice = chartData[chartData.length - 1].price;
+    monthChange = ((lastPrice - firstPrice) / firstPrice * 100);
+    const mcSign = monthChange >= 0 ? '+' : '';
+    monthText = `本月累计 <strong style="color:${monthChange >= 0 ? '#34d399' : '#f87171'}">${mcSign}${monthChange.toFixed(2)}%</strong>（₩${firstPrice.toLocaleString()} → ₩${lastPrice.toLocaleString()}）`;
   }
+  
+  // 构建分析文字
+  let html = '';
+  if (monthText) {
+    html += `<p>${monthText}</p>`;
+  }
+  
+  // 当日动态
+  html += `<p><strong>当日动态</strong>：收<strong>${price}</strong>（前日${prevClose}），变动<span style="color:${suChangeClass==='up'?'#34d399':suChangeClass==='down'?'#f87171':'#9aa0b3'};font-weight:600">${suPct}</span>。</p>`;
+  
+  // 原因分析
+  if (reason) {
+    html += `<p><strong>主要原因</strong>：${reason}</p>`;
+  } else {
+    html += '<p>无明显突发催化剂，技术性波动为主。</p>';
+  }
+  
+  return html;
+}
+
+function renderDailySummary() {
+  const container = document.getElementById('sectionDailySummary');
+  if (!container || !currentData) return;
+
+  const su = currentData.shiftUp;
+  const companies = currentData.companies || [];
+
+  // 构建所有股票数据
+  const allStocks = [];
+  if (su) allStocks.push({ name: su.name, color: su.color, price: su.price, changePercent: su.changePercent, changeClass: su.changeClass });
+  companies.forEach(c => allStocks.push({ name: c.name, color: c.color, price: c.price, changePercent: c.change, changeClass: c.changeClass }));
+
+  const parsePct = (str) => { const m = String(str).match(/([+-]?[\d.]+)%/); return m ? parseFloat(m[1]) : 0; };
+  const sorted = [...allStocks].sort((a, b) => parsePct(b.changePercent) - parsePct(a.changePercent));
+
+  // 公司原因查找表（从 renderAnalysisItems 的静态数据提取）
+  // ⚠️ 重要：此表仅作为 EVENT_DATA 无匹配时的 fallback
+  // 真实原因应优先从 Naver Finance / DART / 当日新闻获取，每日必须更新！
+  // ⚠️ 关键规则：原因必须与涨跌方向逻辑自洽！
+  //   - 利好消息（销量大增、好评、联动、新产品）→ 解释上涨
+  //   - 利空消息（治理争议、监管风险、延期、业绩下调）→ 解释下跌
+  //   - 同一事件不能既解释涨又解释跌
+  //   - 如果找不到符合方向的原因 → 返回 null（显示"待查明原因"）
+
+  // 统计涨跌
+  let upCount = 0, downCount = 0, neutralCount = 0;
+  allStocks.forEach(s => {
+    if (s.changeClass === 'up') upCount++;
+    else if (s.changeClass === 'down') downCount++;
+    else neutralCount++;
+  });
+  const total = allStocks.length;
+
+  // ====== 动态生成当日分析文字（不依赖 analysis 字段）======
 
   // ====== Naver Finance 自动抓取增强（可选增强模块）=====
   // 用法：在数据更新流程中调用此函数，自动从 Naver Finance 抓取个股分析
@@ -548,15 +560,6 @@ function renderDailySummary() {
       return null;
     }
   }
-
-  // 统计涨跌
-  let upCount = 0, downCount = 0, neutralCount = 0;
-  allStocks.forEach(s => {
-    if (s.changeClass === 'up') upCount++;
-    else if (s.changeClass === 'down') downCount++;
-    else neutralCount++;
-  });
-  const total = allStocks.length;
 
   // ====== 动态生成当日分析文字（不依赖 analysis 字段）======
   const topGainer = sorted[0];
@@ -1381,6 +1384,22 @@ async function init() {
 
   hideLoading();
 }
+
+// 全局错误监听器（捕获所有未处理的JS错误）
+window.addEventListener('error', function(e) {
+  console.error('GLOBAL_ERROR:', e.message, 'at', e.filename, ':', e.lineno);
+  const el = document.getElementById('loadingOverlay');
+  if (el && el.style.opacity !== '0') {
+    el.innerHTML = '<div style="color:#f87171;padding:40px;text-align:center"><h2 style="margin-bottom:12px">⚠️ JS Error: ' + e.message + '</h2><pre style="text-align:left;background:rgba(0,0,0,0.3);padding:16px;border-radius:8px;margin-top:12px;font-size:13px">' + (e.filename || '') + ':' + (e.lineno || '') + ':' + (e.colno || '') + '\n\n' + String(e.error?.stack || '').replace(/</g,'&lt;') + '</pre></div>';
+  }
+});
+window.addEventListener('unhandledrejection', function(e) {
+  console.error('UNHANDLED_REJECTION:', e.reason);
+  const el = document.getElementById('loadingOverlay');
+  if (el && el.style.opacity !== '0') {
+    el.innerHTML = '<div style="color:#f87171;padding:40px;text-align:center"><h2 style="margin-bottom:12px">⚠️ Promise Rejection</h2><pre style="text-align:left;background:rgba(0,0,0,0.3);padding:16px;border-radius:8px;margin-top:12px;font-size:13px">' + String(e.reason).replace(/</g,'&lt;') + '</pre></div>';
+  }
+});
 
 // Start
 init();
