@@ -475,6 +475,52 @@ function renderDailySummary() {
     return null;
   }
 
+  // ====== 动态生成 Shift Up 本月变动原因分析 ======
+  // 不再依赖 latest.json 的 analysis 字段（该字段经常缺失）
+  // 改为根据当前数据日期 + SU当月涨跌 + findCompanyReason 动态生成
+  function generateSUAnalysis() {
+    const su = currentData.shiftUp;
+    if (!su) return '暂无分析数据';
+    
+    const suChangeClass = su.changeClass || 'neutral';
+    const suPct = su.changePercent || '0%';
+    const price = su.price || '-';
+    const prevClose = su.previousClose || '-';
+    
+    // 用 findCompanyReason 获取原因（fallback 静态表）
+    const reason = findCompanyReason('Shift Up', suChangeClass);
+    
+    // 计算月度累计涨跌（从 chartData 计算）
+    const chartData = currentData.chartData || [];
+    let monthChange = null;
+    let monthText = '';
+    if (chartData.length >= 2) {
+      const firstPrice = chartData[0].price;
+      const lastPrice = chartData[chartData.length - 1].price;
+      monthChange = ((lastPrice - firstPrice) / firstPrice * 100);
+      const mcSign = monthChange >= 0 ? '+' : '';
+      monthText = `本月累计 <strong style="color:${monthChange >= 0 ? '#34d399' : '#f87171'}">${mcSign}${monthChange.toFixed(2)}%</strong>（₩${firstPrice.toLocaleString()} → ₩${lastPrice.toLocaleString()}）`;
+    }
+    
+    // 构建分析文字
+    let html = '';
+    if (monthText) {
+      html += `<p>${monthText}</p>`;
+    }
+    
+    // 当日动态
+    html += `<p><strong>当日动态</strong>：收<strong>${price}</strong>（前日${prevClose}），变动<span style="color:${suChangeClass==='up'?'#34d399':suChangeClass==='down'?'#f87171':'#9aa0b3'};font-weight:600">${suPct}</span>。</p>`;
+    
+    // 原因分析
+    if (reason) {
+      html += `<p><strong>主要原因</strong>：${reason}</p>`;
+    } else {
+      html += '<p>无明显突发催化剂，技术性波动为主。</p>';
+    }
+    
+    return html;
+  }
+
   // ====== Naver Finance 自动抓取增强（可选增强模块）=====
   // 用法：在数据更新流程中调用此函数，自动从 Naver Finance 抓取个股分析
   // 替代静态 fallback 表，获取韩国分析师的真实观点
@@ -817,7 +863,7 @@ function renderStockPriceSection() {
                     本月变动原因分析
                 </h4>
                 <div class="analysis-text">
-                    ${(currentData.analysis?.suAnalysis || '暂无分析数据')}
+                    ${generateSUAnalysis()}
                     <span class="src-speculate">${currentData.analysis?.suAnalysisSrc || ''}</span>
                 </div>
             </div>
@@ -1228,6 +1274,14 @@ const EVENT_DATA = [
   { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》全球销量突破400万套，Steam评价"特别好评"，4/17媒体发布会临近市场期待值升高。4/13领涨+3.78%为当日涨幅最大。', source: '재경일보/SteamDB', date: '04.13', url: 'https://news.jkn.co.kr/post/869556' },
   { company: 'NCSoft', color: '#3b82f6', title: '《Aion 2(아이온2)》首次线下座谈会"지금 만나러 갑니다"于4/11在首尔成功举办，超600名玩家参与（远超预期），后续将追加江原道/济州地区场次。-0.42%', source: '뉴스툰/겜톡', date: '04.13', url: 'http://www.newstoon.co.kr/news/articleView.html?idxno=76282' },
   { company: 'Krafton', color: '#f59e0b', title: 'AI模型"Raon"开源生态持续发酵 + Q1实绩预期稳健₩4,400亿 + PUBG联动系列稳定贡献收入。4/13上涨+1.68%。', source: '이데일리', date: '04.13', url: '' },
+  // ====== 4/14（周二） ======
+  // 6家公司中5家上涨、1家下跌，NCSoft领涨+3.97%（月度涨幅扩大至+8.50%），板块整体偏强
+  { company: 'NCSoft', color: '#3b82f6', title: '《Aion 2(아이온2)》座谈会效应持续发酵，Q1财报季临近实绩改善预期强化，4/14大涨+3.97%领跑全板块，本月累计涨幅扩大至+8.50%为月度冠军。', source: '이데일리/뉴스툰', date: '04.14', url: 'http://www.newstoon.co.kr/news/articleView.html?idxno=76282' },
+  { company: 'Shift Up', color: '#ff6b9d', title: '《Stellar Blade(스텔라 블레이드)》PC版6/12正式发售预期升温 + NIKKE运营稳定，4/14反弹+2.74%企稳信号明确。', source: '인벤/게임조선', date: '04.14', url: '' },
+  { company: 'Nexon Games', color: '#22c55e', title: 'Blue Archive IP扩展战略持续推进，日本市场长期畅销支撑基本面，4/14反弹+1.97%显示技术面企稳。', source: '재경일보', date: '04.14', url: 'https://news.jkn.co.kr/post/869567' },
+  { company: 'Netmarble', color: '#ef4444', title: 'Coway收购争议消化后技术性反弹，《Seven Deadly Sins Origin》运营稳定提供基本面支撑，4/14转涨+1.00%。分红收益预期筑底。', source: '아이뉴스24', date: '04.14', url: '' },
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》4/17媒体发布会倒计时3天，DLC路线图期待值升高。4/14微涨+0.35%，前期获利了结卖压趋缓。', source: '재경일보/펄어비스', date: '04.14', url: 'https://news.jkn.co.kr/post/869556' },
+  { company: 'Krafton', color: '#f59e0b', title: 'Q1财报发布在即(4月下旬)部分资金获利了结，《Ascend Zero》新作等待后续催化，4/14回调-1.04%。', source: '이데일리', date: '04.14', url: '' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
