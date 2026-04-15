@@ -927,28 +927,28 @@ function renderCompanyAnalysisSection() {
 function renderAnalysisItems(compMap) {
   // ⚠️ 以下分析基于 2026年4月（截至4/14）的月度数据汇总
   // 累计涨跌 = (最新日收盘价 - 4/1收盘价) / 4/1收盘价 × 100%
-  // 数据来源：Naver Finance 日K收盘价
+  // 数据来源：Naver Finance 日K收盘价（2026.04.15 验算）
   // 下次数据抓取时需同步更新此处的数值和事件描述
   const items = [
     {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e',
-     monthChange:-0.33, monthClass:'down',
-     text:`<strong>本月累计 -0.33%</strong>（₩12,020→₩11,980）。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍压制估值——社长在股东总会上承认"新作曲延是主因"。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中，日本市场长期畅销提供基本面支撑。`, 
+     monthChange:-1.08, monthClass:'down',
+     text:`<strong>本月累计 -1.08%</strong>（₩12,020→₩11,890）。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中，日本市场长期畅销提供基本面支撑。4/14反弹+1.97%显示技术面企稳信号。`, 
      tier:1,url:'https://news.jkn.co.kr/post/869567'},
     {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444',
-     monthChange:-0.39, monthClass:'down',
-     text:`<strong>本月累计 -0.39%</strong>（₩51,400→₩51,200）。月中受<strong>Coway(코웨이)追加收购</strong>公告（₩1,500亿分阶段执行）引发治理争议，Align Partners批评"利益冲突"。《Seven Deadly Sins: Origin》1月上线后运营稳定，分红收益预期（年配当约₩2,800/股）构成底部支撑。`,
+     monthChange:-0.58, monthClass:'down',
+     text:`<strong>本月累计 -0.58%</strong>（₩51,400→₩51,100）。月中受<strong>Coway(코웨이)追加收购</strong>公告（₩1,500亿分阶段执行）引发治理争议，Align Partners批评"利益冲突"。《Seven Deadly Sins: Origin》1月上线后运营稳定，分红收益预期（年配当约₩2,800/股）构成底部支撑。4/14转涨+1.00%。`,
      tier:1,url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
     {code:'036570',name:'NCSoft',nameKr:'엔씨소프트',color:'#3b82f6',
-     monthChange:+8.72, monthClass:'up',
-     text:`<strong>本月累计 +8.72%</strong>（₩229,500→₩249,500），<span style="color:#22c55e">🏆 月度涨幅冠军</span>。主要驱动力：<br/>① <strong>Aion 2(아이온2)</strong>首次线下座谈会4/11超预期成功（600+人参与）；② Q1财报季实绩改善预期（预估销售额₩1,020亿）；③ 起诉YouTuber反作弊力度加大信号；④ 《리니지 클래식》BM新增防御收入下滑仍是中期隐忧。`,
+     monthChange:+8.50, monthClass:'up',
+     text:`<strong>本月累计 +8.50%</strong>（₩229,500→₩249,000），<span style="color:#22c55e">🏆 月度涨幅冠军</span>。主要驱动力：<br/>① <strong>Aion 2(아이온2)</strong>首次线下座谈会4/11超预期成功（600+人参与）；② Q1财报季实绩改善预期（预估销售额₩1,020亿）；③ 起诉YouTuber反作弊力度加大信号；④ 《리니지 클래식》BM新增防御收入下滑仍是中期隐忧。4/14继续大涨+3.97%领跑板块。`,
      tier:1,url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
     {code:'259960',name:'Krafton',nameKr:'크래프톤',color:'#f59e0b',
-     monthChange:-7.25, monthClass:'down',
-     text:`<strong>本月累计 -7.25%</strong>（₩262,000→₩243,000）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额预估稳健₩4,400亿 + PUBG联动系列稳定贡献，多条利好未能扭转月度跌幅。主因：4/2特朗普讲话冲击全球市场时跌幅较大（-5.54%），后续修复缓慢。<strong>Ascend Zero</strong>新作已公布(Xbox+Steam)，关注后续催化。`,
+     monthChange:-6.11, monthClass:'down',
+     text:`<strong>本月累计 -6.11%</strong>（₩262,000→₩246,000）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额预估稳健₩4,400亿 + PUBG联动系列稳定贡献，多条利好未能完全扭转月度跌幅。主因：4/2特朗普讲话冲击时跌幅较大（-5.53%），后续修复缓慢。4/14回调-1.04%，关注<strong>Ascend Zero</strong>新作后续催化。`,
      tier:2,url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
     {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#a855f7',
-     monthChange:-20.28, monthClass:'down',
-     text:`<strong>本月累计 -20.28%</strong>（₩72,000→₩57,400），月度跌幅最大。《붉은사막(Crimson Desert / 红色沙漠)》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam评价"特别好评"，同时在线峰值27万。<strong>4/17媒体发布会</strong>将公布DLC路线图。前期涨幅过大后的获利了结卖压主导月度走势，基本面向好但短期技术面承压。`,
+     monthChange:-22.22, monthClass:'down',
+     text:`<strong>本月累计 -22.22%</strong>（₩72,000→₩56,000），月度跌幅最大。《붉은사막(Crimson Desert / 红色沙漠)》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam评价"特别好评"，同时在线峰值27万。<strong>4/17媒体发布会</strong>将公布DLC路线图。前期涨幅过大后的获利了结卖压主导月度走势，4/14微涨+0.35%显示卖压趋缓。`,
      tier:2,url:'https://news.jkn.co.kr/post/869556'},
   ];
 
@@ -1142,18 +1142,18 @@ function renderCompareChart() {
 
   if (compareChartInstance) compareChartInstance.destroy();
 
-  // 完整数据（4/1~4/14，共9个交易日；4/11周五为韩国临时休市日）
+  // 完整数据（4/1~4/15，共11个交易日；4/11周五为韩国临时休市日）
   // ⚠️ 每个数据点 = (当日收盘 - 前日收盘) / 前日收盘 × 100%，保留2位小数
   // 验算依据：Naver Finance 日K收盘价逐日计算
-  // 数据更新于: 2026.04.14（下次抓取时需同步更新此数组）
-  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13'];
+  // 数据更新于: 2026.04.15（下次抓取时需同步更新此数组）
+  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14'];
   const ALL_DATASETS = [
-    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-    { label: 'Nexon', data: [0,-4.82,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-    { label: 'Krafton', data: [0,-5.54,-1.62,-2.88,-1.48,+0.43,0.00,+1.50,+1.68], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
+    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
   ];
 
   // 根据当前数据的日期确定截断位置
