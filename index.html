@@ -420,7 +420,9 @@ function findCompanyReason(stockName, changeClass) {
         : '《붉은사막(Crimson Desert / 红色沙漠)》Steam评价升至<strong>"好评如潮"</strong>，全球销量突破400万套，口碑反转驱动估值修复。',
       'Shift Up': isBeforeApril8
         ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。游戏股作为高Beta成长股领涨市场，Shift Up +5.77% 为月初行情龙头。'
-        : '<strong>PUBG × Stellar Blade(스텔라 블레이드) 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。',
+        : isApril13OrLater
+          ? '<strong>4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线</strong>：收购强化全球PC/主机发行能力，联动验证IP跨平台价值。前期超跌后技术性反弹。'
+          : '<strong>PUBG × Stellar Blade(스텔라 블레이드) 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。',
       'Krafton': isBeforeApril8
         ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。Krafton跟随板块上行，无明显个股催化剂。'
         : isApril10OrLater
@@ -429,22 +431,28 @@ function findCompanyReason(stockName, changeClass) {
       'Nexon Games': isApril13OrLater
         ? '<strong>Blue Archive IP扩展战略持续推进</strong>，日本等全球市场长期畅销。近期随板块调整后企稳。'
         : '<strong>无明显突发催化剂</strong>，或为4/2大盘暴跌后的技术性反弹修复（补涨属性）。',
-      'Netmarble': 'Coway追加收购虽引争议但<strong>强化控股带来长期分红收益预期</strong>（年配当约2,800韩元/股）+ 《Seven Deadly Sins Origin(일곱 개의 대죄: Origin)》1月上线后运营稳定。',
+      'Netmarble': isApril13OrLater
+        ? '<strong>《몬길: STAR DIVE(Monster Striker: Star Dive)》4/15 글로벌 정식 출시</strong>——PC·모바일 크로스플레이 동시지원，《몬스터길들이기》후속작(언리얼엔진5 기반 수집형액션RPG)이 GDC 2026 Xbox 협업발표 이후 정식 런칭。신작 출시가 단기 매출 기여 + 향후 IP 확장성 기대감 제공。'
+        : '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议：Activist基金Align Partners公开批评构成"stark conflict of interest（显著利益冲突）"——Netmarble作为Coway最大股东(持股25.8%)，实际受益于Coway股价走低（同额资金可买入更多股份），其目标与少数股东追求股价上涨的利益根本对立。市场质疑为何不回购自家股票而投资关联方。但强化控股也带来长期分红收益预期（年配当约2,800韩元/股）+ 《Seven Deadly Sins Origin(일곱 개의 대죄: Origin)》运营稳定。',
     };
     const reasonMapDown = {
       // ====== 下跌原因：利空驱动 ======
       'NCSoft': isApril13OrLater
         ? '<strong>Aion 2座谈会利好已部分反应</strong>，4/13小幅回调-0.42%属正常波动。《리니지 클래식》BM新增防御收入下滑仍是中期隐忧。'
         : '<strong>特朗普伊朗强硬讲话冲击全球市场</strong>：KOSPI -4.47%、KOSDAQ -5.36% 双双触发卖空侧轨，外资抛售近5,000亿韩元。游戏板块作为高Beta成长股遭集中抛售。',
-      'Netmarble': '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
+      'Netmarble': isApril13OrLater
+        ? '<strong>《몬길: STAR DIVE》4/15 글로벌 출시 기대감이 선반영 완료</strong>——출시 당일 매출 기여는 단기적이며, 시장은 초기 다운로드/매출 데이터를 관망 중. Coway 인수 논란과 겹쳐 방향성 불확실.'
+        : '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
       'Pearl Abyss': isApril13OrLater
         ? '<strong>短期无明显利空</strong>，前期涨幅较大后获利了结卖压逐步消化中。'
         : '《붉은사막(Crimson Desert / 红色沙漠)》前期涨幅较大，<strong>获利了结卖压释放</strong>。短期技术性回调占主导。',
       'Krafton': '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
-      'Shift Up': isApril10OrLater
-        ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
-        : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
-      'Nexon Games': '<strong>新作延期风险</strong>：社长在股东总会上承认"新作曲延是主인(신작 지연이 주가 하락 원인)"。《First Descendant》进入成熟期缺乏新增长引擎。',
+      'Shift Up': isApril13OrLater
+        ? '<strong>短期无明显利空</strong>，前期涨幅较大后获利了结卖压逐步消化中，技术面企稳。'
+        : isApril10OrLater
+          ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
+          : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
+      'Nexon Games': '<strong>新作延期风险</strong>：社长朴龙贤在3/27股东总会上承认"新作延期是股价下跌主因"。核心新作《던전앤파이터:아라드(DNF: Arad)》、Project DX/RX 日程均部分延迟，《First Descendant》进入成熟期缺乏新增长引擎。',
     };
 
     const map = changeClass === 'up' ? reasonMapUp : reasonMapDown;
@@ -465,6 +473,7 @@ function generateSUAnalysis() {
   const prevClose = su.previousClose || '-';
   
   // 用 findCompanyReason 获取原因（fallback 静态表）
+  // 注意：这是"本月变动原因分析"区域，应显示完整月度原因，不做波动门槛限制
   const reason = findCompanyReason('Shift Up', suChangeClass);
   
   // 计算月度累计涨跌（从 chartData 计算）
@@ -634,10 +643,10 @@ function renderDailySummary() {
   }
 
   // ====== 统一个股驱动因素生成（三个分支共用）=====
-  // 规则：
-  //   1) 波动 ≥5% → 必须显示原因，找不到则标记"待查明"
-  //   2) 波动 <5% 但有 EVENT_DATA 事件匹配或 findCompanyReason 有结果 → 也显示
-  //   3) 完全无原因驱动的股票 → 不显示（避免噪音）
+  // 规则：聚焦当日驱动，不混入月度/历史事件
+  //   1) 波动 ≥5% → 必须显示原因，找不到则标记"待查"
+  //   2) 波动 <5% 但有当日EVENT_DATA精确匹配 → 也显示
+  //   3) <5%且仅有静态fallback(月度原因) → 不显示，避免把整月事件混入当日分析
   function buildDriverFactorsText() {
     const THRESHOLD = 5;
     const sigMovers = getSignificantMovers(THRESHOLD);
@@ -660,17 +669,17 @@ function renderDailySummary() {
       }
     }
 
-    // 第二轮：<5% 但有明确事件/原因驱动的股票也补充显示
+    // 第二轮：<5% 但有当日EVENT_DATA事件精确匹配的股票也补充显示（仅限当日事件）
     for (const stock of allStocks) {
       if (addedStocks.has(stock.name)) continue;
       const pct = Math.abs(parsePct(stock.changePercent));
-      if (pct < 1) continue; // 跳过波动<1%的股票（小幅波动不需要分析原因）
+      if (pct < 1) continue; // 跳过波动<1%的股票
+      // 仅使用当日EVENT_DATA匹配，不用静态fallback（避免混入月度事件）
       const hasEvent = todayEvents.some(e => matchEventToStock(e)?.name === stock.name);
-      const hasStaticReason = findCompanyReason(stock.name, stock.changeClass);
-      if (hasEvent || hasStaticReason) {
+      if (hasEvent) {
         addedStocks.add(stock.name);
         const reason = findStockReason(stock, todayEvents);
-        const displayReason = reason || { source: 'static', text: hasStaticReason, color: stock.color };
+        const displayReason = reason || { source: 'event', text: '有当日事件记录', color: stock.color };
         reasons.push(`<span style="color:${displayReason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${displayReason.text}</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
       }
     }
@@ -867,7 +876,7 @@ function renderStockPriceSection() {
                 </h4>
                 <div class="analysis-text">
                     ${generateSUAnalysis()}
-                    <span class="src-speculate">${currentData.analysis?.suAnalysisSrc || ''}</span>
+                    ${currentData.analysis?.suAnalysisSrc ? `<span class="src-speculate">${currentData.analysis.suAnalysisSrc}</span>` : ''}
                 </div>
             </div>
         </div>
@@ -1069,7 +1078,7 @@ function renderNewsSection() {
         <table class="info-table">
             <thead><tr><th style="width:20%">公司</th><th style="width:65%">事件摘要</th><th style="width:15%">日期</th></tr></thead>
             <tbody>
-                ${[...EVENT_DATA].reverse().map(i => `<tr>
+                ${[...NORMAL_DATA].reverse().map(i => `<tr>
                     <td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td>
                     <td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td>
                     <td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td>
@@ -1195,14 +1204,14 @@ function renderCompareChart() {
   // ⚠️ 每个数据点 = (当日收盘 - 前日收盘) / 前日收盘 × 100%，保留2位小数
   // 验算依据：Naver Finance 日K收盘价逐日计算
   // 数据更新于: 2026.04.15（下次抓取时需同步更新此数组）
-  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14'];
+  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15'];
   const ALL_DATASETS = [
-    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
+    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
   ];
 
   // 根据当前数据的日期确定截断位置
@@ -1280,11 +1289,14 @@ const EVENT_DATA = [
   // ====== 4/14（周二） ======
   // 6家公司中5家上涨、1家下跌，NCSoft领涨+3.97%（月度涨幅扩大至+8.50%），板块整体偏强
   { company: 'NCSoft', color: '#3b82f6', title: '《Aion 2(아이온2)》座谈会效应持续发酵，Q1财报季临近实绩改善预期强化，4/14大涨+3.97%领跑全板块，本月累计涨幅扩大至+8.50%为月度冠军。', source: '이데일리/뉴스툰', date: '04.14', url: 'http://www.newstoon.co.kr/news/articleView.html?idxno=76282' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '《Stellar Blade(스텔라 블레이드)》PC版6/12正式发售预期升温 + NIKKE运营稳定，4/14反弹+2.74%企稳信号明确。', source: '인벤/게임조선', date: '04.14', url: '' },
+  { company: 'Shift Up', color: '#ff6b9d', title: '4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线，IP跨平台价值验证+全球发行能力强化。前期超跌后技术性反弹，4/14收涨+2.74%。', source: '인벤/게임조선', date: '04.14', url: '' },
   { company: 'Nexon Games', color: '#22c55e', title: 'Blue Archive IP扩展战略持续推进，日本市场长期畅销支撑基本面，4/14反弹+1.97%显示技术面企稳。', source: '재경일보', date: '04.14', url: 'https://news.jkn.co.kr/post/869567' },
   { company: 'Netmarble', color: '#ef4444', title: 'Coway收购争议消化后技术性反弹，《Seven Deadly Sins Origin》运营稳定提供基本面支撑，4/14转涨+1.00%。分红收益预期筑底。', source: '아이뉴스24', date: '04.14', url: '' },
   { company: 'Pearl Abyss', color: '#a855f7', title: '《붉은사막(Crimson Desert / 红色沙漠)》4/17媒体发布会倒计时3天，DLC路线图期待值升高。4/14微涨+0.35%，前期获利了结卖压趋缓。', source: '재경일보/펄어비스', date: '04.14', url: 'https://news.jkn.co.kr/post/869556' },
   { company: 'Krafton', color: '#f59e0b', title: 'Q1财报发布在即(4月下旬)部分资金获利了结，《Ascend Zero》新作等待后续催化，4/14回调-1.04%。', source: '이데일리', date: '04.14', url: '' },
+  // ====== 4/15（周三） ======
+  // Krafton领涨+2.09%，Pearl Abyss跌幅最大-3.28%（前期涨幅过大后获利了结），板块分化明显
+  { company: 'Netmarble', color: '#ef4444', title: '신작 액션 RPG《몬길: STAR DIVE(Monster Striker: Star Dive)》4/15 글로벌 정식 출시——PC(Steam/Epic)·모바일 크로스플레이 동시지원，《몬스터길들이기》후속작으로 언리얼엔진5 기반 수집형액션RPG。GDC 2026 Xbox 협업발표 이후 첫 정식 런칭。', source: '연합뉴스/매일경제', date: '04.15', url: 'https://www.yna.co.kr/view/AKR20260312047700017' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
