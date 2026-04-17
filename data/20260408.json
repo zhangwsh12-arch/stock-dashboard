@@ -1,4 +1,4 @@
-{
+﻿{
   "meta": {
     "date": "20260408",
     "dateDisplay": "4月（截至8日）",
@@ -35,8 +35,8 @@
     },
     {
       "code": "036570",
-      "name": "NCSoft",
-      "nameKr": "엔씨소프트",
+      "name": "NC",
+      "nameKr": "엔씨",
       "color": "#3b82f6",
       "price": "218,000",
       "change": "+3.81%",
@@ -93,7 +93,7 @@
     },
     {
       "code": "036570",
-      "name": "NCSoft",
+      "name": "NC",
       "color": "#3b82f6",
       "price": "218,000",
       "per": 13.53,
