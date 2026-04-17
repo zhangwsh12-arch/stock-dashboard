@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260416",
     "dateDisplay": "4月（截至16日）",
-    "fetchedAt": "2026-04-17T03:53:49.615Z",
+    "fetchedAt": "2026-04-17T07:10:27.716Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,8 +18,8 @@
     "change": "700",
     "changePercent": "+2.12%",
     "changeClass": "up",
-    "per": "10.35",
-    "pbr": "2.15",
+    "per": "10.27",
+    "pbr": "2.13",
     "marketCap": "1.98兆元"
   },
   "companies": [
@@ -31,7 +31,7 @@
       "price": "266,500",
       "change": "+7.68%",
       "changeClass": "up",
-      "per": "16.54"
+      "per": "16.38"
     },
     {
       "code": "259960",
@@ -51,7 +51,7 @@
       "price": "51,900",
       "change": "+2.17%",
       "changeClass": "up",
-      "per": "19.67"
+      "per": "19.71"
     },
     {
       "code": "225570",
@@ -80,16 +80,16 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "33,700",
-      "per": 10.35,
-      "perRaw": "10.35"
+      "per": 10.27,
+      "perRaw": "10.27"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
       "price": "266,500",
-      "per": 16.54,
-      "perRaw": "16.54"
+      "per": 16.38,
+      "perRaw": "16.38"
     },
     {
       "code": "259960",
@@ -104,8 +104,8 @@
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "51,900",
-      "per": 19.67,
-      "perRaw": "19.67"
+      "per": 19.71,
+      "perRaw": "19.71"
     }
   ],
   "chartData": [
