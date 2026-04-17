@@ -411,7 +411,7 @@ function findCompanyReason(stockName, changeClass) {
       'NCSoft': isBeforeApril8
         ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。NCSoft作为高Beta游戏股跟随板块上行。'
         : isApril13OrLater
-          ? '<strong>《Aion 2(아이온2)》首次线下座谈会超预期成功</strong>：4/11首尔场吸引600+玩家（远超预期400人），后续将追加江原道/济州场次，用户社区活跃度高。'
+          ? '<strong>《Aion 2(아이온2)》座谈会超预期 + KSK预约94万创历史新高</strong>：4/11首尔场600+玩家（远超预期400人），后续追加江原道/济州场。韩国预约量突破94万（超越《리니지M》创公司历史最高），KSK登录后30日留存率36%（远超行业平均）。6月全球正式发布期待。'
           : isApril10OrLater
             ? '<strong>Q1财报季实绩改善预期</strong>：分析师预估销售额1,020亿韩元，《리니지 클래식》新增BM防御收入下滑，《Aion 2》S3延期但市场反应正面。'
             : '<strong>4/7正式起诉YouTuber"영래기"</strong>，市场解读为反作弊力度加大的积极信号，累计制裁近600万账户。',
@@ -425,9 +425,9 @@ function findCompanyReason(stockName, changeClass) {
           : '<strong>PUBG × Stellar Blade(스텔라 블레이드) 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。',
       'Krafton': isBeforeApril8
         ? '<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。Krafton跟随板块上行，无明显个股催化剂。'
-        : isApril10OrLater
-          ? '<strong>Q1实绩预期稳健+AI品牌效应</strong>：AI模型"Raon"开源发酵；PUBG联动持续贡献收入；Q1销售额预估₩4,400亿。'
-          : '<strong>PUBG × Stellar Blade 联动 4/8 上线</strong>（Krafton侧收入）+ AI模型"Raon"首批开源模型发布 + 《Ascend Zero》新作公布。',
+        : isApril13OrLater
+          ? '<strong>Q1实绩超预期：营业利润₩5,200亿（YoY +52%）</strong>——远超市场预期₩2,700~4,000亿；营收₩1.2兆（YoY +₩4,082亿）。PUBG: Battlegrounds PC版Q1销量39万台强劲，《PUBG Mobile》全球表现稳健。AI品牌"Haon"开发中。'
+          : '<strong>Q1实绩预期稳健+AI品牌效应</strong>：AI模型"Raon"开源发酵；PUBG联动持续贡献收入。',
       'Nexon Games': isApril13OrLater
         ? '<strong>Blue Archive IP扩展战略持续推进</strong>，日本等全球市场长期畅销。近期随板块调整后企稳。'
         : '<strong>无明显突发催化剂</strong>，或为4/2大盘暴跌后的技术性反弹修复（补涨属性）。',
@@ -1200,18 +1200,18 @@ function renderCompareChart() {
 
   if (compareChartInstance) compareChartInstance.destroy();
 
-  // 完整数据（4/1~4/15，共11个交易日；4/11周五为韩国临时休市日）
+  // 完整数据（4/1~4/16，共12个交易日；4/11周五为韩国临时休市日）
   // ⚠️ 每个数据点 = (当日收盘 - 前日收盘) / 前日收盘 × 100%，保留2位小数
   // 验算依据：Naver Finance 日K收盘价逐日计算
-  // 数据更新于: 2026.04.15（下次抓取时需同步更新此数组）
-  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15'];
+  // 数据更新于: 2026.04.16（下次抓取时需同步更新此数组）
+  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15', '4/16'];
   const ALL_DATASETS = [
-    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
+    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22,+2.12], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20,+2.17], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+    { label: 'NCSoft', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40,+7.68], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09,+5.12], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28,-1.25], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
   ];
 
   // 根据当前数据的日期确定截断位置
@@ -1297,6 +1297,10 @@ const EVENT_DATA = [
   // ====== 4/15（周三） ======
   // Krafton领涨+2.09%，Pearl Abyss跌幅最大-3.28%（前期涨幅过大后获利了结），板块分化明显
   { company: 'Netmarble', color: '#ef4444', title: '신작 액션 RPG《몬길: STAR DIVE(Monster Striker: Star Dive)》4/15 글로벌 정식 출시——PC(Steam/Epic)·모바일 크로스플레이 동시지원，《몬스터길들이기》후속작으로 언리얼엔진5 기반 수집형액션RPG。GDC 2026 Xbox 협업발표 이후 첫 정식 런칭。', source: '연합뉴스/매일경제', date: '04.15', url: 'https://www.yna.co.kr/view/AKR20260312047700017' },
+  // ====== 4/16（周四） ======
+  // NCSoft领涨+7.68%（KSK催化），Krafton+5.12%（Q1实绩超预期），游戏板块整体强势
+  { company: 'NCSoft', color: '#3b82f6', title: '《Aion 2(아이온2)》KSK 한국 사전예약 94만건 돌파——《리니지M》기록 경신, KSK 30일 이용률 36%(업계 평균 훨씬 상회)。4/11 서울 좌담회 성료 후 추가 강원도/제주 개최 확정, 커뮤니티 반응 뜨겁게 유지 중。6월 글로벌 출시 기대감 고조로 엔씨주 +7.47% 오르며 266,500원 마감。크래프톤 동반 상승 +6.56%。', source: '엔씨소프트/크래프톤 공시', date: '04.16', url: '' },
+  { company: 'Krafton', color: '#f59e0b', title: 'Q1 실적 시장 예상 크게 상회——매출 ₩1.2조(YoY +₩4,082억), 영업이익 ₩5,200억(YoY +52%, 컨센서스 ₩2,700~4,000억 대비 큰 폭 초과). PUBG: Battlegrounds PC판 Q1 판매량 39만대 견조, 《PUBG Mobile》 글로벌 강세. AI 브랜드 "Haon" 개발 진행 중。', source: '크래프톤 공시/이데일리', date: '04.16', url: '' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
