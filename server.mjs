@@ -34,7 +34,7 @@ const COMPANIES = [
     { name_en: "Shift Up",    name_ko: "시프트업",   code: "391740", color: "#ff6b9d", market: "KOSDAQ", isFocus: true },
     { name_en: "Nexon",       name_ko: "넥슨게임즈",  code: "042700", color: "#22c55e", market: "KOSPI",  isFocus: false },
     { name_en: "Netmarble",   name_ko: "넷마블",      code: "251270", color: "#ef4444", market: "KOSDAQ", isFocus: false },
-    { name_en: "NCSoft",      name_ko: "엔씨소프트",  code: "036570", color: "#3b82f6", market: "KOSDAQ", isFocus: false },
+    { name_en: "NC",          name_ko: "엔씨",          code: "036570", color: "#3b82f6", market: "KOSDAQ", isFocus: false },
     { name_en: "Krafton",     name_ko: "크래프톤",   code: "259960", color: "#f59e0b", market: "KOSDAQ", isFocus: false },
     { name_en: "Pearl Abyss", name_ko: "펄어비스",   code: "263750", color: "#ec4899", market: "KOSDAQ", isFocus: false },
 ];

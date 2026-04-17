@@ -28,7 +28,7 @@ const COMPANIES = [
   { code: '462870', name: 'Shift Up',       nameKr: '시프트업',    color: '#ff6b9d', yahoo: '462870.KQ' },
   { code: '225570', name: 'Nexon Games',    nameKr: '넥슨게임즈',   color: '#22c55e', yahoo: '225570.KS' },
   { code: '251270', name: 'Netmarble',      nameKr: '넷마블',        color: '#ef4444', yahoo: '251270.KS' },
-  { code: '036570', name: 'NCSoft',         nameKr: '엔씨소프트',    color: '#3b82f6', yahoo: '036570.KS' },
+  { code: '036570', name: 'NC',            nameKr: '엔씨',          color: '#3b82f6', yahoo: '036570.KS' },
   { code: '259960', name: 'Krafton',        nameKr: '크래프톤',     color: '#f59e0b', yahoo: '259960.KQ' },
   { code: '263750', name: 'Pearl Abyss',    nameKr: '펄어비스',     color: '#ec4899', yahoo: '263750.KS' },
 ];

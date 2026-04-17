@@ -42,7 +42,7 @@ log = logging.getLogger(__name__)
 # 韩国主要游戏公司 KRX 代码
 STOCK_CODES: Dict[str, Dict[str, str]] = {
     "Nexon":        {"code": "042700", "ko_name": "넥슨게임즈", "market": "KOSPI"},
-    "NCSoft":       {"code": "036570", "ko_name": "엔씨소프트", "market": "KOSDAQ"},
+    "NC":           {"code": "036570", "ko_name": "엔씨", "market": "KOSDAQ"},
     "Netmarble":    {"code": "251270", "ko_name": "넷마블",     "market": "KOSDAQ"},
     "Krafton":      {"code": "259960", "ko_name": "크래프톤",   "market": "KOSDAQ"},
     "Pearl Abyss":  {"code": "263750", "ko_name": "펄어비스",   "market": "KOSDAQ"},
