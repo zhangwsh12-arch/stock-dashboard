@@ -494,9 +494,6 @@ function generateSUAnalysis() {
     html += `<p>${monthText}</p>`;
   }
   
-  // 当日动态
-  html += `<p><strong>当日动态</strong>：收<strong>${price}</strong>（前日${prevClose}），变动<span style="color:${suChangeClass==='up'?'#34d399':suChangeClass==='down'?'#f87171':'#9aa0b3'};font-weight:600">${suPct}</span>。</p>`;
-  
   // 原因分析
   if (reason) {
     html += `<p><strong>主要原因</strong>：${reason}</p>`;
