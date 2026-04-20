@@ -987,7 +987,7 @@ function renderAnalysisItems(compMap) {
   const items = [
     {code:'462870',name:'Shift Up',nameKr:'시프트업',color:'#ff6b9b',
      monthChange:-1.18, monthClass:'down',
-     text:`<strong>本月累计 -1.18%</strong>（₩33,900→₩33,500）。<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+3套服装进入艾伦格地图验证IP跨平台价值。前期超跌后技术性反弹，但4/17随板块回调-0.59%。关注《Stellar Blade》PC版6/12正式发售催化。`,
+     text:`<strong>本月累计 -1.18%</strong>（₩33,900→₩33,500）。<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+3套服装进入艾伦格地图验证IP跨平台价值。4/14技术性反弹+2.74%，但4/15~4/17连续三日回调（-1.51%累计），4/17随板块调整-0.59%。关注<strong>《Stellar Blade》PC版6/12正式发售</strong>催化+NIKKE新SSR"백학(白鹤)"更新至4/22持续运营。`,
      tier:2,url:''},
     {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e',
      monthChange:-1.08, monthClass:'down',
@@ -1302,6 +1302,12 @@ const EVENT_DATA = [
   // NC领涨+7.68%（KSK催化），Krafton+5.12%（Q1实绩超预期），游戏板块整体强势
   { company: 'NC', color: '#3b82f6', title: '《Aion 2》KSK韩国预约94万+突破——《Lineage M》纪录刷新，KSK 30日留存率36%（远超行业平均）。4/11首尔座谈会成功后追加江原道/济州场次确认，社区热度持续。6月全球发布期待推动NC +7.47%至266,500韩元收盘，Krafton跟涨+6.56%。', source: 'NC/Krafton 公告', date: '04.16', url: '' },
   { company: 'Krafton', color: '#f59e0b', title: 'Q1实绩远超市场预期——营收₩1.2兆(YoY +₩4,082亿)，营业利润₩5,200亿(YoY +52%，市场一致预期仅₩2,700~4,000亿，大幅超预期)。PUBG: Battlegrounds PC版Q1销量39万台强劲，《PUBG Mobile》全球表现稳健。AI品牌"Haon"开发中。', source: 'Krafton公告/이데일리', date: '04.16', url: '' },
+  // ====== 4/17（周五）=====
+  // 4/16全线大涨后获利了结回调，4家下跌2家上涨，板块整体承压调整
+  // KOSPI -0.55%（6,192点），前两日连涨后正常技术性回调
+  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》4/17媒体发布会召开——公布DLC扩展路线图及后续更新计划（Boss重战、区域再封锁、难度选项等），但利好兑现后资金获利了结，-2.17%领跌。', source: 'Pearl Abyss官方/GameLook', date: '04.17', url: 'http://www.gamelook.com.cn/2026/04/591477/' },
+  { company: 'NC', color: '#3b82f6', title: '4/16 KSK催化+7.68%后技术性回调，《Aion 2》座谈会+预约利好已充分定价，-1.50%属连涨后的正常获利了结。', source: '이데일리', date: '04.17', url: '' },
+  { company: 'Krafton', color: '#f59e0b', title: 'Q1超预期财报(利润YoY+52%)次日效应延续，逆势收红+2.73%为当日唯一亮点——市场认可实绩改善逻辑，资金持续流入。', source: '이데일리/Krafton公告', date: '04.17', url: '' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
