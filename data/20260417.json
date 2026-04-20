@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260417",
     "dateDisplay": "4月（截至17日）",
-    "fetchedAt": "2026-04-20T03:01:10.752Z",
+    "fetchedAt": "2026-04-20T03:12:39.728Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,8 +18,8 @@
     "change": "-200",
     "changePercent": "-0.59%",
     "changeClass": "down",
-    "per": "10.41",
-    "pbr": "2.16",
+    "per": "10.43",
+    "pbr": "2.17",
     "marketCap": "1.96兆元"
   },
   "companies": [
@@ -31,7 +31,7 @@
       "price": "262,500",
       "change": "-1.50%",
       "changeClass": "down",
-      "per": "16.73"
+      "per": "16.76"
     },
     {
       "code": "259960",
@@ -41,7 +41,7 @@
       "price": "263,500",
       "change": "+2.73%",
       "changeClass": "up",
-      "per": "17.17"
+      "per": "17.13"
     },
     {
       "code": "251270",
@@ -80,24 +80,24 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "33,500",
-      "per": 10.41,
-      "perRaw": "10.41"
+      "per": 10.43,
+      "perRaw": "10.43"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
       "price": "262,500",
-      "per": 16.73,
-      "perRaw": "16.73"
+      "per": 16.76,
+      "perRaw": "16.76"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "263,500",
-      "per": 17.17,
-      "perRaw": "17.17"
+      "per": 17.13,
+      "perRaw": "17.13"
     },
     {
       "code": "251270",
