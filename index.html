@@ -1197,18 +1197,18 @@ function renderCompareChart() {
 
   if (compareChartInstance) compareChartInstance.destroy();
 
-  // 完整数据（4/1~4/17，共13个交易日；4/11周五为韩国临时休市日）
+  // 完整数据（4/1~4/20，共14个交易日；4/11周五为韩国临时休市日；4/18~19周末休市）
   // ⚠️ 每个数据点 = (当日收盘 - 前日收盘) / 前日收盘 × 100%，保留2位小数
   // 验算依据：Naver Finance 日K收盘价逐日计算
-  // 数据更新于: 2026.04.20（下次抓取时需同步更新此数组）
-  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15', '4/16', '4/17'];
+  // 数据更新于: 2026.04.21（下次抓取时需同步更新此数组）
+  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15', '4/16', '4/17', '4/20'];
   const ALL_DATASETS = [
-    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22,+2.12,-0.59], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01,+1.34], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20,+2.17,-0.58], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-    { label: 'NC', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40,+7.68,-1.50], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09,+5.12,+2.73], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28,-1.25,-2.17], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
+    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22,+2.12,-0.59,+0.75], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01,+1.34,+1.90], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20,+2.17,-0.58,-0.19], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+    { label: 'NC', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40,+7.68,-1.50,+1.90], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09,+5.12,+2.73,-0.76], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28,-1.25,-2.17,-0.18], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
   ];
 
   // 根据当前数据的日期确定截断位置
@@ -1302,6 +1302,10 @@ const EVENT_DATA = [
   // 4/16全线大涨后获利了结回调，4家下跌2家上涨，板块整体承压调整
   // KOSPI -0.55%（6,192点），前两日连涨后正常技术性回调
   { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》4/17媒体发布会召开——公布DLC扩展路线图及后续更新计划（Boss重战、区域再封锁、难度选项等）。', source: 'Pearl Abyss官方/GameLook', date: '04.17', url: 'http://www.gamelook.com.cn/2026/04/591477/' },
+  // ====== 4/20（周一）=====
+  // 周末休市后首个交易日，板块分化：NC领涨+1.90%，Krafton微跌-0.76%
+  // FnGuide发布Q1盈利预期：四大游戏公司总营收+39.2%、总利润+37.9%
+  { company: '四大游戏公司', color: '#6b7185', title: 'FnGuide 4/19发布一致预期：韩国四大游戏公司(Krafton/Netmarble/NC/Pearl Abyss)Q1总营收₩2.7兆(YoY +39.2%)，总营业利润₩6,993亿(YoY +37.9%)。新游戏发行成为核心增长引擎。NC营业利润预期₩936亿(YoY +1700%，近18倍)，Pearl Abyss扭亏为盈至₩1,250亿(去年同期亏损₩52亿)。', source: 'MK경제신문/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
@@ -1311,6 +1315,7 @@ const NORMAL_DATA = [
   { company: 'Netmarble', color: '#ef4444', title: '新动作RPG《Monster Striker: Star Dive（몬길: STAR DIVE）》4/15全球正式上线——PC(Steam/Epic)·移动端跨平台联机，《怪物训练师》续作(U5引擎收集型动作RPG)。', source: '연합뉴스/매일경제', date: '04.15', url: 'https://www.yna.co.kr/view/AKR20260312047700017' },
   { company: 'NC + Krafton', color: '#3b82f6', title: '《Aion 2》KSK韩国预约94万+创历史新高，KSK 30日留存率36%远超行业平均。6月全球发布期待。Krafton Q1利润₩5,200亿(YoY +52%)大幅超预期。', source: 'NC/Krafton公告', date: '04.16', url: '' },
   { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학(白鹤)"登场 — 防御型角色(回血+贯穿)，更新至4/22', source: '레벨인피니트', date: '04.09~22', url: '' },
+  { company: '行业宏观', color: '#6b7185', title: 'FnGuide发布韩国四大游戏公司Q1盈利预期：总营收₩2.7兆(YoY +39.2%)，总营业利润+37.9%。NC利润预期YoY +1700%(近18倍)，Pearl Abyss扭亏为盈至₩1,250亿。新游戏发行成为增长核心引擎。', source: 'MK경제/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
   { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格地图', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
   { company: 'Netmarble', color: '#ef4444', title: '《SOL: enchant》发售日从春季延至6月，官方称"为提高完成度"', source: '인벤', date: '04.08', url: '' },
   { company: 'NC', color: '#3b82f6', title: '《Lineage Classic》累计制裁近600万账户，打击非法程序力度持续加强', source: 'NC官方', date: '04.07', url: 'https://about.ncsoft.com/news/article/news_update_260407' },
