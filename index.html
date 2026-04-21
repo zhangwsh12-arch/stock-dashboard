@@ -448,7 +448,7 @@ function findCompanyReason(stockName, changeClass) {
         : '《Crimson Desert（红色沙漠）》前期涨幅较大，<strong>获利了结卖压释放</strong>。短期技术性回调占主导。',
       'Krafton': '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
       'Shift Up': isApril13OrLater
-        ? '<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+服装进入艾伦格地图验证IP跨平台价值。4月中旬连续回调后企稳，关注NIKKE后续运营更新。'
+        ? '<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+服装进入艾伦格地图验证IP跨平台价值。<strong>4/18 NIKKE 3.5周年特别生放送</strong>成功举办，新角色"Anis: Star"将于4/23实装。4月中旬连续回调后企稳，关注NIKKE运营表现。'
         : isApril10OrLater
           ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
           : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
@@ -1204,7 +1204,7 @@ function renderCompareChart() {
   const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15', '4/16', '4/17', '4/20'];
   const ALL_DATASETS = [
     { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22,+2.12,-0.59,+0.75], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01,+1.34,+1.90], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01,+1.34,-0.41], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
     { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20,+2.17,-0.58,-0.19], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
     { label: 'NC', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40,+7.68,-1.50,+1.90], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
     { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09,+5.12,+2.73,-0.76], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
