@@ -986,24 +986,24 @@ function renderAnalysisItems(compMap) {
   // 下次数据抓取时需同步更新此处的数值和事件描述
   const items = [
     {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e',
-     monthChange:-1.08, monthClass:'down',
-     text:`<strong>本月累计 -1.08%</strong>（₩12,020→₩11,890）。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中，日本市场长期畅销提供基本面支撑。4/14反弹+1.97%显示技术面企稳信号。`, 
+     monthChange:+0.50, monthClass:'up',
+     text:`<strong>本月累计 +0.50%</strong>（₩12,020→₩12,080）。月初随大盘暴跌后逐步修复至基本持平。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中，日本市场长期畅销提供基本面支撑。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"，具体涉及《Dungeon & Fighter: Arad（던전앤파이터:아라드）》、Project DX、Project RX 日程均部分延迟。`, 
      tier:1,url:'https://news.jkn.co.kr/post/869567'},
     {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444',
-     monthChange:-0.58, monthClass:'down',
-     text:`<strong>本月累计 -0.58%</strong>（₩51,400→₩51,100）。月初受<strong>Coway追加收购</strong>公告（₩1,500亿分阶段执行）引发治理争议，Align Partners批评"利益冲突"。《Seven Deadly Sins: Origin》1月上线后运营稳定，分红收益预期（年配当约₩2,800/股）构成底部支撑。<strong>4/15新动作RPG《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机，《怪物训练师》续作(U5引擎)为短期营收贡献+IP扩展预期。4/14转涨+1.00%，4/16续涨+2.17%。`,
+     monthChange:+0.19, monthClass:'up',
+     text:`<strong>本月累计 +0.19%</strong>（₩51,400→₩51,500）。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机，《怪物训练师》续作(U5引擎)为短期营收贡献。`,
      tier:1,url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
     {code:'036570',name:'NC',nameKr:'엔씨',color:'#3b82f6',
-     monthChange:+8.50, monthClass:'up',
-     text:`<strong>本月累计 +8.50%</strong>（₩229,500→₩249,000），<span style="color:#22c55e">🏆 月度涨幅冠军</span>。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功（600+人参与）；② KSK韩国预约94万+创公司历史新高，30日留存36%远超行业平均；③ Q1财报季实绩改善预期；④ 起诉YouTuber反作弊力度加大信号；⑤ 《Lineage Classic》BM新增防御收入下滑仍是中期隐忧。4/14继续大涨+3.97%，4/16再涨+7.68%。`,
+     monthChange:+16.56, monthClass:'up',
+     text:`<strong>本月累计 +16.56%</strong>（₩229,500→₩267,500），<span style="color:#22c55e">🏆 月度涨幅冠军</span>。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功（600+人参与）；② KSK韩国预约94万+创公司历史新高，30日留存36%远超行业平均；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%；④ 起诉YouTuber反作弊力度加大。`,
      tier:1,url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
     {code:'259960',name:'Krafton',nameKr:'크래프톤',color:'#f59e0b',
-     monthChange:-6.11, monthClass:'down',
-     text:`<strong>本月累计 -6.11%</strong>（₩262,000→₩246,000）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额预估稳健₩4,400亿 + PUBG联动系列稳定贡献，多条利好未能完全扭转月度跌幅。主因：4/2特朗普讲话冲击时跌幅较大（-5.53%），后续修复缓慢。4/14回调-1.04%，关注<strong>Ascend Zero</strong>新作后续催化。`,
+     monthChange:-0.19, monthClass:'down',
+     text:`<strong>本月累计 -0.19%</strong>（₩262,000→₩261,500）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。Q1超预期财报(利润YoY+52%)后4/17逆势+2.73%，关注<strong>Ascend Zero</strong>新作后续催化。`,
      tier:2,url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
     {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#a855f7',
-     monthChange:-22.22, monthClass:'down',
-     text:`<strong>本月累计 -22.22%</strong>（₩72,000→₩56,000），月度跌幅最大。《Crimson Desert（红色沙漠）》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam评价"特别好评"，同时在线峰值27万。<strong>4/17媒体发布会</strong>将公布DLC路线图。前期涨幅过大后的获利了结卖压主导月度走势，4/14微涨+0.35%显示卖压趋缓。`,
+     monthChange:-25.00, monthClass:'down',
+     text:`<strong>本月累计 -25.00%</strong>（₩72,000→₩54,000），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，FnGuide预期Q1扭亏为盈至₩1,250亿。`,
      tier:2,url:'https://news.jkn.co.kr/post/869556'},
   ];
 
@@ -1306,6 +1306,8 @@ const EVENT_DATA = [
   // 周末休市后首个交易日，板块分化：NC领涨+1.90%，Krafton微跌-0.76%
   // FnGuide发布Q1盈利预期：四大游戏公司总营收+39.2%、总利润+37.9%
   { company: '四大游戏公司', color: '#6b7185', title: 'FnGuide 4/19发布一致预期：韩国四大游戏公司(Krafton/Netmarble/NC/Pearl Abyss)Q1总营收₩2.7兆(YoY +39.2%)，总营业利润₩6,993亿(YoY +37.9%)。新游戏发行成为核心增长引擎。NC营业利润预期₩936亿(YoY +1700%，近18倍)，Pearl Abyss扭亏为盈至₩1,250亿(去年同期亏损₩52亿)。', source: 'MK경제신문/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
+  // ====== 4/20（周一）NIKKE 3.5周年 ======
+  { company: 'Shift Up', color: '#ff6b9b', title: '《NIKKE：胜利女神》配信3.5周年特别生放送「希望之星再次闪耀之时」于4/18成功举办（第1部16:30/第2部19:00），官方首次开放线下观众招募。直播公布新Nikke角色<strong>"Anis: Star（아니스：스타）"</strong>将于4/23实装上线。本次3.5周年活动为史上最慷慨福利（预计超160次免费召唤+数千宝石）。', source: '4Gamer/Level Infinite', date: '04.20', url: 'https://www.4gamer.net/games/456/G045622/20260406013/' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
@@ -1316,6 +1318,7 @@ const NORMAL_DATA = [
   { company: 'NC + Krafton', color: '#3b82f6', title: '《Aion 2》KSK韩国预约94万+创历史新高，KSK 30日留存率36%远超行业平均。6月全球发布期待。Krafton Q1利润₩5,200亿(YoY +52%)大幅超预期。', source: 'NC/Krafton公告', date: '04.16', url: '' },
   { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학(白鹤)"登场 — 防御型角色(回血+贯穿)，更新至4/22', source: '레벨인피니트', date: '04.09~22', url: '' },
   { company: '行业宏观', color: '#6b7185', title: 'FnGuide发布韩国四大游戏公司Q1盈利预期：总营收₩2.7兆(YoY +39.2%)，总营业利润+37.9%。NC利润预期YoY +1700%(近18倍)，Pearl Abyss扭亏为盈至₩1,250亿。新游戏发行成为增长核心引擎。', source: 'MK경제/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
+  { company: 'Shift Up', color: '#ff6b9b', title: '《NIKKE：胜利女神》配信3.5周年特别生放送「希望之星再次闪耀之时」4/18成功举办，公布新Nikke角色"Anis: Star"将于4/23实装。本次3.5周年为史上最慷慨福利（预计超160次免费召唤）。', source: '4Gamer/Level Infinite', date: '04.18~20', url: 'https://www.4gamer.net/games/456/G045622/20260406013/' },
   { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格地图', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
   { company: 'Netmarble', color: '#ef4444', title: '《SOL: enchant》发售日从春季延至6月，官方称"为提高完成度"', source: '인벤', date: '04.08', url: '' },
   { company: 'NC', color: '#3b82f6', title: '《Lineage Classic》累计制裁近600万账户，打击非法程序力度持续加强', source: 'NC官方', date: '04.07', url: 'https://about.ncsoft.com/news/article/news_update_260407' },
