@@ -972,80 +972,148 @@ function perMaxName() {
   return currentData.perComparison.reduce((a,b)=>a.per>b.per?a:b);
 }
 
-// --- Section 3: 公司分析 (静态数据) ---
+// --- Section 3: 公司分析（日期感知动态生成） ---
+// 核心原则：月度涨跌从 ALL_DATASETS 实时计算，文字内容按日期分支
+// 累计收益率 = ∏(1 + 日环比/100) - 1，近似 ≈ Σ日环比（误差<0.1%）
 function renderCompanyAnalysisSection() {
   const container = document.getElementById('sectionCompanyAnalysis');
-  // Use companies data for dynamic price/per display
   const compMap = {};
   if (currentData.companies) {
     currentData.companies.forEach(c => compMap[c.code] = c);
   }
 
+  // 从 ALL_DATASETS 计算截至当日截止索引的累计收益率
+  const currentDate = currentData?.meta?.date || '';
+  const cutoffIdx = Math.max(1, ALL_LABELS.indexOf(formatDateLabel(currentDate)) + 1);
+
+  function calcCumulativeReturn(datasetData, idx) {
+    if (idx <= 1) return 0;
+    let ret = 1;
+    for (let i = 1; i < idx && i < datasetData.length; i++) {
+      ret *= (1 + datasetData[i] / 100);
+    }
+    return (ret - 1) * 100;
+  }
+
+  // 为每家公司算出动态月度涨跌
+  const dsMap = {};
+  ALL_DATASETS.forEach(ds => { dsMap[ds.label] = ds.data; });
+
+  // ====== 按日期分支的文字分析内容 ======
+  const d = currentDate;
+  const isGE8   = d >= '20260408';  // 4/8 NIKKE联动+SU收购三上
+  const isGE9   = d >= '20260409';  // 4/9 NC大涨启动
+  const isGE13  = d >= '20260413';  // 4/13 Aion2座谈会后
+  const isGE14  = d >= '20260414';  // 4/14 NC再暴涨
+  const isGE15  = d >= '20260415';  // 4/15 Monster Striker上线
+  const isGE17  = d >= '20260417';  // 4/17 Q1财报+PA发布会
+  const isGE20  = d >= '20260420';  // 4/20 NIKKE周年
+  const isGE22  = d >= '20260422';  // 4/22 KOSPI创新高后
+
+  // 公司基础定义（不变的部分）
+  const baseItems = [
+    {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e', dsKey:'Nexon', tier:1, url:'https://news.jkn.co.kr/post/869567'},
+    {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444', dsKey:'Netmarble', tier:1, url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
+    {code:'036570',name:'NC',nameKr:'엔씨',color:'#3b82f6', dsKey:'NC', tier:1, url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
+    {code:'259960',name:'Krafton',nameKr:'크래프톤',color:'#f59e0b', dsKey:'Krafton', tier:2, url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
+    {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#a855f7', dsKey:'P.Abyss', tier:2, url:'https://news.jkn.co.kr/post/869556'},
+  ];
+
+  // 构建带动态数据的 items
+  const items = baseItems.map(item => {
+    const mc = calcCumulativeReturn(dsMap[item.dsKey] || [], cutoffIdx);
+    return { ...item, monthChange: mc };
+  });
+
+  // 找月度冠军
+  const maxMc = Math.max(...items.map(i => i.monthChange));
+
+  // 日期分支文字生成函数
+  function getItemText(item, mc) {
+    const sign = mc >= 0 ? '+' : '';
+    const mcStr = `${sign}${mc.toFixed(2)}%`;
+    const isChampion = mc === maxMc && mc > 0;
+    const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
+
+    switch(item.code) {
+      case '225570': // Nexon Games
+        if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍持续压制估值——社长承认"新作曲延是主因"，《Dungeon & Fighter: Arad》、Project DX、Project RX 日程均部分延迟。4/21跟随板块微跌(-0.50%)，显示市场已部分定价延期风险。`;
+        if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩12,020→₩12,080）。月初随大盘暴跌后逐步修复至基本持平。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"。`;
+        if (isGE15) return `<strong>本月累计 ${mcStr}</strong>。月初随大盘暴跌后逐步修复，核心IP Blue Archive日本市场长期畅销提供基本面支撑。<strong>新作延期风险</strong>持续压制——社长承认"新作曲延是主因"。`;
+        return `<strong>本月累计 ${mcStr}</strong>。4/2大盘暴跌后持续承压，核心IP Blue Archive全球表现稳健，但<strong>新作延期风险</strong>（社长公开承认）压制估值修复空间。`;
+
+      case '251270': // Netmarble
+        if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机。4/21资金虹吸至半导体板块导致单日跌-1.75%。`;
+        if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩51,400→₩51,500）。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>为短期营收贡献。`;
+        if (isGE15) return `<strong>本月累计 ${mcStr}</strong>。月初Coway追加收购引发治理争议（Align批评"利益冲突"），方向性不确定。《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。`;
+        return `<strong>本月累计 ${mcStr}</strong>。月初受<strong>Coway追加收购</strong>公告引发治理争议——Activist基金Align公开批评构成"利益冲突"。市场质疑为何不回购自家股票而投资关联方，但强化控股也带来长期分红收益预期。`;
+
+      case '036570': // NC
+        if (isGE22) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功；② KSK韩国预约94万+创公司历史新高，30日留存36%；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。4/21 KOSPI创新高但因资金虹吸逆势跌-2.80%(当日领跌)。`;
+        if (isGE20) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功（600+人参与）；② KSK韩国预约94万+创公司历史新高，30日留存36%远超行业平均；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。`;
+        if (isGE17) return `<strong>本月累计 ${mcStr}</strong>${badge}。Aion 2座谈会效应持续发酵，4/14大涨+3.97%领跑全板块，本月累计涨幅扩大至月度冠军。Q1财报季临近实绩改善预期强化。`;
+        if (isGE13) return `<strong>本月累计 ${mcStr}</strong>。<strong>Aion 2</strong>首次线下座谈会4/11超预期成功（600+人参与），KSK韩国预约数创公司历史新高。Q1财报季实绩改善预期+反作弊力度加大驱动估值修复。`;
+        if (isGE9) return `<strong>本月累计 ${mcStr}</strong>。Aion 2座谈会利好开始发酵，4/9 NC逆势大涨+7.34%领跑全板块。Q1财报季临近+FnGuide盈利预期上调。`;
+        return `<strong>本月累计 ${mcStr}</strong>。4/2特朗普冲击后深度调整（单日-7.19%），月初游戏板块整体承压。关注后续Aion 2座谈会及Q1财报催化。`;
+
+      case '259960': // Krafton
+        if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健(利润YoY+52%) + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。4/17超预期财报催化后4/21跟随板块回调-2.49%，关注<strong>Ascend Zero</strong>新作后续催化。`;
+        if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩262,000→₩261,500）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。Q1超预期财报(利润YoY+52%)后4/17逆势+2.73%，关注<strong>Ascend Zero</strong>新作后续催化。`;
+        if (isGE17) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击拖累。<strong>4/17发布Q1超预期财报</strong>(利润YoY+52%)后逆势+2.73%。`;
+        return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。市值较大导致波动更敏感。`;
+
+      case '263750': // Pearl Abyss
+        if (isGE22) return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，4/21在板块调整中相对抗跌(+0.74%)，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
+        if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩72,000→₩54,000），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
+        if (isGE17) return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert》3/20发售至今销量突破400万套（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。前期获利了结卖压主导走势。<strong>4/17媒体发布会公布DLC路线图</strong>后短期企稳信号。FnGuide预期Q1扭亏为盈至₩1,250亿。`;
+        return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert（红色沙漠）》前期涨幅较大，<strong>获利了结卖压释放</strong>主导走势。Steam峰值27万玩家验证IP实力，但短期技术性回调占主导。`;
+
+      default:
+        return `<strong>本月累计 ${mcStr}</strong>。暂无详细分析。`;
+    }
+  }
+
+  const dateDisplay = formatDateLabel(currentData.meta.date);
+
   container.innerHTML = `
 <div class="full-width-grid">
     <div class="card">
-        <div class="card-header"><span>主要游戏公司本月股价波动分析</span><span style="font-size:11px;color:var(--text-muted)">2026年4月（截至最新交易日）月度波动汇总</span></div>
+        <div class="card-header"><span>主要游戏公司本月股价波动分析</span><span style="font-size:11px;color:var(--text-muted)">2026年4月（截至${dateDisplay}）· 月度波动汇总</span></div>
         <div class="card-body">
-            ${renderAnalysisItems(compMap)}
+            ${items.map(item => {
+              const c = compMap[item.code] || {};
+              const priceText = c.price ? `₩${c.price}` : '-';
+              const changeClass = c.changeClass || 'neutral';
+              const perText = c.per ? `PER ${c.per}` : '';
+              const mc = item.monthChange || 0;
+              const mcClass = mc >= 0 ? 'up' : 'down';
+              const mcText = (mc >= 0 ? '+' : '') + mc.toFixed(2) + '%';
+              const monthBadge = `<span class="ca-price-change ${mcClass}" style="margin-left:6px;font-size:12px">📊 月: <strong>${mcText}</strong></span>`;
+              const text = getItemText(item, mc);
+
+              return `
+              <div class="company-analysis-item">
+                  <div class="ca-header">
+                      <div class="company-dot" style="background:${item.color};width:12px;height:12px"></div>
+                      <span class="ca-name" style="color:${item.color}">${item.name}（${item.nameKr}）</span>
+                      <span class="ca-price-change ${changeClass}">${priceText} / ${c.change||'-'} | <strong style="color:var(--accent-cyan)">${perText}</strong></span>
+                      ${monthBadge}
+                  </div>
+                  <div class="ca-text">
+                      ${text}
+                      <span class="src-tier-${item.tier}">T${item.tier} ${item.tier===1?'官方/权威':'游戏行业'}</span>
+                      ${item.url?`<a href="${item.url}"target="_blank"style="color:var(--accent-blue);font-size:12px;margin-left:6px">原文 ↗</a>`:''}
+                  </div>
+              </div>`;
+            }).join('')}
         </div>
     </div>
 </div>`;
 }
 
 function renderAnalysisItems(compMap) {
-  // ⚠️ 以下分析基于 2026年4月（截至4/21）的月度数据汇总
-  // 累计涨跌 = (最新日收盘价 - 4/1收盘价) / 4/1收盘价 × 100%
-  // 数据来源：Naver Finance 日K收盘价（2026.04.22 验算）
-  // 下次数据抓取时需同步更新此处的数值和事件描述
-  const items = [
-    {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e',
-     monthChange:-0.24, monthClass:'down',
-     text:`<strong>本月累计 -0.24%</strong>（₩12,020→₩11,990）。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍持续压制估值——社长承认"新作曲延是主因"，具体涉及《Dungeon & Fighter: Arad》、Project DX、Project RX 日程均部分延迟。4/21 KOSPI创新高日微跌-0.50%，显示市场已部分定价延期风险。`, 
-     tier:1,url:'https://news.jkn.co.kr/post/869567'},
-    {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444',
-     monthChange:-1.56, monthClass:'down',
-     text:`<strong>本月累计 -1.56%</strong>（₩51,400→₩50,600）。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机，《怪物训练师》续作(U5引擎)为短期营收贡献。4/21资金虹吸至半导体板块导致单日跌-1.75%。`,
-     tier:1,url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
-    {code:'036570',name:'NC',nameKr:'엔씨',color:'#3b82f6',
-     monthChange:+13.33, monthClass:'up',
-     text:`<strong>本月累计 +13.33%</strong>（₩229,500→₩260,000），<span style="color:#22c55e">🏆 月度涨幅冠军</span>。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功；② KSK韩国预约94万+创公司历史新高，30日留存36%；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。4/21 KOSPI创新高但因资金虹吸逆势跌-2.80%(当日领跌)。`,
-     tier:1,url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
-    {code:'259960',name:'Krafton',nameKr:'크래프톤',color:'#f59e0b',
-     monthChange:-2.67, monthClass:'down',
-     text:`<strong>本月累计 -2.67%</strong>（₩262,000→₩255,000）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健(利润YoY+52%) + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。4/17超预期财报催化后4/21跟随板块回调-2.49%，关注<strong>Ascend Zero</strong>新作后续催化。`,
-     tier:2,url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
-    {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#a855f7',
-     monthChange:-24.44, monthClass:'down',
-     text:`<strong>本月累计 -24.44%</strong>（₩72,000→₩54,400），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，4/21在板块调整中相对抗跌(+0.74%)，FnGuide预期Q1扭亏为盈至₩1,250亿。`,
-     tier:2,url:'https://news.jkn.co.kr/post/869556'},
-  ];
-
-  return items.map(item => {
-    const c = compMap[item.code] || {};
-    const priceText = c.price ? `₩${c.price}` : '-';
-    const changeClass = c.changeClass || 'neutral';
-    const perText = c.per ? `PER ${c.per}` : '';
-    
-    // 月度累计涨跌
-    const mc = item.monthChange || 0;
-    const mcClass = mc >= 0 ? 'up' : 'down';
-    const mcText = (mc >= 0 ? '+' : '') + mc.toFixed(2) + '%';
-    const monthBadge = `<span class="ca-price-change ${mcClass}" style="margin-left:6px;font-size:12px">📊 月: <strong>${mcText}</strong></span>`;
-
-    return `
-    <div class="company-analysis-item">
-        <div class="ca-header">
-            <div class="company-dot" style="background:${item.color};width:12px;height:12px"></div>
-            <span class="ca-name" style="color:${item.color}">${item.name}（${item.nameKr}）</span>
-            <span class="ca-price-change ${changeClass}">${priceText} / ${c.change||'-'} | <strong style="color:var(--accent-cyan)">${perText}</strong></span>
-            ${monthBadge}
-        </div>
-        <div class="ca-text">
-            ${item.text}
-            <span class="src-tier-${item.tier}">T${item.tier} ${item.tier===1?'官方/权威':'游戏行业'}</span>
-            ${item.url?`<a href="${item.url}"target="_blank"style="color:var(--accent-blue);font-size:12px;margin-left:6px">原文 ↗</a>`:''}
-        </div>
-    </div>`}).join('');
+  /* 已合并到 renderCompanyAnalysisSection 中保留空壳避免调用报错 */
+  return '';
 }
 
 // --- Section 4: 新闻资讯 (翻页功能保留) ---
