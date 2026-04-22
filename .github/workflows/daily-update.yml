@@ -65,3 +65,12 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
+
+      # ====== 企业微信群推送 ======
+      - name: Send WeCom notification
+        if: success()
+        env:
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+          DASHBOARD_URL: 'https://nebula.kr.stock-dashboard.com'
+        run: node scripts/notify-wecom.mjs
+        continue-on-error: true  # 推送失败不阻断整体流程
