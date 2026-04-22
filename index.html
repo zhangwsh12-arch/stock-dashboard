@@ -405,6 +405,7 @@ function findCompanyReason(stockName, changeClass) {
     const isBeforeApril8 = currentDate < '20260408'; // 4/8联动前的日期
     const isApril10OrLater = currentDate >= '20260410'; // 4/10 Q1财报季预期
     const isApril13OrLater = currentDate >= '20260413'; // 4/13 Aion2座谈会+Crimson Desert发布会临近
+    const isApril22OrLater = currentDate >= '20260422'; // 4/22 KOSPI创新高但游戏股逆势下跌
 
     const reasonMapUp = {
       // ====== 上涨原因：利好驱动 ======
@@ -437,22 +438,34 @@ function findCompanyReason(stockName, changeClass) {
     };
     const reasonMapDown = {
       // ====== 下跌原因：利空驱动 ======
-      'NC': isApril13OrLater
+      'NC': isApril22OrLater
+        ? '<strong>KOSPI创历史新高(6,388/+2.72%)但游戏股逆势下跌</strong>——资金极度集中涌入半导体(SK海力士领涨)/二次电池/核电等核心板块，产生强烈虹吸效应。KOSDAQ仅+0.36%(机构+外资抛售)，NC作为KOSDAQ权重股首当其冲成为调仓换股对象。Aion 2利好已充分定价后缺乏新催化剂。'
+        : isApril13OrLater
         ? '<strong>Aion 2座谈会利好已部分反应</strong>，4/13小幅回调-0.42%属正常波动。《Lineage Classic》BM新增防御收入下滑仍是中期隐忧。'
         : '<strong>特朗普伊朗强硬讲话冲击全球市场</strong>：KOSPI -4.47%、KOSDAQ -5.36% 双双触发卖空侧轨，外资抛售近5,000亿韩元。游戏板块作为高Beta成长股遭集中抛售。',
-      'Netmarble': isApril13OrLater
+      'Netmarble': isApril22OrLater
+        ? '<strong>资金虹吸效应+KOSDAQ弱势格局</strong>：4/21 KOSPI暴涨+2.72%创历史新高，但机构资金集中涌向半导体/电池板块，游戏股沦为"提款机"。Coway治理争议仍未完全消化，《Monster Striker》上线初期数据待观察。'
+        : isApril13OrLater
         ? '<strong>《Monster Striker: Star Dive》4/15全球上线预期已提前反应</strong>——首发当日营收贡献为短期性质，市场正观望初期下载数据。叠加Coway收购争议，方向性不确定。'
         : '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
-      'Pearl Abyss': isApril13OrLater
+      'Pearl Abyss': isApril22OrLater
+        ? '<strong>Crimson Desert销量稳健+DLC路线图公布后短期企稳</strong>，在游戏板块整体逆势调整中相对抗跌（仅+0.74%），显示前期超跌后卖压已充分释放。'
+        : isApril13OrLater
         ? '<strong>短期无明显利空</strong>，前期涨幅较大后获利了结卖压逐步消化中。'
         : '《Crimson Desert（红色沙漠）》前期涨幅较大，<strong>获利了结卖压释放</strong>。短期技术性回调占主导。',
-      'Krafton': '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
-      'Shift Up': isApril13OrLater
+      'Krafton': isApril22OrLater
+        ? '<strong>Q1超预期财报利好已消化+资金虹吸效应</strong>：KOSPI创新高但资金流向半导体/核电等热门板块。Q1财报(利润YoY+52%)催化已在4/17前后充分定价，缺乏新催化剂下跟随板块回调。'
+        : '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
+      'Shift Up': isApril22OrLater
+        ? '<strong>NIKKE 3.5周年+Anis: Star实装前预期</strong>：4/23新角色上线窗口临近，3.5周年活动(超160次免费召唤)带动用户活跃度回升。在游戏板块整体逆势下跌中唯一显著收红(+1.04%)，显示独立题材支撑。'
+        : isApril13OrLater
         ? '<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+服装进入艾伦格地图验证IP跨平台价值。<strong>4/18 NIKKE 3.5周年特别生放送</strong>成功举办，新角色"Anis: Star"将于4/23实装。4月中旬连续回调后企稳，关注NIKKE运营表现。'
         : isApril10OrLater
           ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
           : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
-      'Nexon Games': '<strong>新作延期风险</strong>：社长朴龙贤在3/27股东总会上承认"新作延期是股价下跌主因"。核心新作《Dungeon & Fighter: Arad（던전앤파이터:아라드）》、Project DX/RX 日程均部分延迟，《First Descendant》进入成熟期缺乏新增长引擎。',
+      'Nexon Games': isApril22OrLater
+        ? '<strong>新作延期风险持续压制</strong>：《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。4/21跟随板块微跌(-0.50%)，跌幅相对可控（市场已部分定价延期风险）。'
+        : '<strong>新作延期风险</strong>：社长朴龙贤在3/27股东总会上承认"新作延期是股价下跌主因"。核心新作《Dungeon & Fighter: Arad（던전앤파이터:아라드）》、Project DX/RX 日程均部分延迟，《First Descendant》进入成熟期缺乏新增长引擎。',
     };
 
     const map = changeClass === 'up' ? reasonMapUp : reasonMapDown;
@@ -980,30 +993,30 @@ function renderCompanyAnalysisSection() {
 }
 
 function renderAnalysisItems(compMap) {
-  // ⚠️ 以下分析基于 2026年4月（截至4/17）的月度数据汇总
+  // ⚠️ 以下分析基于 2026年4月（截至4/21）的月度数据汇总
   // 累计涨跌 = (最新日收盘价 - 4/1收盘价) / 4/1收盘价 × 100%
-  // 数据来源：Naver Finance 日K收盘价（2026.04.20 验算）
+  // 数据来源：Naver Finance 日K收盘价（2026.04.22 验算）
   // 下次数据抓取时需同步更新此处的数值和事件描述
   const items = [
     {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e',
-     monthChange:+0.50, monthClass:'up',
-     text:`<strong>本月累计 +0.50%</strong>（₩12,020→₩12,080）。月初随大盘暴跌后逐步修复至基本持平。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中，日本市场长期畅销提供基本面支撑。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"，具体涉及《Dungeon & Fighter: Arad（던전앤파이터:아라드）》、Project DX、Project RX 日程均部分延迟。`, 
+     monthChange:-0.24, monthClass:'down',
+     text:`<strong>本月累计 -0.24%</strong>（₩12,020→₩11,990）。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍持续压制估值——社长承认"新作曲延是主因"，具体涉及《Dungeon & Fighter: Arad》、Project DX、Project RX 日程均部分延迟。4/21 KOSPI创新高日微跌-0.50%，显示市场已部分定价延期风险。`, 
      tier:1,url:'https://news.jkn.co.kr/post/869567'},
     {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444',
-     monthChange:+0.19, monthClass:'up',
-     text:`<strong>本月累计 +0.19%</strong>（₩51,400→₩51,500）。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机，《怪物训练师》续作(U5引擎)为短期营收贡献。`,
+     monthChange:-1.56, monthClass:'down',
+     text:`<strong>本月累计 -1.56%</strong>（₩51,400→₩50,600）。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机，《怪物训练师》续作(U5引擎)为短期营收贡献。4/21资金虹吸至半导体板块导致单日跌-1.75%。`,
      tier:1,url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
     {code:'036570',name:'NC',nameKr:'엔씨',color:'#3b82f6',
-     monthChange:+16.56, monthClass:'up',
-     text:`<strong>本月累计 +16.56%</strong>（₩229,500→₩267,500），<span style="color:#22c55e">🏆 月度涨幅冠军</span>。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功（600+人参与）；② KSK韩国预约94万+创公司历史新高，30日留存36%远超行业平均；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%；④ 起诉YouTuber反作弊力度加大。`,
+     monthChange:+13.33, monthClass:'up',
+     text:`<strong>本月累计 +13.33%</strong>（₩229,500→₩260,000），<span style="color:#22c55e">🏆 月度涨幅冠军</span>。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功；② KSK韩国预约94万+创公司历史新高，30日留存36%；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。4/21 KOSPI创新高但因资金虹吸逆势跌-2.80%(当日领跌)。`,
      tier:1,url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
     {code:'259960',name:'Krafton',nameKr:'크래프톤',color:'#f59e0b',
-     monthChange:-0.19, monthClass:'down',
-     text:`<strong>本月累计 -0.19%</strong>（₩262,000→₩261,500）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。Q1超预期财报(利润YoY+52%)后4/17逆势+2.73%，关注<strong>Ascend Zero</strong>新作后续催化。`,
+     monthChange:-2.67, monthClass:'down',
+     text:`<strong>本月累计 -2.67%</strong>（₩262,000→₩255,000）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健(利润YoY+52%) + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。4/17超预期财报催化后4/21跟随板块回调-2.49%，关注<strong>Ascend Zero</strong>新作后续催化。`,
      tier:2,url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
     {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#a855f7',
-     monthChange:-25.00, monthClass:'down',
-     text:`<strong>本月累计 -25.00%</strong>（₩72,000→₩54,000），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，FnGuide预期Q1扭亏为盈至₩1,250亿。`,
+     monthChange:-24.44, monthClass:'down',
+     text:`<strong>本月累计 -24.44%</strong>（₩72,000→₩54,400），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，4/21在板块调整中相对抗跌(+0.74%)，FnGuide预期Q1扭亏为盈至₩1,250亿。`,
      tier:2,url:'https://news.jkn.co.kr/post/869556'},
   ];
 
@@ -1200,15 +1213,15 @@ function renderCompareChart() {
   // 完整数据（4/1~4/20，共14个交易日；4/11周五为韩国临时休市日；4/18~19周末休市）
   // ⚠️ 每个数据点 = (当日收盘 - 前日收盘) / 前日收盘 × 100%，保留2位小数
   // 验算依据：Naver Finance 日K收盘价逐日计算
-  // 数据更新于: 2026.04.21（下次抓取时需同步更新此数组）
-  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15', '4/16', '4/17', '4/20'];
+  // 数据更新于: 2026.04.22（下次抓取时需同步更新此数组）
+  const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15', '4/16', '4/17', '4/20', '4/21'];
   const ALL_DATASETS = [
-    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22,+2.12,-0.59,+0.75], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01,+1.34,-0.41], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20,+2.17,-0.58,-0.19], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-    { label: 'NC', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40,+7.68,-1.50,+1.90], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09,+5.12,+2.73,-0.76], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28,-1.25,-2.17,-0.18], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
+    { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22,+2.12,-0.59,+0.75,+1.04], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
+    { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01,+1.34,-0.41,-0.50], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
+    { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20,+2.17,-0.58,-0.19,-1.75], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
+    { label: 'NC', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40,+7.68,-1.50,+1.90,-2.80], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
+    { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09,+5.12,+2.73,-0.76,-2.49], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
+    { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28,-1.25,-2.17,-0.18,+0.74], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
   ];
 
   // 根据当前数据的日期确定截断位置
@@ -1308,6 +1321,10 @@ const EVENT_DATA = [
   { company: '四大游戏公司', color: '#6b7185', title: 'FnGuide 4/19发布一致预期：韩国四大游戏公司(Krafton/Netmarble/NC/Pearl Abyss)Q1总营收₩2.7兆(YoY +39.2%)，总营业利润₩6,993亿(YoY +37.9%)。新游戏发行成为核心增长引擎。NC营业利润预期₩936亿(YoY +1700%，近18倍)，Pearl Abyss扭亏为盈至₩1,250亿(去年同期亏损₩52亿)。', source: 'MK경제신문/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
   // ====== 4/20（周一）NIKKE 3.5周年 ======
   { company: 'Shift Up', color: '#ff6b9b', title: '《NIKKE：胜利女神》配信3.5周年特别生放送「希望之星再次闪耀之时」于4/18成功举办（第1部16:30/第2部19:00），官方首次开放线下观众招募。直播公布新Nikke角色<strong>"Anis: Star（아니스：스타）"</strong>将于4/23实装上线。本次3.5周年活动为史上最慷慨福利（预计超160次免费召唤+数千宝石）。', source: '4Gamer/Level Infinite', date: '04.20', url: 'https://www.4gamer.net/games/456/G045622/20260406013/' },
+  // ====== 4/21（周二）KOSPI创新高+游戏股逆势下跌 ======
+  // KOSPI +2.72%创历史新高(6,388)，但游戏股因资金虹吸效应逆势下跌：NC -2.80% / Krafton -2.49% / Netmarble -1.75%
+  // 核心原因：机构资金集中涌向半导体(SK海力士领涨)/二次电池/核电板块，KOSDAQ仅+0.36%(机构+外资抛售)
+  { company: '四大游戏公司', color: '#6b7185', title: '<strong>KOSPI创历史新高(6,388/+2.72%)但游戏股逆势下跌</strong>——资金极度集中涌入半导体/二次电池/核电等核心板块产生虹吸效应，KOSDAQ仅+0.36%。NC(-2.80%)领跌，Krafton(-2.49%)、Netmarble(-1.75%)、Nexon(-0.50%)跟随调整；仅Shift Up(+1.04%)、Pearl Abyss(+0.74%)收红。', source: '카이로스투자/Naver증권', date: '04.21', url: 'https://omegaus-invest.tistory.com/417' },
 ];
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
@@ -1319,6 +1336,7 @@ const NORMAL_DATA = [
   { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학(白鹤)"登场 — 防御型角色(回血+贯穿)，更新至4/22', source: '레벨인피니트', date: '04.09~22', url: '' },
   { company: '行业宏观', color: '#6b7185', title: 'FnGuide发布韩国四大游戏公司Q1盈利预期：总营收₩2.7兆(YoY +39.2%)，总营业利润+37.9%。NC利润预期YoY +1700%(近18倍)，Pearl Abyss扭亏为盈至₩1,250亿。新游戏发行成为增长核心引擎。', source: 'MK경제/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
   { company: 'Shift Up', color: '#ff6b9b', title: '《NIKKE：胜利女神》配信3.5周年特别生放送「希望之星再次闪耀之时」4/18成功举办，公布新Nikke角色"Anis: Star"将于4/23实装。本次3.5周年为史上最慷慨福利（预计超160次免费召唤）。', source: '4Gamer/Level Infinite', date: '04.18~20', url: 'https://www.4gamer.net/games/456/G045622/20260406013/' },
+  { company: '行业宏观', color: '#6b7185', title: '<strong>KOSPI创历史新高(6,388/+2.72%)但游戏股逆势下跌</strong>——资金虹吸到半导体/电池/核电等热门板块，KOSDAQ仅+0.36%。NC(-2.80%)领跌，Krafton(-2.49%)、Netmarble(-1.75%)跟随调整。', source: '카이로스투자/alphasquare', date: '04.21', url: 'https://omegaus-invest.tistory.com/417' },
   { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格地图', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
   { company: 'Netmarble', color: '#ef4444', title: '《SOL: enchant》发售日从春季延至6月，官方称"为提高完成度"', source: '인벤', date: '04.08', url: '' },
   { company: 'NC', color: '#3b82f6', title: '《Lineage Classic》累计制裁近600万账户，打击非法程序力度持续加强', source: 'NC官方', date: '04.07', url: 'https://about.ncsoft.com/news/article/news_update_260407' },
