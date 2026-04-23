@@ -241,22 +241,51 @@ let currentData = null;
 let allDates = [];
 const LATEST_DATA_URL = 'data/latest.json';
 const DATES_URL = 'data/dates.json';
+const CONTENT_URL = 'data/content.json';
 
 // ============================================================
-// 全局对比图数据（4/1~4/21，共15个交易日）
-// ⚠️ 每个数据点 = (当日收盘 - 前日收盘) / 前日收盘 × 100%，保留2位小数
-// 验算依据：Naver Finance 日K收盘价逐日计算
-// 数据更新于: 2026.04.22（下次抓取时需同步更新此数组）
+// 全局动态内容（从 content.json 加载，避免硬编码）
 // ============================================================
-const ALL_LABELS = ['4/1', '4/2', '4/3', '4/6', '4/7', '4/8', '4/9', '4/10', '4/13', '4/14', '4/15', '4/16', '4/17', '4/20', '4/21', '4/22'];
-const ALL_DATASETS = [
-  { label: 'Shift Up', data: [0,-4.87,+2.33,-0.30,-2.74,+4.38,-0.60,-1.05,+0.00,+2.74,-2.22,+2.12,-0.59,+0.75,+1.04,+1.32], borderColor: '#ff6b9d', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ff6b9d', tension: .3, fill: false },
-  { label: 'Nexon', data: [0,-4.83,-0.70,0.00,-1.76,+1.43,+3.36,+1.45,-1.77,+1.97,-0.34,+1.01,+1.34,-0.41,-0.50,+0.65], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#22c55e', tension: .3, fill: false },
-  { label: 'Netmarble', data: [0,-4.67,+2.04,-0.60,-2.01,+3.08,-0.40,+0.60,-0.20,+1.00,+0.20,+2.17,-0.58,-0.19,-1.75,+0.99], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#ef4444', tension: .3, fill: false },
-  { label: 'NC', data: [0,-7.19,-0.70,+0.71,-1.41,+3.81,+7.34,+2.56,-0.42,+3.97,-0.40,+7.68,-1.50,+1.90,-2.80,+5.77], borderColor: '#3b82f6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#3b82f6', tension: .3, fill: false },
-  { label: 'Krafton', data: [0,-5.53,-1.62,-2.87,-1.48,+0.43,0.00,+1.50,+1.68,-1.04,+2.09,+5.12,+2.73,-0.76,-2.49,+4.12], borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#f59e0b', tension: .3, fill: false },
-  { label: 'P.Abyss', data: [0,-8.06,-4.53,-4.75,-4.65,-1.57,0.00,-1.59,+3.78,+0.35,-3.28,-1.25,-2.17,-0.18,+0.74,+6.07], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, pointBackgroundColor: '#a855f7', tension: .3, fill: false },
-];
+let ALL_LABELS = [];       // 对比图 X 轴标签
+let ALL_DATASETS = [];     // 对比图数据集
+let EVENT_DATA = [];       // 当日事件/新闻
+let NORMAL_DATA = [];      // 行业资讯
+let contentLoaded = false; // 标记内容是否已加载
+
+/**
+ * 加载 content.json（新闻、对比图数据等动态内容）
+ * 每次更新内容只需修改 content.json，无需改动 HTML
+ */
+async function loadContentData() {
+  try {
+    const resp = await fetch(CONTENT_URL);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const content = await resp.json();
+
+    // 对比图数据
+    if (content.compareChart) {
+      ALL_LABELS = content.compareChart.labels || [];
+      ALL_DATASETS = content.compareChart.datasets || [];
+    }
+
+    // 新闻事件
+    if (content.events) {
+      EVENT_DATA = content.events;
+    }
+
+    // 行业资讯
+    if (content.industryNews) {
+      NORMAL_DATA = content.industryNews;
+    }
+
+    contentLoaded = true;
+    console.log(`✅ Content loaded: ${ALL_LABELS.length} labels, ${EVENT_DATA.length} events, ${NORMAL_DATA.length} news`);
+    return true;
+  } catch (err) {
+    console.error('⚠️ Failed to load content.json:', err.message);
+    return false;
+  }
+}
 
 // ============================================================
 // 数据加载
@@ -520,16 +549,12 @@ function findCompanyReason(stockName, changeClass) {
 function generateSUAnalysis() {
   const su = currentData?.shiftUp;
   if (!su) return '暂无分析数据';
-  
+
   const suChangeClass = su.changeClass || 'neutral';
   const suPct = su.changePercent || '0%';
   const price = su.price || '-';
   const prevClose = su.previousClose || '-';
-  
-  // 用 findCompanyReason 获取原因（fallback 静态表）
-  // 注意：这是"本月变动原因分析"区域，应显示完整月度原因，不做波动门槛限制
-  const reason = findCompanyReason('Shift Up', suChangeClass);
-  
+
   // 计算月度累计涨跌（从 chartData 计算）
   const chartData = currentData.chartData || [];
   let monthChange = null;
@@ -541,20 +566,49 @@ function generateSUAnalysis() {
     const mcSign = monthChange >= 0 ? '+' : '';
     monthText = `本月累计 <strong style="color:${monthChange >= 0 ? '#34d399' : '#f87171'}">${mcSign}${monthChange.toFixed(2)}%</strong>（₩${firstPrice.toLocaleString()} → ₩${lastPrice.toLocaleString()}）`;
   }
-  
+
+  // ====== SU 月度分析文字（按日期分支，累积上下文，与其他5家公司 getItemText 同级） ======
+  const d = currentDate || '';
+  const _isGE8  = d >= '20260408';  // 4/8 联动上线
+  const _isGE10 = d >= '20260410';  // 4/10 联动消化
+  const _isGE13 = d >= '20260413';  // 4/13 座谈会临近
+  const _isGE18 = d >= '20260418';  // 4/18 NIKKE周年生放送
+  const _isGE20 = d >= '20260420';  // 4/20 NIKKE周年活动
+  const _isGE22 = d >= '20260422';  // 4/22 全面反弹
+  const _isGE23 = d >= '20260423';  // 4/23 Anis:Star实装
+
+  let analysisDetail = '';
+  if (_isGE23) {
+    analysisDetail = `板块中<strong>唯一独立题材股</strong>——<strong>4/23 NIKKE新角色"Anis: Star"实装窗口</strong>（3.5周年活动超160次免费召唤带动活跃度）。在4/21板块逆势下跌中唯一显著收红(+1.04%)，4/22延续+1.32%显示独立alpha。<strong>4/1全资收购UNBOUND工作室</strong>强化PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色进入艾伦格地图验证IP跨平台价值。关注NIKKE新角色上线后用户数据表现。`;
+  } else if (_isGE22) {
+    analysisDetail = `板块中<strong>唯一独立题材股</strong>——<strong>4/23 NIKKE新角色"Anis: Star"实装窗口临近</strong>（3.5周年活动超160次免费召唤带动活跃度回升）。在4/21板块逆势下跌中唯一显著收红(+1.04%)，4/22延续+1.32%显示独立alpha。<strong>4/1全资收购UNBOUND工作室</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+服装进入艾伦格地图验证IP跨平台价值。4月中旬连续回调后企稳反弹。`;
+  } else if (_isGE20) {
+    analysisDetail = `<strong>4/18 NIKKE 3.5周年特别生放送成功举办</strong>——新角色"Anis: Star"确认4/23实装（超160次免费召唤活动进行中）。<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图验证IP跨平台价值。4月中连续回调后企稳。`;
+  } else if (_isGE18) {
+    analysisDetail = `<strong>4/18 NIKKE 3.5周年特别生放送</strong>成功举办，新角色"Anis: Star"确认4/23实装。<strong>4/1全资收购UNBOUND</strong>强化全球发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色进入艾伦格地图验证IP跨平台价值。4月中旬连续回调后关注周年活动催化效果。`;
+  } else if (_isGE13) {
+    analysisDetail = `<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+服装进入艾伦格地图验证IP跨平台价值。<strong>4/18 NIKKE 3.5周年特别生放送</strong>即将举办（新角色"Anis: Star"将于4/23实装），关注运营表现。`;
+  } else if (_isGE10) {
+    analysisDetail = `<strong>PUBG×Stellar Blade联动(4/8)短期催化已充分反应</strong>，进入获利了结阶段。<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力。短期缺乏新催化剂或受板块回调拖累。`;
+  } else if (_isGE8) {
+    analysisDetail = `<strong>4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线</strong>：收购强化全球PC/主机发行能力，联动验证IP跨平台价值。前期超跌后技术性反弹。`;
+  } else {
+    analysisDetail = `<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。游戏股作为高Beta成长股领涨市场，Shift Up +5.77% 为月初行情龙头。`;
+  }
+
   // 构建分析文字
   let html = '';
   if (monthText) {
     html += `<p>${monthText}</p>`;
   }
-  
-  // 原因分析
-  if (reason) {
-    html += `<p><strong>主要原因</strong>：${reason}</p>`;
+
+  // 原因分析（使用累积式月度分析）
+  if (analysisDetail) {
+    html += `<p><strong>主要原因</strong>：${analysisDetail}</p>`;
   } else {
     html += '<p>无明显突发催化剂，技术性波动为主。</p>';
   }
-  
+
   return html;
 }
 
@@ -1370,91 +1424,11 @@ function renderCompareChart() {
 // ============================================================
 // 翻页逻辑
 // ============================================================
-const EVENT_DATA = [
-  // ====== 单日精确事件（用于"当日资讯"严格过滤显示）======
-  { company: '游戏板块整体', color: '#6b7185', title: '4月首个交易日韩国股市整体大涨（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动，6家游戏公司全线飘红', source: '韩国交易所(KRX)/市场摘要', date: '04.01', url: '' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '完成Unbound Games（三上真司工作室）100%收购整合', source: '인벤', date: '04.01', url: 'https://www.inven.co.kr/webzine/news/?news=314941' },
-  { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌"Raon(라온)"，首批4款开源模型上线HuggingFace', source: 'Krafton AI', date: '04.02', url: '' },
-  { company: 'Netmarble', color: '#ef4444', title: '₩1,500亿追加收购Coway股权遭Align Partners强烈批评，市场质疑资金使用效率', source: '아이뉴스24', date: '04.07', url: 'https://www.inews24.com/view/1958083' },
-  { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略公布 → 股价稳中有升+0.85%', source: '재경일보', date: '04.07', url: 'https://news.jkn.co.kr/post/869567' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》Steam在线峰值27万+口碑反转，好评如潮', source: 'Pearl Abyss官方/SteamDB', date: '04.07', url: '' },
-  { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动上线！Eve(이브)角色空降艾伦格，舞蹈视频引爆社区', source: '게임플/비즈니스포스트', date: '04.08', url: 'https://www.gameple.co.kr/news/articleView.html?idxno=215351' },
-  { company: 'NC', color: '#3b82f6', title: "正式起诉YouTuber '영래기'（散布虚假事实+妨碍业务），市场解读为反作弊力度加大", source: '스포츠경향', date: '04.08', url: 'https://sports.khan.co.kr/article/20260408033500' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학"(白鹤)登场 + 新Side Story更新', source: '인벤/게임조선', date: '04.09', url: 'https://www.inven.co.kr/webzine/news/?news=315234&site=nikke' },
-  { company: 'NC', color: '#3b82f6', title: '起诉YouTuber消息发酵第2日，股价大涨+7.35%反应市场认可', source: '스포츠경향', date: '04.09', url: '' },
-  { company: 'Netmarble', color: '#ef4444', title: 'Coway追加收购争议持续，Align Partners强烈批评，续跌-0.4%', source: '아이뉴스24', date: '04.09', url: '' },
-  { company: 'Nexon', color: '#22c55e', title: '《Blue Archive》IP扩展战略持续发酵，股价稳中有升', source: '재경일보', date: '04.09', url: '' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》口碑持续反转，4/9持平收₩56,500', source: 'Pearl Abyss官方/SteamDB', date: '04.09', url: '' },
-  // 4/10（周五）：Q1财报季预期驱动，NC领涨+2.56%
-  { company: '游戏板块', color: '#6b7185', title: 'Q1财报季实绩改善预期：分析师预估7家游戏公司销售额同比+33.7%、营业利润同比+64.1%。NC与Krafton被点名为核心改善驱动力。', source: '이데일리/에데이', date: '04.10', url: 'https://news.nate.com/view/20260410n04448' },
-  { company: 'NC', color: '#3b82f6', title: 'Q1销售额预估1,020亿韩元，《Lineage Classic》新增BM(商业模式)防御收入下滑，《Aion 2》S3更新虽延期至4月但市场反应正面。4/10领涨+2.56%。', source: '이데일리', date: '04.10', url: '' },
-  { company: 'Krafton', color: '#f59e0b', title: 'Q1销售额预估4,400亿韩元，AI模型Raon品牌效应发酵，PUBG联动持续贡献收入。+1.50%', source: '이데일리', date: '04.10', url: '' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》3月20日发售，Q1占公司总销售额约70%（自研引擎+直营模式高利润率）；4/17媒体发布会将公布DLC扩展计划及后续路线图。-1.59%', source: '이데일리/Pearl Abyss', date: '04.10', url: '' },
-  // ====== 4/11（周五）~ 4/13（周一） ======
-  // 注意：4/11（周五）是韩国交易日，但GitHub Actions可能因时区或执行问题未生成数据
-  // 4/13（周一）为最新抓取日期
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》全球销量突破400万套，Steam评价"特别好评"，4/17媒体发布会临近市场期待值升高。4/13领涨+3.78%为当日涨幅最大。', source: '재경일보/SteamDB', date: '04.13', url: 'https://news.jkn.co.kr/post/869556' },
-  { company: 'NC', color: '#3b82f6', title: '《Aion 2》首次线下座谈会"지금 만나러 갑니다"于4/11在首尔成功举办，超600名玩家参与（远超预期），后续将追加江原道/济州地区场次。-0.42%', source: '뉴스툰/겜톡', date: '04.13', url: 'http://www.newstoon.co.kr/news/articleView.html?idxno=76282' },
-  { company: 'Krafton', color: '#f59e0b', title: 'AI模型"Raon"开源生态持续发酵 + Q1实绩预期稳健₩4,400亿 + PUBG联动系列稳定贡献收入。4/13上涨+1.68%。', source: '이데일리', date: '04.13', url: '' },
-  // ====== 4/14（周二） ======
-  // 6家公司中5家上涨、1家下跌，NC领涨+3.97%（月度涨幅扩大至+8.50%），板块整体偏强
-  { company: 'NC', color: '#3b82f6', title: '《Aion 2》座谈会效应持续发酵，Q1财报季临近实绩改善预期强化，4/14大涨+3.97%领跑全板块，本月累计涨幅扩大至+8.50%为月度冠军。', source: '이데일리/뉴스툰', date: '04.14', url: 'http://www.newstoon.co.kr/news/articleView.html?idxno=76282' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线，IP跨平台价值验证+全球发行能力强化。前期超跌后技术性反弹，4/14收涨+2.74%。', source: '인벤/게임조선', date: '04.14', url: '' },
-  { company: 'Nexon Games', color: '#22c55e', title: 'Blue Archive IP扩展战略持续推进，日本市场长期畅销支撑基本面，4/14反弹+1.97%显示技术面企稳。', source: '재경일보', date: '04.14', url: 'https://news.jkn.co.kr/post/869567' },
-  { company: 'Netmarble', color: '#ef4444', title: 'Coway收购争议消化后技术性反弹，《Seven Deadly Sins Origin》运营稳定提供基本面支撑，4/14转涨+1.00%。分红收益预期筑底。', source: '아이뉴스24', date: '04.14', url: '' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》4/17媒体发布会倒计时3天，DLC路线图期待值升高。4/14微涨+0.35%，前期获利了结卖压趋缓。', source: '재경일보/Pearl Abyss', date: '04.14', url: 'https://news.jkn.co.kr/post/869556' },
-  { company: 'Krafton', color: '#f59e0b', title: 'Q1财报发布在即(4月下旬)部分资金获利了结，《Ascend Zero》新作等待后续催化，4/14回调-1.04%。', source: '이데일리', date: '04.14', url: '' },
-  // ====== 4/15（周三） ======
-  // Krafton领涨+2.09%，Pearl Abyss跌幅最大-3.28%（前期涨幅过大后获利了结），板块分化明显
-  { company: 'Netmarble', color: '#ef4444', title: '新动作RPG《Monster Striker: Star Dive（몬길: STAR DIVE）》4/15全球正式上线——PC(Steam/Epic)·移动端跨平台联机同步支持，《怪物训练师》续作(Unreal Engine 5 收集型动作RPG)。GDC 2026 Xbox合作发布后首个正式发售。', source: '연합뉴스/매일경제', date: '04.15', url: 'https://www.yna.co.kr/view/AKR20260312047700017' },
-  // ====== 4/16（周四） ======
-  // NC领涨+7.68%（KSK催化），Krafton+5.12%（Q1实绩超预期），游戏板块整体强势
-  { company: 'NC', color: '#3b82f6', title: '《Aion 2》KSK韩国预约94万+突破——《Lineage M》纪录刷新，KSK 30日留存率36%（远超行业平均）。4/11首尔座谈会成功后追加江原道/济州场次确认，社区热度持续。6月全球发布期待推动NC +7.47%至266,500韩元收盘，Krafton跟涨+6.56%。', source: 'NC/Krafton 公告', date: '04.16', url: '' },
-  { company: 'Krafton', color: '#f59e0b', title: 'Q1实绩远超市场预期——营收₩1.2兆(YoY +₩4,082亿)，营业利润₩5,200亿(YoY +52%，市场一致预期仅₩2,700~4,000亿，大幅超预期)。PUBG: Battlegrounds PC版Q1销量39万台强劲，《PUBG Mobile》全球表现稳健。AI品牌"Haon"开发中。', source: 'Krafton公告/이데일리', date: '04.16', url: '' },
-  // ====== 4/17（周五）=====
-  // 4/16全线大涨后获利了结回调，4家下跌2家上涨，板块整体承压调整
-  // KOSPI -0.55%（6,192点），前两日连涨后正常技术性回调
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》4/17媒体发布会召开——公布DLC扩展路线图及后续更新计划（Boss重战、区域再封锁、难度选项等）。', source: 'Pearl Abyss官方/GameLook', date: '04.17', url: 'http://www.gamelook.com.cn/2026/04/591477/' },
-  // ====== 4/20（周一）=====
-  // 周末休市后首个交易日，板块分化：NC领涨+1.90%，Krafton微跌-0.76%
-  // FnGuide发布Q1盈利预期：四大游戏公司总营收+39.2%、总利润+37.9%
-  { company: '四大游戏公司', color: '#6b7185', title: 'FnGuide 4/19发布一致预期：韩国四大游戏公司(Krafton/Netmarble/NC/Pearl Abyss)Q1总营收₩2.7兆(YoY +39.2%)，总营业利润₩6,993亿(YoY +37.9%)。新游戏发行成为核心增长引擎。NC营业利润预期₩936亿(YoY +1700%，近18倍)，Pearl Abyss扭亏为盈至₩1,250亿(去年同期亏损₩52亿)。', source: 'MK경제신문/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
-  // ====== 4/20（周一）NIKKE 3.5周年 ======
-  { company: 'Shift Up', color: '#ff6b9b', title: '《NIKKE：胜利女神》配信3.5周年特别生放送「希望之星再次闪耀之时」于4/18成功举办（第1部16:30/第2部19:00），官方首次开放线下观众招募。直播公布新Nikke角色<strong>"Anis: Star（아니스：스타）"</strong>将于4/23实装上线。本次3.5周年活动为史上最慷慨福利（预计超160次免费召唤+数千宝石）。', source: '4Gamer/Level Infinite', date: '04.20', url: 'https://www.4gamer.net/games/456/G045622/20260406013/' },
-  // ====== 4/21（周二）KOSPI创新高+游戏股逆势下跌 ======
-  // KOSPI +2.72%创历史新高(6,388)，但游戏股因资金虹吸效应逆势下跌：NC -2.80% / Krafton -2.49% / Netmarble -1.75%
-  // 核心原因：机构资金集中涌向半导体(SK海力士领涨)/二次电池/核电板块，KOSDAQ仅+0.36%(机构+外资抛售)
-  { company: '四大游戏公司', color: '#6b7185', title: '<strong>KOSPI创历史新高(6,388/+2.72%)但游戏股逆势下跌</strong>——资金极度集中涌入半导体/二次电池/核电等核心板块产生虹吸效应，KOSDAQ仅+0.36%。NC(-2.80%)领跌，Krafton(-2.49%)、Netmarble(-1.75%)、Nexon(-0.50%)跟随调整；仅Shift Up(+1.04%)、Pearl Abyss(+0.74%)收红。', source: '카이로스투자/Naver증권', date: '04.21', url: 'https://omegaus-invest.tistory.com/417' },
-  // ====== 4/22（周三）游戏股全面反弹 ======
-  // 前一日"错杀"后强力修正——6家公司全部上涨，NC +5.77% 领涨，PA +6.07% 次之
-  // KOSPI 回落-0.32%(6,368)，但游戏板块独立走强
-  { company: '六大游戏公司', color: '#6b7185', title: '<strong>4/21"错杀"修正！游戏股全线暴涨</strong>——6家公司全部收红：Pearl Abyss +6.07%（最大涨幅）、NC +5.77%（领涨）、Krafton +4.12%、Shift Up +1.32%、Netmarble +0.99%、Nexon Games +0.65%。前一日KOSPI创新高但资金虹吸导致游戏股逆势暴跌，市场重新评估后发现基本面未变，超跌反弹动力强劲。', source: '한국경제/Naver증권', date: '04.22', url: '' },
-  { company: 'NC', color: '#3b82f6', title: '<strong>NC暴涨+5.77%领跑全板块</strong>——Aion 2座谈会+KSK预约94万等核心催化仍在发酵，Q1财报季临近实绩改善预期强化。4/21因资金虹吸跌-2.80%的"错杀"在一天内得到完全修正。', source: '이데일리', date: '04.22', url: '' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '<strong>《Crimson Desert》DLC路线图利好持续发酵，PA大涨+6.07%</strong>——4/17媒体发布会公布DLC扩展计划后的正面效应释放。前期获利了结卖压充分释放，技术性反弹强劲。FnGuide预期Q1扭亏为盈至₩1,250亿。', source: '게임조선', date: '04.22', url: '' },
-];
+// EVENT_DATA / NORMAL_DATA 已迁移至 content.json
+// 由 loadContentData() 动态加载到全局变量 ALL_LABELS/ALL_DATASETS/EVENT_DATA/NORMAL_DATA
 
 // 模块级变量：当日资讯（严格单日过滤），renderSummarySection 中赋值，renderNewsSection 中使用
 let todayDailyEvents = [];
-
-const NORMAL_DATA = [
-  { company: 'Netmarble', color: '#ef4444', title: '新动作RPG《Monster Striker: Star Dive（몬길: STAR DIVE）》4/15全球正式上线——PC(Steam/Epic)·移动端跨平台联机，《怪物训练师》续作(U5引擎收集型动作RPG)。', source: '연합뉴스/매일경제', date: '04.15', url: 'https://www.yna.co.kr/view/AKR20260312047700017' },
-  { company: 'NC + Krafton', color: '#3b82f6', title: '《Aion 2》KSK韩国预约94万+创历史新高，KSK 30日留存率36%远超行业平均。6月全球发布期待。Krafton Q1利润₩5,200亿(YoY +52%)大幅超预期。', source: 'NC/Krafton公告', date: '04.16', url: '' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '《NIKKE：胜利女神》新SSR角色"백학(白鹤)"登场 — 防御型角色(回血+贯穿)，更新至4/22', source: '레벨인피니트', date: '04.09~22', url: '' },
-  { company: '行业宏观', color: '#6b7185', title: 'FnGuide发布韩国四大游戏公司Q1盈利预期：总营收₩2.7兆(YoY +39.2%)，总营业利润+37.9%。NC利润预期YoY +1700%(近18倍)，Pearl Abyss扭亏为盈至₩1,250亿。新游戏发行成为增长核心引擎。', source: 'MK경제/FnGuide', date: '04.20', url: 'https://www.mk.co.kr/cn/business/12021209' },
-  { company: 'Shift Up', color: '#ff6b9b', title: '《NIKKE：胜利女神》配信3.5周年特别生放送「希望之星再次闪耀之时」4/18成功举办，公布新Nikke角色"Anis: Star"将于4/23实装。本次3.5周年为史上最慷慨福利（预计超160次免费召唤）。', source: '4Gamer/Level Infinite', date: '04.18~20', url: 'https://www.4gamer.net/games/456/G045622/20260406013/' },
-  { company: '行业宏观', color: '#6b7185', title: '<strong>KOSPI创历史新高(6,388/+2.72%)但游戏股逆势下跌</strong>——资金虹吸到半导体/电池/核电等热门板块，KOSDAQ仅+0.36%。NC(-2.80%)领跌，Krafton(-2.49%)、Netmarble(-1.75%)跟随调整。', source: '카이로스투자/alphasquare', date: '04.21', url: 'https://omegaus-invest.tistory.com/417' },
-  { company: 'Krafton + Shift Up', color: '#f59e0b', title: 'PUBG × Stellar Blade联动正式上线，Eve角色+3套服装进入艾伦格地图', source: 'PUBG官方', date: '04.09', url: 'https://pubg.com/ko/news/9893' },
-  { company: 'Netmarble', color: '#ef4444', title: '《SOL: enchant》发售日从春季延至6月，官方称"为提高完成度"', source: '인벤', date: '04.08', url: '' },
-  { company: 'NC', color: '#3b82f6', title: '《Lineage Classic》累计制裁近600万账户，打击非法程序力度持续加强', source: 'NC官方', date: '04.07', url: 'https://about.ncsoft.com/news/article/news_update_260407' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '《Crimson Desert（红色沙漠）》全球销量突破400万套，Steam在线峰值27万，口碑反转升至"好评如潮"', source: 'Pearl Abyss官方', date: '03.30~04.09', url: 'https://www.pearlabyss.com/' },
-  { company: 'Nexon', color: '#22c55e', title: '2026 NDC(Nexon Developers Conference) 演讲者招募截止', source: 'MSN', date: '03.04~04.04', url: '' },
-  { company: 'Krafton', color: '#f59e0b', title: '发布AI模型品牌"Raon(라온)"，首批4款开源模型上线HuggingFace', source: 'Krafton AI', date: '04.02', url: '' },
-  { company: 'Shift Up', color: '#ff6b9d', title: '完成Unbound Games 100%收购整合——开发商→发行商战略转型标志事件', source: '인벤', date: '04.01', url: '' },
-  // ====== 4/22 最新 ======
-  { company: '六大游戏公司', color: '#6b7185', title: '<strong>游戏股全线反弹修正"错杀"</strong>——6家全部收红，PA+6.07%/NC+5.77%领涨。前一日KOSPI创新高但资金虹吸至半导体板块导致游戏股逆势，基本面未变引发强力超跌反弹。', source: '한국경제/이데일리', date: '04.22', url: '' },
-  { company: 'Pearl Abyss', color: '#a855f7', title: '<strong>《Crimson Desert》DLC路线图公布后持续发酵</strong>——4/17媒体发布会公布Boss重战、区域再封锁、难度选项等DLC计划。FnGuide预期Q1扭亏为盈至₩1,250亿（去年同期亏损₩52亿）。', source: '게임조선/GameLook', date: '04.22', url: '' },
-  { company: 'NC', color: '#3b82f6', title: '<strong>Aion 2座谈会效应持续</strong>——KSK韩国预约94万+创历史新高(超越Lineage M)，30日留存率36%远超行业平均。Q1财报季临近，分析师一致预期营业利润YoY +1700%。', source: '뉴스툰/FnGuide', date: '04.22', url: '' },
-];
 
 const PAGE_SIZE = 5;
 let eventCurrentPage = 1, normalCurrentPage = 1;
@@ -1524,8 +1498,8 @@ async function init() {
   console.log('🎮 韩国游戏股价看板 — 初始化...');
 
   try {
-    // Load latest data and dates list in parallel
-    const [dataOk] = await Promise.all([loadLatestData(), loadDatesList()]);
+    // Load all data in parallel: latest.json, dates.json, content.json
+    const [dataOk] = await Promise.all([loadLatestData(), loadDatesList(), loadContentData()]);
 
     if (dataOk && currentData) {
       renderDashboard();
