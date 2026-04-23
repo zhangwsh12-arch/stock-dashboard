@@ -568,7 +568,7 @@ function generateSUAnalysis() {
   }
 
   // ====== SU 月度分析文字（按日期分支，累积上下文，与其他5家公司 getItemText 同级） ======
-  const d = currentDate || '';
+  const d = currentData?.meta?.date || '';  // 从 currentData 获取当前日期（不依赖外部局部变量）
   const _isGE8  = d >= '20260408';  // 4/8 联动上线
   const _isGE10 = d >= '20260410';  // 4/10 联动消化
   const _isGE13 = d >= '20260413';  // 4/13 座谈会临近
