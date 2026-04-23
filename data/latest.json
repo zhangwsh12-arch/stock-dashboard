@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260422",
     "dateDisplay": "4月（截至22日）",
-    "fetchedAt": "2026-04-23T02:30:14.168Z",
+    "fetchedAt": "2026-04-23T06:20:21.240Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,8 +18,8 @@
     "change": "450",
     "changePercent": "+1.32%",
     "changeClass": "up",
-    "per": "10.61",
-    "pbr": "2.20",
+    "per": "10.66",
+    "pbr": "2.21",
     "marketCap": "2.03兆元"
   },
   "companies": [
@@ -31,7 +31,7 @@
       "price": "275,000",
       "change": "+5.77%",
       "changeClass": "up",
-      "per": "16.73"
+      "per": "16.91"
     },
     {
       "code": "259960",
@@ -41,7 +41,7 @@
       "price": "265,500",
       "change": "+4.12%",
       "changeClass": "up",
-      "per": "16.94"
+      "per": "17.29"
     },
     {
       "code": "251270",
@@ -51,7 +51,7 @@
       "price": "51,100",
       "change": "+0.99%",
       "changeClass": "up",
-      "per": "19.10"
+      "per": "18.93"
     },
     {
       "code": "225570",
@@ -80,32 +80,32 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "34,550",
-      "per": 10.61,
-      "perRaw": "10.61"
+      "per": 10.66,
+      "perRaw": "10.66"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
       "price": "275,000",
-      "per": 16.73,
-      "perRaw": "16.73"
+      "per": 16.91,
+      "perRaw": "16.91"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "265,500",
-      "per": 16.94,
-      "perRaw": "16.94"
+      "per": 17.29,
+      "perRaw": "17.29"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "51,100",
-      "per": 19.1,
-      "perRaw": "19.10"
+      "per": 18.93,
+      "perRaw": "18.93"
     }
   ],
   "chartData": [
