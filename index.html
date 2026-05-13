@@ -581,8 +581,8 @@ function generateSUAnalysis() {
   const price = su.price || '-';
   const prevClose = su.previousClose || '-';
 
-  // 计算月度累计涨跌（从 chartData 计算）
-  const chartData = currentData.chartData || [];
+  // 计算月度累计涨跌（从 chartData 计算，只计算5月数据）
+  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260501');
   let monthChange = null;
   let monthText = '';
   if (chartData.length >= 2) {
@@ -1106,11 +1106,15 @@ function renderCompanyAnalysisSection() {
     currentData.companies.forEach(c => compMap[c.code] = c);
   }
 
-  // 从 ALL_DATASETS 计算截至当日截止索引的累计收益率
+  // 从 ALL_DATASETS 计算截至当日截止索引的累计收益率（只计算当月数据）
   const currentDate = currentData?.meta?.date || '';
-  // 日期格式转换: "20260421" → "4/21"
+  // 日期格式转换: "20260511" → "5/11"
   const _dl = (d) => { if(!d) return ''; const m=parseInt(d.slice(4,6),10), dd=parseInt(d.slice(6),10); return `${m}/${dd}`; };
-  const cutoffIdx = Math.max(1, ALL_LABELS.indexOf(_dl(currentDate)) + 1);
+  
+  // 找到当月（5月）起始索引，只计算当月数据
+  const currentMonthLabel = currentDate.slice(4, 6); // "05"
+  const mayIndex = ALL_LABELS.findIndex(l => l.startsWith('5/'));
+  const cutoffIdx = mayIndex !== -1 ? mayIndex + 1 : ALL_LABELS.length;
 
   function calcCumulativeReturn(datasetData, idx) {
     if (idx <= 1) return 0;
@@ -1211,7 +1215,7 @@ function renderCompanyAnalysisSection() {
   container.innerHTML = `
 <div class="full-width-grid">
     <div class="card">
-        <div class="card-header"><span>主要游戏公司本月股价波动分析</span><span style="font-size:11px;color:var(--text-muted)">2026年4月（截至${dateDisplay}）· 月度波动汇总</span></div>
+        <div class="card-header"><span>主要游戏公司本月股价波动分析</span><span style="font-size:11px;color:var(--text-muted)">2026年${currentMonthLabel}月（截至${dateDisplay}）· 月度波动汇总</span></div>
         <div class="card-body">
             ${items.map(item => {
               const c = compMap[item.code] || {};
@@ -1372,8 +1376,10 @@ function renderSuChart() {
   grad.addColorStop(0, 'rgba(255,107,157,0.25)');
   grad.addColorStop(1, 'rgba(255,107,157,0.01)');
 
-  const labels = currentData.chartData.map(d => d.label);
-  const prices = currentData.chartData.map(d => d.price);
+  // 只显示当月数据：过滤5月数据（从5/1开始）
+  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260501');
+  const labels = chartData.map(d => d.label);
+  const prices = chartData.map(d => d.price);
 
   // Set chart date range text
   const rangeEl = document.getElementById('chartDateRange');
@@ -1420,23 +1426,14 @@ function renderCompareChart() {
 
   // 全局对比图数据（4/1~4/21，共15个交易日；⚠️ 下次抓取时需同步更新此数组）
 
-  // 根据当前数据的日期确定截断位置
-  const currentDateStr = currentData?.meta?.date || '';
-  let cutoffIndex = ALL_LABELS.length; // 默认显示全部
-  if (currentDateStr.length === 8) {
-    // 将日期格式 20260403 → M/D 格式来匹配
-    const month = parseInt(currentDateStr.slice(4,6));
-    const day = parseInt(currentDateStr.slice(6,8));
-    const targetLabel = `${month}/${day}`;
-    const foundIdx = ALL_LABELS.indexOf(targetLabel);
-    console.log('targetLabel:', targetLabel, 'foundIdx:', foundIdx);
-    if (foundIdx !== -1) cutoffIndex = foundIdx + 1;
-  }
-
-  const labels = ALL_LABELS.slice(0, cutoffIndex);
+  // 只显示当月数据：找到5月的起始索引
+  const mayIndex = ALL_LABELS.findIndex(l => l.startsWith('5/'));
+  const cutoffIndex = mayIndex !== -1 ? ALL_LABELS.length : ALL_LABELS.length;
+  
+  const labels = mayIndex !== -1 ? ALL_LABELS.slice(mayIndex) : ALL_LABELS;
   const datasets = ALL_DATASETS.map(ds => ({
     ...ds,
-    data: ds.data.slice(0, cutoffIndex)
+    data: mayIndex !== -1 ? ds.data.slice(mayIndex) : ds.data
   }));
 
   // 每日环比涨跌幅（对比前一天的变化率），4/1 为基准起点 0%
