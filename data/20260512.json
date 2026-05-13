@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260512",
     "dateDisplay": "5月（截至12日）",
-    "fetchedAt": "2026-05-13T08:25:16.408Z",
+    "fetchedAt": "2026-05-13T08:59:03.721Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -138,6 +138,24 @@
       "date": "20260512",
       "label": "5/12",
       "price": 30150
+    }
+  ],
+  "indices": [
+    {
+      "code": "KOSPI",
+      "name": "KOSPI",
+      "price": "7844.01",
+      "change": "200.86",
+      "changePercent": "2.63",
+      "changeClass": "up"
+    },
+    {
+      "code": "KOSDAQ",
+      "name": "KOSDAQ",
+      "price": "1176.93",
+      "change": "-2.36",
+      "changePercent": "-0.20",
+      "changeClass": "down"
     }
   ]
 }

@@ -4,7 +4,7 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-05-12",
     "note": "此文件由自动抓取 + 人工维护，每日需同步更新事件和分析文字",
-    "newsUpdatedAt": "2026-05-13T08:25:46.346Z",
+    "newsUpdatedAt": "2026-05-13T08:59:33.706Z",
     "newsCount": 30
   },
   "compareChart": {
@@ -275,6 +275,14 @@
   },
   "events": [
     {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>6월 12일 스텔라 블레이드 PC로 출시, PC 버전 특징 및 사양 공개 - PlayStation</strong>",
+      "source": "PlayStation",
+      "date": "05.16",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5Ja283akNKTkZUSFhhdldnZ0hreGVHSlZSQzhDNER6Wko2OWNOVVFnbExLZ2l3el93YmNYbHhTczBCdmx3d1I2TFlWZUcxdndVLTV0RkZuU3lUY2NUNGdoaGdQbXdiNXE1TlpBQ3dvVC01Mms?oc=5"
+    },
+    {
       "company": "Krafton",
       "color": "#f59e0b",
       "title": "<strong>배틀로얄 넘어 플랫폼으로...크래프톤 '배틀그라운드' 경계 넘는다 - 디지털투데이</strong>",
@@ -505,14 +513,6 @@
       "source": "이투데이",
       "date": "05.13",
       "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE92VVVmeWtoWjE5YUl3YUYxTWpvNVdKNDdtb3Q3Z1JTQmQ2TGNCUnNHVWxPTTZyU0N0QW9BWVJ3LThYajhCQW9ydVZVRFdLTURoM0NPMw?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC '아이온2' 업고 외형·내실 '껑충' - 딜사이트</strong>",
-      "source": "딜사이트",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5fOC01dklsYzlyV05FcVRhRTZyLXpvbFRSbVdaT0pFbE5NT0lNZTJRU3JkQVFRaDh0NGgyWS1yY0Z6clFiWjVxeDJJZW5ITHM?oc=5"
     }
   ],
   "industryNews": [
