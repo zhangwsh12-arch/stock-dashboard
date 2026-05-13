@@ -799,7 +799,7 @@ function renderDailySummary() {
   //   2) 波动 <5% 但有当日EVENT_DATA精确匹配 → 也显示
   //   3) <5%且仅有静态fallback(月度原因) → 不显示，避免把整月事件混入当日分析
   function buildDriverFactorsText() {
-    const THRESHOLD = 5;
+    const THRESHOLD = 2;
     const sigMovers = getSignificantMovers(THRESHOLD);
     if (sigMovers.length === 0 && todayEvents.length === 0) return '';
 
@@ -816,7 +816,7 @@ function renderDailySummary() {
       if (reason) {
         reasons.push(`<span style="color:${reason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${reason.text}</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
       } else {
-        reasons.push(`<span style="color:${stock.color};font-size:13px">${stock.name}</span><span style="color:#f59e0b;font-size:12px"> — 待查明原因</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
+        reasons.push(`<span style="color:${stock.color};font-size:13px">${stock.name}</span><span style="color:#6b7185;font-size:12px"> — 无特殊原因</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
       }
     }
 
