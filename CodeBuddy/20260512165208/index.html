@@ -1414,6 +1414,10 @@ function renderCompareChart() {
 
   if (compareChartInstance) compareChartInstance.destroy();
 
+  // 调试：输出 ALL_LABELS 的值
+  console.log('ALL_LABELS:', ALL_LABELS);
+  console.log('currentData.meta.date:', currentData?.meta?.date);
+
   // 全局对比图数据（4/1~4/21，共15个交易日；⚠️ 下次抓取时需同步更新此数组）
 
   // 根据当前数据的日期确定截断位置
@@ -1425,6 +1429,7 @@ function renderCompareChart() {
     const day = parseInt(currentDateStr.slice(6,8));
     const targetLabel = `${month}/${day}`;
     const foundIdx = ALL_LABELS.indexOf(targetLabel);
+    console.log('targetLabel:', targetLabel, 'foundIdx:', foundIdx);
     if (foundIdx !== -1) cutoffIndex = foundIdx + 1;
   }
 
