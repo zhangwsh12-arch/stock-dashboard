@@ -4,7 +4,7 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-05-12",
     "note": "此文件由自动抓取 + 人工维护，每日需同步更新事件和分析文字",
-    "newsUpdatedAt": "2026-05-13T08:21:20.988Z",
+    "newsUpdatedAt": "2026-05-13T08:25:46.346Z",
     "newsCount": 30
   },
   "compareChart": {
@@ -275,6 +275,22 @@
   },
   "events": [
     {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>배틀로얄 넘어 플랫폼으로...크래프톤 '배틀그라운드' 경계 넘는다 - 디지털투데이</strong>",
+      "source": "디지털투데이",
+      "date": "05.11",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBfUEJxTTV5NE4wR0d2anNXNFdQOGdsTkhwUHVmWlRNSkRXZzJQZU8tMWFHZ29UOFl6Z2FoNGJHbXliSVFlUG9mQ3JvUjQzV3NwRjU2d2psMVFJYlJsN2FYTUJBYVNqNDlhbGFQRDZsWEFKYXc?oc=5"
+    },
+    {
+      "company": "Netmarble",
+      "color": "#ef4444",
+      "title": "<strong>넷마블, ‘드래곤스트라이커’ 출시 - 소비자경제</strong>",
+      "source": "소비자경제",
+      "date": "05.11",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9iMXdMZy1oU3pDQmJpQkFrUm1FMmZsN19NSUZScmtxQWRvVi0xZEhIWWdNUnlpZ05kQ1BJX3h0NW1sMHRnOERfSVZjQmNIbHdIZTYwRVg0WDN6Q3drNk1oYnZXWW1Tb1FMblE?oc=5"
+    },
+    {
       "company": "Pearl Abyss",
       "color": "#a855f7",
       "title": "<strong>PEARL ABYSS Releases First Official OST Album for ‘Crimson Desert’ - 경향게임스</strong>",
@@ -497,22 +513,6 @@
       "source": "딜사이트",
       "date": "05.13",
       "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5fOC01dklsYzlyV05FcVRhRTZyLXpvbFRSbVdaT0pFbE5NT0lNZTJRU3JkQVFRaDh0NGgyWS1yY0Z6clFiWjVxeDJJZW5ITHM?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>6월 12일 스텔라 블레이드 PC로 출시, PC 버전 특징 및 사양 공개 - PlayStation</strong>",
-      "source": "PlayStation",
-      "date": "05.16",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5Ja283akNKTkZUSFhhdldnZ0hreGVHSlZSQzhDNER6Wko2OWNOVVFnbExLZ2l3el93YmNYbHhTczBCdmx3d1I2TFlWZUcxdndVLTV0RkZuU3lUY2NUNGdoaGdQbXdiNXE1TlpBQ3dvVC01Mms?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>4月首个交易日韩国股市整体大涨</strong>——KOSPI +1.92%、KOSDAQ +2.38%，月初资金配置驱动板块轮动。游戏股作为高Beta成长股领涨：Shift Up +5.77%（月初行情龙头）、NC +4.52%、Krafton +3.47%。",
-      "source": "한국경제신문",
-      "date": "04.01",
-      "url": ""
     }
   ],
   "industryNews": [
