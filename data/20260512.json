@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260512",
     "dateDisplay": "5月（截至12日）",
-    "fetchedAt": "2026-05-13T02:22:36.767Z",
+    "fetchedAt": "2026-05-13T02:27:45.091Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,7 +18,7 @@
     "change": "-1,250",
     "changePercent": "-3.98%",
     "changeClass": "down",
-    "per": "9.15",
+    "per": "9.16",
     "pbr": "1.90",
     "marketCap": "1.77兆元"
   },
@@ -51,7 +51,7 @@
       "price": "277,500",
       "change": "-2.46%",
       "changeClass": "down",
-      "per": "17.52"
+      "per": "17.49"
     },
     {
       "code": "225570",
@@ -80,8 +80,8 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "30,150",
-      "per": 9.15,
-      "perRaw": "9.15"
+      "per": 9.16,
+      "perRaw": "9.16"
     },
     {
       "code": "036570",
@@ -104,8 +104,8 @@
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "277,500",
-      "per": 17.52,
-      "perRaw": "17.52"
+      "per": 17.49,
+      "perRaw": "17.49"
     }
   ],
   "chartData": [
