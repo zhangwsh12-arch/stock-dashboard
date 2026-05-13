@@ -22,6 +22,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, '..', 'data');
 
 // ============================================================
+// 大盘指数配置 (KOSPI & KOSDAQ)
+// ============================================================
+const INDICES = [
+  { code: 'KOSPI',   name: 'KOSPI',   yahoo: '^KS11' },
+  { code: 'KOSDAQ',  name: 'KOSDAQ',  yahoo: '^KQ11' },
+];
+
+// ============================================================
 // 公司配置
 // ============================================================
 const COMPANIES = [
@@ -74,11 +82,59 @@ function formatWon(n) {
   return `≈ ${Math.round(num).toLocaleString()}₩`;
 }
 
+
 function changeClass(change) {
   const c = parseFloat(change);
   if (c > 0) return 'up';
   if (c < 0) return 'down';
   return 'neutral';
+}
+
+// ============================================================
+// 大盘指数抓取 (KOSPI / KOSDAQ)
+// ============================================================
+
+async function fetchIndexData(index) {
+  try {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${index.yahoo}?interval=1d&range=5d`;
+    console.log(`  📈 [Index] Fetching: ${index.name}`);
+    
+    const resp = await fetchWithRetry(url, {
+      headers: { 'Referer': 'https://finance.yahoo.com/' },
+    });
+    
+    const json = await resp.json();
+    const result = json?.chart?.result?.[0];
+    if (!result) throw new Error('No index data');
+    
+    const closes = result.indicators?.quote?.[0]?.close || [];
+    if (closes.length < 2) throw new Error('Insufficient data');
+    
+    const currentPrice = closes[closes.length - 1];
+    const prevPrice = closes[closes.length - 2];
+    const change = currentPrice - prevPrice;
+    const changePercent = prevPrice > 0 ? ((change / prevPrice) * 100).toFixed(2) : '0.00';
+    
+    console.log(`  ✅ [Index] ${index.name}: ${currentPrice.toFixed(2)} (${change >= 0 ? '+' : ''}${changePercent}%)`);
+    
+    return {
+      code: index.code,
+      name: index.name,
+      price: currentPrice.toFixed(2),
+      change: change.toFixed(2),
+      changePercent: changePercent,
+      changeClass: changeClass(change),
+    };
+  } catch (err) {
+    console.error(`  ❌ [Index] Failed for ${index.name}: ${err.message}`);
+    return null;
+  }
+}
+
+async function fetchAllIndices() {
+  console.log('\n📊 正在抓取大盘指数...\n');
+  const results = await Promise.all(INDICES.map(fetchIndexData));
+  return results.filter(r => r !== null);
 }
 
 /**
@@ -524,6 +580,9 @@ async function main() {
     process.exit(1);
   }
 
+  // 抓取大盘指数
+  const indexResults = await fetchAllIndices();
+
   // 构建看板数据包
   // Shift Up (462870) 必须是真正的 Shift Up 数据，绝不回退到其他公司
   const realShiftUp = stockResults.find(r => r?.code === '462870');
@@ -584,6 +643,9 @@ async function main() {
       .sort((a, b) => a.per - b.per),
 
     chartData: [],
+    
+    // 大盘指数数据
+    indices: indexResults,
   };
 
   // 图表数据 (使用 Shift Up 的历史数据)

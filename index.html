@@ -726,7 +726,7 @@ function renderDailySummary() {
   const topLoser = sorted[sorted.length - 1];
   const uppers = sorted.filter(s => s.changeClass === 'up');
   const downers = sorted.filter(s => s.changeClass === 'down');
-  const THRESHOLD = 5; // 单日波动超过5%必须写明原因
+  const THRESHOLD = 2; // 单日波动超过2%必须写明原因
 
   let analysisText = '';
 
@@ -835,7 +835,22 @@ function renderDailySummary() {
       }
     }
 
-    if (reasons.length === 0) return '';
+    // ====== 大盘指数分析 ======
+    const indices = currentData.indices || [];
+    const marketDown = indices.filter(i => i.changeClass === 'down');
+    const marketUp = indices.filter(i => i.changeClass === 'up');
+    const noReasonStocks = reasons.filter(r => r.includes('无特殊原因'));
+    let marketAnalysis = '';
+
+    if (downCount > upCount && marketDown.length > 0 && noReasonStocks.length >= 2) {
+      const marketDetails = marketDown.map(i => `${i.name}<span style="color:#f87171">${i.changePercent >= 0 ? '+' : ''}${i.changePercent}%</span>`).join('、');
+      marketAnalysis = `<br><span style="font-size:13px;color:#9aa0b3">📉 大盘拖累：</span>当日${marketDetails}整体下跌，可能对游戏板块形成拖累。`;
+    } else if (upCount > downCount && marketUp.length > 0 && noReasonStocks.length >= 2) {
+      const marketDetails = marketUp.map(i => `${i.name}<span style="color:#34d399">+${i.changePercent}%</span>`).join('、');
+      marketAnalysis = `<br><span style="font-size:13px;color:#9aa0b3">📈 大盘带动：</span>当日${marketDetails}整体上涨，板块顺势走强。`;
+    }
+
+    if (reasons.length === 0 && !marketAnalysis) return '';
 
     // 检测是否有全板块性宏观因素需要前置显示
     const macroKeywords = ['特朗普', '트럼프', '大盘', 'KOSPI', 'KOSDAQ', '整体', '板块', '全球市场', '美联储'];
@@ -847,9 +862,13 @@ function renderDailySummary() {
       // 有宏观因素时，先显示宏观背景，再显示个股因素
       output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroReasons.join('；')}。`;
       output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${nonMacroReasons.join('；')}。`;
-    } else {
+    } else if (reasons.length > 0) {
       output += `${reasons.join('；')}。`;
     }
+    
+    // 添加大盘分析
+    output += marketAnalysis;
+    
     return output;
   }
 
