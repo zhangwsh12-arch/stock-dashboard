@@ -45,14 +45,13 @@ jobs:
           node-version: '20'
 
       - name: Run data fetcher
-        working-directory: CodeBuddy/20260512165208
         run: node scripts/fetch-data.mjs
 
       - name: Commit and push updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add CodeBuddy/20260512165208/data/
+          git add data/
           if ! git diff --cached --quiet; then
             git commit -m "📊 自动更新股价数据 $(date '+%Y-%m-%d %H:%M KST')"
             git push
@@ -66,7 +65,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'CodeBuddy/20260512165208'
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deploy
