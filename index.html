@@ -13,6 +13,7 @@
             --bg-primary: #0f1117; --bg-secondary: #1a1d27; --bg-card: #222636;
             --border-color: #2e3347; --text-primary: #e8eaed; --text-secondary: #9aa0b3;
             --text-muted: #6b7185; --accent-blue: #3b82f6; --accent-green: #10b981;
+            --link-color: #60a5fa;
             --accent-red: #ef4444; --accent-orange: #f59e0b; --accent-purple: #8b5cf6;
             --accent-cyan: #06b6d4; --accent-pink: #f43f5e;
             --gradient-start: #667eea; --gradient-end: #764ba2;
@@ -269,14 +270,24 @@ async function loadContentData() {
       ALL_DATASETS = content.compareChart.datasets || [];
     }
 
-    // 新闻事件
+    // 新闻事件（过滤韩语/英语标题，只保留中文内容）
     if (content.events) {
-      EVENT_DATA = content.events;
+      EVENT_DATA = content.events.filter(e => {
+        const plain = (e.title || '').replace(/<[^>]+>/g, '');
+        const korean = (plain.match(/[가-힣]/g) || []).length;
+        const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
+        return korean <= chinese || korean <= 5;
+      });
     }
 
-    // 行业资讯
+    // 行业资讯（同样过滤韩语标题）
     if (content.industryNews) {
-      NORMAL_DATA = content.industryNews;
+      NORMAL_DATA = content.industryNews.filter(e => {
+        const plain = (e.title || '').replace(/<[^>]+>/g, '');
+        const korean = (plain.match(/[가-힣]/g) || []).length;
+        const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
+        return korean <= chinese || korean <= 5;
+      });
     }
 
     contentLoaded = true;
@@ -444,9 +455,9 @@ function showErrorState() {
 // ====== findCompanyReason（移到顶层，供 generateSUAnalysis 和 renderDailySummary 共用）======
 function findCompanyReason(stockName, changeClass) {
     // 按涨跌方向分开存储原因，避免逻辑矛盾
-    // ⚠️ 数据来源优先级：1) Naver Finance 实时分析文章 2) DART 公示 3) 当日新闻
-    // ⚠️ 此静态表仅为 fallback，每日必须根据当日实际事件更新！
-    // ⚠️ 关键规则：原因必须与涨跌方向逻辑自洽！
+      // 数据来源优先级：1) Naver Finance 实时分析文章 2) DART 公示 3) 当日新闻
+      // 此静态表仅为 fallback，每日必须根据当日实际事件更新！
+      // 关键规则：原因必须与涨跌方向逻辑自洽！
   const currentDate = (currentData.meta?.date || ''); // e.g. "20260408"
   const isBeforeApril8 = currentDate < '20260408'; // 4/8联动前的日期
   const isApril10OrLater = currentDate >= '20260410'; // 4/10 Q1财报季预期
@@ -454,12 +465,21 @@ function findCompanyReason(stockName, changeClass) {
   const isApril22OrLater = currentDate >= '20260422'; // 4/22 游戏股全面反弹（6家全涨）
   const isApril23OrLater = currentDate >= '20260423'; // 4/23 NIKKE Anis:Star实装
   const isMay1OrLater = currentDate >= '20260501'; // 5/1 进入5月
+  const isMay12OrLater = currentDate >= '20260512'; // 5/12 新增日期分支
+  const isMay13OrLater = currentDate >= '20260513'; // 5/13 新增日期分支
+  const isMay14OrLater = currentDate >= '20260514'; // 5/14 NIKKE Mint+Lineage2M+PUBG新模式+Nexon AI补贴
 
   const reasonMapUp = {
       // ====== 上涨原因：利好驱动 ======
-      'NC': isMay1OrLater
-        ? '<strong>Aion 2韩国预约突破120万+Q1财报超预期</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。'
-        : isApril23OrLater
+      'NC': isMay14OrLater
+        ? '<strong>《Lineage 2M》5/27 REQUIEM大更新预告</strong>——经典IP现代化改造，李道流(Re:Boot)重启预告。距Aion 2六月全球发布前序曲，Lineage系列持续迭代验证IP长线运营能力。'
+        : isMay13OrLater
+        ? '<strong>Aion 2全球发布前震荡整固</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1财报超预期（利润YoY+1700%）后进入获利了结阶段，短期技术性回调消化前期涨幅。'
+        : isMay12OrLater
+          ? '<strong>Aion 2韩国预约突破120万+Q1财报超预期</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。'
+          : isMay1OrLater
+            ? '<strong>Aion 2韩国预约突破120万+Q1财报超预期</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。'
+            : isApril23OrLater
           ? '<strong>游戏板块强势反弹延续</strong>——前一日(4/21)KOSPI创历史新高但游戏股逆势下跌的"错杀"得到修正。Aion 2座谈会+KSK预约94万等核心催化剂仍在发酵。关注Q1财报正式公布节点。'
           : isApril22OrLater
             ? '<strong>4/21"错杀"后强力反弹(+5.77%，领涨全板块)</strong>——前一日KOSPI创新高但资金虹吸至半导体导致游戏股逆势暴跌，市场重新评估后发现游戏股基本面未变，超跌反弹动力充足。Aion 2座谈会+KSK预约94万等核心催化仍有效。'
@@ -469,19 +489,31 @@ function findCompanyReason(stockName, changeClass) {
             ? '<strong>《Aion 2》座谈会超预期 + KSK预约94万创历史新高</strong>：4/11首尔场600+玩家（远超预期400人），后续追加江原道/济州场。韩国预约量突破94万（超越《Lineage M》创公司历史最高），KSK登录后30日留存率36%（远超行业平均）。6月全球正式发布期待。'
             : isApril10OrLater
               ? '<strong>Q1财报季实绩改善预期</strong>：分析师预估销售额1,020亿韩元，《Lineage Classic》新增BM防御收入下滑，《Aion 2》S3延期但市场反应正面。'
-              : '<strong>4/7正式起诉YouTuber"영래기"</strong>，市场解读为反作弊力度加大的积极信号，累计制裁近600万账户。',
-      'Pearl Abyss': isMay1OrLater
-        ? '<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月创韩国主机最快纪录。DLC首波内容5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。持续内容更新支撑长线运营。'
-        : isApril23OrLater
+              : '<strong>4/7正式起诉YouTuber"永莱基"</strong>，市场解读为反作弊力度加大的积极信号，累计制裁近600万账户。',
+      'Pearl Abyss': isMay14OrLater
+        ? '<strong>Crimson Desert DLC'Boss重战模式'上线中+500万套长线运营</strong>——发售不到两个月创韩国主机最快纪录，DLC内容持续更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。'
+        : isMay13OrLater
+        ? '<strong>Crimson Desert DLC'Boss重战模式'上线后短期震荡</strong>——5月中旬DLC上线后首波内容更新完成，但缺乏后续新催化。500万套销量利好已充分定价，Q1扭亏为盈后进入业绩真空期。'
+        : isMay12OrLater
+          ? '<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月创韩国主机最快纪录。DLC首波内容5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。持续内容更新支撑长线运营。'
+          : isMay1OrLater
+            ? '<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月创韩国主机最快纪录。DLC首波内容5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。持续内容更新支撑长线运营。'
+            : isApril23OrLater
           ? '<strong>连续两日强势反弹</strong>——4/22大涨+6.07%领涨全板块后动能延续。《Crimson Desert》DLC路线图公布后的正面效应持续发酵，前期超跌卖压充分释放。'
           : isApril22OrLater
             ? '<strong>超跌反弹+6.07%（全板块最大涨幅）</strong>——4/21板块调整中相对抗跌(+0.74%)显示底部信号，4/22《Crimson Desert》DLC路线图利好+前期获利了结卖压释放完毕，技术性反弹强劲。'
             : isApril13OrLater
           ? '<strong>《Crimson Desert（红色沙漠）》4/17媒体发布会临近 + 全球销量突破400万套</strong>：Steam"特别好评"，同时在线峰值27万。市场期待DLC路线图公布。'
           : '《Crimson Desert（红色沙漠）》Steam评价升至<strong>"好评如潮"</strong>，全球销量突破400万套，口碑反转驱动估值修复。',
-      'Shift Up': isMay1OrLater
-        ? '<strong>《Stellar Blade》PC版销量破150万+NIKKE累计营收破$10亿</strong>——PC版Steam好评率92%，验证跨平台发行能力。NIKKE Anis: Star实装后首周营收环比+35%，3.5周年活动持续带动用户回流。'
-        : isApril23OrLater
+      'Shift Up': isMay14OrLater
+        ? '<strong>NIKKE新SSR'Mint'5/14实装+Stellar Blade联动复刻</strong>——新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。$10亿累计营收里程碑后持续内容更新。'
+        : isMay13OrLater
+        ? '<strong>Stellar Blade PC版150万套后增长放缓+缺乏新催化</strong>——PC版Steam好评率92%但销量增速趋缓。NIKKE 3.5周年活动后用户数据自然回落，短期进入IP运营真空期，等待新作消息提振。'
+        : isMay12OrLater
+          ? '<strong>Stellar Blade PC版销量破150万+NIKKE累计营收破$10亿</strong>——PC版Steam好评率92%，验证跨平台发行能力。NIKKE Anis: Star实装后首周营收环比+35%，3.5周年活动持续带动用户回流。'
+          : isMay1OrLater
+            ? '<strong>Stellar Blade PC版销量破150万+NIKKE累计营收破$10亿</strong>——PC版Steam好评率92%，验证跨平台发行能力。NIKKE Anis: Star实装后首周营收环比+35%，3.5周年活动持续带动用户回流。'
+            : isApril23OrLater
           ? '<strong>NIKKE Anis: Star 4/23实装催化 + 连续两日收红</strong>——3.5周年活动(超160次免费召唤)持续进行，新角色上线窗口临近。4/22反弹+1.32%为板块唯一独立题材支撑。'
           : isApril22OrLater
             ? '<strong>板块中唯一独立题材股——4/23 NIKKE新角色"Anis: Star"实装窗口临近</strong>：3.5周年活动(超160次免费召唤)带动用户活跃度回升。在4/21板块逆势下跌中唯一显著收红(+1.04%)，4/22延续+1.32%显示独立alpha。'
@@ -490,9 +522,15 @@ function findCompanyReason(stockName, changeClass) {
               : isApril13OrLater
             ? '<strong>4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线</strong>：收购强化全球PC/主机发行能力，联动验证IP跨平台价值。前期超跌后技术性反弹。'
             : '<strong>PUBG × Stellar Blade 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。',
-      'Krafton': isMay1OrLater
-        ? '<strong>PUBG Mobile印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。'
-        : isApril23OrLater
+      'Krafton': isMay14OrLater
+        ? '<strong>PUBG × Stellabreeze新PvE模式PAYDAY上线</strong>——与Stellabreeze联合开发的合作突袭模式，联手全球艺术家收录原创曲目。AI模型Raon持续开源扩展，印度市场谈判最后阶段+Ascend Zero新作开发中。'
+        : isMay13OrLater
+        ? '<strong>印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。前期涨幅后短期震荡整理。'
+        : isMay12OrLater
+          ? '<strong>PUBG Mobile印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。'
+          : isMay1OrLater
+            ? '<strong>PUBG Mobile印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。'
+            : isApril23OrLater
           ? '<strong>Q1财报催化持续发酵 + AI"Raon"生态扩张</strong>——4/17超预期财报(利润YoY+52%)效应仍在释放，4/22反弹+4.12%显示市场重新认可基本面。关注后续Ascend Zero新作消息。'
           : isApril22OrLater
             ? '<strong>超跌反弹+4.12%</strong>——4/21跟随板块回调-2.49%后，Q1超预期财报(利润YoY+52%)的正面效应在反弹中重新被定价。AI模型"Raon"开源生态持续发酵。'
@@ -501,67 +539,115 @@ function findCompanyReason(stockName, changeClass) {
           : isApril13OrLater
             ? '<strong>Q1实绩超预期：营业利润₩5,200亿（YoY +52%）</strong>——远超市场预期₩2,700~4,000亿；营收₩1.2兆（YoY +₩4,082亿）。PUBG: Battlegrounds PC版Q1销量39万台强劲，《PUBG Mobile》全球表现稳健。AI品牌"Haon"开发中。'
             : '<strong>Q1实绩预期稳健+AI品牌效应</strong>：AI模型"Raon"开源发酵；PUBG联动持续贡献收入。',
-      'Nexon Games': isMay1OrLater
-        ? '<strong>Blue Archive全球三周年活动筹备中</strong>——日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。'
-        : isApril23OrLater
+      'Nexon Games': isMay14OrLater
+        ? '<strong>Nexon全员AI补贴制度启动+DNF新转职实装</strong>——每人每月$250 AI使用费加速全公司AI应用落地。DNF新转职女格斗家、冒险岛×防弹少年团JIN合作等多元化内容同步推进。Blue Archive三周年活动筹备中。'
+        : isMay13OrLater
+        ? '<strong>Blue Archive全球三周年活动筹备+新作延期风险压制估值</strong>——日本市场长期畅销提供稳定现金流，但新作延期问题持续压制估值。Project DX/RX开发进度更新预计Q3公布，市场等待明确时间表。'
+        : isMay12OrLater
+          ? '<strong>Blue Archive全球三周年活动筹备中</strong>——日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。'
+          : isMay1OrLater
+            ? '<strong>Blue Archive全球三周年活动筹备中</strong>——日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。'
+            : isApril23OrLater
           ? '<strong>超跌反弹+0.65%——延期风险已被市场部分定价</strong>：社长公开承认新作延期的利空已在前期充分反应，4/22反弹显示卖压减弱。Blue Archive IP全球表现提供基本面支撑。'
           : isApril13OrLater
-          ? '<strong>Blue Archive IP扩展战略持续推进</strong>，日本等全球市场长期畅销。近期随板块调整后企稳。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"，《Dungeon & Fighter: Arad（던전앤파이터:아라드）》、Project DX/RX 日程均部分延迟。'
+          ? '<strong>Blue Archive IP扩展战略持续推进</strong>，日本等全球市场长期畅销。近期随板块调整后企稳。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"，《Dungeon & Fighter: Arad》、Project DX/RX 日程均部分延迟。'
           : '<strong>无明显突发催化剂</strong>，或为4/2大盘暴跌后的技术性反弹修复（补涨属性）。',
-      'Netmarble': isMay1OrLater
-        ? '<strong>《Monster Striker》首月营收超预期破₩300亿</strong>——PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，分红收益(年配当约2,800韩元/股)提供底部支撑。'
-        : isApril23OrLater
+      'Netmarble': isMay14OrLater
+        ? '<strong>Monster Striker首月营收超预期+Coway治理争议逐步消化</strong>——PC/移动端跨平台联机模式获好评，首月营收破₩300亿。分红收益(年配当约2,800韩元/股)提供底部支撑。'
+        : isMay13OrLater
+        ? '<strong>Monster Striker首月营收超预期后短期震荡</strong>——PC/移动端跨平台联机模式获好评，但Coway治理争议余波仍有压制。分红收益(年配当约2,800韩元/股)提供底部支撑，等待新增长催化剂。'
+        : isMay12OrLater
+          ? '<strong>《Monster Striker》首月营收超预期破₩300亿</strong>——PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，分红收益(年配当约2,800韩元/股)提供底部支撑。'
+          : isMay1OrLater
+            ? '<strong>《Monster Striker》首月营收超预期破₩300亿</strong>——PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，分红收益(年配当约2,800韩元/股)提供底部支撑。'
+            : isApril23OrLater
           ? '<strong>连续两日反弹+0.99%——Coway治理争议逐步消化</strong>：《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑，《Monster Striker》上线后持续贡献营收。'
           : isApril22OrLater
             ? '<strong>超跌反弹+0.99%</strong>——4/21因资金虹吸跌-1.75%，4/22Coway治理争议利空消化中。《Seven Deadly Sins: Origin》运营稳定+分红收益筑底。'
             : isApril13OrLater
-          ? '<strong>《Monster Striker: Star Dive（몬길: STAR DIVE）》4/15全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机同步支持，《怪物训练师》续作(Unreal Engine 5 收集型动作RPG)。GDC 2026 Xbox合作发布后首个正式发售。新作为短期营收贡献 + 未来IP扩展预期。'
+          ? '<strong>《Monster Striker: Star Dive》4/15全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机同步支持，《怪物训练师》续作(Unreal Engine 5 收集型动作RPG)。GDC 2026 Xbox合作发布后首个正式发售。新作为短期营收贡献 + 未来IP扩展预期。'
           : '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议：Activist基金Align Partners公开批评构成"stark conflict of interest（显著利益冲突）"——Netmarble作为Coway最大股东(持股25.8%)，实际受益于Coway股价走低（同额资金可买入更多股份），其目标与少数股东追求股价上涨的利益根本对立。市场质疑为何不回购自家股票而投资关联方。但强化控股也带来长期分红收益预期（年配当约2,800韩元/股）+ 《Seven Deadly Sins Origin》运营稳定。',
     };
     const reasonMapDown = {
       // ====== 下跌原因：利空驱动 ======
-      'NC': isMay1OrLater
-        ? '<strong>前期涨幅较大后技术性回调</strong>——Aion 2预约破120万利好已部分定价，短期缺乏新催化剂。Q1财报超预期后进入获利了结阶段，6月全球发布前或维持震荡整理。'
-        : isApril23OrLater
+      'NC': isMay14OrLater
+        ? '<strong>Lineage 2M更新预期已部分定价+获利了结</strong>——5/27 REQUIEM更新预告利好已提前反应，6月Aion 2全球发布前震荡整理。Q1财报超预期后获利了结压力仍存。'
+        : isMay13OrLater
+        ? '<strong>Aion 2全球发布前获利了结压力</strong>——6月全球发布利好已部分定价，短期震荡整理消化前期涨幅。前期预约数据（120万）利好已被市场充分反映。'
+        : isMay12OrLater
+          ? '<strong>前期涨幅较大后技术性回调</strong>——Aion 2预约破120万利好已部分定价，短期缺乏新催化剂。Q1财报超预期后进入获利了结阶段，6月全球发布前或维持震荡整理。'
+          : isMay1OrLater
+            ? '<strong>前期涨幅较大后技术性回调</strong>——Aion 2预约破120万利好已部分定价，短期缺乏新催化剂。Q1财报超预期后进入获利了结阶段，6月全球发布前或维持震荡整理。'
+            : isApril23OrLater
           ? '<strong>前一日大涨后技术性获利了结</strong>——4/22 NC暴涨+5.77%领涨全板块，短期涨幅过大(两日累计+2.85%)引发部分资金止盈。Aion 2基本面未变。'
           : isApril22OrLater
           ? '<strong>KOSPI创历史新高(6,388/+2.72%)但游戏股逆势下跌</strong>——资金极度集中涌入半导体(SK海力士领涨)/二次电池/核电等核心板块，产生强烈虹吸效应。KOSDAQ仅+0.36%(机构+外资抛售)，NC作为KOSDAQ权重股首当其冲成为调仓换股对象。Aion 2利好已充分定价后缺乏新催化剂。'
           : isApril13OrLater
           ? '<strong>Aion 2座谈会利好已部分反应</strong>，4/13小幅回调-0.42%属正常波动。《Lineage Classic》BM新增防御收入下滑仍是中期隐忧。'
           : '<strong>特朗普伊朗强硬讲话冲击全球市场</strong>：KOSPI -4.47%、KOSDAQ -5.36% 双双触发卖空侧轨，外资抛售近5,000亿韩元。游戏板块作为高Beta成长股遭集中抛售。',
-      'Netmarble': isMay1OrLater
+      'Netmarble': isMay14OrLater
+        ? '<strong>Coway治理争议余波+Monster Striker营收持续性待验证</strong>——首月营收虽超预期但后续用户留存待观察。Coway治理担忧仍未完全消除，外资卖出压力间歇性出现。'
+        : isMay13OrLater
         ? '<strong>Coway治理争议余波+新游数据待验证</strong>——《Monster Striker》首月营收虽超预期但持续性待观察。Coway追加收购引发的治理担忧仍未完全消除，外资卖出压力间歇性出现。'
-        : isApril22OrLater
+        : isMay12OrLater
+          ? '<strong>Coway治理争议余波+新游数据待验证</strong>——《Monster Striker》首月营收虽超预期但持续性待观察。Coway追加收购引发的治理担忧仍未完全消除，外资卖出压力间歇性出现。'
+          : isMay1OrLater
+            ? '<strong>Coway治理争议余波+新游数据待验证</strong>——《Monster Striker》首月营收虽超预期但持续性待观察。Coway追加收购引发的治理担忧仍未完全消除，外资卖出压力间歇性出现。'
+            : isApril22OrLater
           ? '<strong>资金虹吸效应+KOSDAQ弱势格局</strong>：4/21 KOSPI暴涨+2.72%创历史新高，但机构资金集中涌向半导体/电池板块，游戏股沦为"提款机"。Coway治理争议仍未完全消化，《Monster Striker》上线初期数据待观察。'
           : isApril13OrLater
           ? '<strong>《Monster Striker: Star Dive》4/15全球上线预期已提前反应</strong>——首发当日营收贡献为短期性质，市场正观望初期下载数据。叠加Coway收购争议，方向性不确定。'
           : '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
-      'Pearl Abyss': isMay1OrLater
-        ? '<strong>前期涨幅较大后获利了结</strong>——Crimson Desert破500万套利好已充分定价，DLC上线前缺乏新催化剂。Q1扭亏为盈后进入业绩真空期，短期技术性回调占主导。'
-        : isApril22OrLater
+      'Pearl Abyss': isMay14OrLater
+        ? '<strong>Crimson Desert DLC上线后缺乏新催化+获利了结</strong>——500万套销量利好已充分定价，DLC'Boss重战模式'上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
+        : isMay13OrLater
+        ? '<strong>Crimson Desert DLC上线后缺乏新催化</strong>——500万套销量利好已充分定价，DLC'Boss重战模式'上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
+        : isMay12OrLater
+          ? '<strong>前期涨幅较大后获利了结</strong>——Crimson Desert破500万套利好已充分定价，DLC上线前缺乏新催化剂。Q1扭亏为盈后进入业绩真空期，短期技术性回调占主导。'
+          : isMay1OrLater
+            ? '<strong>前期涨幅较大后获利了结</strong>——Crimson Desert破500万套利好已充分定价，DLC上线前缺乏新催化剂。Q1扭亏为盈后进入业绩真空期，短期技术性回调占主导。'
+            : isApril22OrLater
           ? '<strong>Crimson Desert销量稳健+DLC路线图公布后短期企稳</strong>，在游戏板块整体逆势调整中相对抗跌（仅+0.74%），显示前期超跌后卖压已充分释放。'
           : isApril13OrLater
           ? '<strong>短期无明显利空</strong>，前期涨幅较大后获利了结卖压逐步消化中。'
           : '《Crimson Desert（红色沙漠）》前期涨幅较大，<strong>获利了结卖压释放</strong>。短期技术性回调占主导。',
-      'Krafton': isMay1OrLater
-        ? '<strong>印度回归谈判不确定性+大盘波动</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，Krafton市值较大导致外资抛售压力更重。'
-        : isApril22OrLater
+      'Krafton': isMay14OrLater
+        ? '<strong>PUBG新PvE模式上线后短期获利了结+印度回归时间表未定</strong>——PAYDAY模式上线利好已部分定价，印度市场谈判虽进展积极但具体时间表未定。全球科技股波动拖累游戏板块情绪。'
+        : isMay13OrLater
+        ? '<strong>印度回归谈判不确定性+前期涨幅较大</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，前期利润YoY+52%利好已充分定价。'
+        : isMay12OrLater
+          ? '<strong>印度回归谈判不确定性+大盘波动</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，Krafton市值较大导致外资抛售压力更重。'
+          : isMay1OrLater
+            ? '<strong>印度回归谈判不确定性+大盘波动</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，Krafton市值较大导致外资抛售压力更重。'
+            : isApril22OrLater
           ? '<strong>Q1超预期财报利好已消化+资金虹吸效应</strong>：KOSPI创新高但资金流向半导体/核电等热门板块。Q1财报(利润YoY+52%)催化已在4/17前后充分定价，缺乏新催化剂下跟随板块回调。'
           : '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
-      'Shift Up': isMay1OrLater
-        ? '<strong>NIKKE周年活动后活跃度回落+缺乏新催化剂</strong>——3.5周年活动高峰期过后用户数据自然回落。Stellar Blade PC版销量虽破150万但增速放缓。短期进入IP运营真空期，等待下一款新作消息。'
-        : isApril22OrLater
+      'Shift Up': isMay14OrLater
+        ? '<strong>NIKKE新角色Mint上线后短期获利了结</strong>——5/14实装催化已部分定价，新角色上线后用户数据待验证。Stellar Blade PC版150万套后增速放缓，短期缺乏新催化剂。'
+        : isMay13OrLater
+        ? '<strong>NIKKE周年活动后活跃度回落+缺乏新催化剂</strong>——3.5周年活动高峰期过后用户数据自然回落。Stellar Blade PC版销量虽破150万但增速放缓，短期进入IP运营真空期，等待新作消息。'
+        : isMay12OrLater
+          ? '<strong>NIKKE周年活动后活跃度回落+缺乏新催化剂</strong>——3.5周年活动高峰期过后用户数据自然回落。Stellar Blade PC版销量虽破150万但增速放缓。短期进入IP运营真空期，等待下一款新作消息。'
+          : isMay1OrLater
+            ? '<strong>NIKKE周年活动后活跃度回落+缺乏新催化剂</strong>——3.5周年活动高峰期过后用户数据自然回落。Stellar Blade PC版销量虽破150万但增速放缓。短期进入IP运营真空期，等待下一款新作消息。'
+            : isApril22OrLater
           ? '<strong>NIKKE 3.5周年+Anis: Star实装前预期</strong>：4/23新角色上线窗口临近，3.5周年活动(超160次免费召唤)带动用户活跃度回升。在游戏板块整体逆势下跌中唯一显著收红(+1.04%)，显示独立题材支撑。'
           : isApril13OrLater
           ? '<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色+服装进入艾伦格地图验证IP跨平台价值。<strong>4/18 NIKKE 3.5周年特别生放送</strong>成功举办，新角色"Anis: Star"将于4/23实装。4月中旬连续回调后企稳，关注NIKKE运营表现。'
           : isApril10OrLater
             ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
             : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
-      'Nexon Games': isMay1OrLater
+      'Nexon Games': isMay14OrLater
+        ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，AI补贴制度对短期估值提振有限。'
+        : isMay13OrLater
         ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，市场等待Q3开发进度更新。'
-        : isApril22OrLater
+        : isMay12OrLater
+          ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，市场等待Q3开发进度更新。'
+          : isMay1OrLater
+            ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，市场等待Q3开发进度更新。'
+            : isApril22OrLater
           ? '<strong>新作延期风险持续压制</strong>：《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。4/21跟随板块微跌(-0.50%)，跌幅相对可控（市场已部分定价延期风险）。'
-          : '<strong>新作延期风险</strong>：社长朴龙贤在3/27股东总会上承认"新作延期是股价下跌主因"。核心新作《Dungeon & Fighter: Arad（던전앤파이터:아라드）》、Project DX/RX 日程均部分延迟，《First Descendant》进入成熟期缺乏新增长引擎。',
+          : '<strong>新作延期风险</strong>：社长朴龙贤在3/27股东总会上承认"新作延期是股价下跌主因"。核心新作《Dungeon & Fighter: Arad》、Project DX/RX 日程均部分延迟，《First Descendant》进入成熟期缺乏新增长引擎。',
     };
 
     const map = changeClass === 'up' ? reasonMapUp : reasonMapDown;
@@ -607,9 +693,20 @@ function generateSUAnalysis() {
   const _isMay7 = d >= '20260507';  // 5/7 Aion 2预约120万消息
   const _isMay8 = d >= '20260508';  // 5/8 PUBG印度+Crimson Desert 500万消息
   const _isMay11 = d >= '20260511'; // 5/11 NIKKE $10亿消息
+  const _isMay12 = d >= '20260512'; // 5/12 新增
+  const _isMay13 = d >= '20260513'; // 5/13 新增
+  const _isMay14 = d >= '20260514'; // 5/14 NIKKE Mint+Lineage2M更新+PUBG新模式+Nexon AI补贴
 
   let analysisDetail = '';
-  if (_isMay11) {
+  if (_isMay14) {
+    analysisDetail = `<strong>NIKKE新SSR'Mint'实装+Stellar Blade联动复刻</strong>——5/14新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。Nexon全员AI补贴制度启动(月$250/人)反映行业AI化趋势加速。`;
+  } else if (_isMay13) {
+    // 5/13 双催化消化后震荡整固
+    analysisDetail = `<strong>Stellar Blade PC版150万套后增长放缓+NIKKE周年活动后活跃度自然回落</strong>——PC版Steam好评率92%但销量增速趋缓。NIKKE 3.5周年活动高峰期过后用户数据自然回落，短期进入IP运营真空期，等待新作消息提振。关注Shift Up新作公告时间表。`;
+  } else if (_isMay12) {
+    // 5/12 双重里程碑后续催化
+    analysisDetail = `<strong>《Stellar Blade》PC版销量突破150万套(Steam好评92%)+NIKKE全球累计营收破$10亿里程碑</strong>——Anis: Star实装后首周营收环比+35%，3.5周年活动持续带动用户回流。IP矩阵运营能力持续验证，关注新作消息。`;
+  } else if (_isMay11) {
     // 5/11 全月催化汇总
     analysisDetail = `<strong>《Stellar Blade》PC版销量突破150万套(Steam好评92%)+NIKKE全球累计营收破$10亿里程碑</strong>——Anis: Star实装后首周营收环比+35%，3.5周年活动持续带动用户回流。IP矩阵运营能力持续验证，关注新作消息。`;
   } else if (_isMay8) {
@@ -698,19 +795,19 @@ function renderDailySummary() {
   // 替代静态 fallback 表，获取韩国分析师的真实观点
   async function fetchNaverStockAnalysis(stockCode, stockName) {
     try {
-      // Naver Finance 个股分析页（투자자매매동향）
+      // Naver Finance 个股分析页（投资者买卖动向）
       const url = `https://finance.naver.com/item/main.nhn?code=${stockCode}`;
       const resp = await fetch(url);
       if (!resp.ok) return null;
       const html = await resp.text();
-      // 提取 "투자의견" 或 종목 관련 뉴스 요약
+      // 提取 "投资意见" 或个股相关新闻摘要
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
-      // 尝试提取 투자의견 / 전망 섹션
+      // 尝试提取 投资意见 / 展望 章节
       const sections = doc.querySelectorAll('.txt, .description, .news_summary');
       for (const s of sections) {
         const text = s.textContent.trim();
-        if (text.length > 50 && (text.includes(stockName) || text.includes('원인') || text.includes('전망'))) {
+        if (text.length > 50 && (text.includes(stockName) || text.includes('原因') || text.includes('展望'))) {
           return { source: 'naver_finance', text: text.slice(0, 300), url };
         }
       }
@@ -733,26 +830,30 @@ function renderDailySummary() {
   // 收集当日事件用于个股原因匹配
   // ⚠️ datePrefix 格式示例: "0408" (来自 meta.date "20260408".slice(4))
   // EVENT_DATA.date 格式示例: "04.08~09" 或 "04.09"
-  // 需要提取 MM.DD 部分进行模糊匹配（去掉开头的0后匹配）
+  // 需要提取 MM.DD 部分进行模糊匹配（支持 04.08 和 4.8 两种格式）
   const dateRaw = (currentData.meta?.date || '').slice(4); // "0408"
   const mmddNormalized = dateRaw.replace(/^0?(\d{1,2})0?(\d{1,2})$/, '$1.$2'); // "0408" → "4.8"
+  const mmddPadded = mmddNormalized.replace(/^(\d)\./, '0$1.'); // "4.8" → "04.8"
+  const ddPart = dateRaw.slice(2).replace(/^0/, ''); // "08" → "8"
   const todayEvents = EVENT_DATA.filter(e => {
-    // 多种匹配策略确保能命中
+    // 多种匹配策略确保能命中（同时支持 04.08 和 4.8 格式）
     const ed = e.date; // e.g. "04.08~09", "04.09", "04.07~09"
-    return ed.includes(mmddNormalized) ||          // "04.08~09".includes("4.8") → true
-           ed.includes(dateRaw.slice(2).replace(/^0/,'')) ||  // "08" 匹配 DD部分
-           ed.includes(dateRaw.replace(/^0/,''));   // "408" 匹配（兼容旧格式）
+    return ed.includes(mmddNormalized) || // "04.08~09".includes("4.8") → true
+           ed.includes(mmddPadded) ||       // "4.8".includes("04.8") → true (内容为"04.x"时)
+           ed.includes(ddPart) ||           // "08" 匹配 DD部分
+           ed.includes(dateRaw.replace(/^0/,'')); // "408" 匹配（兼容旧格式）
   });
 
   // 当日资讯严格过滤：只显示精确单日匹配的事件（不含跨日期范围如"04.02~09"）
-  // 规则：date 字段不含 "~" 且能匹配当天，或 date 是精确当天单日格式
+  // 规则：date 字段不含 "~" 且能匹配当天
   todayDailyEvents = EVENT_DATA.filter(e => {
     const ed = e.date;
     // 排除范围日期（含 ~ 的都是跨多日的）
     if (ed.includes('~')) return false;
-    // 单日日期必须精确匹配（宽松匹配：包含 mmddNormalized 或 DD部分 或 dateRaw）
+    // 单日日期必须精确匹配（支持两种格式）
     return ed.includes(mmddNormalized) ||
-           ed.includes(dateRaw.slice(2).replace(/^0/,'')) ||
+           ed.includes(mmddPadded) ||
+           ed.includes(ddPart) ||
            ed.includes(dateRaw.replace(/^0/,''));
   });
 
@@ -768,21 +869,45 @@ function renderDailySummary() {
   // 匹配优先级：EVENT_DATA（当日事件） > findCompanyReason（静态 fallback，仅兜底）
   // ⚠️ 规则：单日波动≥5% 必须写明原因；其他有原因驱动的波动也需写明
   // ⚠️ 静态表 findCompanyReason 每日必须更新，不可长期使用过期数据！
+  // 检测文本是否主要是韩语/英语（非中文内容，不应在中文界面显示）
+  function isNonChineseText(text) {
+    const plain = text.replace(/<[^>]+>/g, ''); // 去掉HTML标签
+    const korean = (plain.match(/[가-힣]/g) || []).length;
+    const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
+    // 韩语字符多于中文字符 → 判定为韩语内容
+    return korean > chinese && korean > 5;
+  }
+
   function findStockReason(stock, events) {
-    // 1. 优先从当日事件数据中精确匹配
+    // 1. 优先从当日事件数据中精确匹配（跳过韩语/英语标题）
     const matched = events.find(e => {
       const ms = matchEventToStock(e);
-      return ms && ms.name === stock.name;
+      return ms && ms.name === stock.name && !isNonChineseText(e.title);
     });
     if (matched) {
-      return { source: 'event', text: matched.title, color: matched.color };
+      return { source: 'event', text: matched.title, color: matched.color, url: matched.url };
     }
     // 2. fallback 到静态表（需每日更新，不可长期依赖）
     const staticReason = findCompanyReason(stock.name, stock.changeClass);
     if (staticReason) {
-      return { source: 'static', text: staticReason, color: stock.color };
+      return { source: 'static', text: staticReason, color: stock.color, url: null };
     }
     return null;
+  }
+
+  // ====== 信息源索引生成（每次调用 buildDriverFactorsText 时重置）=======
+  let sourceIndex = 1;
+  const sourceUrls = {}; // {1: url, 2: url, ...}
+
+  function resetSourceIndex() {
+    sourceIndex = 1;
+    for (const k of Object.keys(sourceUrls)) delete sourceUrls[k];
+  }
+
+  function renderSourceIndex(url) {
+    if (!url || url.trim() === '') return '';
+    sourceUrls[sourceIndex] = url;
+    return `<a href="${url}" target="_blank" style="color:var(--link-color);font-size:11px;cursor:pointer;text-decoration:none">[${sourceIndex++}]</a>`;
   }
 
   // 辅助函数：找出波动超过阈值的股票
@@ -799,6 +924,7 @@ function renderDailySummary() {
   //   2) 波动 <5% 但有当日EVENT_DATA精确匹配 → 也显示
   //   3) <5%且仅有静态fallback(月度原因) → 不显示，避免把整月事件混入当日分析
   function buildDriverFactorsText() {
+    resetSourceIndex(); // 每次调用重置角标计数器
     const THRESHOLD = 2;
     const sigMovers = getSignificantMovers(THRESHOLD);
     if (sigMovers.length === 0 && todayEvents.length === 0) return '';
@@ -814,7 +940,8 @@ function renderDailySummary() {
       addedStocks.add(stock.name);
       const reason = findStockReason(stock, todayEvents);
       if (reason) {
-        reasons.push(`<span style="color:${reason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${reason.text}</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
+        const urlTag = renderSourceIndex(reason.url);
+        reasons.push(`<span style="color:${reason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${reason.text}</span>${urlTag}<span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
       } else {
         reasons.push(`<span style="color:${stock.color};font-size:13px">${stock.name}</span><span style="color:#6b7185;font-size:12px"> — 无特殊原因</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
       }
@@ -830,8 +957,9 @@ function renderDailySummary() {
       if (hasEvent) {
         addedStocks.add(stock.name);
         const reason = findStockReason(stock, todayEvents);
-        const displayReason = reason || { source: 'event', text: '有当日事件记录', color: stock.color };
-        reasons.push(`<span style="color:${displayReason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${displayReason.text}</span> <span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
+        const displayReason = reason || { source: 'event', text: '有当日事件记录', color: stock.color, url: null };
+        const urlTag = renderSourceIndex(displayReason.url);
+        reasons.push(`<span style="color:${displayReason.color};font-size:13px">${stock.name}</span><span style="font-size:13px"> — ${displayReason.text}</span>${urlTag}<span style="color:${stock.changeClass==='up'?'#34d399':stock.changeClass==='down'?'#f87171':'#9aa0b3'};font-size:12px">(${stock.changePercent})</span>`);
       }
     }
 
@@ -853,7 +981,7 @@ function renderDailySummary() {
     if (reasons.length === 0 && !marketAnalysis) return '';
 
     // 检测是否有全板块性宏观因素需要前置显示
-    const macroKeywords = ['特朗普', '트럼프', '大盘', 'KOSPI', 'KOSDAQ', '整体', '板块', '全球市场', '美联储'];
+    const macroKeywords = ['特朗普', '大盘', 'KOSPI', 'KOSDAQ', '整体', '板块', '全球市场', '美联储'];
     const macroReasons = reasons.filter(r => macroKeywords.some(kw => r.includes(kw)));
     const nonMacroReasons = reasons.filter(r => !macroKeywords.some(kw => r.includes(kw)));
 
@@ -868,7 +996,17 @@ function renderDailySummary() {
     
     // 添加大盘分析
     output += marketAnalysis;
-    
+
+    // ====== 信息源索引列表（如果有）=======
+    if (sourceIndex > 1) {
+      let sourcesHtml = '<br><br><span style="color:var(--text-muted);font-size:12px">📎 信息源：</span>';
+      const links = [];
+      for (const [idx, url] of Object.entries(sourceUrls)) {
+        links.push(`<a href="${url}" target="_blank" style="color:var(--link-color);font-size:11px">[${idx}] ${url}</a>`);
+      }
+      output += sourcesHtml + links.join('&nbsp;&nbsp;');
+    }
+
     return output;
   }
 
@@ -997,7 +1135,7 @@ function renderStockPriceSection() {
     <!-- SU 核心卡片 -->
     <div class="card">
         <div class="card-header">
-            <span style="color:${su.color}">●</span> ${su.name}（${su.nameKr}）核心关注
+            <span style="color:${su.color}">●</span> ${su.name} 核心关注
             <span style="font-size:12px;color:var(--text-muted)">KOSDAQ ${su.code}</span>
         </div>
         <div class="card-body">
@@ -1180,11 +1318,11 @@ function renderCompanyAnalysisSection() {
 
   // 公司基础定义（不变的部分）
   const baseItems = [
-    {code:'225570',name:'Nexon Games',nameKr:'넥슨게임즈',color:'#22c55e', dsKey:'Nexon', tier:1, url:'https://news.jkn.co.kr/post/869567'},
-    {code:'251270',name:'Netmarble',nameKr:'넷마블',color:'#ef4444', dsKey:'Netmarble', tier:1, url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
-    {code:'036570',name:'NC',nameKr:'엔씨',color:'#3b82f6', dsKey:'NC', tier:1, url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
-    {code:'259960',name:'Krafton',nameKr:'크래프톤',color:'#f59e0b', dsKey:'Krafton', tier:2, url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
-    {code:'263750',name:'Pearl Abyss',nameKr:'펄어비스',color:'#a855f7', dsKey:'P.Abyss', tier:2, url:'https://news.jkn.co.kr/post/869556'},
+    {code:'225570',name:'Nexon Games',color:'#22c55e', dsKey:'Nexon', tier:1, url:'https://news.jkn.co.kr/post/869567'},
+    {code:'251270',name:'Netmarble',color:'#ef4444', dsKey:'Netmarble', tier:1, url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
+    {code:'036570',name:'NC',color:'#3b82f6', dsKey:'NC', tier:1, url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
+    {code:'259960',name:'Krafton',color:'#f59e0b', dsKey:'Krafton', tier:2, url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
+    {code:'263750',name:'Pearl Abyss',color:'#a855f7', dsKey:'P.Abyss', tier:2, url:'https://news.jkn.co.kr/post/869556'},
   ];
 
   // 构建带动态数据的 items
@@ -1268,7 +1406,7 @@ function renderCompanyAnalysisSection() {
               <div class="company-analysis-item">
                   <div class="ca-header">
                       <div class="company-dot" style="background:${item.color};width:12px;height:12px"></div>
-                      <span class="ca-name" style="color:${item.color}">${item.name}（${item.nameKr}）</span>
+                      <span class="ca-name" style="color:${item.color}">${item.name}</span>
                       <span class="ca-price-change ${changeClass}">${priceText} / ${c.change||'-'} | <strong style="color:var(--accent-cyan)">${perText}</strong></span>
                       ${monthBadge}
                   </div>
@@ -1355,12 +1493,12 @@ function renderNewsSection() {
 
 // --- 行业宏观重大事件 ---
 const INDUSTRY_MACRO_DATA = [
-  { title: '韩国央行维持基准利率3.5%不变，下半年降息预期升温', source: '한국은행 / 연합뉴스', date: '2026.05.08', impact: 'positive', url: '', summary: '韩国银行在5月货币政策会议上维持基准利率3.5%不变，但央行行长暗示若通胀持续放缓，下半年存在降息空间。降息预期提振股市估值，游戏等成长股板块受益。' },
-  { title: '全球AI应用落地加速，游戏+AI融合成行业新趋势', source: '게임산업협회 / GDC 2026', date: '2026.05.06', impact: 'positive', url: '', summary: 'GDC 2026后全球游戏行业加速AI应用落地。Krafton AI模型"Raon"开源生态扩张、NC Aion 2采用AI NPC技术、Shift Up探索AI辅助内容生成。AI与游戏融合成为提升研发效率和用户体验的新方向。' },
-  { title: '中国游戏版号发放常态化，韩国游戏出口环境改善', source: '中国新闻出版署 / 한국콘텐츠진흥원', date: '2026.05.01', impact: 'positive', url: '', summary: '2026年以来中国游戏版号发放趋于常态化，每月稳定发放100+款。韩国游戏对华出口壁垒降低，NC、Netmarble、Pearl Abyss等公司在华业务有望恢复增长。' },
+  { title: '韩国央行维持基准利率3.5%不变，下半年降息预期升温', source: '韩国央行 / 联合新闻', date: '2026.05.08', impact: 'positive', url: '', summary: '韩国银行在5月货币政策会议上维持基准利率3.5%不变，但央行行长暗示若通胀持续放缓，下半年存在降息空间。降息预期提振股市估值，游戏等成长股板块受益。' },
+  { title: '全球AI应用落地加速，游戏+AI融合成行业新趋势', source: '游戏产业协会 / GDC 2026', date: '2026.05.06', impact: 'positive', url: '', summary: 'GDC 2026后全球游戏行业加速AI应用落地。Krafton AI模型"Raon"开源生态扩张、NC Aion 2采用AI NPC技术、Shift Up探索AI辅助内容生成。AI与游戏融合成为提升研发效率和用户体验的新方向。' },
+  { title: '中国游戏版号发放常态化，韩国游戏出口环境改善', source: '中国新闻出版署 / 韩国内容振兴院', date: '2026.05.01', impact: 'positive', url: '', summary: '2026年以来中国游戏版号发放趋于常态化，每月稳定发放100+款。韩国游戏对华出口壁垒降低，NC、Netmarble、Pearl Abyss等公司在华业务有望恢复增长。' },
   { title: 'Google Play 政策调整：降低游戏抽佣比例，利好中小开发者', source: '谷歌官方公告', date: '2026.04.03', impact: 'positive', url: '', summary: '谷歌宣布调整 Google Play 商店的佣金政策，对年收入低于一定门槛的中小游戏开发商降低抽成比例。此举可能长期影响韩国手游发行商的利润分配格局，但短期影响有限。' },
   { title: '美伊地缘紧张局势升级：油价波动影响全球市场情绪', source: '路透社 / Bloomberg', date: '2026.04.07', impact: 'negative', url: '', summary: '中东局势再度紧张引发原油价格波动，全球风险资产承压。韩国KOSPI/KOSDAQ作为新兴市场受避险情绪拖累，科技股和成长股板块普遍回调。' },
-  { title: '韩国央行维持基准利率不变，市场预期下半年降息', source: '한국은행 / 연합뉴스', date: '2026.04.09', impact: 'neutral', url: '', summary: '韩国银行（央行）在4月货币政策会议上维持3.5%的基准利率不变，符合市场预期。多数分析师预测若通胀持续放缓，下半年存在降息空间，有望提振股市估值。' },
+  { title: '韩国央行维持基准利率不变，市场预期下半年降息', source: '韩国央行 / 联合新闻', date: '2026.04.09', impact: 'neutral', url: '', summary: '韩国银行（央行）在4月货币政策会议上维持3.5%的基准利率不变，符合市场预期。多数分析师预测若通胀持续放缓，下半年存在降息空间，有望提振股市估值。' },
 ];
 
 function renderIndustryMacro() {
