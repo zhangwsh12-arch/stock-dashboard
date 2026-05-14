@@ -2,7 +2,7 @@
   "meta": {
     "version": "3.0",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-05-12",
+    "updatedAt": "2026-05-14",
     "note": "此文件由人工维护，每日需同步更新事件和分析文字"
   },
   "compareChart": {
@@ -42,11 +42,10 @@
     {"company": "Pearl Abyss", "color": "#a855f7", "title": "<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月销量突破500万套，创韩国主机游戏最快纪录。DLC首波内容'Boss重战模式'5月中旬上线，持续内容更新支撑长线运营。", "source": "Pearl Abyss IR", "date": "05.08", "url": ""},
     {"company": "Netmarble", "color": "#ef4444", "title": "<strong>《Monster Striker: Star Dive》首月营收超预期</strong>——上线首月全球营收突破₩300亿，PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，股价企稳回升。", "source": "Netmarble 公示", "date": "05.11", "url": ""},
     {"company": "Shift Up", "color": "#ff6b9d", "title": "<strong>NIKKE全球累计营收突破$10亿美元</strong>——上线近三年累计营收突破10亿美元里程碑。Anis: Star实装后首周营收环比增长35%，3.5周年活动持续带动用户回流。", "source": "Shift Up IR/Sensor Tower", "date": "05.11", "url": ""},
-    {"company": "NC", "color": "#3b82f6", "title": "<strong>特朗普时隔9年再度访华</strong>——5月13日晚美国总统特朗普乘专机抵达北京，应习近平主席邀请于5月13日至15日对中国进行国事访问。英伟达CEO黄仁勋随行，中美科技合作预期升温。", "source": "央视新闻", "date": "05.13", "url": "https://www.xinhuanet.com/3gnews/cj.html"},
-    {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>阿里腾讯加码AI投入超预期</strong>——5月13日阿里/腾讯同步发布财报。阿里巴巴宣布未来五年AI基建投入将远超3800亿元，腾讯单季度AI资本开支达370亿元创历史新高。AI算力/服务器/数据中心产业链直接受益。", "source": "新浪财经", "date": "05.13", "url": "https://finance.sina.com.cn/stock/hkstock/hkstocknews/2026-05-14/doc-inhxvihs8847009.shtml"},
-    {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>A股三大指数集体收涨</strong>——5月13日上证指数报4242.57点(+0.67%)，创2015年7月以来近11年新高；创业板指大涨2.63%突破4000点历史高位。市场做多情绪高涨，港股科技股跟涨。", "source": "新浪财经", "date": "05.13", "url": "https://video.sina.cn/finance/2026-05-14/detail-inhxvihr6995063.d.html"},
-    {"company": "NC", "color": "#3b82f6", "title": "<strong>山东赫达澄清公告发布</strong>——5月13日山东赫达（002810）尾盘跳水跌停，公司紧急发布澄清公告驳斥网络四大传言，明确生产经营正常、海外业务稳步推进。游戏股中概映射关注。", "source": "中国证券报", "date": "05.13", "url": "https://baijiahao.baidu.com/s?id=1865116747672484347"},
-    {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>特朗普抵京+AI巨头加码A股红周四</strong>——隔夜中概股大涨3.62%，阿里腾讯财报提振市场情绪。多重利好叠加，今日A股及港股科技板块有望延续升势。游戏+AI融合概念获资金关注。", "source": "同花顺", "date": "05.14", "url": "https://news.10jqka.com.cn/hotnews_list/"}
+    {"company": "Shift Up", "color": "#ff6b9d", "title": "<strong>NIKKE 新SSR'Mint'更新 + Stellar Blade 联动复刻</strong>——5月14日NIKKE实装新角色Mint，超稀有限定召唤进行中。Stellar Blade联动内容复刻上线，验证IP跨平台运营价值。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"},
+    {"company": "NC", "color": "#3b82f6", "title": "<strong>리니지2M 5/27日'REQUIEM'更新</strong>——李道流(리부트)重启预告，经典IP现代化改造。距Aion 2六月全球发布前序曲，Lineage系列持续迭代。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"},
+    {"company": "Krafton", "color": "#f59e0b", "title": "<strong>PUBG × Stellabreeze 新PvE模式'PAYDAY'上线</strong>——与Stellabreeze联合开发的合作突袭模式，联手全球艺术家070 Shaker收录原创曲目。PUBG持续内容创新。", "source": "Krafton 公示/Inven", "date": "05.14", "url": "https://www.krafton.com/news/press/"},
+    {"company": "Nexon", "color": "#22c55e", "title": "<strong>Nexon为全体员工提供AI使用补贴</strong>——每人每月250美元AI使用费支持，加速全员AI应用落地。던파新转职'여인파이터'、메이플스토리×防弹少年团JIN合作活动同期进行。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"}
   ],
   "industryNews": [
     {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>5月韩国游戏股走势：震荡整固→温和反弹</strong>——5月初受全球科技股回调影响小幅承压，中旬随基本面催化剂(Aion 2预约破120万/Stellar Blade PC版破150万/Crimson Desert破500万)逐步回暖。资金面：外资从4月净卖出转为小幅净流入。", "source": "韩国投资证券", "date": "05.01~11", "url": ""},
@@ -57,7 +56,7 @@
     {"company": "Netmarble", "color": "#ef4444", "title": "<strong>Monster Striker首月营收破₩300亿</strong>：跨平台联机模式获好评，Coway治理争议逐步消化。分红收益(年配当约2,800韩元/股)提供底部支撑。", "source": "Netmarble 公示", "date": "05.11", "url": ""},
     {"company": "Nexon Games", "color": "#22c55e", "title": "<strong>Blue Archive全球三周年活动筹备中</strong>：日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。", "source": "Nexon Games IR", "date": "05.01~11", "url": ""},
     {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>5月游戏行业宏观环境改善</strong>——韩国央行维持利率不变但下半年降息预期升温。全球AI应用落地加速利好游戏+AI融合(如Krafton Raon)。中国游戏版号发放常态化，韩国游戏出口环境改善。", "source": "韩国央行/游戏产业协会", "date": "05.01~11", "url": ""},
-    {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>特朗普访华+AI资本开支潮双重利好</strong>——时隔9年美国总统再度访华，英伟达CEO黄仁勋随行。阿里/腾讯同步发布财报加码AI投入，AI算力/服务器/数据中心产业链直接受益，间接利好游戏+AI融合赛道。", "source": "央视新闻/新浪财经", "date": "05.13~14", "url": ""},
-    {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>A股创业板创新高+港股科技股跟涨</strong>——创业板指突破4000点创历史高位，港股腾讯绩后涨3.67%。A股/港股科技板块做多情绪高涨，韩国游戏股中概映射效应持续。", "source": "金融界", "date": "05.14", "url": "https://m.jrj.com.cn/madapter/hk/2026/05/14094157088082.shtml"}
+    {"company": "Nexon", "color": "#22c55e", "title": "<strong>Nexon全员AI补贴制度启动</strong>——为全体员工提供每人每月250美元AI使用费，加速全公司AI应用落地。던파新转职'여인파이터'、메이플스토리×防弹少年团JIN合作等多元化内容同步推进。", "source": "Inven", "date": "05.14", "url": ""},
+    {"company": "Krafton", "color": "#f59e0b", "title": "<strong>PUBG内容创新持续+AI融合深化</strong>——与Stellabreeze联合推出新PvE模式，AI模型Raon持续开源扩展。印度市场谈判最后阶段+Ascend Zero新作开发中，多催化剂并行。", "source": "Krafton 公示", "date": "05.14", "url": ""}
   ]
 }
