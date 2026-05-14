@@ -1220,8 +1220,8 @@ function renderStockPriceSection() {
 
     <div class="card">
         <div class="card-header">
-            <span>本月股价日环比涨跌幅对比（%）</span>
-            <span style="font-size:11px;color:var(--text-muted)">每日 vs 前一日变化率</span>
+            <span>本月股价相对首个交易日涨跌幅对比（%）</span>
+            <span style="font-size:11px;color:var(--text-muted)">每日 vs 本月首个交易日变化率</span>
         </div>
         <div class="card-body">
             <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
@@ -1613,7 +1613,7 @@ function renderCompareChart() {
     data: mayIndex !== -1 ? ds.data.slice(mayIndex) : ds.data
   }));
 
-  // 每日环比涨跌幅（对比前一天的变化率），4/1 为基准起点 0%
+  // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
   const ctx = canvas.getContext('2d');
   compareChartInstance = new Chart(ctx, {
     type: 'line',
@@ -1631,7 +1631,7 @@ function renderCompareChart() {
         y: { min: -25, max: 25,
           grid: { color: 'rgba(46,51,71,0.3)', drawBorder: false },
           ticks: { color: '#6b7185', font: { size: 11 }, callback: v => v + '%' },
-          title: { display: true, text: '每日 vs 前一日变化率 (%)', color: '#6b7185', font: { size: 11 } }}
+          title: { display: true, text: '相对本月首个交易日变化率 (%)', color: '#6b7185', font: { size: 11 } }}
       }
     }
   });
