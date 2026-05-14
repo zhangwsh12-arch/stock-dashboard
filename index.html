@@ -17,6 +17,25 @@
             --accent-red: #ef4444; --accent-orange: #f59e0b; --accent-purple: #8b5cf6;
             --accent-cyan: #06b6d4; --accent-pink: #f43f5e;
             --gradient-start: #667eea; --gradient-end: #764ba2;
+            --chart-grid: rgba(46,51,71,0.3); --chart-tick: #6b7185;
+            --chart-tooltip-bg: rgba(17,19,23,0.95); --chart-tooltip-border: #2e3347;
+            --card-hover-shadow: rgba(0,0,0,0.2);
+            --row-hover: rgba(255,255,255,0.02); --row-hover-alt: rgba(255,255,255,0.015);
+            --header-shadow: rgba(0,0,0,0.3);
+        }
+        [data-theme="light"] {
+            --bg-primary: #f5f6fa; --bg-secondary: #ebedf3; --bg-card: #ffffff;
+            --border-color: #d4d8e3; --text-primary: #1a1d27; --text-secondary: #4a5068;
+            --text-muted: #8890a4; --accent-blue: #2563eb; --accent-green: #059669;
+            --link-color: #2563eb;
+            --accent-red: #dc2626; --accent-orange: #d97706; --accent-purple: #7c3aed;
+            --accent-cyan: #0891b2; --accent-pink: #e11d48;
+            --gradient-start: #4f6ef7; --gradient-end: #6b3fa0;
+            --chart-grid: rgba(180,185,200,0.3); --chart-tick: #5a6178;
+            --chart-tooltip-bg: rgba(255,255,255,0.96); --chart-tooltip-border: #d4d8e3;
+            --card-hover-shadow: rgba(0,0,0,0.06);
+            --row-hover: rgba(0,0,0,0.02); --row-hover-alt: rgba(0,0,0,0.015);
+            --header-shadow: rgba(0,0,0,0.08);
         }
         *{margin:0;padding:0;box-sizing:border-box}
         body{
@@ -37,7 +56,7 @@
         .loading-text{margin-top:16px;color:var(--text-secondary);font-size:14px}
 
         /* Header */
-        .header {background:linear-gradient(135deg,var(--gradient-start),var(--gradient-end));padding:16px 20px 12px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+        .header {background:linear-gradient(135deg,var(--gradient-start),var(--gradient-end));padding:16px 20px 12px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px var(--header-shadow)}
         .header-content{max-width:1600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
         .header h1{font-size:18px;font-weight:700;letter-spacing:-0.5px}
         .header h1 span{opacity:.85;font-weight:400;font-size:13px;margin-left:10px;display:none}  /* 移动端隐藏副标题 */
@@ -62,7 +81,7 @@
 
         /* Cards */
         .card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;overflow:hidden;transition:all .25s ease}
-        .card:hover{border-color:rgba(59,130,246,0.3);box-shadow:0 4px 24px rgba(0,0,0,0.2)}
+        .card:hover{border-color:rgba(59,130,246,0.3);box-shadow:0 4px 24px var(--card-hover-shadow)}
         .card-header{padding:16px 20px;border-bottom:1px solid var(--border-color);font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02)}
         .card-body{padding:20px}
 
@@ -107,7 +126,7 @@
         .stock-table{width:100%;border-collapse:collapse}
         .stock-table th{text-align:left;padding:11px 14px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border-color)}
         .stock-table td{padding:13px 14px;font-size:14px;border-bottom:1px solid rgba(46,51,71,0.5)}
-        .stock-table tr:hover td{background:rgba(255,255,255,0.02)}
+        .stock-table tr:hover td{background:var(--row-hover)}
         .stock-table tr:last-child td{border-bottom:none}
         .company-cell{display:flex;align-items:center;gap:10px;font-weight:600}
         .company-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -168,7 +187,7 @@
         .info-table thead th{text-align:left;padding:12px 18px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border-color)}
         .info-table td{padding:14px 18px;font-size:13px;border-bottom:1px solid rgba(46,51,71,0.4);vertical-align:top;line-height:1.6}
         .info-table tr:last-child td{border-bottom:none}
-        .info-table tr:hover td{background:rgba(255,255,255,0.015)}
+        .info-table tr:hover td{background:var(--row-hover-alt)}
 
         /* Daily Summary (上下结构) */
         .summary-text-para{font-size:14px;line-height:1.8;color:var(--text-secondary)}
@@ -177,6 +196,14 @@
         .ssr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block}
         .ssr-arrow{font-weight:700;font-size:14px;min-width:60px}
         .ssr-price{color:var(--text-muted);font-size:13px;margin-left:auto}
+
+        /* Theme Toggle */
+        .theme-toggle{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0}
+        .theme-toggle:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.35)}
+        .theme-toggle svg{width:18px;height:18px;transition:transform .3s}
+        .theme-toggle:hover svg{transform:rotate(20deg)}
+        [data-theme="light"] .theme-toggle{background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12)}
+        [data-theme="light"] .theme-toggle:hover{background:rgba(0,0,0,0.1);border-color:rgba(0,0,0,0.2)}
     </style>
 </head>
 <body>
@@ -191,9 +218,14 @@
 <header class="header">
     <div class="header-content">
         <h1>🎮 韩国游戏股价看板</h1>
-        <div class="header-meta">
+        <div style="display:flex;align-items:center;gap:10px">
+            <button class="theme-toggle" id="themeToggle" title="切换亮色/暗色模式">
+                <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <div class="header-meta">
             <div class="date" id="headerDate">加载中...</div>
             <div><span class="badge-naver">Naver Finance</span> <span id="headerSourceInfo">数据来源 · 工作日 10:00 KST 自动更新</span></div>
+            </div>
         </div>
     </div>
 
@@ -235,6 +267,43 @@
 </footer>
 
 <script>
+// ============================================================
+// 主题切换（暗色/亮色）
+// ============================================================
+const THEME_KEY = 'stock-dashboard-theme';
+const sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+const moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+function getTheme() {
+  return localStorage.getItem(THEME_KEY) || 'dark';
+}
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem(THEME_KEY, theme);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = theme === 'light' ? moonIcon : sunIcon;
+  // 重新渲染图表以适配主题颜色
+  if (currentData) {
+    requestAnimationFrame(() => {
+      if (suChartInstance) renderSuChart();
+      if (compareChartInstance) renderCompareChart();
+    });
+  }
+}
+
+// 初始化主题（尽早执行，避免闪烁）
+applyTheme(getTheme());
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.innerHTML = getTheme() === 'light' ? moonIcon : sunIcon;
+    btn.addEventListener('click', () => {
+      applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    });
+  }
+});
+
 // ============================================================
 // 全局状态
 // ============================================================
@@ -1564,6 +1633,12 @@ function renderSuChart() {
     rangeEl.textContent = `${labels[0]} ~ ${labels[labels.length-1]}`;
   }
 
+  const chartGridColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim() || 'rgba(46,51,71,0.3)';
+  const chartTickColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-tick').trim() || '#6b7185';
+  const tooltipBg = getComputedStyle(document.documentElement).getPropertyValue('--chart-tooltip-bg').trim() || 'rgba(17,19,23,0.95)';
+  const tooltipBorder = getComputedStyle(document.documentElement).getPropertyValue('--chart-tooltip-border').trim() || '#2e3347';
+  const textPrimary = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#e8eaed';
+
   suChartInstance = new Chart(ctx, {
     type: 'line',
     data: {
@@ -1571,7 +1646,7 @@ function renderSuChart() {
       datasets: [{
         label: 'Shift Up 收盘价', data: prices,
         borderColor: '#ff6b9d', backgroundColor: grad, borderWidth: 2.5,
-        pointBackgroundColor: '#ff6b9d', pointBorderColor: '#fff', pointBorderWidth: 2,
+        pointBackgroundColor: '#ff6b9d', pointBorderColor: textPrimary, pointBorderWidth: 2,
         pointRadius: 4, pointHoverRadius: 7, tension: .35, fill: true
       }]
     },
@@ -1579,13 +1654,13 @@ function renderSuChart() {
       responsive: true, maintainAspectRatio: false,
       interaction: { intersect: false, mode: 'index' },
       plugins: { legend: { display: false },
-        tooltip: { backgroundColor: 'rgba(17,19,23,0.95)', titleColor: '#e8eaed', bodyColor: '#e8eaed',
-          borderColor: '#2e3347', borderWidth: 1, padding: 12,
+        tooltip: { backgroundColor: tooltipBg, titleColor: textPrimary, bodyColor: textPrimary,
+          borderColor: tooltipBorder, borderWidth: 1, padding: 12,
           callbacks: { label: ctx => `收盘价: ₩${ctx.parsed.y.toLocaleString()}` }}},
       scales: {
-        x: { grid: { color: 'rgba(46,51,71,0.3)', drawBorder: false }, ticks: { color: '#6b7185', font: { size: 11 } }},
-        y: { grid: { color: 'rgba(46,51,71,0.3)', drawBorder: false },
-          ticks: { color: '#6b7185', font: { size: 11 }, callback: v => '\u20A9' + (v/1000).toFixed(0) + 'k' }}
+        x: { grid: { color: chartGridColor, drawBorder: false }, ticks: { color: chartTickColor, font: { size: 11 } }},
+        y: { grid: { color: chartGridColor, drawBorder: false },
+          ticks: { color: chartTickColor, font: { size: 11 }, callback: v => '\u20A9' + (v/1000).toFixed(0) + 'k' }}
       }
     }
   });
@@ -1614,6 +1689,13 @@ function renderCompareChart() {
   }));
 
   // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
+  const cGridColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim() || 'rgba(46,51,71,0.3)';
+  const cTickColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-tick').trim() || '#6b7185';
+  const cTooltipBg = getComputedStyle(document.documentElement).getPropertyValue('--chart-tooltip-bg').trim() || 'rgba(17,19,23,0.95)';
+  const cTooltipBorder = getComputedStyle(document.documentElement).getPropertyValue('--chart-tooltip-border').trim() || '#2e3347';
+  const cTextPrimary = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#e8eaed';
+  const cLegendColor = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || '#9aa0b3';
+
   const ctx = canvas.getContext('2d');
   compareChartInstance = new Chart(ctx, {
     type: 'line',
@@ -1622,16 +1704,16 @@ function renderCompareChart() {
       responsive: true, maintainAspectRatio: false,
       interaction: { intersect: false, mode: 'index' },
       plugins: { legend: { display: true, position: 'top',
-          labels: { color: '#9aa0b3', usePointStyle: true, pointStyle: 'rectRounded', padding: 16, font: { size: 11, weight: 500 } }},
-        tooltip: { backgroundColor: 'rgba(17,19,23,0.95)', titleColor: '#e8eaed', bodyColor: '#e8eaed',
-          borderColor: '#2e3347', borderWidth: 1, padding: 12,
+          labels: { color: cLegendColor, usePointStyle: true, pointStyle: 'rectRounded', padding: 16, font: { size: 11, weight: 500 } }},
+        tooltip: { backgroundColor: cTooltipBg, titleColor: cTextPrimary, bodyColor: cTextPrimary,
+          borderColor: cTooltipBorder, borderWidth: 1, padding: 12,
           callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%` }}},
       scales: {
-        x: { grid: { color: 'rgba(46,51,71,0.3)', drawBorder: false }, ticks: { color: '#6b7185', font: { size: 11 } }},
+        x: { grid: { color: cGridColor, drawBorder: false }, ticks: { color: cTickColor, font: { size: 11 } }},
         y: { min: -25, max: 25,
-          grid: { color: 'rgba(46,51,71,0.3)', drawBorder: false },
-          ticks: { color: '#6b7185', font: { size: 11 }, callback: v => v + '%' },
-          title: { display: true, text: '相对本月首个交易日变化率 (%)', color: '#6b7185', font: { size: 11 } }}
+          grid: { color: cGridColor, drawBorder: false },
+          ticks: { color: cTickColor, font: { size: 11 }, callback: v => v + '%' },
+          title: { display: true, text: '相对本月首个交易日变化率 (%)', color: cTickColor, font: { size: 11 } }}
       }
     }
   });
