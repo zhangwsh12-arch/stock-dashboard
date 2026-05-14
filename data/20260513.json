@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260513",
     "dateDisplay": "5月（截至13日）",
-    "fetchedAt": "2026-05-14T03:22:32.228Z",
+    "fetchedAt": "2026-05-14T03:32:51.403Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -18,7 +18,7 @@
     "change": "-350",
     "changePercent": "-1.16%",
     "changeClass": "down",
-    "per": "9.43",
+    "per": "9.41",
     "pbr": "1.96",
     "marketCap": "1.75兆元"
   },
@@ -51,7 +51,7 @@
       "price": "281,000",
       "change": "+1.26%",
       "changeClass": "up",
-      "per": "17.94"
+      "per": "17.98"
     },
     {
       "code": "225570",
@@ -80,8 +80,8 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "29,800",
-      "per": 9.43,
-      "perRaw": "9.43"
+      "per": 9.41,
+      "perRaw": "9.41"
     },
     {
       "code": "251270",
@@ -104,8 +104,8 @@
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "281,000",
-      "per": 17.94,
-      "perRaw": "17.94"
+      "per": 17.98,
+      "perRaw": "17.98"
     }
   ],
   "chartData": [
@@ -149,17 +149,17 @@
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "7882.74",
-      "change": "38.73",
-      "changePercent": "0.49",
+      "price": "7899.47",
+      "change": "55.46",
+      "changePercent": "0.71",
       "changeClass": "up"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1167.12",
-      "change": "-9.81",
-      "changePercent": "-0.83",
+      "price": "1167.72",
+      "change": "-9.21",
+      "changePercent": "-0.78",
       "changeClass": "down"
     }
   ]
