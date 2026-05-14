@@ -270,14 +270,24 @@ async function loadContentData() {
       ALL_DATASETS = content.compareChart.datasets || [];
     }
 
-    // 新闻事件
+    // 新闻事件（过滤韩语/英语标题，只保留中文内容）
     if (content.events) {
-      EVENT_DATA = content.events;
+      EVENT_DATA = content.events.filter(e => {
+        const plain = (e.title || '').replace(/<[^>]+>/g, '');
+        const korean = (plain.match(/[가-힣]/g) || []).length;
+        const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
+        return korean <= chinese || korean <= 5;
+      });
     }
 
-    // 行业资讯
+    // 行业资讯（同样过滤韩语标题）
     if (content.industryNews) {
-      NORMAL_DATA = content.industryNews;
+      NORMAL_DATA = content.industryNews.filter(e => {
+        const plain = (e.title || '').replace(/<[^>]+>/g, '');
+        const korean = (plain.match(/[가-힣]/g) || []).length;
+        const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
+        return korean <= chinese || korean <= 5;
+      });
     }
 
     contentLoaded = true;
@@ -859,11 +869,20 @@ function renderDailySummary() {
   // 匹配优先级：EVENT_DATA（当日事件） > findCompanyReason（静态 fallback，仅兜底）
   // ⚠️ 规则：单日波动≥5% 必须写明原因；其他有原因驱动的波动也需写明
   // ⚠️ 静态表 findCompanyReason 每日必须更新，不可长期使用过期数据！
+  // 检测文本是否主要是韩语/英语（非中文内容，不应在中文界面显示）
+  function isNonChineseText(text) {
+    const plain = text.replace(/<[^>]+>/g, ''); // 去掉HTML标签
+    const korean = (plain.match(/[가-힣]/g) || []).length;
+    const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
+    // 韩语字符多于中文字符 → 判定为韩语内容
+    return korean > chinese && korean > 5;
+  }
+
   function findStockReason(stock, events) {
-    // 1. 优先从当日事件数据中精确匹配
+    // 1. 优先从当日事件数据中精确匹配（跳过韩语/英语标题）
     const matched = events.find(e => {
       const ms = matchEventToStock(e);
-      return ms && ms.name === stock.name;
+      return ms && ms.name === stock.name && !isNonChineseText(e.title);
     });
     if (matched) {
       return { source: 'event', text: matched.title, color: matched.color, url: matched.url };
