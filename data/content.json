@@ -4,7 +4,7 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-05-12",
     "note": "此文件由自动抓取 + 人工维护，每日需同步更新事件和分析文字",
-    "newsUpdatedAt": "2026-05-14T06:07:55.603Z",
+    "newsUpdatedAt": "2026-05-14T06:11:21.338Z",
     "newsCount": 30
   },
   "compareChart": {
@@ -275,6 +275,14 @@
   },
   "events": [
     {
+      "company": "Netmarble",
+      "color": "#ef4444",
+      "title": "<strong>넷마블 마블 퓨처파이트 ‘가오갤3’ 테마 업데이트…신규 유니폼 공개 - 라이센스뉴스</strong>",
+      "source": "라이센스뉴스",
+      "date": "05.07",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFB1T19zNV8zaDFLRXhaYUdBX0ViOF90UEl3QmZGMjlzSkFKcUxtU2R4TElrcXBRWW9RSGZvS2s0QS11cTZPS3lYOWtvTGlfb0EwSzFSRHBfV2plMkZEOEdrQjNVcVF3TW9EX0E?oc=5"
+    },
+    {
       "company": "NC",
       "color": "#3b82f6",
       "title": "<strong>넷마블 ‘마블 퓨처파이트’, ‘가오갤: Volume 3’ 테마 업데이트 - 서울경제TV</strong>",
@@ -505,14 +513,6 @@
       "source": "hngameguide.com",
       "date": "05.12",
       "url": "https://news.google.com/rss/articles/CBMiygJBVV95cUxQTlE2MWloaVNybGhZZkJYNmlSQUs4dGRWNl9vMUZWUm94T0RELWdOLVJvclRwWEVwZ1FuUjhROHVFY2hia2pfckF1azk2S0lPNjEzYUhoc0toTW90ZTRUMzlITmpRcE1PLVp0RnBUeEFCVTJ0a2xEXzlfVmF5V29PaFY4WHo2WGF2WEpHQ1A0Yk9HYjJZUDJYWkVpQjlTNTY1Z19KQ2VHT3pPVExIWjZHMjFsdmpWV241QnZoVzVFMmh2dzVSM1E4UkdPcGNuWDRhSzduQlkzWGFYZThSWnBMVHp4U1dnSDBMemU5d1BHcl9wQWQ0dE53WkhjaTh2eHE0d2JsQmtxX2RlTmd3TVk3TTY2My01d0dxN2gxLVhHdDdVcGlLVXZfQ2Y1WklsS3lGQl9PSWVIQnExU1dVZEcybFZ6WmdwQkNyZnc?oc=5"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss posts record Q1 earnings on Crimson Desert success - 네이트</strong>",
-      "source": "네이트",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE55Y2JTcUN0SE0zM3VaeVExRXQ1WTBsMVYtNjh0cmF5MDliVTAwT3FUUHA5OWpvcnlmbnRhTHFsZTFFclhLSWd4eWo5clhzaXR6aWpnSEFFWTFlTmgyRzVRYU9URHRydlRMSVZmYTB1cWVkTi1NUE9kVg?oc=5"
     }
   ],
   "industryNews": [
