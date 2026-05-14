@@ -1,76 +1,70 @@
 {
   "meta": {
-    "date": "20260514",
-    "dateDisplay": "5月（截至14日）",
-    "fetchedAt": "2026-05-14T17:50:00.000Z",
+    "date": "20260513",
+    "dateDisplay": "5月（截至13日）",
+    "fetchedAt": "2026-05-14T11:58:31.990Z",
     "source": "Naver Finance / Multi-source v3",
-    "updateCount": 7
+    "updateCount": 6
   },
   "shiftUp": {
     "code": "462870",
     "name": "Shift Up",
-    "nameKr": "시프트업",
     "color": "#ff6b9d",
-    "price": "31,400",
-    "previousClose": "31,150",
-    "high": "32,050",
-    "low": "30,350",
-    "change": "250",
-    "changePercent": "+0.80%",
-    "changeClass": "up",
-    "per": "9.15",
-    "pbr": "1.90",
-    "marketCap": "1.84兆元"
+    "price": "29,800",
+    "previousClose": "30,150",
+    "high": "30,500",
+    "low": "29,550",
+    "change": "-350",
+    "changePercent": "-1.16%",
+    "changeClass": "down",
+    "per": "9.51",
+    "pbr": "1.97",
+    "marketCap": "1.75兆元"
   },
   "companies": [
     {
-      "code": "036570",
-      "name": "NC",
-      "nameKr": "엔씨",
-      "color": "#3b82f6",
-      "price": "251,000",
-      "change": "-1.76%",
-      "changeClass": "down",
-      "per": "15.45"
-    },
-    {
       "code": "251270",
       "name": "Netmarble",
-      "nameKr": "넷마블",
       "color": "#ef4444",
-      "price": "42,750",
-      "change": "-0.58%",
-      "changeClass": "down",
-      "per": "15.91"
+      "price": "42,000",
+      "change": "+0.12%",
+      "changeClass": "up",
+      "per": "16.83"
+    },
+    {
+      "code": "036570",
+      "name": "NC",
+      "color": "#3b82f6",
+      "price": "263,000",
+      "change": "+5.20%",
+      "changeClass": "up",
+      "per": "17.41"
     },
     {
       "code": "259960",
       "name": "Krafton",
-      "nameKr": "크래프톤",
       "color": "#f59e0b",
-      "price": "284,500",
-      "change": "+4.21%",
+      "price": "281,000",
+      "change": "+1.26%",
       "changeClass": "up",
-      "per": "17.85"
+      "per": "19.01"
     },
     {
       "code": "225570",
       "name": "Nexon Games",
-      "nameKr": "넥슨게임즈",
       "color": "#22c55e",
-      "price": "11,010",
-      "change": "-1.87%",
+      "price": "10,710",
+      "change": "-0.93%",
       "changeClass": "down",
       "per": "N/A"
     },
     {
       "code": "263750",
       "name": "Pearl Abyss",
-      "nameKr": "펄어비스",
       "color": "#ec4899",
-      "price": "53,400",
-      "change": "+1.71%",
-      "changeClass": "up",
+      "price": "51,900",
+      "change": "-1.70%",
+      "changeClass": "down",
       "per": "N/A"
     }
   ],
@@ -79,33 +73,33 @@
       "code": "462870",
       "name": "Shift Up",
       "color": "#ff6b9d",
-      "price": "31,400",
-      "per": 9.15,
-      "perRaw": "9.15"
-    },
-    {
-      "code": "036570",
-      "name": "NC",
-      "color": "#3b82f6",
-      "price": "251,000",
-      "per": 15.45,
-      "perRaw": "15.45"
+      "price": "29,800",
+      "per": 9.51,
+      "perRaw": "9.51"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "42,750",
-      "per": 15.91,
-      "perRaw": "15.91"
+      "price": "42,000",
+      "per": 16.83,
+      "perRaw": "16.83"
+    },
+    {
+      "code": "036570",
+      "name": "NC",
+      "color": "#3b82f6",
+      "price": "263,000",
+      "per": 17.41,
+      "perRaw": "17.41"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "284,500",
-      "per": 17.85,
-      "perRaw": "17.85"
+      "price": "281,000",
+      "per": 19.01,
+      "perRaw": "19.01"
     }
   ],
   "chartData": [
@@ -143,11 +137,24 @@
       "date": "20260513",
       "label": "5/13",
       "price": 29800
+    }
+  ],
+  "indices": [
+    {
+      "code": "KOSPI",
+      "name": "KOSPI",
+      "price": "7981.41",
+      "change": "137.40",
+      "changePercent": "1.75",
+      "changeClass": "up"
     },
     {
-      "date": "20260514",
-      "label": "5/14",
-      "price": 31000
+      "code": "KOSDAQ",
+      "name": "KOSDAQ",
+      "price": "1191.09",
+      "change": "14.16",
+      "changePercent": "1.20",
+      "changeClass": "up"
     }
   ]
 }
