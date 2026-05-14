@@ -1116,7 +1116,7 @@ function renderStockPriceSection() {
     <!-- SU 核心卡片 -->
     <div class="card">
         <div class="card-header">
-            <span style="color:${su.color}">●</span> ${su.name}（${su.nameKr}）核心关注
+            <span style="color:${su.color}">●</span> ${su.name} 核心关注
             <span style="font-size:12px;color:var(--text-muted)">KOSDAQ ${su.code}</span>
         </div>
         <div class="card-body">
@@ -1299,11 +1299,11 @@ function renderCompanyAnalysisSection() {
 
   // 公司基础定义（不变的部分）
   const baseItems = [
-    {code:'225570',name:'Nexon Games',nameKr:'Nexon Games',color:'#22c55e', dsKey:'Nexon', tier:1, url:'https://news.jkn.co.kr/post/869567'},
-    {code:'251270',name:'Netmarble',nameKr:'Netmarble',color:'#ef4444', dsKey:'Netmarble', tier:1, url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
-    {code:'036570',name:'NC',nameKr:'NC',color:'#3b82f6', dsKey:'NC', tier:1, url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
-    {code:'259960',name:'Krafton',nameKr:'Krafton',color:'#f59e0b', dsKey:'Krafton', tier:2, url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
-    {code:'263750',name:'Pearl Abyss',nameKr:'Pearl Abyss',color:'#a855f7', dsKey:'P.Abyss', tier:2, url:'https://news.jkn.co.kr/post/869556'},
+    {code:'225570',name:'Nexon Games',color:'#22c55e', dsKey:'Nexon', tier:1, url:'https://news.jkn.co.kr/post/869567'},
+    {code:'251270',name:'Netmarble',color:'#ef4444', dsKey:'Netmarble', tier:1, url:'https://biz.chosun.com/it-science/ict/2026/04/06/TVK3CPSBGBGRVCQ4QIWXAMDU7E/'},
+    {code:'036570',name:'NC',color:'#3b82f6', dsKey:'NC', tier:1, url:'http://www.newstoon.co.kr/news/articleView.html?idxno=76282'},
+    {code:'259960',name:'Krafton',color:'#f59e0b', dsKey:'Krafton', tier:2, url:'https://www.mhns.co.kr/news/articleView.html?idxno=743979'},
+    {code:'263750',name:'Pearl Abyss',color:'#a855f7', dsKey:'P.Abyss', tier:2, url:'https://news.jkn.co.kr/post/869556'},
   ];
 
   // 构建带动态数据的 items
@@ -1387,7 +1387,7 @@ function renderCompanyAnalysisSection() {
               <div class="company-analysis-item">
                   <div class="ca-header">
                       <div class="company-dot" style="background:${item.color};width:12px;height:12px"></div>
-                      <span class="ca-name" style="color:${item.color}">${item.name}（${item.nameKr}）</span>
+                      <span class="ca-name" style="color:${item.color}">${item.name}</span>
                       <span class="ca-price-change ${changeClass}">${priceText} / ${c.change||'-'} | <strong style="color:var(--accent-cyan)">${perText}</strong></span>
                       ${monthBadge}
                   </div>
