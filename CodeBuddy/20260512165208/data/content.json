@@ -43,9 +43,9 @@
     {"company": "Netmarble", "color": "#ef4444", "title": "<strong>《Monster Striker: Star Dive》首月营收超预期</strong>——上线首月全球营收突破₩300亿，PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，股价企稳回升。", "source": "Netmarble 公示", "date": "05.11", "url": ""},
     {"company": "Shift Up", "color": "#ff6b9d", "title": "<strong>NIKKE全球累计营收突破$10亿美元</strong>——上线近三年累计营收突破10亿美元里程碑。Anis: Star实装后首周营收环比增长35%，3.5周年活动持续带动用户回流。", "source": "Shift Up IR/Sensor Tower", "date": "05.11", "url": ""},
     {"company": "Shift Up", "color": "#ff6b9d", "title": "<strong>NIKKE 新SSR'Mint'更新 + Stellar Blade 联动复刻</strong>——5月14日NIKKE实装新角色Mint，超稀有限定召唤进行中。Stellar Blade联动内容复刻上线，验证IP跨平台运营价值。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"},
-    {"company": "NC", "color": "#3b82f6", "title": "<strong>리니지2M 5/27日'REQUIEM'更新</strong>——李道流(리부트)重启预告，经典IP现代化改造。距Aion 2六月全球发布前序曲，Lineage系列持续迭代。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"},
+    {"company": "NC", "color": "#3b82f6", "title": "<strong>《Lineage 2M》5/27'REQUIEM'大更新</strong>——李道流(Re:Boot)重启预告，经典IP现代化改造。距Aion 2六月全球发布前序曲，Lineage系列持续迭代。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"},
     {"company": "Krafton", "color": "#f59e0b", "title": "<strong>PUBG × Stellabreeze 新PvE模式'PAYDAY'上线</strong>——与Stellabreeze联合开发的合作突袭模式，联手全球艺术家070 Shaker收录原创曲目。PUBG持续内容创新。", "source": "Krafton 公示/Inven", "date": "05.14", "url": "https://www.krafton.com/news/press/"},
-    {"company": "Nexon", "color": "#22c55e", "title": "<strong>Nexon为全体员工提供AI使用补贴</strong>——每人每月250美元AI使用费支持，加速全员AI应用落地。던파新转职'여인파이터'、메이플스토리×防弹少年团JIN合作活动同期进行。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"}
+    {"company": "Nexon", "color": "#22c55e", "title": "<strong>Nexon为全体员工提供AI使用补贴</strong>——每人每月250美元AI使用费支持，加速全员AI应用落地。DNF新转职'女格斗家'、冒险岛×防弹少年团JIN合作活动同期进行。", "source": "Inven", "date": "05.14", "url": "https://www.inven.co.kr/webzine/news/"}
   ],
   "industryNews": [
     {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>5月韩国游戏股走势：震荡整固→温和反弹</strong>——5月初受全球科技股回调影响小幅承压，中旬随基本面催化剂(Aion 2预约破120万/Stellar Blade PC版破150万/Crimson Desert破500万)逐步回暖。资金面：外资从4月净卖出转为小幅净流入。", "source": "韩国投资证券", "date": "05.01~11", "url": ""},
@@ -56,7 +56,7 @@
     {"company": "Netmarble", "color": "#ef4444", "title": "<strong>Monster Striker首月营收破₩300亿</strong>：跨平台联机模式获好评，Coway治理争议逐步消化。分红收益(年配当约2,800韩元/股)提供底部支撑。", "source": "Netmarble 公示", "date": "05.11", "url": ""},
     {"company": "Nexon Games", "color": "#22c55e", "title": "<strong>Blue Archive全球三周年活动筹备中</strong>：日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。", "source": "Nexon Games IR", "date": "05.01~11", "url": ""},
     {"company": "六大游戏公司", "color": "#6b7185", "title": "<strong>5月游戏行业宏观环境改善</strong>——韩国央行维持利率不变但下半年降息预期升温。全球AI应用落地加速利好游戏+AI融合(如Krafton Raon)。中国游戏版号发放常态化，韩国游戏出口环境改善。", "source": "韩国央行/游戏产业协会", "date": "05.01~11", "url": ""},
-    {"company": "Nexon", "color": "#22c55e", "title": "<strong>Nexon全员AI补贴制度启动</strong>——为全体员工提供每人每月250美元AI使用费，加速全公司AI应用落地。던파新转职'여인파이터'、메이플스토리×防弹少年团JIN合作等多元化内容同步推进。", "source": "Inven", "date": "05.14", "url": ""},
+    {"company": "Nexon", "color": "#22c55e", "title": "<strong>Nexon全员AI补贴制度启动</strong>——为全体员工提供每人每月250美元AI使用费，加速全公司AI应用落地。DNF新转职'女格斗家'、冒险岛×防弹少年团JIN合作等多元化内容同步推进。", "source": "Inven", "date": "05.14", "url": ""},
     {"company": "Krafton", "color": "#f59e0b", "title": "<strong>PUBG内容创新持续+AI融合深化</strong>——与Stellabreeze联合推出新PvE模式，AI模型Raon持续开源扩展。印度市场谈判最后阶段+Ascend Zero新作开发中，多催化剂并行。", "source": "Krafton 公示", "date": "05.14", "url": ""}
   ]
 }
