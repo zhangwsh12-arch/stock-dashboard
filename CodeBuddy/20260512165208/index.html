@@ -464,7 +464,7 @@ function findCompanyReason(stockName, changeClass) {
   const isApril13OrLater = currentDate >= '20260413'; // 4/13 Aion2座谈会+Crimson Desert发布会临近
   const isApril22OrLater = currentDate >= '20260422'; // 4/22 游戏股全面反弹（6家全涨）
   const isApril23OrLater = currentDate >= '20260423'; // 4/23 NIKKE Anis:Star实装
-  const isMay1OrLater = currentDate >= '20260501'; // 5/1 进入5月
+  const isMay4OrLater = currentDate >= '20260504'; // 5/4 5月首个交易日(5/1-5/3劳动节连休)
   const isMay12OrLater = currentDate >= '20260512'; // 5/12 新增日期分支
   const isMay13OrLater = currentDate >= '20260513'; // 5/13 新增日期分支
   const isMay14OrLater = currentDate >= '20260514'; // 5/14 NIKKE Mint+Lineage2M+PUBG新模式+Nexon AI补贴
@@ -477,7 +477,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Aion 2全球发布前震荡整固</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1财报超预期（利润YoY+1700%）后进入获利了结阶段，短期技术性回调消化前期涨幅。'
         : isMay12OrLater
           ? '<strong>Aion 2韩国预约突破120万+Q1财报超预期</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>Aion 2韩国预约突破120万+Q1财报超预期</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。'
             : isApril23OrLater
           ? '<strong>游戏板块强势反弹延续</strong>——前一日(4/21)KOSPI创历史新高但游戏股逆势下跌的"错杀"得到修正。Aion 2座谈会+KSK预约94万等核心催化剂仍在发酵。关注Q1财报正式公布节点。'
@@ -496,7 +496,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Crimson Desert DLC「Boss重战模式」上线后短期震荡</strong>——5月中旬DLC上线后首波内容更新完成，但缺乏后续新催化。500万套销量利好已充分定价，Q1扭亏为盈后进入业绩真空期。'
         : isMay12OrLater
           ? '<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月创韩国主机最快纪录。DLC首波内容5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。持续内容更新支撑长线运营。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月创韩国主机最快纪录。DLC首波内容5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。持续内容更新支撑长线运营。'
             : isApril23OrLater
           ? '<strong>连续两日强势反弹</strong>——4/22大涨+6.07%领涨全板块后动能延续。《Crimson Desert》DLC路线图公布后的正面效应持续发酵，前期超跌卖压充分释放。'
@@ -511,7 +511,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Q1财报利好消化后震荡整固</strong>——5/11剑星2确认开发顺利+自主发行模式转变、Project Spirits由腾讯发行等利好已部分定价。NIKKE 3.5周年活动高峰期过后用户数据自然回落，短期等待5/14 Mint实装验证。'
         : isMay12OrLater
           ? '<strong>5/11 Q1财报：剑星2确认开发顺利+自主发行</strong>——续作将采用第一方服务模式自主发行，不再依赖外部发行商，多平台首发预期强烈。新作Project Spirits由腾讯发行，年内公布详情。全资收购三上真司UNBOUND工作室强化全球3A开发能力。NIKKE累计营收破$10亿里程碑。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>NIKKE 3.5周年活动持续+Q1财报预期</strong>——Anis: Star实装后首周营收环比+35%，3.5周年活动持续带动用户回流。关注5月中旬Q1财报和新作消息披露。'
             : isApril23OrLater
           ? '<strong>NIKKE Anis: Star 4/23实装催化 + 连续两日收红</strong>——3.5周年活动(超160次免费召唤)持续进行，新角色上线窗口临近。4/22反弹+1.32%为板块唯一独立题材支撑。'
@@ -528,7 +528,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。前期涨幅后短期震荡整理。'
         : isMay12OrLater
           ? '<strong>PUBG Mobile印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>PUBG Mobile印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。'
             : isApril23OrLater
           ? '<strong>Q1财报催化持续发酵 + AI"Raon"生态扩张</strong>——4/17超预期财报(利润YoY+52%)效应仍在释放，4/22反弹+4.12%显示市场重新认可基本面。关注后续Ascend Zero新作消息。'
@@ -545,7 +545,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Blue Archive全球三周年活动筹备+新作延期风险压制估值</strong>——日本市场长期畅销提供稳定现金流，但新作延期问题持续压制估值。Project DX/RX开发进度更新预计Q3公布，市场等待明确时间表。'
         : isMay12OrLater
           ? '<strong>Blue Archive全球三周年活动筹备中</strong>——日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>Blue Archive全球三周年活动筹备中</strong>——日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。'
             : isApril23OrLater
           ? '<strong>超跌反弹+0.65%——延期风险已被市场部分定价</strong>：社长公开承认新作延期的利空已在前期充分反应，4/22反弹显示卖压减弱。Blue Archive IP全球表现提供基本面支撑。'
@@ -558,7 +558,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Monster Striker首月营收超预期后短期震荡</strong>——PC/移动端跨平台联机模式获好评，但Coway治理争议余波仍有压制。分红收益(年配当约2,800韩元/股)提供底部支撑，等待新增长催化剂。'
         : isMay12OrLater
           ? '<strong>《Monster Striker》首月营收超预期破₩300亿</strong>——PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，分红收益(年配当约2,800韩元/股)提供底部支撑。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>《Monster Striker》首月营收超预期破₩300亿</strong>——PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，分红收益(年配当约2,800韩元/股)提供底部支撑。'
             : isApril23OrLater
           ? '<strong>连续两日反弹+0.99%——Coway治理争议逐步消化</strong>：《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑，《Monster Striker》上线后持续贡献营收。'
@@ -576,7 +576,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Aion 2全球发布前获利了结压力</strong>——6月全球发布利好已部分定价，短期震荡整理消化前期涨幅。前期预约数据（120万）利好已被市场充分反映。'
         : isMay12OrLater
           ? '<strong>前期涨幅较大后技术性回调</strong>——Aion 2预约破120万利好已部分定价，短期缺乏新催化剂。Q1财报超预期后进入获利了结阶段，6月全球发布前或维持震荡整理。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>前期涨幅较大后技术性回调</strong>——Aion 2预约破120万利好已部分定价，短期缺乏新催化剂。Q1财报超预期后进入获利了结阶段，6月全球发布前或维持震荡整理。'
             : isApril23OrLater
           ? '<strong>前一日大涨后技术性获利了结</strong>——4/22 NC暴涨+5.77%领涨全板块，短期涨幅过大(两日累计+2.85%)引发部分资金止盈。Aion 2基本面未变。'
@@ -591,7 +591,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Coway治理争议余波+新游数据待验证</strong>——《Monster Striker》首月营收虽超预期但持续性待观察。Coway追加收购引发的治理担忧仍未完全消除，外资卖出压力间歇性出现。'
         : isMay12OrLater
           ? '<strong>Coway治理争议余波+新游数据待验证</strong>——《Monster Striker》首月营收虽超预期但持续性待观察。Coway追加收购引发的治理担忧仍未完全消除，外资卖出压力间歇性出现。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>Coway治理争议余波+新游数据待验证</strong>——《Monster Striker》首月营收虽超预期但持续性待观察。Coway追加收购引发的治理担忧仍未完全消除，外资卖出压力间歇性出现。'
             : isApril22OrLater
           ? '<strong>资金虹吸效应+KOSDAQ弱势格局</strong>：4/21 KOSPI暴涨+2.72%创历史新高，但机构资金集中涌向半导体/电池板块，游戏股沦为"提款机"。Coway治理争议仍未完全消化，《Monster Striker》上线初期数据待观察。'
@@ -604,7 +604,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Crimson Desert DLC上线后缺乏新催化</strong>——500万套销量利好已充分定价，DLC「Boss重战模式」上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
         : isMay12OrLater
           ? '<strong>前期涨幅较大后获利了结</strong>——Crimson Desert破500万套利好已充分定价，DLC上线前缺乏新催化剂。Q1扭亏为盈后进入业绩真空期，短期技术性回调占主导。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>前期涨幅较大后获利了结</strong>——Crimson Desert破500万套利好已充分定价，DLC上线前缺乏新催化剂。Q1扭亏为盈后进入业绩真空期，短期技术性回调占主导。'
             : isApril22OrLater
           ? '<strong>Crimson Desert销量稳健+DLC路线图公布后短期企稳</strong>，在游戏板块整体逆势调整中相对抗跌（仅+0.74%），显示前期超跌后卖压已充分释放。'
@@ -617,7 +617,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>印度回归谈判不确定性+前期涨幅较大</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，前期利润YoY+52%利好已充分定价。'
         : isMay12OrLater
           ? '<strong>印度回归谈判不确定性+大盘波动</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，Krafton市值较大导致外资抛售压力更重。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>印度回归谈判不确定性+大盘波动</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，Krafton市值较大导致外资抛售压力更重。'
             : isApril22OrLater
           ? '<strong>Q1超预期财报利好已消化+资金虹吸效应</strong>：KOSPI创新高但资金流向半导体/核电等热门板块。Q1财报(利润YoY+52%)催化已在4/17前后充分定价，缺乏新催化剂下跟随板块回调。'
@@ -628,7 +628,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>Q1财报利好消化后缺乏新催化</strong>——5/11剑星2自主发行等利好已部分定价，短期进入催化真空期。NIKKE 3.5周年活动高峰期过后用户数据自然回落，等待5/14 Mint实装验证。'
         : isMay12OrLater
           ? '<strong>Q1财报利好消化后缺乏新催化</strong>——5/11剑星2自主发行等利好已部分定价，短期进入催化真空期。NIKKE 3.5周年活动高峰期过后用户数据自然回落，等待5/14 Mint实装验证。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>NIKKE周年活动后活跃度回落+缺乏新催化</strong>——3.5周年活动高峰期过后用户数据自然回落。等待5月中旬Q1财报和新作消息提振。'
             : isApril22OrLater
           ? '<strong>NIKKE 3.5周年+Anis: Star实装前预期</strong>：4/23新角色上线窗口临近，3.5周年活动(超160次免费召唤)带动用户活跃度回升。在游戏板块整体逆势下跌中唯一显著收红(+1.04%)，显示独立题材支撑。'
@@ -643,7 +643,7 @@ function findCompanyReason(stockName, changeClass) {
         ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，市场等待Q3开发进度更新。'
         : isMay12OrLater
           ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，市场等待Q3开发进度更新。'
-          : isMay1OrLater
+          : isMay4OrLater
             ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，市场等待Q3开发进度更新。'
             : isApril22OrLater
           ? '<strong>新作延期风险持续压制</strong>：《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。4/21跟随板块微跌(-0.50%)，跌幅相对可控（市场已部分定价延期风险）。'
@@ -668,7 +668,7 @@ function generateSUAnalysis() {
   const prevClose = su.previousClose || '-';
 
   // 计算月度累计涨跌（从 chartData 计算，只计算5月数据）
-  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260501');
+  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260504');
   let monthChange = null;
   let monthText = '';
   if (chartData.length >= 2) {
@@ -688,7 +688,7 @@ function generateSUAnalysis() {
   const _isGE20 = d >= '20260420';  // 4/20 NIKKE周年活动
   const _isGE22 = d >= '20260422';  // 4/22 全面反弹
   const _isGE23 = d >= '20260423';  // 4/23 Anis:Star实装
-  const _isMay1 = d >= '20260501';  // 5/1 进入5月
+  const _isMay4 = d >= '20260504';  // 5/4 5月首个交易日(5/1-5/3劳动节连休)
   const _isMay6 = d >= '20260506';  // 5/6 进入5月第二周
   const _isMay7 = d >= '20260507';  // 5/7 Aion 2预约120万消息
   const _isMay8 = d >= '20260508';  // 5/8 PUBG印度+Crimson Desert 500万消息
@@ -718,8 +718,8 @@ function generateSUAnalysis() {
   } else if (_isMay6) {
     // 5/6 进入5月第二周
     analysisDetail = `<strong>NIKKE 3.5周年活动持续+Q1财报预期升温</strong>——Anis: Star实装后用户数据持续验证IP运营能力。市场关注5月中旬Q1财报和新作消息披露，剑星2开发进展与发行策略为关键看点。`;
-  } else if (_isMay1) {
-    // 5月初：承接4月叙事
+  } else if (_isMay4) {
+    // 5/4 5月首个交易日：承接4月叙事
     analysisDetail = `<strong>4月催化剂消化尾声+5月新催化预期</strong>——NIKKE 3.5周年活动(Anis: Star实装)后用户数据持续验证IP运营能力。关注5月Q1财报季和新作消息披露。`;
   } else if (_isGE23) {
     analysisDetail = `板块中<strong>唯一独立题材股</strong>——<strong>4/23 NIKKE新角色"Anis: Star"实装窗口</strong>（3.5周年活动超160次免费召唤带动活跃度）。在4/21板块逆势下跌中唯一显著收红(+1.04%)，4/22延续+1.32%显示独立alpha。<strong>4/1全资收购UNBOUND工作室</strong>强化PC/主机发行能力；<strong>4/8 PUBG×Stellar Blade联动</strong>Eve角色进入艾伦格地图验证IP跨平台价值。关注NIKKE新角色上线后用户数据表现。`;
@@ -1314,7 +1314,7 @@ function renderCompanyAnalysisSection() {
   const isGE20  = d >= '20260420';  // 4/20 NIKKE周年
   const isGE22  = d >= '20260422';  // 4/22 游戏股全面反弹（6家全涨）
   const isGE23  = d >= '20260423';  // 4/23 NIKKE Anis:Star实装
-  const isMay1  = d >= '20260501';  // 5/1 进入5月
+  const isMay4  = d >= '20260504';  // 5/4 5月首个交易日(5/1-5/3劳动节连休)
 
   // 公司基础定义（不变的部分）
   const baseItems = [
@@ -1343,21 +1343,21 @@ function renderCompanyAnalysisSection() {
 
     switch(item.code) {
       case '225570': // Nexon Games
-        if (isMay1) return `<strong>本月累计 ${mcStr}</strong>。Blue Archive日本市场长期畅销提供稳定现金流，但<strong>新作延期风险</strong>仍压制估值——Project DX/RX开发进度更新预计Q3公布。《Dungeon & Fighter: Arad》日程部分延迟，缺乏新增长引擎。`;
+        if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。Blue Archive日本市场长期畅销提供稳定现金流，但<strong>新作延期风险</strong>仍压制估值——Project DX/RX开发进度更新预计Q3公布。《Dungeon & Fighter: Arad》日程部分延迟，缺乏新增长引擎。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍持续压制估值——社长承认"新作曲延是主因"，《Dungeon & Fighter: Arad》、Project DX、Project RX 日程均部分延迟。4/21跟随板块微跌(-0.50%)，显示市场已部分定价延期风险。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩12,020→₩12,080）。月初随大盘暴跌后逐步修复至基本持平。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"。`;
         if (isGE15) return `<strong>本月累计 ${mcStr}</strong>。月初随大盘暴跌后逐步修复，核心IP Blue Archive日本市场长期畅销提供基本面支撑。<strong>新作延期风险</strong>持续压制——社长承认"新作曲延是主因"。`;
         return `<strong>本月累计 ${mcStr}</strong>。4/2大盘暴跌后持续承压，核心IP Blue Archive全球表现稳健，但<strong>新作延期风险</strong>（社长公开承认）压制估值修复空间。`;
 
       case '251270': // Netmarble
-        if (isMay1) return `<strong>本月累计 ${mcStr}</strong>。《Monster Striker: Star Dive》首月营收超预期突破₩300亿，PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，分红收益(年配当约2,800韩元/股)提供底部支撑。`;
+        if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。《Monster Striker: Star Dive》首月营收超预期突破₩300亿，PC/移动端跨平台联机模式获好评。Coway治理争议逐步消化，分红收益(年配当约2,800韩元/股)提供底部支撑。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机。4/21资金虹吸至半导体板块导致单日跌-1.75%。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩51,400→₩51,500）。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>为短期营收贡献。`;
         if (isGE15) return `<strong>本月累计 ${mcStr}</strong>。月初Coway追加收购引发治理争议（Align批评"利益冲突"），方向性不确定。《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。`;
         return `<strong>本月累计 ${mcStr}</strong>。月初受<strong>Coway追加收购</strong>公告引发治理争议——Activist基金Align公开批评构成"利益冲突"。市场质疑为何不回购自家股票而投资关联方，但强化控股也带来长期分红收益预期。`;
 
       case '036570': // NC
-        if (isMay1) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>韩国预约突破120万大关（距4/11座谈会后从94万增至120万）；② Q1财报超预期——营业利润YoY +1700%，Lineage Classic BM防御收入下滑趋势缓解；③ 6月全球发布计划稳步推进，预约数据持续验证市场热度。`;
+        if (isMay4) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>韩国预约突破120万大关（距4/11座谈会后从94万增至120万）；② Q1财报超预期——营业利润YoY +1700%，Lineage Classic BM防御收入下滑趋势缓解；③ 6月全球发布计划稳步推进，预约数据持续验证市场热度。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功；② KSK韩国预约94万+创公司历史新高，30日留存36%；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。4/21 KOSPI创新高但因资金虹吸逆势跌-2.80%(当日领跌)。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功（600+人参与）；② KSK韩国预约94万+创公司历史新高，30日留存36%远超行业平均；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。`;
         if (isGE17) return `<strong>本月累计 ${mcStr}</strong>${badge}。Aion 2座谈会效应持续发酵，4/14大涨+3.97%领跑全板块，本月累计涨幅扩大至月度冠军。Q1财报季临近实绩改善预期强化。`;
@@ -1366,14 +1366,14 @@ function renderCompanyAnalysisSection() {
         return `<strong>本月累计 ${mcStr}</strong>。4/2特朗普冲击后深度调整（单日-7.19%），月初游戏板块整体承压。关注后续Aion 2座谈会及Q1财报催化。`;
 
       case '259960': // Krafton
-        if (isMay1) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源生态持续扩张 + Q1财报超预期(利润YoY+52%)已验证 + PUBG联动稳定。<strong>PUBG Mobile印度回归谈判进入最后阶段</strong>，潜在2亿用户回归预期强烈。Ascend Zero新作开发进展顺利。`;
+        if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源生态持续扩张 + Q1财报超预期(利润YoY+52%)已验证 + PUBG联动稳定。<strong>PUBG Mobile印度回归谈判进入最后阶段</strong>，潜在2亿用户回归预期强烈。Ascend Zero新作开发进展顺利。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健(利润YoY+52%) + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。4/17超预期财报催化后4/21跟随板块回调-2.49%，关注<strong>Ascend Zero</strong>新作后续催化。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩262,000→₩261,500）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。Q1超预期财报(利润YoY+52%)后4/17逆势+2.73%，关注<strong>Ascend Zero</strong>新作后续催化。`;
         if (isGE17) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击拖累。<strong>4/17发布Q1超预期财报</strong>(利润YoY+52%)后逆势+2.73%。`;
         return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。市值较大导致波动更敏感。`;
 
       case '263750': // Pearl Abyss
-        if (isMay1) return `<strong>本月累计 ${mcStr}</strong>。《Crimson Desert》全球销量突破<strong>500万套</strong>（发售不到两个月，创韩国主机游戏史上最快），Steam"特别好评"。<strong>DLC首波内容「Boss重战模式」5月中旬上线</strong>，持续内容更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。`;
+        if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。《Crimson Desert》全球销量突破<strong>500万套</strong>（发售不到两个月，创韩国主机游戏史上最快），Steam"特别好评"。<strong>DLC首波内容「Boss重战模式」5月中旬上线</strong>，持续内容更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，4/21在板块调整中相对抗跌(+0.74%)，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩72,000→₩54,000），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
         if (isGE17) return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert》3/20发售至今销量突破400万套（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。前期获利了结卖压主导走势。<strong>4/17媒体发布会公布DLC路线图</strong>后短期企稳信号。FnGuide预期Q1扭亏为盈至₩1,250亿。`;
@@ -1553,8 +1553,8 @@ function renderSuChart() {
   grad.addColorStop(0, 'rgba(255,107,157,0.25)');
   grad.addColorStop(1, 'rgba(255,107,157,0.01)');
 
-  // 只显示当月数据：过滤5月数据（从5/1开始）
-  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260501');
+  // 只显示当月数据：过滤5月数据（从5/4首个交易日开始）
+  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260504');
   const labels = chartData.map(d => d.label);
   const prices = chartData.map(d => d.price);
 
