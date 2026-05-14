@@ -4,7 +4,7 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-05-12",
     "note": "此文件由自动抓取 + 人工维护，每日需同步更新事件和分析文字",
-    "newsUpdatedAt": "2026-05-14T06:11:21.338Z",
+    "newsUpdatedAt": "2026-05-14T06:14:58.213Z",
     "newsCount": 30
   },
   "compareChart": {
@@ -275,6 +275,46 @@
   },
   "events": [
     {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Crimson Desert는 몇 주 만에 거의 1억 8천만 달러를 벌어들이고 Pearl Abyss는 DLC를 연구합니다. - Mix Vale</strong>",
+      "source": "Mix Vale",
+      "date": "05.13",
+      "url": "https://news.google.com/rss/articles/CBMi2wJBVV95cUxPb3h3Z3o2bDk4WUdZdHhqMlpKRVhEZFpoekNJa0F3TlFGZFZuSnpsR3BrYkMzUldQa1NINHRzUGt1THNBbTBBVjdQS21FQnhzUjYxenRiRU9jMzNYdDhxUWtNSGhQak9MM2tSeTRsNmdQcG5qQUZOVTZFSlR1QlVWYy1iMmxsOGtGcVlZS29zSGE1R1BTZ3pONlRqRHNLRERkZk9jN0M1WklyS1B3V3VxeUprVWxEQmdZQUk1emdObi03Sl9acFd0eDNEMTRZbWlHVi1OT1dxcEE1ZzZneHJDc2pQZzFQVFh2Zl9vVVR6a1dnWEQ0eXBXN3NQa3hHaUFVOGNycFRJTktzdjRsMjlVdFpZOGcyNmxqcUFBbEFqS0Z2alZpdElwd1V2amRrYkZXUkY2SlFNUS0tdE9wTGtqSnpIaGZWeDhYOHV2OWYxak1SY1hVNGhrMVNTWQ?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Crimson Desert 가이드: Tiger Mount 획득 방법 - games.gg</strong>",
+      "source": "games.gg",
+      "date": "05.13",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOcjU1cC0yckptZFVsYnFxOE1DVjdZMG5mTlVWS1Z1OW9ldHlUUWVTdVpHQ3BJZHFPd1ZFTk9UYzhxdjJlOVN4N29LcDZ5YXNpZVQ3ZzdXWnEwR1poeU9ZZWQxVjZjcHI0SWczYnVKZnNOXzRGWEpOSERIVEJXRE9uMGtRcm0yUGlMQUg5aGtjRnE4ZHVhdE1FVEtJTUs4OUZUYW1XajV1UFlJWkJNalhFREszWUNGYjhLai1jblU5UmtNVHRPZ3NkeUluN0ZLU2pZ?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>교보證 NC, MMORPG 흥행에 캐주얼 엔진 장착…목표가 상향 - 아주경제</strong>",
+      "source": "아주경제",
+      "date": "05.13",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBHSnE0NHhUV0dEd3VVUWlLTHJTMU9tblRYbHhmSjVsTGx6UkFaVDE5VnZNZTN0eG9yOXZsNHBDUTZ5MVRyZVcxY2phaF9SSlJxSzNLLUlWZW50d9IBWEFVX3lxTE0zRFpkMFlSV3ROWGxpUjg1bTNMWktBVmNpeFBJQXp0aEFyMnBTMHhEMzFhNEUzTmxIOW8wY2I5M3NZVHdaNkZwU29rQncxcE9IVkN1TUgwNm8?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC, 아이온2·리니지클래식 성공으로 실적 회복…목표가↑-NH - 마켓인</strong>",
+      "source": "마켓인",
+      "date": "05.13",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1pTDZuTHV4TTBfYVdPdDRETXpvbUtST3d0N3ZHWGVvYmVCY1ZrYlB5ZE1hYTBiVmJhSG5FN0NkR0I0ZXNNczFoME41TFhTT1V0OVlaa2I3U09MOVZaZGt4UnN4THJLVGpDWm51OVFQTEhhWDA?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>[야구 하이라이트]타선 폭발! 롯데, NC 꺾고 낙동강더비 설욕 - knn.co.kr</strong>",
+      "source": "knn.co.kr",
+      "date": "05.13",
+      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1LbU53UGcwZ0xIN0lTd0t3Um1iOWpiQXUtTWgyaUJfNEI3M1l6MW9mTk1BYkFRYVNFWUdnd2wwa3dvZVRMMUV3bzM5c3F2NEZhamlCYQ?oc=5"
+    },
+    {
       "company": "Netmarble",
       "color": "#ef4444",
       "title": "<strong>넷마블 마블 퓨처파이트 ‘가오갤3’ 테마 업데이트…신규 유니폼 공개 - 라이센스뉴스</strong>",
@@ -473,46 +513,6 @@
       "source": "컨슈머타임스",
       "date": "05.12",
       "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9OQnlUdWJfYzg1Y1lIeTZ1alBHaXdUdGl1blBCWnZhUVZ4RzQzSnJucVlMWkF4SkszVXg1NzRYaXoydVpLX2xjNFFDNVN1LXp3Ym9pMEdsQ1JTby0xM0JEYnZjbl8tY2pycUE?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>크래프톤 '배그모바일', 8주년 기념 '올림포스' 테마 업데이트 - 지디넷코리아</strong>",
-      "source": "지디넷코리아",
-      "date": "05.12",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBhNURYaEtLanZZNndEREdBMTF0U3A1VDN1cS0tMllwUjBsd2tHMXZteG9mbzgtYi03MXJ6U1lPTWc0M21UeHNfdkd2QjlBLTlaaUJGSTN3?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>[야구 하이라이트]전민재 첫 홈런에도…롯데, NC에 완패 - knn.co.kr</strong>",
-      "source": "knn.co.kr",
-      "date": "05.12",
-      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBQc3RKdm9mNFdOWjVIci0ycWVhQVFnN1NZRVg1ZG40WkNaN3lDd0Jnb0FKYUFnV0xoWDFJMFpCTjloM3BPOUlYUVZmWVFlcVJjNWY4dA?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC, 1분기 영업이익 1천133억원…PC 게임 매출 역대 최대(종합) - 연합인포맥스</strong>",
-      "source": "연합인포맥스",
-      "date": "05.12",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFB0T3AtUFZ6YmMyRzZhQldoRFdaVjVjWEFWTkx3NGMxRF9aM3VNV01vUVhPaE9tLVR2cUo0SUFMZjBrRmNGVy1GdlhiMkhESU14clVrb0pGOWFyckdJOW5tVGpiZzJQVzdERUZUM1poYzk?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>스텔라 블레이드 후속작 자체 퍼블리싱! 멀티 플랫폼 및 최신 정보 - hngameguide.com</strong>",
-      "source": "hngameguide.com",
-      "date": "05.12",
-      "url": "https://news.google.com/rss/articles/CBMixgJBVV95cUxOLWhuZGhURzV6bVBMOExIZG5iSlpjMnluaVlGeGVtaVB4XzRBZjdNd2dzY2M2M0ZSVDROQmRFbGtzaFVLYVQwem5PVHVfTGJZampwcUJZM0k4aTF0QnRnY2t1ZWlrTWI5X3FtQ1E2Q21tNm5DenBMTzRqWTJVUnRJMDhiMUhTeGY3LUxvU2p3TFRBaXp6bXBwVTI2Y3dwaXlWcnh2cEMyX2VHcTR1bjFvRHdOR3BzZ0REbE80ZEJsOERMZHpyRDR2dUFaaUNING1WZDVuRFVIdmlTdXhNTHYyOVZpRlJ1SDFRalBOVjlMdTlVbHZEUk9UMnZrQktTZGk1UGRrcHhDTXMtaFNPX2Z0VFBZVExzMGNUTHpydWFMbTRxTDBPUzhhOWhOYjJ4QkNMeHBNOVd4d0hCUkJfR3RxUW1VNlZ2UQ?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>스텔라 블레이드 2: 시프트업 자가 퍼블리싱 및 멀티 플랫폼 발표 - hngameguide.com</strong>",
-      "source": "hngameguide.com",
-      "date": "05.12",
-      "url": "https://news.google.com/rss/articles/CBMiygJBVV95cUxQTlE2MWloaVNybGhZZkJYNmlSQUs4dGRWNl9vMUZWUm94T0RELWdOLVJvclRwWEVwZ1FuUjhROHVFY2hia2pfckF1azk2S0lPNjEzYUhoc0toTW90ZTRUMzlITmpRcE1PLVp0RnBUeEFCVTJ0a2xEXzlfVmF5V29PaFY4WHo2WGF2WEpHQ1A0Yk9HYjJZUDJYWkVpQjlTNTY1Z19KQ2VHT3pPVExIWjZHMjFsdmpWV241QnZoVzVFMmh2dzVSM1E4UkdPcGNuWDRhSzduQlkzWGFYZThSWnBMVHp4U1dnSDBMemU5d1BHcl9wQWQ0dE53WkhjaTh2eHE0d2JsQmtxX2RlTmd3TVk3TTY2My01d0dxN2gxLVhHdDdVcGlLVXZfQ2Y1WklsS3lGQl9PSWVIQnExU1dVZEcybFZ6WmdwQkNyZnc?oc=5"
     }
   ],
   "industryNews": [
