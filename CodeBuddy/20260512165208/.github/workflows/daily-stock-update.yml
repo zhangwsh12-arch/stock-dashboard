@@ -1,0 +1,85 @@
+name: Daily Stock Data Update
+
+on:
+  # ====== 定时触发（多重保障）======
+  schedule:
+    # 主调度：每个工作日 10:00 KST (UTC+9) = 01:00 UTC
+    - cron: '0 1 * * 1-5'
+    # 备用：每个工作日 10:30 KST 防止主调度跳过
+    - cron: '30 1 * * 1-5'
+    # 兜底：每天 23:55 UTC 触发检查是否需要更新
+    - cron: '55 23 * * *'
+
+  push:
+    branches:
+      - main
+
+  # 手动触发（保留）
+  workflow_dispatch:  # 支持手动触发
+  # 外部唤醒（通过 repository_dispatch 或 API）
+  repository_dispatch:
+    types: [trigger-update]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run data fetcher
+        run: node scripts/fetch-data.mjs
+
+      # ====== 新闻抓取已禁用 ======
+      # - name: Run news fetcher
+      #   run: node scripts/fetch-news.mjs || echo "News fetcher skipped (may have network issues)"
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if ! git diff --cached --quiet; then
+            git commit -m "📊 自动更新股价数据 $(date '+%Y-%m-%d %H:%M KST')"
+            git push
+          else
+            echo "No data changes to commit"
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      # ====== 企业微信群推送 ======
+      - name: Send WeCom notification
+        if: success()
+        env:
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+          DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
+        run: node scripts/notify-wecom.mjs
+        continue-on-error: true  # 推送失败不阻断整体流程
