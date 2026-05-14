@@ -491,9 +491,9 @@ function findCompanyReason(stockName, changeClass) {
               ? '<strong>Q1财报季实绩改善预期</strong>：分析师预估销售额1,020亿韩元，《Lineage Classic》新增BM防御收入下滑，《Aion 2》S3延期但市场反应正面。'
               : '<strong>4/7正式起诉YouTuber"永莱基"</strong>，市场解读为反作弊力度加大的积极信号，累计制裁近600万账户。',
       'Pearl Abyss': isMay14OrLater
-        ? '<strong>Crimson Desert DLC'Boss重战模式'上线中+500万套长线运营</strong>——发售不到两个月创韩国主机最快纪录，DLC内容持续更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。'
+        ? '<strong>Crimson Desert DLC「Boss重战模式」上线中+500万套长线运营</strong>——发售不到两个月创韩国主机最快纪录，DLC内容持续更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。'
         : isMay13OrLater
-        ? '<strong>Crimson Desert DLC'Boss重战模式'上线后短期震荡</strong>——5月中旬DLC上线后首波内容更新完成，但缺乏后续新催化。500万套销量利好已充分定价，Q1扭亏为盈后进入业绩真空期。'
+        ? '<strong>Crimson Desert DLC「Boss重战模式」上线后短期震荡</strong>——5月中旬DLC上线后首波内容更新完成，但缺乏后续新催化。500万套销量利好已充分定价，Q1扭亏为盈后进入业绩真空期。'
         : isMay12OrLater
           ? '<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月创韩国主机最快纪录。DLC首波内容5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。持续内容更新支撑长线运营。'
           : isMay1OrLater
@@ -506,7 +506,7 @@ function findCompanyReason(stockName, changeClass) {
           ? '<strong>《Crimson Desert（红色沙漠）》4/17媒体发布会临近 + 全球销量突破400万套</strong>：Steam"特别好评"，同时在线峰值27万。市场期待DLC路线图公布。'
           : '《Crimson Desert（红色沙漠）》Steam评价升至<strong>"好评如潮"</strong>，全球销量突破400万套，口碑反转驱动估值修复。',
       'Shift Up': isMay14OrLater
-        ? '<strong>NIKKE新SSR'Mint'5/14实装+Stellar Blade联动复刻</strong>——新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。$10亿累计营收里程碑后持续内容更新。'
+        ? '<strong>NIKKE新SSR「Mint」5/14实装+Stellar Blade联动复刻</strong>——新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。$10亿累计营收里程碑后持续内容更新。'
         : isMay13OrLater
         ? '<strong>Stellar Blade PC版150万套后增长放缓+缺乏新催化</strong>——PC版Steam好评率92%但销量增速趋缓。NIKKE 3.5周年活动后用户数据自然回落，短期进入IP运营真空期，等待新作消息提振。'
         : isMay12OrLater
@@ -599,9 +599,9 @@ function findCompanyReason(stockName, changeClass) {
           ? '<strong>《Monster Striker: Star Dive》4/15全球上线预期已提前反应</strong>——首发当日营收贡献为短期性质，市场正观望初期下载数据。叠加Coway收购争议，方向性不确定。'
           : '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
       'Pearl Abyss': isMay14OrLater
-        ? '<strong>Crimson Desert DLC上线后缺乏新催化+获利了结</strong>——500万套销量利好已充分定价，DLC'Boss重战模式'上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
+        ? '<strong>Crimson Desert DLC上线后缺乏新催化+获利了结</strong>——500万套销量利好已充分定价，DLC「Boss重战模式」上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
         : isMay13OrLater
-        ? '<strong>Crimson Desert DLC上线后缺乏新催化</strong>——500万套销量利好已充分定价，DLC'Boss重战模式'上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
+        ? '<strong>Crimson Desert DLC上线后缺乏新催化</strong>——500万套销量利好已充分定价，DLC「Boss重战模式」上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
         : isMay12OrLater
           ? '<strong>前期涨幅较大后获利了结</strong>——Crimson Desert破500万套利好已充分定价，DLC上线前缺乏新催化剂。Q1扭亏为盈后进入业绩真空期，短期技术性回调占主导。'
           : isMay1OrLater
@@ -1373,7 +1373,7 @@ function renderCompanyAnalysisSection() {
         return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。市值较大导致波动更敏感。`;
 
       case '263750': // Pearl Abyss
-        if (isMay1) return `<strong>本月累计 ${mcStr}</strong>。《Crimson Desert》全球销量突破<strong>500万套</strong>（发售不到两个月，创韩国主机游戏史上最快），Steam"特别好评"。<strong>DLC首波内容'Boss重战模式'5月中旬上线</strong>，持续内容更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。`;
+        if (isMay1) return `<strong>本月累计 ${mcStr}</strong>。《Crimson Desert》全球销量突破<strong>500万套</strong>（发售不到两个月，创韩国主机游戏史上最快），Steam"特别好评"。<strong>DLC首波内容「Boss重战模式」5月中旬上线</strong>，持续内容更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，4/21在板块调整中相对抗跌(+0.74%)，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩72,000→₩54,000），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
         if (isGE17) return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert》3/20发售至今销量突破400万套（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。前期获利了结卖压主导走势。<strong>4/17媒体发布会公布DLC路线图</strong>后短期企稳信号。FnGuide预期Q1扭亏为盈至₩1,250亿。`;
