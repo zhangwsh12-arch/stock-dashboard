@@ -4,7 +4,7 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-05-12",
     "note": "此文件由自动抓取 + 人工维护，每日需同步更新事件和分析文字",
-    "newsUpdatedAt": "2026-05-13T08:59:33.706Z",
+    "newsUpdatedAt": "2026-05-14T01:48:41.192Z",
     "newsCount": 30
   },
   "compareChart": {
@@ -275,6 +275,94 @@
   },
   "events": [
     {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>넷마블 ‘마블 퓨처파이트’, ‘가오갤: Volume 3’ 테마 업데이트 - 서울경제TV</strong>",
+      "source": "서울경제TV",
+      "date": "05.04",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE11V2JZbzJDNEdWQk1xUE9leE5hMHE2Rkdmcmx6OFVmQjVyNXkzb2oySHREOXAxUnMzVVNQMm1oTGRnVkNNX0NKZm9HMUQyWG1vdlItTU1PVXlVemZlTVpucnczeC0?oc=5"
+    },
+    {
+      "company": "Netmarble",
+      "color": "#ef4444",
+      "title": "<strong>넷마블 ‘마블 퓨처파이트’, ‘가오갤: Volume 3’ 테마 업데이트 - 서울경제TV</strong>",
+      "source": "서울경제TV",
+      "date": "05.04",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE11V2JZbzJDNEdWQk1xUE9leE5hMHE2Rkdmcmx6OFVmQjVyNXkzb2oySHREOXAxUnMzVVNQMm1oTGRnVkNNX0NKZm9HMUQyWG1vdlItTU1PVXlVemZlTVpucnczeC0?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>26년 4월 월간게임동향 - 게임트릭스</strong>",
+      "source": "게임트릭스",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RWDRVWS1KUi00TngySFdFVU5Md2c5T1NGWGNuZTdFVkhuUWVjZWpKTG10Sm93TG42WGM3M05TY1I2U0VHRU1uT0tuYnhGRDZubjdFa1RSNFQ4NG4xZ3piOXhibG9QOS04MzlV?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>[특징주] 쏘카, 이틀째 급등세…크래프톤 자율주행 투자 기대감 지속 - 아주경제</strong>",
+      "source": "아주경제",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9XSTZ5VWFROWdhNU12MXM3YTNpVlBzcDExTWVLVU04WF9XaHRGdkRrVF9rb1k4TEtxN19QZUZkYXFPY0Qxam1SQ09uQjRMMVVzS1NzSGNDZXQzQdIBWEFVX3lxTFBkWUlvYUtSWTNfVUtrYlhscXpPeUtnZTRMMHdhd0lTRFlORlI3OERGTzdSZ0gxUHAzVFBuMDNQUWpBbko4YnFWNTF3NGNPbzdrZnVINHRmelc?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>크래프톤, 배그 IP 확장…PC는 '페이데이' 협업, 모바일은 '8주년 신화' 테마 - 네이트</strong>",
+      "source": "네이트",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE1OSnJrVUJzNExEdVR3Nndwcjc4SFcxRmlabGZVbXZuMUR6WTE2WGdUOEhBZW1TN0hKV0VDbTlqWTZHalBzOVRrS2ZOY1ZINkdoUWpR?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>크래프톤 '배틀그라운드', 신규 모드 ‘페이데이’ 공개 … 4인 협동 PvE 콘텐츠 주목 - 경향게임스</strong>",
+      "source": "경향게임스",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1laG1qSUg2UWxXV2llUnNnaUIwQTJYcjVreUFzMGtyX1lWcFk5b0hFb0F1akhSWmJib05yalZ2WXV2enBHRkNVY0ptdE03MWJvTE01X00zNERSVG9lVGpqQmVQWmNSeVJPQVhfUQ?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>크래프톤, 배틀그라운드 협력 PvE 모드 '페이데이' 출시 - 뉴스핌</strong>",
+      "source": "뉴스핌",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBzRV9ZRjJzX1JIaERibDhPclhOUVNVN0lGQ3JTdjRwZjZQMlBQMHFWYlNFTHJ2Ql9UZ0VuLUI3OE9pLWZadVlQRmJXSXRpM0FTb3dOdEw1NTFNRGt0?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>크래프톤, 배틀그라운드에 신규 협동모드 '페이데이' 추가 - 블로터</strong>",
+      "source": "블로터",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBteGJyemczUjZIRFJKTm1fUlB6MmZjNmx6bU00QkgtSEtVd1JpLWZ5ejNWOXg4d2NKM1dnM1dna3N5U2RBT2FhZ0U3SHRkbWdvejJ5Z3p5Sm5VOTdHR2tUbkIxU1J5RU9p0gFsQVVfeXFMTzdkaWMtcVpQRjJBRGtEZEVyU0V6V2l0NkVfVzFEbVF4cHd0c1NhLXkzTHJHbjFVQUF3U3F2c3NqLVJEODhjR1dpS1k2cnU2X0pfSHlCUG9lZF9PelpuV3hPeUFXZzNhMXMxSHJs?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>아이온, ‘AION REMAKE’ 사전예약··· 신서버 ‘데바’ 출시 - 스포츠경향</strong>",
+      "source": "스포츠경향",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9uYVU5czRQM2ZJSUN0Zy0tN05wVU5TNUtJczN3WjFEUlVGTkJPbUxMeGJqTXY2V3dzVmdNVjd0aXVXdDNHT040LWg1WXgwVEtCVzVpcFpLQ3dSZ1dCUEHSAWNBVV95cUxPNzNtSXlwaWZYQ2dqdndHNUlsZlBJTHl4M1lsa1N6NHUzSThLdTZEaEtrZk1mSklWX3RSX0dwR2xpdXNwcFR4VnRaSjFIbFJhRDV3ZmFlUHlESmt6SS1ybWszX0E?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>아이온, ‘AION REMAKE’ 사전예약 시작···신서버 ‘데바’ 출시 - 이뉴스투데이</strong>",
+      "source": "이뉴스투데이",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE85RXFManpZZWhFVmtocEJRZ19GNkJvOE4zMUwzTG9vOGZjbko1cFNjS3pOaUk5TmxZcXh2Tzh2SjAxRndCY1d1OVZObG8tWDlyc0lWYjlXQzdybjlYVXhIUzJaQnFnQm05OXgyaE0xb0LSAXRBVV95cUxOZEIya1huWXpMUlBnTm5mUDc4aVVyVUY3T0Iza2Y5VUZvRlp0VWRIbVRBV3ZBY1NtM2NYY0wwTWcxMjFkMjlCcENNblpPcGNJNWZwaWxudkVnbU50eWVpVkpfWHhJOXZvVV9YNGZFa3BWa0ctVw?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>3년만에 정상화된 실적…하반기 ‘아이온2’ 성과가 주가 좌우 - 한국경제</strong>",
+      "source": "한국경제",
+      "date": "05.14",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9TaTdrTi15cWFtYlZ5NjByQmp1WWRqOHRPelFqVFFjMC1BTkppNlUzMll5NjBwZmptYm5RYm5BeHNTVnppdHYyMVhWZVRPY2Rqdm00ZTU0MkhKZ9IBVEFVX3lxTFBFaU9MSkNCbkRKeWNHLTNLTlBYNFF6Y3JXWWtoUXFFaTM1T21UMzA3WXByWUZKLVhid2hEdFVfSUp4ZHhONlAtS1BjWTQwMDBaSmJSaA?oc=5"
+    },
+    {
       "company": "六大游戏公司",
       "color": "#6b7185",
       "title": "<strong>6월 12일 스텔라 블레이드 PC로 출시, PC 버전 특징 및 사양 공개 - PlayStation</strong>",
@@ -425,94 +513,6 @@
       "source": "네이트",
       "date": "05.13",
       "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE55Y2JTcUN0SE0zM3VaeVExRXQ1WTBsMVYtNjh0cmF5MDliVTAwT3FUUHA5OWpvcnlmbnRhTHFsZTFFclhLSWd4eWo5clhzaXR6aWpnSEFFWTFlTmgyRzVRYU9URHRydlRMSVZmYTB1cWVkTi1NUE9kVg?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>중소중견 게임사 덮친 경영악화 '늪', 'AI 효율화'로 생존 활로 모색 - 비즈니스포스트</strong>",
-      "source": "비즈니스포스트",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFB4anpWWXEwSHNCQ2NqQzFHS0lYdFBsSTNsNmZmQ3pQQkRNWGNpLXFMc19KQ1lFTHpQYjRRblphSnZnMTUxS2ZIdmtGNElNbUg4TS1KVV9Pb1d6MEd6bnVuQUtLZklUMng1dGN4cmRMalVNNkE?oc=5"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>1분기 韓 게임시장 주도한 크래프톤·엔씨·펄어비스 - 네이트</strong>",
-      "source": "네이트",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE04dTU2WHJIaUp3V3gtcnhkWEp3SExlWFI0SG10cmhpVldaOVRLVWNvVExRamdENlNkaWs5dDhIVVFzMm4yMFJYWWxKbFVjRmRmcXVr?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>1분기 韓 게임시장 주도한 크래프톤·엔씨·펄어비스 - 네이트</strong>",
-      "source": "네이트",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE04dTU2WHJIaUp3V3gtcnhkWEp3SExlWFI0SG10cmhpVldaOVRLVWNvVExRamdENlNkaWs5dDhIVVFzMm4yMFJYWWxKbFVjRmRmcXVr?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>크래프톤·엔씨, 플레이 넘어 ‘머무르는 게임’ 만든다…세계관 경쟁 가속 - mstoday.co.kr</strong>",
-      "source": "mstoday.co.kr",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE4xWXpkT2ttSFhubFJhQ0ljQXBybVEySGx5ai1YQW5TQmIzdUJqYnpfVzYteWZiN3pLcFpzSjNlNDNJQ0VLZlFjejU5amxTdGpWRTdfa1hib2lYSlRiQy1uTHdTYWZELWRyVHg2alZn?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>[이슈] NC, 1분기 영업이익 1132억원… '리니지 클래식' 견인 - 오늘경제</strong>",
-      "source": "오늘경제",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1vZVRNQUNLLUp6NjdpY215MUZGVThfbFBROG1BOG5vWmdRblpQMEV2RW85c29FdVJ4eVpZV1JrVGhvZGhIZW1mUnRhSHZnTlpPOGhwMXQxZGY0ZnhyYnhFNE55c2hVLXB1SHFNWmI2bk5GMDA?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>[AI프리뷰] 13일 부산 롯데-NC전, 롯데 비슬리 앞세워 '낙동강 더비' 연패 끊을까 - 뉴스핌</strong>",
-      "source": "뉴스핌",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE83bWhPbl9FQkdFRjVTTEFRNGlPYTUwT1UzSTZaWnh2RTRBdDV5TDFCY1NicUpKc3hvWFB2T1lSLU1DeGt6OWxsOXM4VzhDc0VkdVBwbkIydmV0cWh2?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC Announces Financial Results for First Quarter 2026 - gamevu.co.kr</strong>",
-      "source": "gamevu.co.kr",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE44emt0TVhMVHhVdHNNLVM5Yms5RGFFYU4zU2RIUndWSG05YUZ4VUx3eGxfYTFMR1hIYVBENlZCTmFWWEwtdzU3SUdEU2FlVWMxX005QWY1VVpwWHlfQmF4akJLRzlLQmt5dEE?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NCSoft Beats Expectations as Aion 2 Drives Record PC Game Revenue - Korea IT Times</strong>",
-      "source": "Korea IT Times",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9HMlpWX0FyUXN3bDkyS2dtVFFiS2RBRmlWUWl0NnFxbFNfcVpla09oU0xTZnhuM1kxclF1SlFLZXNhTWpHOFNvZDhYcjlQNnFOT1c2dVRKR1lSNXJvZEl2NEdQWHcyQlpvam5mUnJfSmY?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>엔씨, PC 게임 매출 사상 최대…영업이익 전년 대비 2070%↑ - 부산일보</strong>",
-      "source": "부산일보",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE43aEt4NTRLT0FDWW93QzFFQ3dZMU4tbjA2a2lpa2hNOVhfYVVBZWgxQWJYSkt6T016ZWtsVDJXVGh4WFhheFFiZzA0MHB1TUJNTTUxazdGb1JzS1U0bjNlcENjS1VVQnNLMUhKMWJVTWpkQW9V?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>[컨콜-엔씨소프트] 박병무 대표 “2.5조 가이던스, 내부 목표 더 높다” - fetv.co.kr</strong>",
-      "source": "fetv.co.kr",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9TRlIzLUk5RS1DMjlRMjZLOTNtZUdCeWUxTkxKUGhFbVNxbDhPWkZKN0tDLVp1UEh4V1NhNXk1dFdra2FZYV93Rk1KV1NkSkc2QXZCVzd3S1BMTE9ZRzVnZ3NzVE0tYkpH?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>[오늘의 주요공시] HD현대·삼양식품·엔씨소프트 등 - 이투데이</strong>",
-      "source": "이투데이",
-      "date": "05.13",
-      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE92VVVmeWtoWjE5YUl3YUYxTWpvNVdKNDdtb3Q3Z1JTQmQ2TGNCUnNHVWxPTTZyU0N0QW9BWVJ3LThYajhCQW9ydVZVRFdLTURoM0NPMw?oc=5"
     }
   ],
   "industryNews": [
