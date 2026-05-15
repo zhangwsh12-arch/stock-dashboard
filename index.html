@@ -759,9 +759,15 @@ function generateSUAnalysis() {
   const price = su.price || '-';
   const prevClose = su.previousClose || '-';
 
-  // 计算月度累计涨跌（从 chartData 计算，只计算5月数据）
-  const chartMonth = (currentData?.meta?.date || '').slice(0, 6) || '202605';
-  const chartData = (currentData.chartData || []).filter(d => d.date.startsWith(chartMonth));
+  // 计算月度累计涨跌（从 chartData 计算，截断到当前日期）
+  const chartDate = currentData?.meta?.date || '';
+  const chartMonth = chartDate.slice(0, 6) || '202605';
+  const chartDay = chartDate.length >= 8 ? parseInt(chartDate.slice(6, 8), 10) : 31;
+  const chartData = (currentData.chartData || []).filter(d => {
+    if (!d.date.startsWith(chartMonth)) return false;
+    const day = parseInt(d.date.slice(6, 8), 10);
+    return day <= chartDay;
+  });
   let monthChange = null;
   let monthText = '';
   if (chartData.length >= 2) {
@@ -1646,11 +1652,16 @@ function renderSuChart() {
   grad.addColorStop(0, 'rgba(255,107,157,0.25)');
   grad.addColorStop(1, 'rgba(255,107,157,0.01)');
 
-  // 根据当前日期筛选当月数据
+  // 根据当前日期筛选当月数据，并截断到当前日期
   const allChartData = currentData.chartData || [];
   const currentDate = currentData?.meta?.date || '';
   const currentMonth = currentDate.length >= 6 ? currentDate.slice(0, 6) : '202605';
-  const chartData = allChartData.filter(d => d.date.startsWith(currentMonth));
+  const currentDay = currentDate.length >= 8 ? parseInt(currentDate.slice(6, 8), 10) : 31;
+  const chartData = allChartData.filter(d => {
+    if (!d.date.startsWith(currentMonth)) return false;
+    const day = parseInt(d.date.slice(6, 8), 10);
+    return day <= currentDay;
+  });
   if (chartData.length === 0) return; // 当月无数据则不渲染
   const labels = chartData.map(d => d.label);
   const prices = chartData.map(d => d.price);
