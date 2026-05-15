@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260514",
     "dateDisplay": "5月（截至14日）",
-    "fetchedAt": "2026-05-15T02:15:01.723Z",
+    "fetchedAt": "2026-05-15T02:17:26.923Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -17,8 +17,8 @@
     "change": "1,200",
     "changePercent": "+4.03%",
     "changeClass": "up",
-    "per": "9.41",
-    "pbr": "1.96",
+    "per": "9.38",
+    "pbr": "1.95",
     "marketCap": "1.82兆元"
   },
   "companies": [
@@ -29,7 +29,7 @@
       "price": "44,050",
       "change": "+4.88%",
       "changeClass": "up",
-      "per": "16.73"
+      "per": "16.71"
     },
     {
       "code": "036570",
@@ -38,7 +38,7 @@
       "price": "279,000",
       "change": "+6.08%",
       "changeClass": "up",
-      "per": "16.88"
+      "per": "16.94"
     },
     {
       "code": "259960",
@@ -74,24 +74,24 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "31,000",
-      "per": 9.41,
-      "perRaw": "9.41"
+      "per": 9.38,
+      "perRaw": "9.38"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "44,050",
-      "per": 16.73,
-      "perRaw": "16.73"
+      "per": 16.71,
+      "perRaw": "16.71"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
       "price": "279,000",
-      "per": 16.88,
-      "perRaw": "16.88"
+      "per": 16.94,
+      "perRaw": "16.94"
     },
     {
       "code": "259960",
@@ -148,17 +148,17 @@
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "7798.61",
-      "change": "-182.80",
-      "changePercent": "-2.29",
+      "price": "7776.26",
+      "change": "-205.15",
+      "changePercent": "-2.57",
       "changeClass": "down"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1162.65",
-      "change": "-28.44",
-      "changePercent": "-2.39",
+      "price": "1161.60",
+      "change": "-29.49",
+      "changePercent": "-2.48",
       "changeClass": "down"
     }
   ]
