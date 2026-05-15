@@ -178,8 +178,8 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 async function fetchNaverChart(code) {
   try {
     // requestType=0 + count=15 拿最近15天数据（含今天）
-    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=15&requestType=0`;
-    console.log(`  📊 [NaverChart] Fetching: ${code} (requestType=0, count=15)`);
+    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=45&requestType=0`;
+    console.log(`  📊 [NaverChart] Fetching: ${code} (requestType=0, count=45)`);
     
     const resp = await fetchWithRetry(url);
     const buf = await resp.arrayBuffer();
@@ -646,13 +646,17 @@ async function main() {
   };
 
   // 图表数据 (使用 Shift Up 的历史数据)
-  // 只保留本月交易日数据，不包含今日盘中数据(最后一条)
+  // 保留近2个月数据，支持前端按月份筛选显示
   if (realShiftUp && realShiftUp._allHistory && realShiftUp._allHistory.length > 0) {
     const currentMonth = String(targetDate.getMonth() + 1).padStart(2, '0');
-    // 过滤: 本月 + 排除今日盘中数据(取到倒数第2条)
+    const prevMonth = String(targetDate.getMonth()).padStart(2, '0') || '12';
+    const currentYear = String(targetDate.getFullYear());
+    const prevYear = currentMonth === '01' ? String(targetDate.getFullYear() - 1) : currentYear;
+    const months = [prevYear + prevMonth, currentYear + currentMonth];
+    // 排除今日盘中数据(取到倒数第2条)
     const monthData = realShiftUp._allHistory
-      .slice(0, -1) // 去掉最后一条(今日盘中)
-      .filter(h => h.date.slice(4, 6) === currentMonth);
+      .slice(0, -1)
+      .filter(h => months.includes(h.date.slice(0, 6)));
     
     dashboardData.chartData = monthData.map(h => ({
       date: h.date,

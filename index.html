@@ -742,7 +742,8 @@ function generateSUAnalysis() {
   const prevClose = su.previousClose || '-';
 
   // 计算月度累计涨跌（从 chartData 计算，只计算5月数据）
-  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260504');
+  const chartMonth = (currentData?.meta?.date || '').slice(0, 6) || '202605';
+  const chartData = (currentData.chartData || []).filter(d => d.date.startsWith(chartMonth));
   let monthChange = null;
   let monthText = '';
   if (chartData.length >= 2) {
@@ -1627,8 +1628,12 @@ function renderSuChart() {
   grad.addColorStop(0, 'rgba(255,107,157,0.25)');
   grad.addColorStop(1, 'rgba(255,107,157,0.01)');
 
-  // 显示所有可用数据（不限制月份，支持历史数据查阅）
-  const chartData = currentData.chartData || [];
+  // 根据当前日期筛选当月数据
+  const allChartData = currentData.chartData || [];
+  const currentDate = currentData?.meta?.date || '';
+  const currentMonth = currentDate.length >= 6 ? currentDate.slice(0, 6) : '202605';
+  const chartData = allChartData.filter(d => d.date.startsWith(currentMonth));
+  if (chartData.length === 0) return; // 当月无数据则不渲染
   const labels = chartData.map(d => d.label);
   const prices = chartData.map(d => d.price);
 
