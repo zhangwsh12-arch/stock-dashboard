@@ -2,8 +2,8 @@
   "meta": {
     "date": "20260430",
     "dateDisplay": "4月（截至30日）",
-    "fetchedAt": "2026-05-15T09:07:08.739Z",
-    "source": "Naver Finance / Multi-source v3 (手动修复4月完整数据)",
+    "fetchedAt": "2026-05-15T09:34:04.446Z",
+    "source": "Naver Finance / Multi-source v3 (手动修复4月完整数据 - 触发Pages部署)",
     "updateCount": 6
   },
   "shiftUp": {
