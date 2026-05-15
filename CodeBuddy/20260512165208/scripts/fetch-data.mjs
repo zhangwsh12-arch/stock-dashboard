@@ -14,7 +14,7 @@
  * 用法: node scripts/fetch-data.mjs
  */
 
-import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'fs';
+import { writeFileSync, existsSync, mkdirSync, readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -675,6 +675,13 @@ async function main() {
   console.log(`✅ 最新数据已更新: latest.json`);
 
   updateDatesList(dateStr);
+
+  // ============================================================
+  // 修复历史月份数据完整性
+  // 当进入新月份后，上个月的JSON文件可能被截断（Naver API只返回最近60天）
+  // 这里用上个月的完整历史数据重新生成上个月的JSON文件
+  // ============================================================
+  await fixHistoricalMonthData(realShiftUp?._allHistory || [], targetDate);
   
   console.log(`\n🎉 完成! 共更新 ${successCount}/${COMPANIES.length} 家公司`);
   if (dashboardData.shiftUp) {
@@ -686,6 +693,83 @@ async function main() {
   console.log(
     `   其他: ${dashboardData.companies.map(c => `${c.name}:${c.price}`).join(', ')}`
   );
+}
+
+/**
+ * 修复历史月份的JSON文件，确保chartData完整
+ * 原理：用_allHistory中的完整数据重新生成上个月的JSON文件
+ */
+async function fixHistoricalMonthData(allHistory, targetDate) {
+  if (!allHistory || allHistory.length === 0) return;
+
+  const currentMonth = String(targetDate.getMonth() + 1).padStart(2, '0');
+  const currentYear = String(targetDate.getFullYear());
+  
+  // 计算上个月
+  let prevMonthNum = targetDate.getMonth(); // 0-11
+  let prevYear = targetDate.getFullYear();
+  if (prevMonthNum === 0) {
+    prevMonthNum = 12;
+    prevYear -= 1;
+  }
+  const prevMonth = String(prevMonthNum).padStart(2, '0');
+  const prevMonthPrefix = `${prevYear}${prevMonth}`;
+  
+  // 从_allHistory中提取上个月的完整数据
+  const prevMonthHistory = allHistory
+    .filter(h => h.date.startsWith(prevMonthPrefix))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  
+  if (prevMonthHistory.length === 0) {
+    console.log(`\n📅 无${prevMonthPrefix}月份数据需要修复`);
+    return;
+  }
+  
+  console.log(`\n🔧 修复${prevMonthPrefix}月份历史数据 (${prevMonthHistory.length}个交易日)`);
+  
+  // 构建完整的chartData
+  const fullChartData = prevMonthHistory.map(h => ({
+    date: h.date,
+    label: `${parseInt(h.date.slice(4,6))}/${parseInt(h.date.slice(6,8))}`,
+    price: h.close,
+  }));
+  
+  // 找到所有该月份的历史JSON文件
+  const files = readdirSync(DATA_DIR)
+    .filter(f => f.startsWith(prevMonthPrefix) && f.endsWith('.json') && f !== 'latest.json');
+  
+  let fixedCount = 0;
+  for (const file of files) {
+    const filePath = join(DATA_DIR, file);
+    try {
+      const data = JSON.parse(readFileSync(filePath, 'utf-8'));
+      const existingCount = data.chartData?.length || 0;
+      
+      // 只修复chartData不完整的文件
+      if (existingCount < fullChartData.length) {
+        // 截断到该文件对应的日期
+        const fileDate = file.replace('.json', '');
+        const fileDay = parseInt(fileDate.slice(6, 8), 10);
+        const truncatedData = fullChartData.filter(d => {
+          const day = parseInt(d.date.slice(6, 8), 10);
+          return day <= fileDay;
+        });
+        
+        data.chartData = truncatedData;
+        writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+        console.log(`  ✅ ${file}: ${existingCount} → ${truncatedData.length} 天`);
+        fixedCount++;
+      }
+    } catch (err) {
+      console.warn(`  ⚠️ 跳过 ${file}: ${err.message}`);
+    }
+  }
+  
+  if (fixedCount === 0) {
+    console.log(`  ✓ ${prevMonthPrefix}月份所有文件已完整，无需修复`);
+  } else {
+    console.log(`  📊 共修复 ${fixedCount} 个文件`);
+  }
 }
 
 function updateDatesList(newDate) {
