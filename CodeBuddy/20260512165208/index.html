@@ -7,6 +7,19 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>韩国游戏股价看板</title>
+    <script>
+    // 强制刷新：如果本地缓存的HTML版本过旧，自动刷新页面
+    (function() {
+      var htmlVer = 'v20260515a'; // 每次修改index.html时更新此版本号
+      var cachedVer = localStorage.getItem('dashboard_html_version');
+      if (cachedVer && cachedVer !== htmlVer) {
+        localStorage.setItem('dashboard_html_version', htmlVer);
+        location.reload(true);
+        return;
+      }
+      localStorage.setItem('dashboard_html_version', htmlVer);
+    })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script>
     // 尽早应用主题，避免闪烁（不依赖任何全局变量）
@@ -421,6 +434,19 @@ async function loadLatestData() {
           }
         }
       } catch(e) { console.warn('⚠️ Could not load analysis fallback:', e.message); }
+    }
+
+    // 补充4月硬编码数据（如果当前在4月或用户查看4月历史）
+    const metaDate = currentData.meta?.date || '';
+    if (metaDate.startsWith('202604')) {
+      const existing = currentData.chartData || [];
+      const existingDates = new Set(existing.map(d => d.date));
+      const missing = HARDCODED_APRIL_CHART_DATA.filter(d => !existingDates.has(d.date));
+      if (missing.length > 0) {
+        currentData.chartData = [...missing, ...existing]
+          .sort((a, b) => a.date.localeCompare(b.date));
+        console.log('📊 loadLatestData: supplemented', missing.length, 'April data points');
+      }
     }
 
     return true;
