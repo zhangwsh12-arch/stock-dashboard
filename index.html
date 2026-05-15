@@ -8,6 +8,14 @@
     <meta http-equiv="Expires" content="0">
     <title>韩国游戏股价看板</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script>
+    // 尽早应用主题，避免闪烁（不依赖任何全局变量）
+    (function() {
+      const key = 'stock-dashboard-theme';
+      const theme = localStorage.getItem(key) || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
     <style>
         :root {
             --bg-primary: #0f1117; --bg-secondary: #1a1d27; --bg-card: #222636;
@@ -268,7 +276,17 @@
 
 <script>
 // ============================================================
-// 主题切换（暗色/亮色）
+// 全局状态
+// ============================================================
+let currentData = null;
+let allDates = [];
+const CACHE_BUSTER = '?v=' + new Date().getTime();
+const LATEST_DATA_URL = 'data/latest.json' + CACHE_BUSTER;
+const DATES_URL = 'data/dates.json' + CACHE_BUSTER;
+const CONTENT_URL = 'data/content.json' + CACHE_BUSTER;
+
+// ============================================================
+// 主题切换（暗色/亮色）— 放在 currentData 声明之后，彻底避免 TDZ
 // ============================================================
 const THEME_KEY = 'stock-dashboard-theme';
 const sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
@@ -282,8 +300,7 @@ function applyTheme(theme) {
   localStorage.setItem(THEME_KEY, theme);
   const btn = document.getElementById('themeToggle');
   if (btn) btn.innerHTML = theme === 'light' ? moonIcon : sunIcon;
-  // 重新渲染图表以适配主题颜色（currentData 在下方声明，用 typeof 避免 TDZ 错误）
-  if (typeof currentData !== 'undefined' && currentData) {
+  if (currentData) {
     requestAnimationFrame(() => {
       if (suChartInstance) renderSuChart();
       if (compareChartInstance) renderCompareChart();
@@ -291,28 +308,16 @@ function applyTheme(theme) {
   }
 }
 
-// 初始化主题（尽早执行，避免闪烁）
-applyTheme(getTheme());
-
 // 按钮事件监听（需等 DOM 就绪）
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('themeToggle');
   if (btn) {
+    btn.innerHTML = getTheme() === 'light' ? moonIcon : sunIcon;
     btn.addEventListener('click', () => {
       applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
     });
   }
 });
-
-// ============================================================
-// 全局状态
-// ============================================================
-let currentData = null;
-let allDates = [];
-const CACHE_BUSTER = '?v=' + new Date().getTime();
-const LATEST_DATA_URL = 'data/latest.json' + CACHE_BUSTER;
-const DATES_URL = 'data/dates.json' + CACHE_BUSTER;
-const CONTENT_URL = 'data/content.json' + CACHE_BUSTER;
 
 // ============================================================
 // 全局动态内容（从 content.json 加载，避免硬编码）
