@@ -427,13 +427,17 @@ async function loadDataByDate(dateStr) {
     // 补充/合并 chartData，确保包含完整的当月数据
     // 旧历史文件可能只包含抓取日期之后的数据，需要从 latest.json 补充月初数据
     try {
-      const latestResp = await fetch(LATEST_DATA_URL);
+      const noCacheUrl = 'data/latest.json?v=' + Date.now();
+      const latestResp = await fetch(noCacheUrl);
       if (latestResp.ok) {
         const latest = await latestResp.json();
+        console.log('📊 latest.json loaded for merge, meta.date:', latest.meta?.date, 'chartData count:', latest.chartData?.length);
         if (latest.chartData && latest.chartData.length > 0) {
           const targetMonth = dateStr.slice(0, 6);
           const latestMonthData = latest.chartData.filter(d => d.date.startsWith(targetMonth));
           const existingDates = new Set((currentData.chartData || []).map(d => d.date));
+          console.log('📊 existing dates:', [...existingDates].slice(0, 5), '... total:', existingDates.size);
+          console.log('📊 latest month data dates:', latestMonthData.map(d => d.date).slice(0, 5), '... total:', latestMonthData.length);
           // 合并：保留历史文件中的数据，补充缺失的日期
           const mergedData = [
             ...latestMonthData.filter(d => !existingDates.has(d.date)),
@@ -443,9 +447,10 @@ async function loadDataByDate(dateStr) {
           const currentDay = parseInt(dateStr.slice(6, 8), 10);
           currentData.chartData = mergedData.filter(d => parseInt(d.date.slice(6, 8), 10) <= currentDay);
           console.log(`📊 ChartData merged: ${currentData.chartData.length} days for ${targetMonth} (up to ${dateStr})`);
+          console.log('📊 merged dates:', currentData.chartData.map(d => d.date).slice(0, 5), '...');
         }
       }
-    } catch(e) { /* ignore */ }
+    } catch(e) { console.warn('⚠️ ChartData merge failed:', e); }
 
     return true;
   } catch (err) {
