@@ -1,0 +1,218 @@
+{
+  "meta": {
+    "date": "20260429",
+    "dateDisplay": "4月（截至29日）",
+    "fetchedAt": "2026-04-30T09:32:50.695Z",
+    "source": "Naver Finance / Multi-source v3",
+    "updateCount": 6
+  },
+  "shiftUp": {
+    "code": "462870",
+    "name": "Shift Up",
+    "nameKr": "시프트업",
+    "color": "#ff6b9d",
+    "price": "34,350",
+    "previousClose": "34,800",
+    "high": "35,100",
+    "low": "34,250",
+    "change": "-450",
+    "changePercent": "-1.29%",
+    "changeClass": "down",
+    "per": "9.98",
+    "pbr": "2.07",
+    "marketCap": "2.01兆元"
+  },
+  "companies": [
+    {
+      "code": "036570",
+      "name": "NC",
+      "nameKr": "엔씨",
+      "color": "#3b82f6",
+      "price": "277,500",
+      "change": "+3.74%",
+      "changeClass": "up",
+      "per": "16.88"
+    },
+    {
+      "code": "259960",
+      "name": "Krafton",
+      "nameKr": "크래프톤",
+      "color": "#f59e0b",
+      "price": "277,500",
+      "change": "-2.12%",
+      "changeClass": "down",
+      "per": "17.17"
+    },
+    {
+      "code": "251270",
+      "name": "Netmarble",
+      "nameKr": "넷마블",
+      "color": "#ef4444",
+      "price": "51,300",
+      "change": "+1.38%",
+      "changeClass": "up",
+      "per": "18.96"
+    },
+    {
+      "code": "225570",
+      "name": "Nexon Games",
+      "nameKr": "넥슨게임즈",
+      "color": "#22c55e",
+      "price": "12,100",
+      "change": "+1.51%",
+      "changeClass": "up",
+      "per": "N/A"
+    },
+    {
+      "code": "263750",
+      "name": "Pearl Abyss",
+      "nameKr": "펄어비스",
+      "color": "#ec4899",
+      "price": "59,900",
+      "change": "-1.16%",
+      "changeClass": "down",
+      "per": "N/A"
+    }
+  ],
+  "perComparison": [
+    {
+      "code": "462870",
+      "name": "Shift Up",
+      "color": "#ff6b9d",
+      "price": "34,350",
+      "per": 9.98,
+      "perRaw": "9.98"
+    },
+    {
+      "code": "036570",
+      "name": "NC",
+      "color": "#3b82f6",
+      "price": "277,500",
+      "per": 16.88,
+      "perRaw": "16.88"
+    },
+    {
+      "code": "259960",
+      "name": "Krafton",
+      "color": "#f59e0b",
+      "price": "277,500",
+      "per": 17.17,
+      "perRaw": "17.17"
+    },
+    {
+      "code": "251270",
+      "name": "Netmarble",
+      "color": "#ef4444",
+      "price": "51,300",
+      "per": 18.96,
+      "perRaw": "18.96"
+    }
+  ],
+  "chartData": [
+    {
+      "date": "20260401",
+      "label": "4/1",
+      "price": 33900
+    },
+    {
+      "date": "20260402",
+      "label": "4/2",
+      "price": 32250
+    },
+    {
+      "date": "20260403",
+      "label": "4/3",
+      "price": 33000
+    },
+    {
+      "date": "20260406",
+      "label": "4/6",
+      "price": 32900
+    },
+    {
+      "date": "20260407",
+      "label": "4/7",
+      "price": 32000
+    },
+    {
+      "date": "20260408",
+      "label": "4/8",
+      "price": 33400
+    },
+    {
+      "date": "20260409",
+      "label": "4/9",
+      "price": 33200
+    },
+    {
+      "date": "20260410",
+      "label": "4/10",
+      "price": 32850
+    },
+    {
+      "date": "20260413",
+      "label": "4/13",
+      "price": 32850
+    },
+    {
+      "date": "20260414",
+      "label": "4/14",
+      "price": 33750
+    },
+    {
+      "date": "20260415",
+      "label": "4/15",
+      "price": 33000
+    },
+    {
+      "date": "20260416",
+      "label": "4/16",
+      "price": 33700
+    },
+    {
+      "date": "20260417",
+      "label": "4/17",
+      "price": 33500
+    },
+    {
+      "date": "20260420",
+      "label": "4/20",
+      "price": 33750
+    },
+    {
+      "date": "20260421",
+      "label": "4/21",
+      "price": 34100
+    },
+    {
+      "date": "20260422",
+      "label": "4/22",
+      "price": 34550
+    },
+    {
+      "date": "20260423",
+      "label": "4/23",
+      "price": 34750
+    },
+    {
+      "date": "20260424",
+      "label": "4/24",
+      "price": 34750
+    },
+    {
+      "date": "20260427",
+      "label": "4/27",
+      "price": 34850
+    },
+    {
+      "date": "20260428",
+      "label": "4/28",
+      "price": 34800
+    },
+    {
+      "date": "20260429",
+      "label": "4/29",
+      "price": 34350
+    }
+  ]
+}
