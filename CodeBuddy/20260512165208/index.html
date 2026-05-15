@@ -424,23 +424,28 @@ async function loadDataByDate(dateStr) {
       } catch(e) { /* ignore */ }
     }
 
-    // Fallback: 如果历史文件缺少 chartData，从 latest.json 补充对应月份的数据
-    if (!currentData.chartData || currentData.chartData.length === 0) {
-      try {
-        const latestResp = await fetch(LATEST_DATA_URL);
-        if (latestResp.ok) {
-          const latest = await latestResp.json();
-          if (latest.chartData && latest.chartData.length > 0) {
-            const targetMonth = dateStr.slice(0, 6);
-            const monthData = latest.chartData.filter(d => d.date.startsWith(targetMonth));
-            if (monthData.length > 0) {
-              currentData.chartData = monthData;
-              console.log(`📊 ChartData fallback: loaded ${monthData.length} days for ${targetMonth}`);
-            }
-          }
+    // Fallback: 补充/合并 chartData，确保包含完整的当月数据
+    // 旧历史文件可能只包含抓取日期之后的数据，需要从 latest.json 补充月初数据
+    try {
+      const latestResp = await fetch(LATEST_DATA_URL);
+      if (latestResp.ok) {
+        const latest = await latestResp.json();
+        if (latest.chartData && latest.chartData.length > 0) {
+          const targetMonth = dateStr.slice(0, 6);
+          const latestMonthData = latest.chartData.filter(d => d.date.startsWith(targetMonth));
+          const existingDates = new Set((currentData.chartData || []).map(d => d.date));
+          // 合并：保留历史文件中的数据，补充缺失的日期
+          const mergedData = [
+            ...latestMonthData.filter(d => !existingDates.has(d.date)),
+            ...(currentData.chartData || [])
+          ].sort((a, b) => a.date.localeCompare(b.date));
+          // 截断到当前查看日期
+          const currentDay = parseInt(dateStr.slice(6, 8), 10);
+          currentData.chartData = mergedData.filter(d => parseInt(d.date.slice(6, 8), 10) <= currentDay);
+          console.log(`📊 ChartData merged: ${currentData.chartData.length} days for ${targetMonth} (up to ${dateStr})`);
         }
-      } catch(e) { /* ignore */ }
-    }
+      }
+    } catch(e) { /* ignore */ }
 
     return true;
   } catch (err) {
