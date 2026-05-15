@@ -8,16 +8,18 @@
     <meta http-equiv="Expires" content="0">
     <title>韩国游戏股价看板</title>
     <script>
-    // 强制刷新：如果本地缓存的HTML版本过旧，自动刷新页面
+    // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var htmlVer = 'v20260515a'; // 每次修改index.html时更新此版本号
-      var cachedVer = localStorage.getItem('dashboard_html_version');
-      if (cachedVer && cachedVer !== htmlVer) {
-        localStorage.setItem('dashboard_html_version', htmlVer);
+      var VER = '20260515c';
+      var KEY = 'dash_html_ver';
+      var prev = localStorage.getItem(KEY);
+      if (prev && prev !== VER) {
+        // 版本号变化 → 强制刷新
+        localStorage.setItem(KEY, VER);
         location.reload(true);
         return;
       }
-      localStorage.setItem('dashboard_html_version', htmlVer);
+      localStorage.setItem(KEY, VER);
     })();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
