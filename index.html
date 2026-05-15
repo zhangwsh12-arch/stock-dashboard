@@ -1756,11 +1756,24 @@ function renderCompareChart() {
     }
   }
   
-  const labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex, endIndex) : ALL_LABELS;
-  const datasets = ALL_DATASETS.map(ds => ({
+  let labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex, endIndex) : ALL_LABELS;
+  let datasets = ALL_DATASETS.map(ds => ({
     ...ds,
     data: monthIndex !== -1 ? ds.data.slice(monthIndex, endIndex) : ds.data
   }));
+
+  // 将数据转换为相对本月首个交易日的涨跌幅（首个交易日设为 0%）
+  if (monthIndex !== -1 && labels.length > 0) {
+    datasets = datasets.map(ds => {
+      const base = ds.data[0]; // 本月首个交易日的累计值（相对 4/1）
+      const adjusted = ds.data.map(v => {
+        // 从累计值反推：(1 + v/100) = (1 + base/100) * (1 + newV/100)
+        // => newV = ((1 + v/100) / (1 + base/100) - 1) * 100
+        return ((1 + v / 100) / (1 + base / 100) - 1) * 100;
+      });
+      return { ...ds, data: adjusted };
+    });
+  }
 
   // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
   const cGridColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim() || 'rgba(46,51,71,0.3)';
