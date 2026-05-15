@@ -1,10 +1,10 @@
 {
   "meta": {
-    "date": "20260514",
-    "dateDisplay": "5月（截至14日）",
-    "fetchedAt": "2026-05-14T17:50:00.000Z",
+    "date": "20260515",
+    "dateDisplay": "5月（截至15日）",
+    "fetchedAt": "2026-05-15T02:43:00.000Z",
     "source": "Naver Finance / Multi-source v3",
-    "updateCount": 7
+    "updateCount": 8
   },
   "shiftUp": {
     "code": "462870",
