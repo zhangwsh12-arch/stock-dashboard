@@ -1627,8 +1627,8 @@ function renderSuChart() {
   grad.addColorStop(0, 'rgba(255,107,157,0.25)');
   grad.addColorStop(1, 'rgba(255,107,157,0.01)');
 
-  // 只显示当月数据：过滤5月数据（从5/4首个交易日开始）
-  const chartData = (currentData.chartData || []).filter(d => d.date >= '20260504');
+  // 显示所有可用数据（不限制月份，支持历史数据查阅）
+  const chartData = currentData.chartData || [];
   const labels = chartData.map(d => d.label);
   const prices = chartData.map(d => d.price);
 
@@ -1683,14 +1683,16 @@ function renderCompareChart() {
 
   // 全局对比图数据（4/1~4/21，共15个交易日；⚠️ 下次抓取时需同步更新此数组）
 
-  // 只显示当月数据：找到5月的起始索引
-  const mayIndex = ALL_LABELS.findIndex(l => l.startsWith('5/'));
-  const cutoffIndex = mayIndex !== -1 ? ALL_LABELS.length : ALL_LABELS.length;
+  // 根据当前日期动态截取当月数据
+  const currentDate = currentData?.meta?.date || '';
+  const currentMonth = currentDate.length >= 6 ? parseInt(currentDate.slice(4, 6), 10) : 5;
+  const monthPrefix = currentMonth + '/';
+  const monthIndex = ALL_LABELS.findIndex(l => l.startsWith(monthPrefix));
   
-  const labels = mayIndex !== -1 ? ALL_LABELS.slice(mayIndex) : ALL_LABELS;
+  const labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex) : ALL_LABELS;
   const datasets = ALL_DATASETS.map(ds => ({
     ...ds,
-    data: mayIndex !== -1 ? ds.data.slice(mayIndex) : ds.data
+    data: monthIndex !== -1 ? ds.data.slice(monthIndex) : ds.data
   }));
 
   // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
