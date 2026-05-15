@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260514",
     "dateDisplay": "5月（截至14日）",
-    "fetchedAt": "2026-05-15T03:26:17.642Z",
+    "fetchedAt": "2026-05-15T03:31:33.814Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -17,8 +17,8 @@
     "change": "1,200",
     "changePercent": "+4.03%",
     "changeClass": "up",
-    "per": "9.51",
-    "pbr": "1.98",
+    "per": "9.49",
+    "pbr": "1.97",
     "marketCap": "1.82兆元"
   },
   "companies": [
@@ -29,7 +29,7 @@
       "price": "44,050",
       "change": "+4.88%",
       "changeClass": "up",
-      "per": "16.90"
+      "per": "16.92"
     },
     {
       "code": "036570",
@@ -47,7 +47,7 @@
       "price": "293,500",
       "change": "+4.45%",
       "changeClass": "up",
-      "per": "18.53"
+      "per": "18.59"
     },
     {
       "code": "225570",
@@ -74,16 +74,16 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "31,000",
-      "per": 9.51,
-      "perRaw": "9.51"
+      "per": 9.49,
+      "perRaw": "9.49"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "44,050",
-      "per": 16.9,
-      "perRaw": "16.90"
+      "per": 16.92,
+      "perRaw": "16.92"
     },
     {
       "code": "036570",
@@ -98,8 +98,8 @@
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "293,500",
-      "per": 18.53,
-      "perRaw": "18.53"
+      "per": 18.59,
+      "perRaw": "18.59"
     }
   ],
   "chartData": [
@@ -148,17 +148,17 @@
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "7717.06",
-      "change": "-264.35",
-      "changePercent": "-3.31",
+      "price": "7706.55",
+      "change": "-274.86",
+      "changePercent": "-3.44",
       "changeClass": "down"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1159.41",
-      "change": "-31.68",
-      "changePercent": "-2.66",
+      "price": "1158.26",
+      "change": "-32.83",
+      "changePercent": "-2.76",
       "changeClass": "down"
     }
   ]
