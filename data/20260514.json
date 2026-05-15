@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260514",
     "dateDisplay": "5月（截至14日）",
-    "fetchedAt": "2026-05-15T02:54:59.307Z",
+    "fetchedAt": "2026-05-15T02:58:37.000Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -17,8 +17,8 @@
     "change": "1,200",
     "changePercent": "+4.03%",
     "changeClass": "up",
-    "per": "9.45",
-    "pbr": "1.96",
+    "per": "9.48",
+    "pbr": "1.97",
     "marketCap": "1.82兆元"
   },
   "companies": [
@@ -29,7 +29,7 @@
       "price": "44,050",
       "change": "+4.88%",
       "changeClass": "up",
-      "per": "16.77"
+      "per": "16.83"
     },
     {
       "code": "036570",
@@ -47,7 +47,7 @@
       "price": "293,500",
       "change": "+4.45%",
       "changeClass": "up",
-      "per": "18.49"
+      "per": "18.46"
     },
     {
       "code": "225570",
@@ -74,16 +74,16 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "31,000",
-      "per": 9.45,
-      "perRaw": "9.45"
+      "per": 9.48,
+      "perRaw": "9.48"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "44,050",
-      "per": 16.77,
-      "perRaw": "16.77"
+      "per": 16.83,
+      "perRaw": "16.83"
     },
     {
       "code": "036570",
@@ -98,8 +98,8 @@
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "293,500",
-      "per": 18.49,
-      "perRaw": "18.49"
+      "per": 18.46,
+      "perRaw": "18.46"
     }
   ],
   "chartData": [
@@ -148,17 +148,17 @@
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "7729.66",
-      "change": "-251.75",
-      "changePercent": "-3.15",
+      "price": "7726.00",
+      "change": "-255.41",
+      "changePercent": "-3.20",
       "changeClass": "down"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1154.15",
-      "change": "-36.94",
-      "changePercent": "-3.10",
+      "price": "1156.50",
+      "change": "-34.59",
+      "changePercent": "-2.90",
       "changeClass": "down"
     }
   ]
