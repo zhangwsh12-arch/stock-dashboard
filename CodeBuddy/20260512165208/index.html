@@ -424,6 +424,24 @@ async function loadDataByDate(dateStr) {
       } catch(e) { /* ignore */ }
     }
 
+    // Fallback: 如果历史文件缺少 chartData，从 latest.json 补充对应月份的数据
+    if (!currentData.chartData || currentData.chartData.length === 0) {
+      try {
+        const latestResp = await fetch(LATEST_DATA_URL);
+        if (latestResp.ok) {
+          const latest = await latestResp.json();
+          if (latest.chartData && latest.chartData.length > 0) {
+            const targetMonth = dateStr.slice(0, 6);
+            const monthData = latest.chartData.filter(d => d.date.startsWith(targetMonth));
+            if (monthData.length > 0) {
+              currentData.chartData = monthData;
+              console.log(`📊 ChartData fallback: loaded ${monthData.length} days for ${targetMonth}`);
+            }
+          }
+        }
+      } catch(e) { /* ignore */ }
+    }
+
     return true;
   } catch (err) {
     console.error(`❌ Failed to load data for ${dateStr}:`, err);
