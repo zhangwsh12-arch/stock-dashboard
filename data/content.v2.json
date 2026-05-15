@@ -475,68 +475,92 @@
   ],
   "industryNews": [
     {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>5月韩国游戏股走势：震荡整固→温和反弹</strong>——5月初受全球科技股回调影响小幅承压，中旬随基本面催化剂(Aion 2预约破120万/Stellar Blade PC版破150万/Crimson Desert破500万)逐步回暖。资金面：外资从4月净卖出转为小幅净流入。",
-      "source": "한국투자증권",
-      "date": "05.01~11",
-      "url": ""
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up Q1财报：剑星2确认自主发行，年内公布详情</strong>——Q1财报首次披露《剑星》续作开发进展顺利，续作将由Shift Up自主发行而非SIE。《Project Spirits》同期进展顺利，预计年内公开细节。三上真司工作室UNBOUND新作获全力资助。",
+      "source": "3DM/SHIFT UP IR",
+      "date": "05.11",
+      "url": "https://www.3dmgame.com/news/202605/3943933.html"
     },
     {
       "company": "Shift Up",
       "color": "#ff6b9d",
-      "title": "<strong>Stellar Blade PC版+NIKKE双轮驱动</strong>：PC版发售首月销量破150万套，Steam好评率92%。NIKKE累计营收突破$10亿，Anis: Star实装后首周营收环比+35%。IP矩阵运营能力持续验证。",
-      "source": "인벤/SHIFT UP IR",
-      "date": "05.06~11",
-      "url": ""
+      "title": "<strong>NIKKE全球累计营收突破$10亿</strong>——上线近三年累计营收突破10亿美元里程碑。Anis: Star实装后首周营收环比增长35%，3.5周年活动持续带动用户回流。",
+      "source": "SHIFT UP IR/Sensor Tower",
+      "date": "05.11",
+      "url": "http://www.gamelook.com.cn/2026/02/588213/"
     },
     {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>Aion 2预约破120万+Q1财报超预期</strong>：韩国预约从94万增至120万，6月全球发布临近。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。",
-      "source": "NC소프트 IR/FnGuide",
-      "date": "05.07~11",
-      "url": ""
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>PUBG印度回归+AI Raon生态扩张</strong>：印度市场谈判进入最后阶段，潜在2亿用户回归预期。AI模型'Raon'开源后开发者社区活跃度持续上升，Ascend Zero新作开发进展顺利。",
-      "source": "크래프톤 공시",
-      "date": "05.08~11",
-      "url": ""
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>NIKKE 新SSR'Mint'实装 + Stellar Blade联动复刻</strong>——5月14日NIKKE B-SIDE IDOL活动上线，新增SSR偶像Mint，EVE及Raven复刻招募。Stellar Blade联动内容同步复刻。",
+      "source": "inside-games/nikke.gg",
+      "date": "05.14",
+      "url": "https://nikke.gg/may-14-update-patchnotes/"
     },
     {
       "company": "Pearl Abyss",
       "color": "#a855f7",
-      "title": "<strong>Crimson Desert 500万套+DLC即将上线</strong>：发售不到两个月破500万套，创韩国主机最快纪录。首波DLC'Boss重战模式'5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。",
-      "source": "펄어비스 IR/SteamDB",
-      "date": "05.08~11",
-      "url": ""
+      "title": "<strong>《Crimson Desert》全球销量突破500万套</strong>——发售不到两个月销量突破500万套，创韩国主机游戏最快纪录。首波DLC'Boss重战模式'5月中旬上线。",
+      "source": "펄어비스 IR",
+      "date": "05.08",
+      "url": "https://windiscover.com/posts/crimson-desert-5-million-sales-milestone.html"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>Aion 2韩国预约突破120万</strong>——距4/11座谈会后预约量从94万增至120万，增速超预期。6月全球发布计划稳步推进。",
+      "source": "NC소프트 IR",
+      "date": "05.07",
+      "url": "https://www.ali213.net/news/html/2026-4/1007863.html"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>《Lineage 2M》5/27'REQUIEM'大更新</strong>——二刀流职业重启、米密尔研究所新内容。5/22线上直播预告，5/27正式上线。Aion 2六月全球发布前序曲。",
+      "source": "인벤/NC소프트",
+      "date": "05.14",
+      "url": "https://news.para-daily.com/2026/05/13/lineage-2-mrequiem-0527-patch/"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG × Starbreeze 新PvE模式'赏金行动'上线</strong>——与PAYDAY开发商Starbreeze合作，5/12起开放四玩家合作劫案模式，搭载070 Shake原创曲目。PC版5/13上线。",
+      "source": "크래프톤/17173",
+      "date": "05.14",
+      "url": "https://news.17173.com/content/05132026/111029276.shtml"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG Mobile印度回归取得实质性进展</strong>——与印度当局谈判进入最后阶段，预计Q2内恢复运营。印度市场潜在用户约2亿，回归后将显著提振移动游戏收入。",
+      "source": "크래프톤 공시",
+      "date": "05.08",
+      "url": "https://zhuanlan.zhihu.com/p/632466703"
     },
     {
       "company": "Netmarble",
       "color": "#ef4444",
-      "title": "<strong>Monster Striker首月营收破₩300亿</strong>：跨平台联机模式获好评，Coway治理争议逐步消化。分红收益(年配当约2,800韩元/股)提供底部支撑。",
-      "source": "넷마블 공시",
+      "title": "<strong>《Monster Striker: Star Dive》全球正式上线</strong>——基于经典IP《魔物学院》的3D魔物收集动作RPG，虚幻5引擎打造。PC/移动端跨平台联机。Coway收购治理争议持续发酵。",
+      "source": "넷마블 공시/Chosun Biz",
       "date": "05.11",
-      "url": ""
+      "url": "https://biz.chosun.com/en/en-it/2026/04/10/4RNDJNL3ORDPDHLCFE2ZU56XU4/"
     },
     {
-      "company": "Nexon Games",
-      "color": "#22c55e",
-      "title": "<strong>Blue Archive全球三周年活动筹备中</strong>：日本市场长期畅销提供稳定现金流。Project DX/RX开发进度更新预计Q3公布，新作延期风险仍待观察。",
-      "source": "넥슨게임즈 IR",
-      "date": "05.01~11",
-      "url": ""
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>《Stellar Blade》PC版销量持续攀升</strong>——PC版自2025年6月上线Steam以来3天破100万，截至2026年1月全平台累计610万套（主机370万+PC版240万），Steam好评率92%。",
+      "source": "GameLook/SteamDB",
+      "date": "05.06",
+      "url": "https://wangyouhub.com/reviews/stellar-blade-sales-milestone-steam"
     },
     {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>5月游戏行业宏观环境改善</strong>——韩国央行维持利率不变但下半年降息预期升温。全球AI应用落地加速利好游戏+AI融合(如Krafton Raon)。中国游戏版号发放常态化，韩国游戏出口环境改善。",
-      "source": "한국은행/게임산업협회",
-      "date": "05.01~11",
-      "url": ""
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up全资收购三上真司工作室UNBOUND</strong>——4/1正式完成对UNBOUND Inc.全部股份收购，三上真司及核心团队并入Shift Up体系，强化全球PC/主机发行能力。",
+      "source": "신랑재경/GameLook",
+      "date": "05.06",
+      "url": "https://finance.sina.com.cn/roll/2026-04-01/doc-inhsywsx8509201.shtml"
     }
   ]
 }
