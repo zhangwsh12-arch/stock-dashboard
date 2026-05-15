@@ -177,9 +177,9 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 
 async function fetchNaverChart(code) {
   try {
-    // requestType=0 + count=15 拿最近15天数据（含今天）
-    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=15&requestType=0`;
-    console.log(`  📊 [NaverChart] Fetching: ${code} (requestType=0, count=15)`);
+    // requestType=0 + count=80 拿最近80天数据（确保覆盖完整月份）
+    const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=80&requestType=0`;
+    console.log(`  📊 [NaverChart] Fetching: ${code} (requestType=0, count=80)`);
     
     const resp = await fetchWithRetry(url);
     const buf = await resp.arrayBuffer();
