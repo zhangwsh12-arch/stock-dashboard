@@ -455,8 +455,31 @@ async function loadDataByDate(dateStr) {
     return true;
   } catch (err) {
     console.error(`❌ Failed to load data for ${dateStr}:`, err);
-    // Fallback to latest
-    return loadLatestData();
+    // Fallback: 历史文件不存在时，从 latest.json 构建该日期的数据视图
+    try {
+      const noCacheUrl = 'data/latest.json?v=' + Date.now();
+      const latestResp = await fetch(noCacheUrl);
+      if (latestResp.ok) {
+        const latest = await latestResp.json();
+        currentData = JSON.parse(JSON.stringify(latest));
+        // 将 meta.date 覆盖为用户请求的日期，确保后续渲染以该日期为基准
+        currentData.meta = { ...currentData.meta, date: dateStr };
+        // 从 chartData 中过滤出该日期及之前的数据
+        const targetMonth = dateStr.slice(0, 6);
+        const currentDay = parseInt(dateStr.slice(6, 8), 10);
+        if (currentData.chartData) {
+          currentData.chartData = currentData.chartData.filter(d => {
+            if (!d.date.startsWith(targetMonth)) return false;
+            return parseInt(d.date.slice(6, 8), 10) <= currentDay;
+          });
+        }
+        console.log(`📊 Fallback loaded from latest.json for ${dateStr}, chartData count:`, currentData.chartData?.length);
+        return true;
+      }
+    } catch(fallbackErr) {
+      console.error('❌ Fallback to latest.json also failed:', fallbackErr);
+    }
+    return false;
   }
 }
 
