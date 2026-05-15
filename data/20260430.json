@@ -11,16 +11,16 @@
     "name": "Shift Up",
     "nameKr": "시프트업",
     "color": "#ff6b9d",
-    "price": "34,350",
-    "previousClose": "34,800",
-    "high": "35,100",
-    "low": "34,250",
-    "change": "-450",
-    "changePercent": "-1.29%",
+    "price": "32,550",
+    "previousClose": "34,350",
+    "high": "34,550",
+    "low": "32,550",
+    "change": "-1,800",
+    "changePercent": "-5.24%",
     "changeClass": "down",
     "per": "9.98",
     "pbr": "2.07",
-    "marketCap": "2.01兆元"
+    "marketCap": "1.90兆元"
   },
   "companies": [
     {
@@ -28,9 +28,9 @@
       "name": "NC",
       "nameKr": "엔씨",
       "color": "#3b82f6",
-      "price": "277,500",
-      "change": "+3.74%",
-      "changeClass": "up",
+      "price": "270,500",
+      "change": "-2.52%",
+      "changeClass": "down",
       "per": "16.88"
     },
     {
@@ -38,8 +38,8 @@
       "name": "Krafton",
       "nameKr": "크래프톤",
       "color": "#f59e0b",
-      "price": "277,500",
-      "change": "-2.12%",
+      "price": "265,000",
+      "change": "-4.50%",
       "changeClass": "down",
       "per": "17.17"
     },
@@ -48,9 +48,9 @@
       "name": "Netmarble",
       "nameKr": "넷마블",
       "color": "#ef4444",
-      "price": "51,300",
-      "change": "+1.38%",
-      "changeClass": "up",
+      "price": "49,650",
+      "change": "-3.22%",
+      "changeClass": "down",
       "per": "18.96"
     },
     {
@@ -58,9 +58,9 @@
       "name": "Nexon Games",
       "nameKr": "넥슨게임즈",
       "color": "#22c55e",
-      "price": "12,100",
-      "change": "+1.51%",
-      "changeClass": "up",
+      "price": "11,860",
+      "change": "-1.98%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
@@ -68,8 +68,8 @@
       "name": "Pearl Abyss",
       "nameKr": "펄어비스",
       "color": "#ec4899",
-      "price": "59,900",
-      "change": "-1.16%",
+      "price": "58,900",
+      "change": "-1.67%",
       "changeClass": "down",
       "per": "N/A"
     }
@@ -79,7 +79,7 @@
       "code": "462870",
       "name": "Shift Up",
       "color": "#ff6b9d",
-      "price": "34,350",
+      "price": "32,550",
       "per": 9.98,
       "perRaw": "9.98"
     },
