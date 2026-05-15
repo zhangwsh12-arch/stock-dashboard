@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260514",
     "dateDisplay": "5月（截至14日）",
-    "fetchedAt": "2026-05-15T02:17:26.923Z",
+    "fetchedAt": "2026-05-15T02:18:46.431Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -17,7 +17,7 @@
     "change": "1,200",
     "changePercent": "+4.03%",
     "changeClass": "up",
-    "per": "9.38",
+    "per": "9.37",
     "pbr": "1.95",
     "marketCap": "1.82兆元"
   },
@@ -29,7 +29,7 @@
       "price": "44,050",
       "change": "+4.88%",
       "changeClass": "up",
-      "per": "16.71"
+      "per": "16.65"
     },
     {
       "code": "036570",
@@ -47,7 +47,7 @@
       "price": "293,500",
       "change": "+4.45%",
       "changeClass": "up",
-      "per": "18.46"
+      "per": "18.43"
     },
     {
       "code": "225570",
@@ -74,16 +74,16 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "31,000",
-      "per": 9.38,
-      "perRaw": "9.38"
+      "per": 9.37,
+      "perRaw": "9.37"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "44,050",
-      "per": 16.71,
-      "perRaw": "16.71"
+      "per": 16.65,
+      "perRaw": "16.65"
     },
     {
       "code": "036570",
@@ -98,8 +98,8 @@
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "293,500",
-      "per": 18.46,
-      "perRaw": "18.46"
+      "per": 18.43,
+      "perRaw": "18.43"
     }
   ],
   "chartData": [
@@ -148,17 +148,17 @@
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "7776.26",
-      "change": "-205.15",
-      "changePercent": "-2.57",
+      "price": "7750.12",
+      "change": "-231.29",
+      "changePercent": "-2.90",
       "changeClass": "down"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1161.60",
-      "change": "-29.49",
-      "changePercent": "-2.48",
+      "price": "1159.60",
+      "change": "-31.49",
+      "changePercent": "-2.64",
       "changeClass": "down"
     }
   ]
