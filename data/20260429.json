@@ -3,7 +3,7 @@
     "date": "20260429",
     "dateDisplay": "4月（截至29日）",
     "fetchedAt": "2026-04-30T09:32:50.695Z",
-    "source": "Naver Finance / Multi-source v3",
+    "source": "Naver Finance / Multi-source v3 (修复完整月度数据)",
     "updateCount": 6
   },
   "shiftUp": {
@@ -109,6 +109,41 @@
     }
   ],
   "chartData": [
+    {
+      "date": "20260401",
+      "label": "4/1",
+      "price": 33900
+    },
+    {
+      "date": "20260402",
+      "label": "4/2",
+      "price": 32250
+    },
+    {
+      "date": "20260403",
+      "label": "4/3",
+      "price": 33000
+    },
+    {
+      "date": "20260406",
+      "label": "4/6",
+      "price": 32900
+    },
+    {
+      "date": "20260407",
+      "label": "4/7",
+      "price": 32000
+    },
+    {
+      "date": "20260408",
+      "label": "4/8",
+      "price": 33400
+    },
+    {
+      "date": "20260409",
+      "label": "4/9",
+      "price": 33200
+    },
     {
       "date": "20260410",
       "label": "4/10",

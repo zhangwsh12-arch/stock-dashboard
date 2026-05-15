@@ -3,7 +3,7 @@
     "date": "20260421",
     "dateDisplay": "4月（截至21日）",
     "fetchedAt": "2026-04-22T07:13:38.662Z",
-    "source": "Naver Finance / Multi-source v3",
+    "source": "Naver Finance / Multi-source v3 (修复完整月度数据)",
     "updateCount": 6
   },
   "shiftUp": {
@@ -109,6 +109,11 @@
     }
   ],
   "chartData": [
+    {
+      "date": "20260401",
+      "label": "4/1",
+      "price": 33900
+    },
     {
       "date": "20260402",
       "label": "4/2",
