@@ -244,7 +244,7 @@ async function fetchNaverChart(code) {
       changePercent: prevPrice > 0 ? (((targetPrice - prevPrice) / prevPrice) * 100).toFixed(2) : null,
       volume: yesterday.volume,
       _source: 'naver_chart_api_v2',
-      _allHistory: allData.slice(-30),       // 走势图用
+      _allHistory: allData.slice(-60),       // 走势图用（保留近60条，约2-3个月数据）
       _todayData: today,                     // 今日数据备用
     };
   } catch (err) {
