@@ -285,6 +285,31 @@ const LATEST_DATA_URL = 'data/latest.json' + CACHE_BUSTER;
 const DATES_URL = 'data/dates.json' + CACHE_BUSTER;
 const CONTENT_URL = 'data/content.json' + CACHE_BUSTER;
 
+// 硬编码4月历史收盘价（确保latest.json被Actions覆盖后4月数据仍可用）
+const HARDCODED_APRIL_CHART_DATA = [
+  {"date": "20260401", "label": "4/1", "price": 33900},
+  {"date": "20260402", "label": "4/2", "price": 32250},
+  {"date": "20260403", "label": "4/3", "price": 33000},
+  {"date": "20260406", "label": "4/6", "price": 32900},
+  {"date": "20260407", "label": "4/7", "price": 32000},
+  {"date": "20260408", "label": "4/8", "price": 33400},
+  {"date": "20260409", "label": "4/9", "price": 33200},
+  {"date": "20260410", "label": "4/10", "price": 32850},
+  {"date": "20260413", "label": "4/13", "price": 32850},
+  {"date": "20260414", "label": "4/14", "price": 33750},
+  {"date": "20260415", "label": "4/15", "price": 33000},
+  {"date": "20260416", "label": "4/16", "price": 33700},
+  {"date": "20260417", "label": "4/17", "price": 33500},
+  {"date": "20260420", "label": "4/20", "price": 33750},
+  {"date": "20260421", "label": "4/21", "price": 34100},
+  {"date": "20260422", "label": "4/22", "price": 34550},
+  {"date": "20260423", "label": "4/23", "price": 34750},
+  {"date": "20260424", "label": "4/24", "price": 34750},
+  {"date": "20260427", "label": "4/27", "price": 34850},
+  {"date": "20260428", "label": "4/28", "price": 34800},
+  {"date": "20260429", "label": "4/29", "price": 34350}
+];
+
 // ============================================================
 // 主题切换（暗色/亮色）— 放在 currentData 声明之后，彻底避免 TDZ
 // ============================================================
@@ -406,6 +431,33 @@ async function loadLatestData() {
 }
 
 async function loadDataByDate(dateStr) {
+  // 补充 chartData 中缺失的历史月份数据
+  function supplementChartData(data, targetDateStr) {
+    const targetMonth = targetDateStr.slice(0, 6);
+    const currentDay = parseInt(targetDateStr.slice(6, 8), 10);
+    const existing = data.chartData || [];
+    const existingDates = new Set(existing.map(d => d.date));
+    
+    // 如果目标月份有缺失数据，用硬编码数据补充
+    let supplemented = [...existing];
+    if (targetMonth === '202604') {
+      const missing = HARDCODED_APRIL_CHART_DATA.filter(d => !existingDates.has(d.date));
+      if (missing.length > 0) {
+        supplemented = [...missing, ...existing].sort((a, b) => a.date.localeCompare(b.date));
+        console.log(`📊 Supplemented ${missing.length} missing April data points`);
+      }
+    }
+    // 也可从 latest.json 的 chartData 中补充（如果有该月数据）
+    // 这部分在下面异步补充
+    
+    // 截断到目标日期
+    data.chartData = supplemented.filter(d => {
+      if (!d.date.startsWith(targetMonth)) return false;
+      return parseInt(d.date.slice(6, 8), 10) <= currentDay;
+    });
+    return data;
+  }
+
   try {
     const resp = await fetch(`data/${dateStr}.json`);
     if (!resp.ok) throw new Error('Not found');
@@ -424,34 +476,32 @@ async function loadDataByDate(dateStr) {
       } catch(e) { /* ignore */ }
     }
 
-    // 补充/合并 chartData，确保包含完整的当月数据
-    // 旧历史文件可能只包含抓取日期之后的数据，需要从 latest.json 补充月初数据
+    // 补充 chartData（先用硬编码数据，再尝试从 latest.json 补充）
+    supplementChartData(currentData, dateStr);
+    
+    // 额外尝试从 latest.json 补充当月缺失数据
     try {
       const noCacheUrl = 'data/latest.json?v=' + Date.now();
       const latestResp = await fetch(noCacheUrl);
       if (latestResp.ok) {
         const latest = await latestResp.json();
-        console.log('📊 latest.json loaded for merge, meta.date:', latest.meta?.date, 'chartData count:', latest.chartData?.length);
         if (latest.chartData && latest.chartData.length > 0) {
           const targetMonth = dateStr.slice(0, 6);
           const latestMonthData = latest.chartData.filter(d => d.date.startsWith(targetMonth));
-          const existingDates = new Set((currentData.chartData || []).map(d => d.date));
-          console.log('📊 existing dates:', [...existingDates].slice(0, 5), '... total:', existingDates.size);
-          console.log('📊 latest month data dates:', latestMonthData.map(d => d.date).slice(0, 5), '... total:', latestMonthData.length);
-          // 合并：保留历史文件中的数据，补充缺失的日期
-          const mergedData = [
-            ...latestMonthData.filter(d => !existingDates.has(d.date)),
-            ...(currentData.chartData || [])
-          ].sort((a, b) => a.date.localeCompare(b.date));
-          // 截断到当前查看日期
-          const currentDay = parseInt(dateStr.slice(6, 8), 10);
-          currentData.chartData = mergedData.filter(d => parseInt(d.date.slice(6, 8), 10) <= currentDay);
-          console.log(`📊 ChartData merged: ${currentData.chartData.length} days for ${targetMonth} (up to ${dateStr})`);
-          console.log('📊 merged dates:', currentData.chartData.map(d => d.date).slice(0, 5), '...');
+          const existingDates = new Set(currentData.chartData.map(d => d.date));
+          const missing = latestMonthData.filter(d => !existingDates.has(d.date));
+          if (missing.length > 0) {
+            currentData.chartData = [...missing, ...currentData.chartData]
+              .sort((a, b) => a.date.localeCompare(b.date));
+            const currentDay = parseInt(dateStr.slice(6, 8), 10);
+            currentData.chartData = currentData.chartData.filter(d => parseInt(d.date.slice(6, 8), 10) <= currentDay);
+            console.log(`📊 Also supplemented ${missing.length} data points from latest.json`);
+          }
         }
       }
-    } catch(e) { console.warn('⚠️ ChartData merge failed:', e); }
+    } catch(e) { /* ignore */ }
 
+    console.log(`📊 Final chartData for ${dateStr}:`, currentData.chartData.length, 'days');
     return true;
   } catch (err) {
     console.error(`❌ Failed to load data for ${dateStr}:`, err);
@@ -462,17 +512,10 @@ async function loadDataByDate(dateStr) {
       if (latestResp.ok) {
         const latest = await latestResp.json();
         currentData = JSON.parse(JSON.stringify(latest));
-        // 将 meta.date 覆盖为用户请求的日期，确保后续渲染以该日期为基准
+        // 将 meta.date 覆盖为用户请求的日期
         currentData.meta = { ...currentData.meta, date: dateStr };
-        // 从 chartData 中过滤出该日期及之前的数据
-        const targetMonth = dateStr.slice(0, 6);
-        const currentDay = parseInt(dateStr.slice(6, 8), 10);
-        if (currentData.chartData) {
-          currentData.chartData = currentData.chartData.filter(d => {
-            if (!d.date.startsWith(targetMonth)) return false;
-            return parseInt(d.date.slice(6, 8), 10) <= currentDay;
-          });
-        }
+        // 补充 chartData
+        supplementChartData(currentData, dateStr);
         console.log(`📊 Fallback loaded from latest.json for ${dateStr}, chartData count:`, currentData.chartData?.length);
         return true;
       }
