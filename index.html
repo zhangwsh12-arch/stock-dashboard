@@ -1706,16 +1706,36 @@ function renderCompareChart() {
 
   // 全局对比图数据（4/1~4/21，共15个交易日；⚠️ 下次抓取时需同步更新此数组）
 
-  // 根据当前日期动态截取当月数据
+  // 根据当前日期动态截取当月数据，并截断到当前日期
   const currentDate = currentData?.meta?.date || '';
   const currentMonth = currentDate.length >= 6 ? parseInt(currentDate.slice(4, 6), 10) : 5;
+  const currentDay = currentDate.length >= 8 ? parseInt(currentDate.slice(6, 8), 10) : 31;
   const monthPrefix = currentMonth + '/';
   const monthIndex = ALL_LABELS.findIndex(l => l.startsWith(monthPrefix));
   
-  const labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex) : ALL_LABELS;
+  // 找到当前日期在标签中的位置（包含等于当前日期的标签）
+  let endIndex = ALL_LABELS.length;
+  if (monthIndex !== -1) {
+    for (let i = monthIndex; i < ALL_LABELS.length; i++) {
+      const label = ALL_LABELS[i];
+      const parts = label.split('/');
+      if (parts.length === 2) {
+        const day = parseInt(parts[1], 10);
+        // 跨月时停止（如下一个月的数据）
+        if (!label.startsWith(monthPrefix)) break;
+        // 超过当前日期时停止
+        if (day > currentDay) {
+          endIndex = i;
+          break;
+        }
+      }
+    }
+  }
+  
+  const labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex, endIndex) : ALL_LABELS;
   const datasets = ALL_DATASETS.map(ds => ({
     ...ds,
-    data: monthIndex !== -1 ? ds.data.slice(monthIndex) : ds.data
+    data: monthIndex !== -1 ? ds.data.slice(monthIndex, endIndex) : ds.data
   }));
 
   // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
