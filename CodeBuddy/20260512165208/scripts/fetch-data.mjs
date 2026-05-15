@@ -668,8 +668,39 @@ async function main() {
 
   // 写入文件
   const outFile = join(DATA_DIR, `${dateStr}.json`);
-  writeFileSync(outFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
-  console.log(`\n✅ 数据已保存: ${outFile}`);
+  
+  // 检查是否是某个月的最后一天（且文件已存在）
+  // 如果是，且现有文件的数据比新数据更完整，则保留现有文件
+  const isLastDayOfMonth = targetDate.getDate() === new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0).getDate();
+  let shouldWrite = true;
+  
+  if (isLastDayOfMonth && existsSync(outFile)) {
+    try {
+      const existingData = JSON.parse(readFileSync(outFile, 'utf-8'));
+      const existingCount = existingData.chartData?.length || 0;
+      const newCount = dashboardData.chartData?.length || 0;
+      
+      if (existingCount > newCount) {
+        console.log(`\n⚠️ ${dateStr} 是月末最后一天，现有数据(${existingCount}天)比新数据(${newCount}天)更完整，保留现有文件`);
+        shouldWrite = false;
+        // 仍然更新dashboardData的chartData为现有数据，确保latest.json正确
+        dashboardData.chartData = existingData.chartData;
+      }
+    } catch (err) {
+      console.warn(`⚠️ 检查现有文件失败: ${err.message}`);
+    }
+  }
+  
+  if (shouldWrite) {
+    writeFileSync(outFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
+    console.log(`\n✅ 数据已保存: ${outFile}`);
+  } else {
+    // 更新fetchedAt时间戳
+    const existingData = JSON.parse(readFileSync(outFile, 'utf-8'));
+    existingData.meta.fetchedAt = new Date().toISOString();
+    writeFileSync(outFile, JSON.stringify(existingData, null, 2), 'utf-8');
+    console.log(`✅ 已更新 ${outFile} 的时间戳`);
+  }
 
   const latestFile = join(DATA_DIR, 'latest.json');
   writeFileSync(latestFile, JSON.stringify(dashboardData, null, 2), 'utf-8');

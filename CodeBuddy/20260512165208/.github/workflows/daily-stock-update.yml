@@ -10,9 +10,9 @@ on:
     # 兜底：每天 23:55 UTC 触发检查是否需要更新
     - cron: '55 23 * * *'
 
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 
   # 手动触发（保留）
   workflow_dispatch:  # 支持手动触发
