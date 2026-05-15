@@ -12,7 +12,7 @@
     // 尽早应用主题，避免闪烁（不依赖任何全局变量）
     (function() {
       const key = 'stock-dashboard-theme';
-      const theme = localStorage.getItem(key) || 'dark';
+      const theme = localStorage.getItem(key) || 'light';
       document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
