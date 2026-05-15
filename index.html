@@ -1743,7 +1743,10 @@ function renderCompareChart() {
       if (parts.length === 2) {
         const day = parseInt(parts[1], 10);
         // 跨月时停止（如下一个月的数据）
-        if (!label.startsWith(monthPrefix)) break;
+        if (!label.startsWith(monthPrefix)) {
+          endIndex = i;
+          break;
+        }
         // 超过当前日期时停止
         if (day > currentDay) {
           endIndex = i;
