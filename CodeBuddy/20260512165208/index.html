@@ -424,7 +424,7 @@ async function loadDataByDate(dateStr) {
       } catch(e) { /* ignore */ }
     }
 
-    // Fallback: 补充/合并 chartData，确保包含完整的当月数据
+    // 补充/合并 chartData，确保包含完整的当月数据
     // 旧历史文件可能只包含抓取日期之后的数据，需要从 latest.json 补充月初数据
     try {
       const latestResp = await fetch(LATEST_DATA_URL);
