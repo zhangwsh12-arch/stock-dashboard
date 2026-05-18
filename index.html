@@ -1627,6 +1627,7 @@ function renderCompanyAnalysisSection() {
   }
 
   const dateDisplay = _dl(currentData.meta.date);
+  const currentMonthLabel = currentDate ? parseInt(currentDate.slice(4, 6), 10) : '';
 
   container.innerHTML = `
 <div class="full-width-grid">
