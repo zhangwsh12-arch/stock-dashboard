@@ -1892,10 +1892,13 @@ function renderCompareChart() {
   }
   
   const labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex, endIndex) : ALL_LABELS;
-  const datasets = ALL_DATASETS.map(ds => ({
-    ...ds,
-    data: monthIndex !== -1 ? ds.data.slice(monthIndex, endIndex) : ds.data
-  }));
+  const datasets = ALL_DATASETS.map(ds => {
+    const rawData = monthIndex !== -1 ? ds.data.slice(monthIndex, endIndex) : ds.data;
+    const baseValue = rawData.length > 0 ? rawData[0] : 0;
+    // 归一化：相对本月首个交易日为 0%，精确复合计算
+    const normalizedData = rawData.map(v => ((1 + v / 100) / (1 + baseValue / 100) - 1) * 100);
+    return { ...ds, data: normalizedData };
+  });
 
   // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
   const cGridColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim() || 'rgba(46,51,71,0.3)';
