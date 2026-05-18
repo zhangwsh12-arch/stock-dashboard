@@ -1184,15 +1184,55 @@ function renderDailySummary() {
     if (reasons.length === 0 && !marketAnalysis) return '';
 
     // 检测是否有全板块性宏观因素需要前置显示
-    const macroKeywords = ['特朗普', '大盘', 'KOSPI', 'KOSDAQ', '整体', '板块', '全球市场', '美联储'];
-    const macroReasons = reasons.filter(r => macroKeywords.some(kw => r.includes(kw)));
-    const nonMacroReasons = reasons.filter(r => !macroKeywords.some(kw => r.includes(kw)));
+    // 注意：只用复合短语匹配，避免"板块"等单字误命中个股语境（如"游戏板块情绪"）
+    const macroKeywords = [
+      '特朗普', '美联储',                                  // 政策/人物
+      '大盘', 'KOSPI', 'KOSDAQ',                           // 指数
+      '板块轮动', '板块普涨', '板块普跌', '板块调整', '板块回调', '板块全线',  // 真正的板块级描述
+      '整体偏强', '整体承压', '整体上涨', '整体下跌',        // 整体性行情
+      '全球市场波动', '全球市场情绪', '全球市场拖累', '全球市场承压',  // 全球市场（排除"全球市场谈判"等个股语境）
+      '全球科技股', '外资净流出', '外资净买入', '资金虹吸',  // 资金面/宏观传导
+      '降息', '加息', '利率决议'                            // 货币政策
+    ];
+    const isMacro = text => macroKeywords.some(kw => text.includes(kw));
+
+    // 分句判断：把每条 reason 按句号/分号拆成短句，分别归类
+    // 避免一条中混杂个股+宏观时，整条被错误归入宏观
+    const macroSentences = [];
+    const nonMacroSentences = [];
+    for (const r of reasons) {
+      // 提取纯文本（去掉HTML标签）后按句号/分号拆分
+      const plainText = r.replace(/<[^>]+>/g, '');
+      // 用中文句号、分号、破折号后的内容拆分
+      const sentences = plainText.split(/[。；]/).filter(s => s.trim());
+      const hasMacro = sentences.some(s => isMacro(s));
+      const hasNonMacro = sentences.some(s => !isMacro(s));
+
+      if (hasMacro && hasNonMacro) {
+        // 混合型：拆分归类，保留原股票名+颜色前缀
+        // 提取股票名前缀（<span style="color:...">股票名</span>）
+        const stockPrefix = r.match(/<span style="color:[^"]+;font-size:13px">[^<]+<\/span>/)?.[0] || '';
+        const detailPart = r.replace(/<span style="color:[^"]+;font-size:13px">[^<]+<\/span>/, '').replace(/^\s*—\s*/, '');
+        const detailSentences = detailPart.split(/[。；]/).filter(s => s.trim());
+        for (const s of detailSentences) {
+          if (isMacro(s)) {
+            macroSentences.push(`${stockPrefix}<span style="font-size:13px"> — ${s}</span>`);
+          } else {
+            nonMacroSentences.push(`${stockPrefix}<span style="font-size:13px"> — ${s}</span>`);
+          }
+        }
+      } else if (hasMacro) {
+        macroSentences.push(r);
+      } else {
+        nonMacroSentences.push(r);
+      }
+    }
 
     let output = '<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>';
-    if (macroReasons.length > 0 && nonMacroReasons.length > 0) {
+    if (macroSentences.length > 0 && nonMacroSentences.length > 0) {
       // 有宏观因素时，先显示宏观背景，再显示个股因素
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroReasons.join('；')}。`;
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${nonMacroReasons.join('；')}。`;
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroSentences.join('；')}。`;
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${nonMacroSentences.join('；')}。`;
     } else if (reasons.length > 0) {
       output += `${reasons.join('；')}。`;
     }
