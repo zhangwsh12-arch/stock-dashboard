@@ -1528,15 +1528,19 @@ function renderCompanyAnalysisSection() {
   // 日期格式转换: "20260511" → "5/11"
   const _dl = (d) => { if(!d) return ''; const m=parseInt(d.slice(4,6),10), dd=parseInt(d.slice(6),10); return `${m}/${dd}`; };
   
-  // 找到5月第一个日期的索引（月度基准）
-  const mayStartIdx = ALL_LABELS.findIndex(l => l.startsWith('5/'));
-
   function calcMonthChange(datasetData) {
-    if (!datasetData || datasetData.length === 0 || mayStartIdx < 0) return 0;
-    const endIdx = datasetData.length - 1;
-    if (mayStartIdx >= endIdx) return 0;
-    // 数据本身是基于4/1的累积收益率，5月变化 = 精确复合：(1+end)/(1+start) - 1
-    const startVal = datasetData[mayStartIdx];
+    if (!datasetData || datasetData.length === 0 || !currentDate) return 0;
+    const currentMonth = parseInt(currentDate.slice(4, 6), 10);
+    const currentLabel = _dl(currentDate);
+    // 找到当前月份第一个日期的索引
+    const monthStartIdx = ALL_LABELS.findIndex(l => {
+      const [m] = l.split('/');
+      return parseInt(m, 10) === currentMonth;
+    });
+    // 找到当前日期在 ALL_LABELS 中的索引
+    const endIdx = ALL_LABELS.findIndex(l => l === currentLabel);
+    if (monthStartIdx < 0 || endIdx < 0 || monthStartIdx >= endIdx) return 0;
+    const startVal = datasetData[monthStartIdx];
     const endVal = datasetData[endIdx];
     return ((1 + endVal / 100) / (1 + startVal / 100) - 1) * 100;
   }
