@@ -1,15 +1,15 @@
 name: Daily Stock Data Update
 
 on:
-  # ====== 定时触发（已禁用，防止覆盖历史数据修复）======
-  # schedule:
-  #   - cron: '0 1 * * 1-5'
-  #   - cron: '30 1 * * 1-5'
-  #   - cron: '55 23 * * *'
+  # ====== 定时触发（韩国时间 10:00/10:30 收盘后更新，23:55 预更新）======
+  schedule:
+    - cron: '0 1 * * 1-5'    # KST 10:00 (周一至周五)
+    - cron: '30 1 * * 1-5'   # KST 10:30 (周一至周五)
+    - cron: '55 23 * * *'    # KST 08:55 (每日预更新)
 
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
       
   # 手动触发（保留）
   workflow_dispatch:  # 支持手动触发
