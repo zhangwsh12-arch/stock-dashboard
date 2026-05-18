@@ -7,12 +7,27 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>韩国游戏股价看板</title>
+    <script>
+    // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
+    (function() {
+      var VER = '20260515d'; // 更新：添加JSON cache buster
+      var KEY = 'dash_html_ver';
+      var prev = localStorage.getItem(KEY);
+      if (prev && prev !== VER) {
+        // 版本号变化 → 强制刷新
+        localStorage.setItem(KEY, VER);
+        location.reload(true);
+        return;
+      }
+      localStorage.setItem(KEY, VER);
+    })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script>
     // 尽早应用主题，避免闪烁（不依赖任何全局变量）
     (function() {
       const key = 'stock-dashboard-theme';
-      const theme = localStorage.getItem(key) || 'light';
+      const theme = localStorage.getItem(key) || 'dark';
       document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
@@ -285,6 +300,31 @@ const LATEST_DATA_URL = 'data/latest.json' + CACHE_BUSTER;
 const DATES_URL = 'data/dates.json' + CACHE_BUSTER;
 const CONTENT_URL = 'data/content.json' + CACHE_BUSTER;
 
+// 硬编码4月历史收盘价（确保latest.json被Actions覆盖后4月数据仍可用）
+const HARDCODED_APRIL_CHART_DATA = [
+  {"date": "20260401", "label": "4/1", "price": 33900},
+  {"date": "20260402", "label": "4/2", "price": 32250},
+  {"date": "20260403", "label": "4/3", "price": 33000},
+  {"date": "20260406", "label": "4/6", "price": 32900},
+  {"date": "20260407", "label": "4/7", "price": 32000},
+  {"date": "20260408", "label": "4/8", "price": 33400},
+  {"date": "20260409", "label": "4/9", "price": 33200},
+  {"date": "20260410", "label": "4/10", "price": 32850},
+  {"date": "20260413", "label": "4/13", "price": 32850},
+  {"date": "20260414", "label": "4/14", "price": 33750},
+  {"date": "20260415", "label": "4/15", "price": 33000},
+  {"date": "20260416", "label": "4/16", "price": 33700},
+  {"date": "20260417", "label": "4/17", "price": 33500},
+  {"date": "20260420", "label": "4/20", "price": 33750},
+  {"date": "20260421", "label": "4/21", "price": 34100},
+  {"date": "20260422", "label": "4/22", "price": 34550},
+  {"date": "20260423", "label": "4/23", "price": 34750},
+  {"date": "20260424", "label": "4/24", "price": 34750},
+  {"date": "20260427", "label": "4/27", "price": 34850},
+  {"date": "20260428", "label": "4/28", "price": 34800},
+  {"date": "20260429", "label": "4/29", "price": 34350}
+];
+
 // ============================================================
 // 主题切换（暗色/亮色）— 放在 currentData 声明之后，彻底避免 TDZ
 // ============================================================
@@ -398,6 +438,19 @@ async function loadLatestData() {
       } catch(e) { console.warn('⚠️ Could not load analysis fallback:', e.message); }
     }
 
+    // 补充4月硬编码数据（如果当前在4月或用户查看4月历史）
+    const metaDate = currentData.meta?.date || '';
+    if (metaDate.startsWith('202604')) {
+      const existing = currentData.chartData || [];
+      const existingDates = new Set(existing.map(d => d.date));
+      const missing = HARDCODED_APRIL_CHART_DATA.filter(d => !existingDates.has(d.date));
+      if (missing.length > 0) {
+        currentData.chartData = [...missing, ...existing]
+          .sort((a, b) => a.date.localeCompare(b.date));
+        console.log('📊 loadLatestData: supplemented', missing.length, 'April data points');
+      }
+    }
+
     return true;
   } catch (err) {
     console.error('❌ Failed to load latest data:', err);
@@ -406,8 +459,35 @@ async function loadLatestData() {
 }
 
 async function loadDataByDate(dateStr) {
+  // 补充 chartData 中缺失的历史月份数据
+  function supplementChartData(data, targetDateStr) {
+    const targetMonth = targetDateStr.slice(0, 6);
+    const currentDay = parseInt(targetDateStr.slice(6, 8), 10);
+    const existing = data.chartData || [];
+    const existingDates = new Set(existing.map(d => d.date));
+    
+    // 如果目标月份有缺失数据，用硬编码数据补充
+    let supplemented = [...existing];
+    if (targetMonth === '202604') {
+      const missing = HARDCODED_APRIL_CHART_DATA.filter(d => !existingDates.has(d.date));
+      if (missing.length > 0) {
+        supplemented = [...missing, ...existing].sort((a, b) => a.date.localeCompare(b.date));
+        console.log(`📊 Supplemented ${missing.length} missing April data points`);
+      }
+    }
+    // 也可从 latest.json 的 chartData 中补充（如果有该月数据）
+    // 这部分在下面异步补充
+    
+    // 截断到目标日期
+    data.chartData = supplemented.filter(d => {
+      if (!d.date.startsWith(targetMonth)) return false;
+      return parseInt(d.date.slice(6, 8), 10) <= currentDay;
+    });
+    return data;
+  }
+
   try {
-    const resp = await fetch(`data/${dateStr}.json`);
+    const resp = await fetch(`data/${dateStr}.json?v=${Date.now()}`);
     if (!resp.ok) throw new Error('Not found');
     currentData = await resp.json();
     
@@ -424,39 +504,53 @@ async function loadDataByDate(dateStr) {
       } catch(e) { /* ignore */ }
     }
 
-    // 补充/合并 chartData，确保包含完整的当月数据
-    // 旧历史文件可能只包含抓取日期之后的数据，需要从 latest.json 补充月初数据
+    // 补充 chartData（先用硬编码数据，再尝试从 latest.json 补充）
+    supplementChartData(currentData, dateStr);
+    
+    // 额外尝试从 latest.json 补充当月缺失数据
     try {
       const noCacheUrl = 'data/latest.json?v=' + Date.now();
       const latestResp = await fetch(noCacheUrl);
       if (latestResp.ok) {
         const latest = await latestResp.json();
-        console.log('📊 latest.json loaded for merge, meta.date:', latest.meta?.date, 'chartData count:', latest.chartData?.length);
         if (latest.chartData && latest.chartData.length > 0) {
           const targetMonth = dateStr.slice(0, 6);
           const latestMonthData = latest.chartData.filter(d => d.date.startsWith(targetMonth));
-          const existingDates = new Set((currentData.chartData || []).map(d => d.date));
-          console.log('📊 existing dates:', [...existingDates].slice(0, 5), '... total:', existingDates.size);
-          console.log('📊 latest month data dates:', latestMonthData.map(d => d.date).slice(0, 5), '... total:', latestMonthData.length);
-          // 合并：保留历史文件中的数据，补充缺失的日期
-          const mergedData = [
-            ...latestMonthData.filter(d => !existingDates.has(d.date)),
-            ...(currentData.chartData || [])
-          ].sort((a, b) => a.date.localeCompare(b.date));
-          // 截断到当前查看日期
-          const currentDay = parseInt(dateStr.slice(6, 8), 10);
-          currentData.chartData = mergedData.filter(d => parseInt(d.date.slice(6, 8), 10) <= currentDay);
-          console.log(`📊 ChartData merged: ${currentData.chartData.length} days for ${targetMonth} (up to ${dateStr})`);
-          console.log('📊 merged dates:', currentData.chartData.map(d => d.date).slice(0, 5), '...');
+          const existingDates = new Set(currentData.chartData.map(d => d.date));
+          const missing = latestMonthData.filter(d => !existingDates.has(d.date));
+          if (missing.length > 0) {
+            currentData.chartData = [...missing, ...currentData.chartData]
+              .sort((a, b) => a.date.localeCompare(b.date));
+            const currentDay = parseInt(dateStr.slice(6, 8), 10);
+            currentData.chartData = currentData.chartData.filter(d => parseInt(d.date.slice(6, 8), 10) <= currentDay);
+            console.log(`📊 Also supplemented ${missing.length} data points from latest.json`);
+          }
         }
       }
-    } catch(e) { console.warn('⚠️ ChartData merge failed:', e); }
+    } catch(e) { /* ignore */ }
 
+    console.log(`📊 Final chartData for ${dateStr}:`, currentData.chartData.length, 'days');
     return true;
   } catch (err) {
     console.error(`❌ Failed to load data for ${dateStr}:`, err);
-    // Fallback to latest
-    return loadLatestData();
+    // Fallback: 历史文件不存在时，从 latest.json 构建该日期的数据视图
+    try {
+      const noCacheUrl = 'data/latest.json?v=' + Date.now();
+      const latestResp = await fetch(noCacheUrl);
+      if (latestResp.ok) {
+        const latest = await latestResp.json();
+        currentData = JSON.parse(JSON.stringify(latest));
+        // 将 meta.date 覆盖为用户请求的日期
+        currentData.meta = { ...currentData.meta, date: dateStr };
+        // 补充 chartData
+        supplementChartData(currentData, dateStr);
+        console.log(`📊 Fallback loaded from latest.json for ${dateStr}, chartData count:`, currentData.chartData?.length);
+        return true;
+      }
+    } catch(fallbackErr) {
+      console.error('❌ Fallback to latest.json also failed:', fallbackErr);
+    }
+    return false;
   }
 }
 
@@ -1090,15 +1184,55 @@ function renderDailySummary() {
     if (reasons.length === 0 && !marketAnalysis) return '';
 
     // 检测是否有全板块性宏观因素需要前置显示
-    const macroKeywords = ['特朗普', '大盘', 'KOSPI', 'KOSDAQ', '整体', '板块', '全球市场', '美联储'];
-    const macroReasons = reasons.filter(r => macroKeywords.some(kw => r.includes(kw)));
-    const nonMacroReasons = reasons.filter(r => !macroKeywords.some(kw => r.includes(kw)));
+    // 注意：只用复合短语匹配，避免"板块"等单字误命中个股语境（如"游戏板块情绪"）
+    const macroKeywords = [
+      '特朗普', '美联储',                                  // 政策/人物
+      '大盘', 'KOSPI', 'KOSDAQ',                           // 指数
+      '板块轮动', '板块普涨', '板块普跌', '板块调整', '板块回调', '板块全线',  // 真正的板块级描述
+      '整体偏强', '整体承压', '整体上涨', '整体下跌',        // 整体性行情
+      '全球市场波动', '全球市场情绪', '全球市场拖累', '全球市场承压',  // 全球市场（排除"全球市场谈判"等个股语境）
+      '全球科技股', '外资净流出', '外资净买入', '资金虹吸',  // 资金面/宏观传导
+      '降息', '加息', '利率决议'                            // 货币政策
+    ];
+    const isMacro = text => macroKeywords.some(kw => text.includes(kw));
+
+    // 分句判断：把每条 reason 按句号/分号拆成短句，分别归类
+    // 避免一条中混杂个股+宏观时，整条被错误归入宏观
+    const macroSentences = [];
+    const nonMacroSentences = [];
+    for (const r of reasons) {
+      // 提取纯文本（去掉HTML标签）后按句号/分号拆分
+      const plainText = r.replace(/<[^>]+>/g, '');
+      // 用中文句号、分号、破折号后的内容拆分
+      const sentences = plainText.split(/[。；]/).filter(s => s.trim());
+      const hasMacro = sentences.some(s => isMacro(s));
+      const hasNonMacro = sentences.some(s => !isMacro(s));
+
+      if (hasMacro && hasNonMacro) {
+        // 混合型：拆分归类，保留原股票名+颜色前缀
+        // 提取股票名前缀（<span style="color:...">股票名</span>）
+        const stockPrefix = r.match(/<span style="color:[^"]+;font-size:13px">[^<]+<\/span>/)?.[0] || '';
+        const detailPart = r.replace(/<span style="color:[^"]+;font-size:13px">[^<]+<\/span>/, '').replace(/^\s*—\s*/, '');
+        const detailSentences = detailPart.split(/[。；]/).filter(s => s.trim());
+        for (const s of detailSentences) {
+          if (isMacro(s)) {
+            macroSentences.push(`${stockPrefix}<span style="font-size:13px"> — ${s}</span>`);
+          } else {
+            nonMacroSentences.push(`${stockPrefix}<span style="font-size:13px"> — ${s}</span>`);
+          }
+        }
+      } else if (hasMacro) {
+        macroSentences.push(r);
+      } else {
+        nonMacroSentences.push(r);
+      }
+    }
 
     let output = '<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>';
-    if (macroReasons.length > 0 && nonMacroReasons.length > 0) {
+    if (macroSentences.length > 0 && nonMacroSentences.length > 0) {
       // 有宏观因素时，先显示宏观背景，再显示个股因素
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroReasons.join('；')}。`;
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${nonMacroReasons.join('；')}。`;
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroSentences.join('；')}。`;
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${nonMacroSentences.join('；')}。`;
     } else if (reasons.length > 0) {
       output += `${reasons.join('；')}。`;
     }
@@ -1394,18 +1528,17 @@ function renderCompanyAnalysisSection() {
   // 日期格式转换: "20260511" → "5/11"
   const _dl = (d) => { if(!d) return ''; const m=parseInt(d.slice(4,6),10), dd=parseInt(d.slice(6),10); return `${m}/${dd}`; };
   
-  // 找到当月（5月）起始索引，只计算当月数据
-  const currentMonthLabel = currentDate.slice(4, 6); // "05"
-  const mayIndex = ALL_LABELS.findIndex(l => l.startsWith('5/'));
-  const cutoffIdx = mayIndex !== -1 ? mayIndex + 1 : ALL_LABELS.length;
+  // 找到5月第一个日期的索引（月度基准）
+  const mayStartIdx = ALL_LABELS.findIndex(l => l.startsWith('5/'));
 
-  function calcCumulativeReturn(datasetData, idx) {
-    if (idx <= 1) return 0;
-    let ret = 1;
-    for (let i = 1; i < idx && i < datasetData.length; i++) {
-      ret *= (1 + datasetData[i] / 100);
-    }
-    return (ret - 1) * 100;
+  function calcMonthChange(datasetData) {
+    if (!datasetData || datasetData.length === 0 || mayStartIdx < 0) return 0;
+    const endIdx = datasetData.length - 1;
+    if (mayStartIdx >= endIdx) return 0;
+    // 数据本身是基于4/1的累积收益率，5月变化 = 精确复合：(1+end)/(1+start) - 1
+    const startVal = datasetData[mayStartIdx];
+    const endVal = datasetData[endIdx];
+    return ((1 + endVal / 100) / (1 + startVal / 100) - 1) * 100;
   }
 
   // 为每家公司算出动态月度涨跌
@@ -1436,7 +1569,7 @@ function renderCompanyAnalysisSection() {
 
   // 构建带动态数据的 items
   const items = baseItems.map(item => {
-    const mc = calcCumulativeReturn(dsMap[item.dsKey] || [], cutoffIdx);
+    const mc = calcMonthChange(dsMap[item.dsKey]);
     return { ...item, monthChange: mc };
   });
 
@@ -1576,7 +1709,7 @@ function renderNewsSection() {
         <table class="info-table">
             <thead><tr><th style="width:20%">公司</th><th style="width:65%">事件摘要</th><th style="width:15%">日期</th></tr></thead>
             <tbody>
-                ${NORMAL_DATA.filter(i => i.date.includes('05')).sort((a, b) => b.date.localeCompare(a.date)).map(i => `<tr>
+                ${NORMAL_DATA.filter(i => i.date.includes('05')).map(i => `<tr>
                     <td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td>
                     <td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td>
                     <td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td>
@@ -1743,10 +1876,7 @@ function renderCompareChart() {
       if (parts.length === 2) {
         const day = parseInt(parts[1], 10);
         // 跨月时停止（如下一个月的数据）
-        if (!label.startsWith(monthPrefix)) {
-          endIndex = i;
-          break;
-        }
+        if (!label.startsWith(monthPrefix)) break;
         // 超过当前日期时停止
         if (day > currentDay) {
           endIndex = i;
@@ -1756,24 +1886,11 @@ function renderCompareChart() {
     }
   }
   
-  let labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex, endIndex) : ALL_LABELS;
-  let datasets = ALL_DATASETS.map(ds => ({
+  const labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex, endIndex) : ALL_LABELS;
+  const datasets = ALL_DATASETS.map(ds => ({
     ...ds,
     data: monthIndex !== -1 ? ds.data.slice(monthIndex, endIndex) : ds.data
   }));
-
-  // 将数据转换为相对本月首个交易日的涨跌幅（首个交易日设为 0%）
-  if (monthIndex !== -1 && labels.length > 0) {
-    datasets = datasets.map(ds => {
-      const base = ds.data[0]; // 本月首个交易日的累计值（相对 4/1）
-      const adjusted = ds.data.map(v => {
-        // 从累计值反推：(1 + v/100) = (1 + base/100) * (1 + newV/100)
-        // => newV = ((1 + v/100) / (1 + base/100) - 1) * 100
-        return ((1 + v / 100) / (1 + base / 100) - 1) * 100;
-      });
-      return { ...ds, data: adjusted };
-    });
-  }
 
   // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
   const cGridColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim() || 'rgba(46,51,71,0.3)';
