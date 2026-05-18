@@ -119,35 +119,42 @@ ${stockLines.join('\n')}
 
 ${sentimentEmoji} **市场小结**: ${sentiment}
 
-[<font color="comment">\u{1F517} 查看完整看板\u2192</>](${DASHBOARD_URL})`,
+[\u{1F517} 查看完整看板\u2192](${DASHBOARD_URL})`,
   },
 };
 
-// ====== 发送到企业微信 ======
-const webhookUrl = process.env.WECOM_WEBHOOK_URL;
-if (!webhookUrl || !webhookUrl.startsWith('https://qyapi.weixin.qq.com')) {
+// ====== 发送到企业微信（支持多个 Webhook，逗号分隔）======
+const webhookStr = process.env.WECOM_WEBHOOK_URL || '';
+const webhookUrls = webhookStr.split(',').map(u => u.trim()).filter(u => u.startsWith('https://qyapi.weixin.qq.com'));
+
+if (webhookUrls.length === 0) {
   console.error('[notify] WECOM_WEBHOOK_URL 未设置或格式不正确');
   console.log('[notify] 消息内容预览:');
   console.log(JSON.stringify(message.markdown.content, null, 2));
   process.exit(0); // 非致命错误，不阻断 workflow
 }
 
-try {
-  const res = await fetch(webhookUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(message),
-  });
+let successCount = 0;
+for (const url of webhookUrls) {
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(message),
+    });
 
-  const result = await res.json();
+    const result = await res.json();
 
-  if (result.errcode === 0) {
-    console.log(`[notify] 推送成功! (${displayDate}, ${upCount}涨/${downCount}跌/${neutralCount}平)`);
-  } else {
-    console.error(`[notify] 推送失败: errcode=${result.errcode}, errmsg=${result.errmsg}`);
-    process.exit(1);
+    if (result.errcode === 0) {
+      successCount++;
+      console.log(`[notify] 推送成功! (${displayDate}, ${upCount}涨/${downCount}跌/${neutralCount}平) [${successCount}/${webhookUrls.length}]`);
+    } else {
+      console.error(`[notify] 推送失败: errcode=${result.errcode}, errmsg=${result.errmsg}`);
+    }
+  } catch (e) {
+    console.error(`[notify] 发送请求失败:`, e.message);
   }
-} catch (e) {
-  console.error('[notify] 发送请求失败:', e.message);
-  process.exit(1);
 }
+
+if (successCount === 0) process.exit(1);
+console.log(`[notify] 全部完成: ${successCount}/${webhookUrls.length} 个群推送成功`);
