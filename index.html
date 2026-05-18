@@ -719,7 +719,7 @@ function findCompanyReason(stockName, changeClass) {
             ? '<strong>4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线</strong>：收购强化全球PC/主机发行能力，联动验证IP跨平台价值。前期超跌后技术性反弹。'
             : '<strong>PUBG × Stellar Blade 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。',
       'Krafton': isMay14OrLater
-        ? '<strong>PUBG × Stellabreeze新PvE模式PAYDAY上线</strong>——与Stellabreeze联合开发的合作突袭模式，联手全球艺术家收录原创曲目。AI模型Raon持续开源扩展，印度市场谈判最后阶段+Ascend Zero新作开发中。'
+        ? '<strong>PUBG × Starbreeze新PvE模式PAYDAY上线</strong>——与Starbreeze联合开发的合作突袭模式，联手全球艺术家收录原创曲目。AI模型Raon持续开源扩展，印度市场谈判最后阶段+Ascend Zero新作开发中。'
         : isMay13OrLater
         ? '<strong>印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。前期涨幅后短期震荡整理。'
         : isMay12OrLater
@@ -902,7 +902,7 @@ function generateSUAnalysis() {
 
   let analysisDetail = '';
   if (_isMay14) {
-    analysisDetail = `<strong>NIKKE新SSR「Mint」实装+Stellar Blade联动复刻</strong>——5/14新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。Nexon全员AI补贴制度启动(月$250/人)反映行业AI化趋势加速。`;
+    analysisDetail = `<strong>NIKKE新SSR「Mint」实装+Stellar Blade联动复刻</strong>——5/14新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。`;
   } else if (_isMay13) {
     // 5/13 Q1财报利好消化后震荡整固
     analysisDetail = `<strong>Q1财报利好消化后震荡整固</strong>——5/11剑星2确认开发顺利+自主发行、Project Spirits(腾讯发行)等利好已部分定价。NIKKE 3.5周年活动高峰期过后用户数据自然回落，短期等待5/14 Mint实装验证。`;
@@ -914,10 +914,10 @@ function generateSUAnalysis() {
     analysisDetail = `<strong>5/11 Q1财报：剑星2确认开发顺利+自主发行</strong>——续作采用第一方服务模式自主发行，不再依赖外部发行商，多平台首发预期强烈。新作Project Spirits由腾讯发行，年内公布详情。全资收购三上真司UNBOUND工作室强化全球3A开发能力。NIKKE累计营收破$10亿里程碑。`;
   } else if (_isMay8) {
     // 5/8 行业多重催化
-    analysisDetail = `<strong>NIKKE 3.5周年活动持续+行业多重催化</strong>——Anis: Star实装后营收环比+35%，3.5周年活动持续带动用户回流。<strong>5/8</strong>：Crimson Desert全球销量破500万创韩国主机最快纪录；PUBG Mobile印度回归谈判进入最后阶段(潜在2亿用户)。关注5月中旬Q1财报披露。`;
+    analysisDetail = `<strong>NIKKE 3.5周年活动持续验证IP运营能力</strong>——Anis: Star实装后营收环比+35%，3.5周年活动持续带动用户回流。关注5月中旬Q1财报披露。`;
   } else if (_isMay7) {
     // 5/7 Aion 2催化
-    analysisDetail = `<strong>NIKKE 3.5周年活动持续验证IP运营能力</strong>——Anis: Star实装后用户数据表现良好。<strong>5/7</strong>：Aion 2韩国预约突破120万(4/11座谈会后从94万增至120万超预期)，6月全球发布临近带动NC相关概念股活跃。关注5月中旬Q1财报和新作消息。`;
+    analysisDetail = `<strong>NIKKE 3.5周年活动持续验证IP运营能力</strong>——Anis: Star实装后用户数据表现良好。关注5月中旬Q1财报和新作消息披露。`;
   } else if (_isMay6) {
     // 5/6 进入5月第二周
     analysisDetail = `<strong>NIKKE 3.5周年活动持续+Q1财报预期升温</strong>——Anis: Star实装后用户数据持续验证IP运营能力。市场关注5月中旬Q1财报和新作消息披露，剑星2开发进展与发行策略为关键看点。`;
@@ -1751,7 +1751,7 @@ const INDUSTRY_MACRO_DATA = [
   { title: '中国游戏版号发放常态化，韩国游戏出口环境改善', source: '中国新闻出版署 / 韩国内容振兴院', date: '2026.05.01', impact: 'positive', url: '', summary: '2026年以来中国游戏版号发放趋于常态化，每月稳定发放100+款。韩国游戏对华出口壁垒降低，NC、Netmarble、Pearl Abyss等公司在华业务有望恢复增长。' },
   { title: 'Google Play 政策调整：降低游戏抽佣比例，利好中小开发者', source: '谷歌官方公告', date: '2026.04.03', impact: 'positive', url: '', summary: '谷歌宣布调整 Google Play 商店的佣金政策，对年收入低于一定门槛的中小游戏开发商降低抽成比例。此举可能长期影响韩国手游发行商的利润分配格局，但短期影响有限。' },
   { title: '美伊地缘紧张局势升级：油价波动影响全球市场情绪', source: '路透社 / Bloomberg', date: '2026.04.07', impact: 'negative', url: '', summary: '中东局势再度紧张引发原油价格波动，全球风险资产承压。韩国KOSPI/KOSDAQ作为新兴市场受避险情绪拖累，科技股和成长股板块普遍回调。' },
-  { title: '韩国央行维持基准利率不变，市场预期下半年降息', source: '韩国央行 / 联合新闻', date: '2026.04.09', impact: 'neutral', url: '', summary: '韩国银行（央行）在4月货币政策会议上维持3.5%的基准利率不变，符合市场预期。多数分析师预测若通胀持续放缓，下半年存在降息空间，有望提振股市估值。' },
+  { title: '4月韩国央行维持基准利率不变，市场预期下半年降息', source: '韩国央行 / 联合新闻', date: '2026.04.09', impact: 'neutral', url: '', summary: '韩国银行（央行）在4月货币政策会议上维持3.5%的基准利率不变，符合市场预期。多数分析师预测若通胀持续放缓，下半年存在降息空间，有望提振股市估值。' },
 ];
 
 function renderIndustryMacro() {
