@@ -1048,16 +1048,15 @@ function renderDailySummary() {
   });
 
   // 当日资讯严格过滤：只显示精确单日匹配的事件（不含跨日期范围如"04.02~09"）
-  // 规则：date 字段不含 "~" 且能匹配当天
+  const currentMmddNum = parseInt(dateRaw.slice(0, 2), 10) * 100 + parseInt(dateRaw.slice(2), 10);
+  function parseEventDate(ed) {
+    const [m, d] = ed.split('.').map(Number);
+    return m * 100 + d;
+  }
   todayDailyEvents = EVENT_DATA.filter(e => {
     const ed = e.date;
-    // 排除范围日期（含 ~ 的都是跨多日的）
     if (ed.includes('~')) return false;
-    // 单日日期必须精确匹配（支持两种格式）
-    return ed.includes(mmddNormalized) ||
-           ed.includes(mmddPadded) ||
-           ed.includes(ddPart) ||
-           ed.includes(dateRaw.replace(/^0/,''));
+    return parseEventDate(ed) === currentMmddNum;
   });
 
   // 辅助函数：将事件与股票名模糊匹配
@@ -1714,11 +1713,18 @@ function renderNewsSection() {
         <table class="info-table">
             <thead><tr><th style="width:20%">公司</th><th style="width:65%">事件摘要</th><th style="width:15%">日期</th></tr></thead>
             <tbody>
-                ${NORMAL_DATA.filter(i => i.date.includes('05')).map(i => `<tr>
+                ${(() => {
+                  const curDate = currentData?.meta?.date || '';
+                  const curMmddNum = parseInt(curDate.slice(4, 6), 10) * 100 + parseInt(curDate.slice(6, 8), 10);
+                  const parseNewsDate = d => { const [m, dd] = d.split('.').map(Number); return m * 100 + dd; };
+                  return NORMAL_DATA.filter(i => parseNewsDate(i.date) <= curMmddNum)
+                    .sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date))
+                    .map(i => `<tr>
                     <td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td>
                     <td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td>
                     <td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td>
-                </tr>`).join('')}
+                </tr>`).join('');
+                })()}
             </tbody>
         </table>
     </div>
@@ -1751,17 +1757,21 @@ const INDUSTRY_MACRO_DATA = [
 function renderIndustryMacro() {
   const el = document.getElementById('industryMacroContent');
   if (!el) return;
-  
-  // 只显示当月(5月)数据
-  const filtered = INDUSTRY_MACRO_DATA.filter(item => item.date.startsWith('2026.05'));
-  
+
+  const curDate = currentData?.meta?.date || '';
+  const curMmddNum = parseInt(curDate.slice(4, 6), 10) * 100 + parseInt(curDate.slice(6, 8), 10);
+  const parseMacroDate = d => { const p = d.split('.'); return parseInt(p[1], 10) * 100 + parseInt(p[2], 10); };
+
+  // 只显示当前日期及之前的宏观数据
+  const filtered = INDUSTRY_MACRO_DATA.filter(item => parseMacroDate(item.date) <= curMmddNum);
+
   if (filtered.length === 0) {
     el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:13px">暂无行业宏观重大事件</div>';
     return;
   }
 
   // 按日期降序排列（最新在上）
-  const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = [...filtered].sort((a, b) => parseMacroDate(b.date) - parseMacroDate(a.date));
 
   el.innerHTML = sorted.map((item, idx) => {
     const impactStyle = item.impact === 'positive' ? 'color:#34d399' : item.impact === 'negative' ? 'color:#f87171' : 'color:#9aa0b3';
