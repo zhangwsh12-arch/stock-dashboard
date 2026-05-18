@@ -1528,18 +1528,17 @@ function renderCompanyAnalysisSection() {
   // 日期格式转换: "20260511" → "5/11"
   const _dl = (d) => { if(!d) return ''; const m=parseInt(d.slice(4,6),10), dd=parseInt(d.slice(6),10); return `${m}/${dd}`; };
   
-  // 找到当月（5月）起始索引，只计算当月数据
-  const currentMonthLabel = currentDate.slice(4, 6); // "05"
-  const mayIndex = ALL_LABELS.findIndex(l => l.startsWith('5/'));
-  const cutoffIdx = mayIndex !== -1 ? mayIndex + 1 : ALL_LABELS.length;
+  // 找到5月第一个日期的索引（月度基准）
+  const mayStartIdx = ALL_LABELS.findIndex(l => l.startsWith('5/'));
 
-  function calcCumulativeReturn(datasetData, idx) {
-    if (idx <= 1) return 0;
-    let ret = 1;
-    for (let i = 1; i < idx && i < datasetData.length; i++) {
-      ret *= (1 + datasetData[i] / 100);
-    }
-    return (ret - 1) * 100;
+  function calcMonthChange(datasetData) {
+    if (!datasetData || datasetData.length === 0 || mayStartIdx < 0) return 0;
+    const endIdx = datasetData.length - 1;
+    if (mayStartIdx >= endIdx) return 0;
+    // 数据本身是基于4/1的累积收益率，5月变化 = 精确复合：(1+end)/(1+start) - 1
+    const startVal = datasetData[mayStartIdx];
+    const endVal = datasetData[endIdx];
+    return ((1 + endVal / 100) / (1 + startVal / 100) - 1) * 100;
   }
 
   // 为每家公司算出动态月度涨跌
@@ -1570,7 +1569,7 @@ function renderCompanyAnalysisSection() {
 
   // 构建带动态数据的 items
   const items = baseItems.map(item => {
-    const mc = calcCumulativeReturn(dsMap[item.dsKey] || [], cutoffIdx);
+    const mc = calcMonthChange(dsMap[item.dsKey]);
     return { ...item, monthChange: mc };
   });
 
