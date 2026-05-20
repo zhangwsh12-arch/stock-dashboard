@@ -1,17 +1,18 @@
 name: Daily Stock Data Update
 
 on:
-  # ====== 定时触发（韩国时间 11:00 推送前一日股价概况）======
+  # ====== 定时触发 ======
   schedule:
-    - cron: '0 2 * * 1-5'    # KST 11:00 (周一至周五，推送前一交易日数据)
+    - cron: '0 1 * * 1-5'    # KST 10:00 数据更新+验证+部署
+    - cron: '0 2 * * 1-5'    # KST 11:00 企业微信推送
 
   push:
     branches:
       - main
       
   # 手动触发（保留）
-  workflow_dispatch:  # 支持手动触发
-  # 外部唤醒（通过 repository_dispatch 或 API）
+  workflow_dispatch:
+  # 外部唤醒
   repository_dispatch:
     types: [trigger-update]
 
@@ -25,7 +26,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # ====== KST 10:00 数据更新+验证+部署 ======
   update:
+    if: github.event.schedule == '0 1 * * 1-5' || github.event_name != 'schedule'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -45,6 +48,9 @@ jobs:
       # ====== 新闻抓取已禁用（韩语新闻导致界面显示问题）======
       # - name: Run news fetcher
       #   run: node scripts/fetch-news.mjs || echo "News fetcher skipped (may have network issues)"
+
+      - name: Validate data
+        run: node scripts/validate-data.mjs
 
       - name: Commit and push updated data
         run: |
@@ -70,11 +76,22 @@ jobs:
         id: deploy
         uses: actions/deploy-pages@v4
 
-      # ====== 企业微信群推送 ======
+  # ====== KST 11:00 企业微信推送 ======
+  notify:
+    if: github.event.schedule == '0 2 * * 1-5'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Send WeCom notification
-        if: success()
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
         run: node scripts/notify-wecom.mjs
-        continue-on-error: true  # 推送失败不阻断整体流程
+        continue-on-error: true
