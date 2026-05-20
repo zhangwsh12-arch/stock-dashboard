@@ -1539,8 +1539,13 @@ function renderCompanyAnalysisSection() {
       return parseInt(m, 10) === currentMonth;
     });
     // 找到当前日期在 ALL_LABELS 中的索引
-    const endIdx = ALL_LABELS.findIndex(l => l === currentLabel);
-    if (monthStartIdx < 0 || endIdx < 0 || monthStartIdx >= endIdx) return 0;
+    let endIdx = ALL_LABELS.findIndex(l => l === currentLabel);
+    if (monthStartIdx < 0) return 0;
+    // ⚠️ 容错：content.json 可能滞后，找不到当前日期时回退到最后可用数据点
+    if (endIdx < 0) {
+      endIdx = ALL_LABELS.length - 1;
+    }
+    if (monthStartIdx >= endIdx) return 0;
     const startVal = datasetData[monthStartIdx];
     const endVal = datasetData[endIdx];
     return ((1 + endVal / 100) / (1 + startVal / 100) - 1) * 100;
