@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260520",
     "dateDisplay": "5月（截至20日）",
-    "fetchedAt": "2026-05-21T02:33:16.331Z",
+    "fetchedAt": "2026-05-21T03:24:31.673Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -17,8 +17,8 @@
     "change": "-1,000",
     "changePercent": "-3.38%",
     "changeClass": "down",
-    "per": "9.02",
-    "pbr": "1.87",
+    "per": "8.97",
+    "pbr": "1.86",
     "marketCap": "1.67兆元"
   },
   "companies": [
@@ -38,7 +38,7 @@
       "price": "260,500",
       "change": "-1.70%",
       "changeClass": "down",
-      "per": "12.62"
+      "per": "12.52"
     },
     {
       "code": "259960",
@@ -47,7 +47,7 @@
       "price": "265,500",
       "change": "-3.80%",
       "changeClass": "down",
-      "per": "14.04"
+      "per": "13.90"
     },
     {
       "code": "225570",
@@ -74,8 +74,8 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "28,550",
-      "per": 9.02,
-      "perRaw": "9.02"
+      "per": 8.97,
+      "perRaw": "8.97"
     },
     {
       "code": "251270",
@@ -90,16 +90,16 @@
       "name": "NC",
       "color": "#3b82f6",
       "price": "260,500",
-      "per": 12.62,
-      "perRaw": "12.62"
+      "per": 12.52,
+      "perRaw": "12.52"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "265,500",
-      "per": 14.04,
-      "perRaw": "14.04"
+      "per": 13.9,
+      "perRaw": "13.90"
     }
   ],
   "chartData": [
@@ -168,17 +168,17 @@
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "7689.31",
-      "change": "480.36",
-      "changePercent": "6.66",
+      "price": "7735.59",
+      "change": "526.64",
+      "changePercent": "7.31",
       "changeClass": "up"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1109.73",
-      "change": "53.66",
-      "changePercent": "5.08",
+      "price": "1112.06",
+      "change": "55.99",
+      "changePercent": "5.30",
       "changeClass": "up"
     }
   ]
