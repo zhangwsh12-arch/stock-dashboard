@@ -546,6 +546,19 @@ async function main() {
   const dateStr = formatDate(targetDate);
 
   console.log(`\n📅 目标日期: ${dateStr} (${targetDate.getMonth() + 1}月${targetDate.getDate()}日)`);
+
+  // ====== 每日一次保护：如果 latest.json 已是今天的数据则跳过 ======
+  const latestFile = join(DATA_DIR, 'latest.json');
+  if (existsSync(latestFile)) {
+    try {
+      const latest = JSON.parse(readFileSync(latestFile, 'utf-8'));
+      if (latest.date === dateStr) {
+        console.log(`\n⏭️ 今日 (${dateStr}) 数据已更新过，跳过重复执行`);
+        process.exit(0);
+      }
+    } catch (_) { /* 解析失败则继续执行 */ }
+  }
+  // ====== 每日一次保护 END ======
   
   if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
