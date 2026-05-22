@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260515d'; // 更新：添加JSON cache buster
+      var VER = '20260522a'; // 更新：修复个股驱动因素拆分逻辑+5/21日期分支
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -27,7 +27,7 @@
     // 尽早应用主题，避免闪烁（不依赖任何全局变量）
     (function() {
       const key = 'stock-dashboard-theme';
-      const theme = localStorage.getItem(key) || 'dark';
+      const theme = localStorage.getItem(key) || 'light';
       document.documentElement.setAttribute('data-theme', theme);
     })();
     </script>
@@ -333,7 +333,7 @@ const sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 const moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 
 function getTheme() {
-  return localStorage.getItem(THEME_KEY) || 'dark';
+  return localStorage.getItem(THEME_KEY) || 'light';
 }
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
@@ -664,12 +664,13 @@ function findCompanyReason(stockName, changeClass) {
   const isMay12OrLater = currentDate >= '20260512'; // 5/12 新增日期分支
   const isMay13OrLater = currentDate >= '20260513'; // 5/13 新增日期分支
   const isMay14OrLater = currentDate >= '20260514'; // 5/14 NIKKE Mint+Lineage2M+PUBG新模式+Nexon AI补贴
+  const isMay21OrLater = currentDate >= '20260521'; // 5/21 KOSPI暴涨8.42%(三星工会+Nvidia催化半导体)，游戏板块遭轮动
 
   const reasonMapUp = {
       // ====== 上涨原因：利好驱动 ======
-      'NC': isMay14OrLater
-        ? '<strong>《Lineage 2M》5/27 REQUIEM大更新预告</strong>——经典IP现代化改造，李道流(Re:Boot)重启预告。距Aion 2六月全球发布前序曲，Lineage系列持续迭代验证IP长线运营能力。'
-        : isMay13OrLater
+      'NC': isMay21OrLater
+        ? '<strong>跟随大盘暴涨+Aion 2六月发布催化</strong>——KOSPI暴涨8.42%创历史纪录，Aion 2六月全球发布临近提供个股支撑。6/27 Lineage 2M REQUIEM更新预告持续发酵。'
+        : isMay14OrLater
         ? '<strong>Aion 2全球发布前震荡整固</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1财报超预期（利润YoY+1700%）后进入获利了结阶段，短期技术性回调消化前期涨幅。'
         : isMay12OrLater
           ? '<strong>Aion 2韩国预约突破120万+Q1财报超预期</strong>——6月全球发布临近，预约数据持续验证市场热度。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。'
@@ -686,7 +687,9 @@ function findCompanyReason(stockName, changeClass) {
             : isApril10OrLater
               ? '<strong>Q1财报季实绩改善预期</strong>：分析师预估销售额1,020亿韩元，《Lineage Classic》新增BM防御收入下滑，《Aion 2》S3延期但市场反应正面。'
               : '<strong>4/7正式起诉YouTuber"永莱基"</strong>，市场解读为反作弊力度加大的积极信号，累计制裁近600万账户。',
-      'Pearl Abyss': isMay14OrLater
+      'Pearl Abyss': isMay21OrLater
+        ? '<strong>跟随大盘暴涨+Crimson Desert DLC持续运营</strong>——KOSPI暴涨8.42%创历史纪录，Crimson Desert DLC「Boss重战模式」持续更新+500万套长线运营验证。Q1扭亏为盈基本面支撑。'
+        : isMay14OrLater
         ? '<strong>Crimson Desert DLC「Boss重战模式」上线中+500万套长线运营</strong>——发售不到两个月创韩国主机最快纪录，DLC内容持续更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。'
         : isMay13OrLater
         ? '<strong>Crimson Desert DLC「Boss重战模式」上线后短期震荡</strong>——5月中旬DLC上线后首波内容更新完成，但缺乏后续新催化。500万套销量利好已充分定价，Q1扭亏为盈后进入业绩真空期。'
@@ -701,7 +704,9 @@ function findCompanyReason(stockName, changeClass) {
             : isApril13OrLater
           ? '<strong>《Crimson Desert（红色沙漠）》4/17媒体发布会临近 + 全球销量突破400万套</strong>：Steam"特别好评"，同时在线峰值27万。市场期待DLC路线图公布。'
           : '《Crimson Desert（红色沙漠）》Steam评价升至<strong>"好评如潮"</strong>，全球销量突破400万套，口碑反转驱动估值修复。',
-      'Shift Up': isMay14OrLater
+      'Shift Up': isMay21OrLater
+        ? '<strong>跟随大盘暴涨+NIKKE Mint持续运营</strong>——KOSPI暴涨8.42%创历史纪录，NIKKE Mint新角色持续贡献营收，剑星2自主发行+Project Spirits(腾讯发行)利好发酵中。'
+        : isMay14OrLater
         ? '<strong>NIKKE新SSR「Mint」5/14实装+剑星联动复刻</strong>——新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。5/11 Q1财报剑星2自主发行+Project Spirits(腾讯发行)利好持续发酵。'
         : isMay13OrLater
         ? '<strong>Q1财报利好消化后震荡整固</strong>——5/11剑星2确认开发顺利+自主发行模式转变、Project Spirits由腾讯发行等利好已部分定价。NIKKE 3.5周年活动高峰期过后用户数据自然回落，短期等待5/14 Mint实装验证。'
@@ -718,7 +723,9 @@ function findCompanyReason(stockName, changeClass) {
               : isApril13OrLater
             ? '<strong>4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线</strong>：收购强化全球PC/主机发行能力，联动验证IP跨平台价值。前期超跌后技术性反弹。'
             : '<strong>PUBG × Stellar Blade 联动 4/8 正式上线</strong>，Eve角色以PUBG史上首位"Ultimate Contender"身份进入艾伦格地图，IP跨平台价值验证。',
-      'Krafton': isMay14OrLater
+      'Krafton': isMay21OrLater
+        ? '<strong>跟随大盘暴涨反弹</strong>——KOSPI暴涨8.42%创历史纪录（三星工会达成协议+Nvidia财报催化半导体），KOSDAQ同步触发上涨熔断。Krafton作为大市值游戏股跟随市场整体上行，PUBG PAYDAY模式持续运营+印度回归预期仍在。'
+        : isMay14OrLater
         ? '<strong>PUBG × Stellabreeze新PvE模式PAYDAY上线</strong>——与Stellabreeze联合开发的合作突袭模式，联手全球艺术家收录原创曲目。AI模型Raon持续开源扩展，印度市场谈判最后阶段+Ascend Zero新作开发中。'
         : isMay13OrLater
         ? '<strong>印度回归谈判进入最后阶段+AI Raon生态扩张</strong>——印度市场潜在2亿用户回归预期强烈。Q1财报(利润YoY+52%)超预期已验证，AI模型"Raon"开源后开发者社区活跃度持续上升。前期涨幅后短期震荡整理。'
@@ -735,7 +742,9 @@ function findCompanyReason(stockName, changeClass) {
           : isApril13OrLater
             ? '<strong>Q1实绩超预期：营业利润₩5,200亿（YoY +52%）</strong>——远超市场预期₩2,700~4,000亿；营收₩1.2兆（YoY +₩4,082亿）。PUBG: Battlegrounds PC版Q1销量39万台强劲，《PUBG Mobile》全球表现稳健。AI品牌"Haon"开发中。'
             : '<strong>Q1实绩预期稳健+AI品牌效应</strong>：AI模型"Raon"开源发酵；PUBG联动持续贡献收入。',
-      'Nexon Games': isMay14OrLater
+      'Nexon Games': isMay21OrLater
+        ? '<strong>跟随大盘暴涨+BA三周年+AI补贴</strong>——KOSPI暴涨8.42%创历史纪录，Blue Archive三周年活动筹备+AI补贴制度持续发酵。DNF新转职等多元内容推进中。'
+        : isMay14OrLater
         ? '<strong>Nexon全员AI补贴制度启动+DNF新转职实装</strong>——每人每月$250 AI使用费加速全公司AI应用落地。DNF新转职女格斗家、冒险岛×防弹少年团JIN合作等多元化内容同步推进。Blue Archive三周年活动筹备中。'
         : isMay13OrLater
         ? '<strong>Blue Archive全球三周年活动筹备+新作延期风险压制估值</strong>——日本市场长期畅销提供稳定现金流，但新作延期问题持续压制估值。Project DX/RX开发进度更新预计Q3公布，市场等待明确时间表。'
@@ -748,7 +757,9 @@ function findCompanyReason(stockName, changeClass) {
           : isApril13OrLater
           ? '<strong>Blue Archive IP扩展战略持续推进</strong>，日本等全球市场长期畅销。近期随板块调整后企稳。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"，《Dungeon & Fighter: Arad》、Project DX/RX 日程均部分延迟。'
           : '<strong>无明显突发催化剂</strong>，或为4/2大盘暴跌后的技术性反弹修复（补涨属性）。',
-      'Netmarble': isMay14OrLater
+      'Netmarble': isMay21OrLater
+        ? '<strong>跟随大盘暴涨+Monster Striker持续贡献营收</strong>——KOSPI暴涨8.42%创历史纪录，Monster Striker营收破₩300亿验证后持续运营。分红收益提供底部支撑。'
+        : isMay14OrLater
         ? '<strong>Monster Striker首月营收超预期</strong>——PC/移动端跨平台联机模式获好评，首月营收破₩300亿。分红收益(年配当约2,800韩元/股)提供底部支撑。'
         : isMay13OrLater
         ? '<strong>Monster Striker首月营收超预期后短期震荡</strong>——PC/移动端跨平台联机模式获好评，首月营收破₩300亿。分红收益(年配当约2,800韩元/股)提供底部支撑，等待新增长催化剂。'
@@ -766,7 +777,9 @@ function findCompanyReason(stockName, changeClass) {
     };
     const reasonMapDown = {
       // ====== 下跌原因：利空驱动 ======
-      'NC': isMay14OrLater
+      'NC': isMay21OrLater
+        ? '<strong>大盘暴涨中资金轮动至半导体龙头</strong>——KOSPI暴涨8.42%创历史纪录，资金集中涌入半导体/科技权重。6月Aion 2全球发布利好已部分定价，游戏股在暴走行情中遭调仓轮动。'
+        : isMay14OrLater
         ? '<strong>Lineage 2M更新预期已部分定价+获利了结</strong>——5/27 REQUIEM更新预告利好已提前反应，6月Aion 2全球发布前震荡整理。Q1财报超预期后获利了结压力仍存。'
         : isMay13OrLater
         ? '<strong>Aion 2全球发布前获利了结压力</strong>——6月全球发布利好已部分定价，短期震荡整理消化前期涨幅。前期预约数据（120万）利好已被市场充分反映。'
@@ -781,7 +794,9 @@ function findCompanyReason(stockName, changeClass) {
           : isApril13OrLater
           ? '<strong>Aion 2座谈会利好已部分反应</strong>，4/13小幅回调-0.42%属正常波动。《Lineage Classic》BM新增防御收入下滑仍是中期隐忧。'
           : '<strong>特朗普伊朗强硬讲话冲击全球市场</strong>：KOSPI -4.47%、KOSDAQ -5.36% 双双触发卖空侧轨，外资抛售近5,000亿韩元。游戏板块作为高Beta成长股遭集中抛售。',
-      'Netmarble': isMay14OrLater
+      'Netmarble': isMay21OrLater
+        ? '<strong>大盘暴涨中资金轮动至半导体+Coway治理争议余波</strong>——KOSPI暴涨8.42%创历史纪录，资金集中涌入半导体龙头。Monster Striker营收持续性待验证+Coway治理争议余波，暴走行情中遭调仓轮动。'
+        : isMay14OrLater
         ? '<strong>Coway治理争议余波+Monster Striker营收持续性待验证</strong>——首月营收虽超预期但后续用户留存待观察。Coway治理担忧仍未完全消除，外资卖出压力间歇性出现。'
         : isMay13OrLater
         ? '<strong>Coway治理争议余波+新游数据待验证</strong>——《Monster Striker》首月营收虽超预期但持续性待观察。Coway追加收购引发的治理担忧仍未完全消除，外资卖出压力间歇性出现。'
@@ -794,7 +809,9 @@ function findCompanyReason(stockName, changeClass) {
           : isApril13OrLater
           ? '<strong>《Monster Striker: Star Dive》4/15全球上线预期已提前反应</strong>——首发当日营收贡献为短期性质，市场正观望初期下载数据。叠加Coway收购争议，方向性不确定。'
           : '<strong>₩1,500亿追加收购Coway股权</strong>计划引发治理争议，Align Partners 公开批评构成"利益冲突"，市场质疑"为何不回购自家股票而投资关联方"，资金使用效率担忧压过分红利好。',
-      'Pearl Abyss': isMay14OrLater
+      'Pearl Abyss': isMay21OrLater
+        ? '<strong>大盘暴涨中资金轮动至半导体+缺乏新催化</strong>——KOSPI暴涨8.42%创历史纪录，资金集中涌入半导体龙头。Crimson Desert DLC利好已充分定价，业绩真空期在暴走行情中遭调仓轮动。'
+        : isMay14OrLater
         ? '<strong>Crimson Desert DLC上线后缺乏新催化+获利了结</strong>——500万套销量利好已充分定价，DLC「Boss重战模式」上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
         : isMay13OrLater
         ? '<strong>Crimson Desert DLC上线后缺乏新催化</strong>——500万套销量利好已充分定价，DLC「Boss重战模式」上线后短期缺乏后续催化剂。Q1扭亏为盈后进入业绩真空期，技术性回调占主导。'
@@ -807,7 +824,9 @@ function findCompanyReason(stockName, changeClass) {
           : isApril13OrLater
           ? '<strong>短期无明显利空</strong>，前期涨幅较大后获利了结卖压逐步消化中。'
           : '《Crimson Desert（红色沙漠）》前期涨幅较大，<strong>获利了结卖压释放</strong>。短期技术性回调占主导。',
-      'Krafton': isMay14OrLater
+      'Krafton': isMay21OrLater
+        ? '<strong>大盘暴涨中资金轮动至半导体龙头</strong>——KOSPI暴涨8.42%创历史最大涨幅（三星工会达成协议+Nvidia财报催化），资金集中涌入半导体等权重板块。游戏板块在暴走行情中逆势遭调仓轮动，PAYDAY模式等前期利好已充分定价，缺乏新催化下相对大盘表现偏弱。'
+        : isMay14OrLater
         ? '<strong>PUBG新PvE模式上线后短期获利了结+印度回归时间表未定</strong>——PAYDAY模式上线利好已部分定价，印度市场谈判虽进展积极但具体时间表未定。全球科技股波动拖累游戏板块情绪。'
         : isMay13OrLater
         ? '<strong>印度回归谈判不确定性+前期涨幅较大</strong>——PUBG Mobile印度回归虽进展积极但具体时间表未定，市场担忧谈判反复。全球科技股回调拖累游戏板块情绪，前期利润YoY+52%利好已充分定价。'
@@ -818,7 +837,9 @@ function findCompanyReason(stockName, changeClass) {
             : isApril22OrLater
           ? '<strong>Q1超预期财报利好已消化+资金虹吸效应</strong>：KOSPI创新高但资金流向半导体/核电等热门板块。Q1财报(利润YoY+52%)催化已在4/17前后充分定价，缺乏新催化剂下跟随板块回调。'
           : '<strong>PUBG Mobile</strong>中国区收入不确定性持续 + 全球科技股回调拖累游戏板块情绪 + Krafton市值较大（约30兆韩元），大盘波动时外资抛售压力更重。',
-      'Shift Up': isMay14OrLater
+      'Shift Up': isMay21OrLater
+        ? '<strong>大盘暴涨中资金轮动至半导体+缺乏新催化</strong>——KOSPI暴涨8.42%创历史纪录，资金集中涌入半导体龙头。NIKKE Mint上线已过一周，短期催化减弱，暴走行情中遭调仓轮动。'
+        : isMay14OrLater
         ? '<strong>NIKKE新角色Mint上线后短期获利了结</strong>——5/14实装催化已部分定价，新角色上线后用户数据待验证。Q1财报利好消化后短期缺乏新催化剂。'
         : isMay13OrLater
         ? '<strong>Q1财报利好消化后缺乏新催化</strong>——5/11剑星2自主发行等利好已部分定价，短期进入催化真空期。NIKKE 3.5周年活动高峰期过后用户数据自然回落，等待5/14 Mint实装验证。'
@@ -833,7 +854,9 @@ function findCompanyReason(stockName, changeClass) {
           : isApril10OrLater
             ? '<strong>联动利好消化后技术性回调</strong>：PUBG×Stellar Blade联动(4/8)短期催化已充分反应，4/10进入获利了结阶段。'
             : '<strong>联动利好逐步消化后的技术性回调</strong>——短期缺乏新催化剂，或受游戏板块整体回调拖累。',
-      'Nexon Games': isMay14OrLater
+      'Nexon Games': isMay21OrLater
+        ? '<strong>大盘暴涨中资金轮动+新作延期风险持续压制</strong>——KOSPI暴涨8.42%创历史纪录，资金集中涌入半导体龙头。新作延期风险仍压制估值，暴走行情中缺乏个股催化剂遭调仓轮动。'
+        : isMay14OrLater
         ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，AI补贴制度对短期估值提振有限。'
         : isMay13OrLater
         ? '<strong>新作延期风险持续压制估值</strong>——《Dungeon & Fighter: Arad》、Project DX/RX 日程延迟问题仍未有明确解决方案。Blue Archive虽稳健但缺乏新增长引擎，市场等待Q3开发进度更新。'
@@ -902,7 +925,7 @@ function generateSUAnalysis() {
 
   let analysisDetail = '';
   if (_isMay14) {
-    analysisDetail = `<strong>NIKKE新SSR「Mint」实装+Stellar Blade联动复刻</strong>——5/14新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。Nexon全员AI补贴制度启动(月$250/人)反映行业AI化趋势加速。`;
+    analysisDetail = `<strong>NIKKE新SSR「Mint」实装+Stellar Blade联动复刻</strong>——5/14新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。`;
   } else if (_isMay13) {
     // 5/13 Q1财报利好消化后震荡整固
     analysisDetail = `<strong>Q1财报利好消化后震荡整固</strong>——5/11剑星2确认开发顺利+自主发行、Project Spirits(腾讯发行)等利好已部分定价。NIKKE 3.5周年活动高峰期过后用户数据自然回落，短期等待5/14 Mint实装验证。`;
@@ -914,10 +937,10 @@ function generateSUAnalysis() {
     analysisDetail = `<strong>5/11 Q1财报：剑星2确认开发顺利+自主发行</strong>——续作采用第一方服务模式自主发行，不再依赖外部发行商，多平台首发预期强烈。新作Project Spirits由腾讯发行，年内公布详情。全资收购三上真司UNBOUND工作室强化全球3A开发能力。NIKKE累计营收破$10亿里程碑。`;
   } else if (_isMay8) {
     // 5/8 行业多重催化
-    analysisDetail = `<strong>NIKKE 3.5周年活动持续+行业多重催化</strong>——Anis: Star实装后营收环比+35%，3.5周年活动持续带动用户回流。<strong>5/8</strong>：Crimson Desert全球销量破500万创韩国主机最快纪录；PUBG Mobile印度回归谈判进入最后阶段(潜在2亿用户)。关注5月中旬Q1财报披露。`;
+    analysisDetail = `<strong>NIKKE 3.5周年活动持续验证IP运营能力</strong>——Anis: Star实装后营收环比+35%，3.5周年活动持续带动用户回流。关注5月中旬Q1财报披露。`;
   } else if (_isMay7) {
     // 5/7 Aion 2催化
-    analysisDetail = `<strong>NIKKE 3.5周年活动持续验证IP运营能力</strong>——Anis: Star实装后用户数据表现良好。<strong>5/7</strong>：Aion 2韩国预约突破120万(4/11座谈会后从94万增至120万超预期)，6月全球发布临近带动NC相关概念股活跃。关注5月中旬Q1财报和新作消息。`;
+    analysisDetail = `<strong>NIKKE 3.5周年活动持续验证IP运营能力</strong>——Anis: Star实装后用户数据表现良好。关注5月中旬Q1财报和新作消息披露。`;
   } else if (_isMay6) {
     // 5/6 进入5月第二周
     analysisDetail = `<strong>NIKKE 3.5周年活动持续+Q1财报预期升温</strong>——Anis: Star实装后用户数据持续验证IP运营能力。市场关注5月中旬Q1财报和新作消息披露，剑星2开发进展与发行策略为关键看点。`;
@@ -1048,16 +1071,15 @@ function renderDailySummary() {
   });
 
   // 当日资讯严格过滤：只显示精确单日匹配的事件（不含跨日期范围如"04.02~09"）
-  // 规则：date 字段不含 "~" 且能匹配当天
+  const currentMmddNum = parseInt(dateRaw.slice(0, 2), 10) * 100 + parseInt(dateRaw.slice(2), 10);
+  function parseEventDate(ed) {
+    const [m, d] = ed.split('.').map(Number);
+    return m * 100 + d;
+  }
   todayDailyEvents = EVENT_DATA.filter(e => {
     const ed = e.date;
-    // 排除范围日期（含 ~ 的都是跨多日的）
     if (ed.includes('~')) return false;
-    // 单日日期必须精确匹配（支持两种格式）
-    return ed.includes(mmddNormalized) ||
-           ed.includes(mmddPadded) ||
-           ed.includes(ddPart) ||
-           ed.includes(dateRaw.replace(/^0/,''));
+    return parseEventDate(ed) === currentMmddNum;
   });
 
   // 辅助函数：将事件与股票名模糊匹配
@@ -1196,43 +1218,28 @@ function renderDailySummary() {
     ];
     const isMacro = text => macroKeywords.some(kw => text.includes(kw));
 
-    // 分句判断：把每条 reason 按句号/分号拆成短句，分别归类
-    // 避免一条中混杂个股+宏观时，整条被错误归入宏观
-    const macroSentences = [];
-    const nonMacroSentences = [];
+    // 分类判断：检测每条 reason 是否为纯宏观因素
+    // 规则：如果一条 reason 中所有句子都是宏观关键词 → 归入宏观背景
+    //       如果包含任何个股相关句子 → 整条归入个股层面（不拆分）
+    // 这样避免同一股票因拆分而重复出现在两个分类，也消除双重破折号
+    const macroReasons = [];
+    const individualReasons = [];
     for (const r of reasons) {
-      // 提取纯文本（去掉HTML标签）后按句号/分号拆分
       const plainText = r.replace(/<[^>]+>/g, '');
-      // 用中文句号、分号、破折号后的内容拆分
       const sentences = plainText.split(/[。；]/).filter(s => s.trim());
-      const hasMacro = sentences.some(s => isMacro(s));
-      const hasNonMacro = sentences.some(s => !isMacro(s));
-
-      if (hasMacro && hasNonMacro) {
-        // 混合型：拆分归类，保留原股票名+颜色前缀
-        // 提取股票名前缀（<span style="color:...">股票名</span>）
-        const stockPrefix = r.match(/<span style="color:[^"]+;font-size:13px">[^<]+<\/span>/)?.[0] || '';
-        const detailPart = r.replace(/<span style="color:[^"]+;font-size:13px">[^<]+<\/span>/, '').replace(/^\s*—\s*/, '');
-        const detailSentences = detailPart.split(/[。；]/).filter(s => s.trim());
-        for (const s of detailSentences) {
-          if (isMacro(s)) {
-            macroSentences.push(`${stockPrefix}<span style="font-size:13px"> — ${s}</span>`);
-          } else {
-            nonMacroSentences.push(`${stockPrefix}<span style="font-size:13px"> — ${s}</span>`);
-          }
-        }
-      } else if (hasMacro) {
-        macroSentences.push(r);
+      const allMacro = sentences.length > 0 && sentences.every(s => isMacro(s));
+      if (allMacro) {
+        macroReasons.push(r);
       } else {
-        nonMacroSentences.push(r);
+        individualReasons.push(r);
       }
     }
 
     let output = '<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>';
-    if (macroSentences.length > 0 && nonMacroSentences.length > 0) {
+    if (macroReasons.length > 0 && individualReasons.length > 0) {
       // 有宏观因素时，先显示宏观背景，再显示个股因素
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroSentences.join('；')}。`;
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${nonMacroSentences.join('；')}。`;
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroReasons.join('；')}。`;
+      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${individualReasons.join('；')}。`;
     } else if (reasons.length > 0) {
       output += `${reasons.join('；')}。`;
     }
@@ -1528,15 +1535,19 @@ function renderCompanyAnalysisSection() {
   // 日期格式转换: "20260511" → "5/11"
   const _dl = (d) => { if(!d) return ''; const m=parseInt(d.slice(4,6),10), dd=parseInt(d.slice(6),10); return `${m}/${dd}`; };
   
-  // 找到5月第一个日期的索引（月度基准）
-  const mayStartIdx = ALL_LABELS.findIndex(l => l.startsWith('5/'));
-
   function calcMonthChange(datasetData) {
-    if (!datasetData || datasetData.length === 0 || mayStartIdx < 0) return 0;
-    const endIdx = datasetData.length - 1;
-    if (mayStartIdx >= endIdx) return 0;
-    // 数据本身是基于4/1的累积收益率，5月变化 = 精确复合：(1+end)/(1+start) - 1
-    const startVal = datasetData[mayStartIdx];
+    if (!datasetData || datasetData.length === 0 || !currentDate) return 0;
+    const currentMonth = parseInt(currentDate.slice(4, 6), 10);
+    const currentLabel = _dl(currentDate);
+    // 找到当前月份第一个日期的索引
+    const monthStartIdx = ALL_LABELS.findIndex(l => {
+      const [m] = l.split('/');
+      return parseInt(m, 10) === currentMonth;
+    });
+    // 找到当前日期在 ALL_LABELS 中的索引
+    const endIdx = ALL_LABELS.findIndex(l => l === currentLabel);
+    if (monthStartIdx < 0 || endIdx < 0 || monthStartIdx >= endIdx) return 0;
+    const startVal = datasetData[monthStartIdx];
     const endVal = datasetData[endIdx];
     return ((1 + endVal / 100) / (1 + startVal / 100) - 1) * 100;
   }
@@ -1627,6 +1638,7 @@ function renderCompanyAnalysisSection() {
   }
 
   const dateDisplay = _dl(currentData.meta.date);
+  const currentMonthLabel = currentDate ? parseInt(currentDate.slice(4, 6), 10) : '';
 
   container.innerHTML = `
 <div class="full-width-grid">
@@ -1709,11 +1721,18 @@ function renderNewsSection() {
         <table class="info-table">
             <thead><tr><th style="width:20%">公司</th><th style="width:65%">事件摘要</th><th style="width:15%">日期</th></tr></thead>
             <tbody>
-                ${NORMAL_DATA.filter(i => i.date.includes('05')).map(i => `<tr>
+                ${(() => {
+                  const curDate = currentData?.meta?.date || '';
+                  const curMmddNum = parseInt(curDate.slice(4, 6), 10) * 100 + parseInt(curDate.slice(6, 8), 10);
+                  const parseNewsDate = d => { const [m, dd] = d.split('.').map(Number); return m * 100 + dd; };
+                  return NORMAL_DATA.filter(i => parseNewsDate(i.date) <= curMmddNum)
+                    .sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date))
+                    .map(i => `<tr>
                     <td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td>
                     <td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td>
                     <td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td>
-                </tr>`).join('')}
+                </tr>`).join('');
+                })()}
             </tbody>
         </table>
     </div>
@@ -1747,16 +1766,20 @@ function renderIndustryMacro() {
   const el = document.getElementById('industryMacroContent');
   if (!el) return;
   
-  // 只显示当月(5月)数据
-  const filtered = INDUSTRY_MACRO_DATA.filter(item => item.date.startsWith('2026.05'));
-  
+  const curDate = currentData?.meta?.date || '';
+  const curMmddNum = parseInt(curDate.slice(4, 6), 10) * 100 + parseInt(curDate.slice(6, 8), 10);
+  const parseMacroDate = d => { const p = d.split('.'); return parseInt(p[1], 10) * 100 + parseInt(p[2], 10); };
+
+  // 只显示当前日期及之前的宏观数据
+  const filtered = INDUSTRY_MACRO_DATA.filter(item => parseMacroDate(item.date) <= curMmddNum);
+
   if (filtered.length === 0) {
     el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:13px">暂无行业宏观重大事件</div>';
     return;
   }
 
   // 按日期降序排列（最新在上）
-  const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = [...filtered].sort((a, b) => parseMacroDate(b.date) - parseMacroDate(a.date));
 
   el.innerHTML = sorted.map((item, idx) => {
     const impactStyle = item.impact === 'positive' ? 'color:#34d399' : item.impact === 'negative' ? 'color:#f87171' : 'color:#9aa0b3';
@@ -1887,10 +1910,13 @@ function renderCompareChart() {
   }
   
   const labels = monthIndex !== -1 ? ALL_LABELS.slice(monthIndex, endIndex) : ALL_LABELS;
-  const datasets = ALL_DATASETS.map(ds => ({
-    ...ds,
-    data: monthIndex !== -1 ? ds.data.slice(monthIndex, endIndex) : ds.data
-  }));
+  const datasets = ALL_DATASETS.map(ds => {
+    const rawData = monthIndex !== -1 ? ds.data.slice(monthIndex, endIndex) : ds.data;
+    const baseValue = rawData.length > 0 ? rawData[0] : 0;
+    // 归一化：相对本月首个交易日为 0%，精确复合计算
+    const normalizedData = rawData.map(v => ((1 + v / 100) / (1 + baseValue / 100) - 1) * 100);
+    return { ...ds, data: normalizedData };
+  });
 
   // 相对本月首个交易日涨跌幅（累计变化率），本月首个交易日为基准起点 0%
   const cGridColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim() || 'rgba(46,51,71,0.3)';

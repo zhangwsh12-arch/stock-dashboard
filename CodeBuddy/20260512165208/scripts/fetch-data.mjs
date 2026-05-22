@@ -881,8 +881,22 @@ const CHART_NAME_MAP = {
   'P.Abyss': 'Pearl Abyss',
 };
 
-// compareChart 基准日：2026年4月1日
-const COMPARE_BASE_DATE = '20260401';
+// compareChart 基准日：动态获取当月首个交易日
+// 规则：每月重置，基准日为当月首个交易日（跳过周末和KRX休市日）
+function getFirstTradingDayOfMonth(year, month) {
+  // month 是 0-based (0=1月)
+  const candidates = [];
+  for (let day = 1; day <= 10; day++) { // 最多看前10天，足够覆盖月初假期
+    const d = new Date(year, month, day);
+    const dayOfWeek = d.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) continue; // 跳过周末
+    const dateStr = formatDate(d);
+    if (KRX_HOLIDAYS_2026.has(dateStr)) continue; // 跳过休市日
+    candidates.push(dateStr);
+    break; // 找到第一个即停止
+  }
+  return candidates[0] || null;
+}
 
 function updateCompareChart(stockResults, targetDate) {
   const contentFile = join(DATA_DIR, 'content.json');
@@ -921,6 +935,14 @@ function updateCompareChart(stockResults, targetDate) {
     return;
   }
 
+  // 动态获取当月首个交易日作为基准日
+  const compareBaseDate = getFirstTradingDayOfMonth(targetDate.getFullYear(), targetDate.getMonth());
+  console.log(`📊 compareChart 基准日: ${compareBaseDate}（${targetDate.getMonth() + 1}月首个交易日）`);
+
+  // 检测是否跨月：当前 labels 中是否已存在当月日期
+  const currentMonthPrefix = `${targetDate.getMonth() + 1}/`;
+  const hasCurrentMonthData = chart.labels.some(l => l.startsWith(currentMonthPrefix));
+
   // 追加标签
   chart.labels.push(label);
 
@@ -931,16 +953,21 @@ function updateCompareChart(stockResults, targetDate) {
     const stockResult = stockResults.find(r => r?.name === stockName);
 
     if (!stockResult || !stockResult.price) {
-      // 无数据，保持上一个值
-      const lastVal = dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0;
-      dataset.data.push(lastVal);
-      console.log(`  📊 ${dataset.label}: 无数据，沿用 ${lastVal}%`);
+      // 跨月首个交易日重置为0，否则沿用上一个值
+      if (!hasCurrentMonthData) {
+        dataset.data.push(0);
+        console.log(`  📊 ${dataset.label}: 新月首日，重置为 0%`);
+      } else {
+        const lastVal = dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0;
+        dataset.data.push(lastVal);
+        console.log(`  📊 ${dataset.label}: 无数据，沿用 ${lastVal}%`);
+      }
       continue;
     }
 
     // 策略1：从 _allHistory 直接计算（最准确）
     if (stockResult._allHistory && stockResult._allHistory.length > 0) {
-      const baseEntry = stockResult._allHistory.find(h => h.date === COMPARE_BASE_DATE);
+      const baseEntry = stockResult._allHistory.find(h => h.date === compareBaseDate);
       const targetEntry = stockResult._allHistory.find(h => h.date === dateStr);
 
       if (baseEntry && targetEntry) {
@@ -949,7 +976,7 @@ function updateCompareChart(stockResults, targetDate) {
         const cumulative = ((targetPrice - basePrice) / basePrice) * 100;
         const rounded = Math.round(cumulative * 100) / 100;
         dataset.data.push(rounded);
-        console.log(`  📊 ${dataset.label}: ${rounded}% (基准₩${basePrice.toLocaleString()} → ₩${targetPrice.toLocaleString()})`);
+        console.log(`  📊 ${dataset.label}: ${rounded}% (基准₩${basePrice.toLocaleString()} → ₩${targetPrice.toLocaleString()}, 基准日${compareBaseDate})`);
         updatedCount++;
         continue;
       }
@@ -957,6 +984,7 @@ function updateCompareChart(stockResults, targetDate) {
 
     // 策略2：增量计算（_allHistory 不可用时的回退方案）
     // 原理：已知昨日累积%和昨收价，反推基准价，再用今日收盘算新累积%
+    // 注意：跨月时基准价变了，增量法会不准确，应尽量用策略1
     if (dataset.data.length > 0 && stockResult.yesterdayClose) {
       const prevCumulative = dataset.data[dataset.data.length - 1];
       const basePrice = stockResult.yesterdayClose / (1 + prevCumulative / 100);
