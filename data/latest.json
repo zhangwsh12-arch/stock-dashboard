@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260521",
     "dateDisplay": "5月（截至21日）",
-    "fetchedAt": "2026-05-22T01:00:56.181Z",
+    "fetchedAt": "2026-05-22T05:16:15.963Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -17,8 +17,8 @@
     "change": "300",
     "changePercent": "+1.05%",
     "changeClass": "up",
-    "per": "9.25",
-    "pbr": "1.92",
+    "per": "9.15",
+    "pbr": "1.90",
     "marketCap": "1.69兆元"
   },
   "companies": [
@@ -29,7 +29,7 @@
       "price": "41,900",
       "change": "-0.12%",
       "changeClass": "down",
-      "per": "10.25"
+      "per": "10.36"
     },
     {
       "code": "036570",
@@ -38,7 +38,7 @@
       "price": "263,000",
       "change": "+0.96%",
       "changeClass": "up",
-      "per": "13.02"
+      "per": "13.04"
     },
     {
       "code": "259960",
@@ -47,7 +47,7 @@
       "price": "258,000",
       "change": "-2.82%",
       "changeClass": "down",
-      "per": "14.53"
+      "per": "14.58"
     },
     {
       "code": "225570",
@@ -74,32 +74,32 @@
       "name": "Shift Up",
       "color": "#ff6b9d",
       "price": "28,850",
-      "per": 9.25,
-      "perRaw": "9.25"
+      "per": 9.15,
+      "perRaw": "9.15"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "41,900",
-      "per": 10.25,
-      "perRaw": "10.25"
+      "per": 10.36,
+      "perRaw": "10.36"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
       "price": "263,000",
-      "per": 13.02,
-      "perRaw": "13.02"
+      "per": 13.04,
+      "perRaw": "13.04"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "258,000",
-      "per": 14.53,
-      "perRaw": "14.53"
+      "per": 14.58,
+      "perRaw": "14.58"
     }
   ],
   "chartData": [
@@ -173,17 +173,17 @@
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "7870.32",
-      "change": "7870.32",
-      "changePercent": "0.00",
+      "price": "7851.19",
+      "change": "35.60",
+      "changePercent": "0.46",
       "changeClass": "up"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1155.09",
-      "change": "1155.09",
-      "changePercent": "0.00",
+      "price": "1165.18",
+      "change": "59.21",
+      "changePercent": "5.35",
       "changeClass": "up"
     }
   ]
