@@ -1,0 +1,36 @@
+# User profile directories
+Contacts/
+Desktop/
+Documents/
+Downloads/
+Favorites/
+Links/
+Music/
+Pictures/
+Saved Games/
+Searches/
+Videos/
+AppData/
+NTUSER.DAT*
+ntuser.*
+ntuser.ini
+「开始」菜单/
+
+# Dev tools and caches
+.agent-browser/
+.chromium-browser-snapshots/
+.codebuddy/
+.codebuddycn/
+.gitconfig
+.pcr-stats.json
+.viminfo
+.workbuddy/
+WorkBuddy/
+
+# CodeBuddy workspace (not part of stock-dashboard)
+CodeBuddy/
+
+# Temp files
+_server.cjs
+remote_index_backup.html
+temp_calc.js

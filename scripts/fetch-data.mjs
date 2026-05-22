@@ -14,7 +14,7 @@
  * 用法: node scripts/fetch-data.mjs
  */
 
-import { writeFileSync, existsSync, mkdirSync, readFileSync } from 'fs';
+import { writeFileSync, existsSync, mkdirSync, readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -177,9 +177,10 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 
 async function fetchNaverChart(code) {
   try {
-    // requestType=0 + count=80 拿最近80天数据（确保覆盖完整月份）
+    // requestType=0 + count=80 拿最近80天数据（含今天）
+    // 需要覆盖至少2个月的完整交易日（约40-45个交易日）
     const url = `https://fchart.stock.naver.com/siseJson.naver?symbol=${code}&timeframe=day&count=80&requestType=0`;
-    console.log(`  📊 [NaverChart] Fetching: ${code} (requestType=0, count=80)`);
+    console.log(`  📊 [NaverChart] Fetching: ${code} (requestType=0, count=45)`);
     
     const resp = await fetchWithRetry(url);
     const buf = await resp.arrayBuffer();
@@ -244,7 +245,7 @@ async function fetchNaverChart(code) {
       changePercent: prevPrice > 0 ? (((targetPrice - prevPrice) / prevPrice) * 100).toFixed(2) : null,
       volume: yesterday.volume,
       _source: 'naver_chart_api_v2',
-      _allHistory: allData.slice(-30),       // 走势图用
+      _allHistory: allData,                  // 走势图 + compareChart 用（全量保留）
       _todayData: today,                     // 今日数据备用
     };
   } catch (err) {
@@ -545,6 +546,19 @@ async function main() {
   const dateStr = formatDate(targetDate);
 
   console.log(`\n📅 目标日期: ${dateStr} (${targetDate.getMonth() + 1}月${targetDate.getDate()}日)`);
+
+  // ====== 每日一次保护：如果 latest.json 已是今天的数据则跳过 ======
+  const latestFile = join(DATA_DIR, 'latest.json');
+  if (existsSync(latestFile)) {
+    try {
+      const latest = JSON.parse(readFileSync(latestFile, 'utf-8'));
+      if (latest.date === dateStr) {
+        console.log(`\n⏭️ 今日 (${dateStr}) 数据已更新过，跳过重复执行`);
+        process.exit(0);
+      }
+    } catch (_) { /* 解析失败则继续执行 */ }
+  }
+  // ====== 每日一次保护 END ======
   
   if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
@@ -612,6 +626,7 @@ async function main() {
     per: (realShiftUp.per && parseFloat(realShiftUp.per) > 0) ? realShiftUp.per : 'N/A',
     pbr: realShiftUp.pbr || '-',
       marketCap: formatWon(realShiftUp.marketCap),
+      _allHistory: realShiftUp._allHistory || [], // 保存完整历史数据，用于修复历史月份
     } : null,
 
     companies: stockResults
@@ -646,13 +661,17 @@ async function main() {
   };
 
   // 图表数据 (使用 Shift Up 的历史数据)
-  // 只保留本月交易日数据，不包含今日盘中数据(最后一条)
+  // 保留近2个月数据，支持前端按月份筛选显示
   if (realShiftUp && realShiftUp._allHistory && realShiftUp._allHistory.length > 0) {
     const currentMonth = String(targetDate.getMonth() + 1).padStart(2, '0');
-    // 过滤: 本月 + 排除今日盘中数据(取到倒数第2条)
+    const prevMonth = String(targetDate.getMonth()).padStart(2, '0') || '12';
+    const currentYear = String(targetDate.getFullYear());
+    const prevYear = currentMonth === '01' ? String(targetDate.getFullYear() - 1) : currentYear;
+    const months = [prevYear + prevMonth, currentYear + currentMonth];
+    // 排除今日盘中数据(取到倒数第2条)
     const monthData = realShiftUp._allHistory
-      .slice(0, -1) // 去掉最后一条(今日盘中)
-      .filter(h => h.date.slice(4, 6) === currentMonth);
+      .slice(0, -1)
+      .filter(h => months.includes(h.date.slice(0, 6)));
     
     dashboardData.chartData = monthData.map(h => ({
       date: h.date,
@@ -663,14 +682,55 @@ async function main() {
 
   // 写入文件
   const outFile = join(DATA_DIR, `${dateStr}.json`);
-  writeFileSync(outFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
-  console.log(`\n✅ 数据已保存: ${outFile}`);
+  
+  // 检查是否是某个月的最后一天（且文件已存在）
+  // 如果是，且现有文件的数据比新数据更完整，则保留现有文件
+  const isLastDayOfMonth = targetDate.getDate() === new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0).getDate();
+  let shouldWrite = true;
+  
+  if (isLastDayOfMonth && existsSync(outFile)) {
+    try {
+      const existingData = JSON.parse(readFileSync(outFile, 'utf-8'));
+      const existingCount = existingData.chartData?.length || 0;
+      const newCount = dashboardData.chartData?.length || 0;
+      
+      if (existingCount > newCount) {
+        console.log(`\n⚠️ ${dateStr} 是月末最后一天，现有数据(${existingCount}天)比新数据(${newCount}天)更完整，保留现有文件`);
+        shouldWrite = false;
+        // 仍然更新dashboardData的chartData为现有数据，确保latest.json正确
+        dashboardData.chartData = existingData.chartData;
+      }
+    } catch (err) {
+      console.warn(`⚠️ 检查现有文件失败: ${err.message}`);
+    }
+  }
+  
+  if (shouldWrite) {
+    writeFileSync(outFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
+    console.log(`\n✅ 数据已保存: ${outFile}`);
+  } else {
+    // 更新fetchedAt时间戳
+    const existingData = JSON.parse(readFileSync(outFile, 'utf-8'));
+    existingData.meta.fetchedAt = new Date().toISOString();
+    writeFileSync(outFile, JSON.stringify(existingData, null, 2), 'utf-8');
+    console.log(`✅ 已更新 ${outFile} 的时间戳`);
+  }
 
   const latestFile = join(DATA_DIR, 'latest.json');
   writeFileSync(latestFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
   console.log(`✅ 最新数据已更新: latest.json`);
 
   updateDatesList(dateStr);
+
+  // 自动更新 content.json 的 compareChart
+  updateCompareChart(stockResults, targetDate);
+
+  // ============================================================
+  // 修复历史月份数据完整性
+  // 当进入新月份后，上个月的JSON文件可能被截断（Naver API只返回最近60天）
+  // 这里用上个月的完整历史数据重新生成上个月的JSON文件
+  // ============================================================
+  await fixHistoricalMonthData(realShiftUp?._allHistory || [], targetDate);
   
   console.log(`\n🎉 完成! 共更新 ${successCount}/${COMPANIES.length} 家公司`);
   if (dashboardData.shiftUp) {
@@ -682,6 +742,92 @@ async function main() {
   console.log(
     `   其他: ${dashboardData.companies.map(c => `${c.name}:${c.price}`).join(', ')}`
   );
+}
+
+/**
+ * 修复历史月份的JSON文件，确保chartData完整
+ * 原理：用_allHistory中的完整数据重新生成上个月和当前月的历史JSON文件
+ * 注意：也修复当前月，因为月初生成当月文件时可能数据不完整
+ */
+async function fixHistoricalMonthData(allHistory, targetDate) {
+  if (!allHistory || allHistory.length === 0) return;
+
+  const currentYear = String(targetDate.getFullYear());
+  const currentMonthNum = targetDate.getMonth() + 1; // 1-12
+  const currentMonth = String(currentMonthNum).padStart(2, '0');
+  
+  // 计算上个月
+  let prevMonthNum = targetDate.getMonth(); // 0-11
+  let prevYear = targetDate.getFullYear();
+  if (prevMonthNum === 0) {
+    prevMonthNum = 12;
+    prevYear -= 1;
+  }
+  const prevMonth = String(prevMonthNum).padStart(2, '0');
+  
+  // 需要修复的月份列表（上个月 + 当前月）
+  const monthsToFix = [
+    { prefix: `${prevYear}${prevMonth}`, name: `${prevYear}${prevMonth}` },
+    { prefix: `${currentYear}${currentMonth}`, name: `${currentYear}${currentMonth}` },
+  ];
+  
+  for (const { prefix, name } of monthsToFix) {
+    // 从_allHistory中提取该月份的完整数据
+    const monthHistory = allHistory
+      .filter(h => h.date.startsWith(prefix))
+      .sort((a, b) => a.date.localeCompare(b.date));
+    
+    if (monthHistory.length === 0) {
+      console.log(`\n📅 无${name}月份数据需要修复`);
+      continue;
+    }
+    
+    console.log(`\n🔧 修复${name}月份历史数据 (${monthHistory.length}个交易日)`);
+    
+    // 构建完整的chartData
+    const fullChartData = monthHistory.map(h => ({
+      date: h.date,
+      label: `${parseInt(h.date.slice(4,6))}/${parseInt(h.date.slice(6,8))}`,
+      price: h.close,
+    }));
+    
+    // 找到所有该月份的历史JSON文件
+    const files = readdirSync(DATA_DIR)
+      .filter(f => f.startsWith(prefix) && f.endsWith('.json') && f !== 'latest.json');
+    
+    let fixedCount = 0;
+    for (const file of files) {
+      const filePath = join(DATA_DIR, file);
+      try {
+        const data = JSON.parse(readFileSync(filePath, 'utf-8'));
+        const existingCount = data.chartData?.length || 0;
+        
+        // 只修复chartData不完整的文件（新数据比现有数据多）
+        if (existingCount < fullChartData.length) {
+          // 截断到该文件对应的日期
+          const fileDate = file.replace('.json', '');
+          const fileDay = parseInt(fileDate.slice(6, 8), 10);
+          const truncatedData = fullChartData.filter(d => {
+            const day = parseInt(d.date.slice(6, 8), 10);
+            return day <= fileDay;
+          });
+          
+          data.chartData = truncatedData;
+          writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+          console.log(`  ✅ ${file}: ${existingCount} → ${truncatedData.length} 天`);
+          fixedCount++;
+        }
+      } catch (err) {
+        console.warn(`  ⚠️ 跳过 ${file}: ${err.message}`);
+      }
+    }
+    
+    if (fixedCount === 0) {
+      console.log(`  ✓ ${name}月份所有文件已完整，无需修复`);
+    } else {
+      console.log(`  📊 共修复 ${fixedCount} 个文件`);
+    }
+  }
 }
 
 function updateDatesList(newDate) {
@@ -703,6 +849,167 @@ function updateDatesList(newDate) {
 
   writeFileSync(datesFile, JSON.stringify({ dates }, null, 2), 'utf-8');
   console.log(`✅ 日期列表已更新: ${dates.length} 个存档`);
+}
+
+// ============================================================
+// 自动更新 content.json 的 compareChart
+// 每日数据抓取后，计算各公司相对基准日的累积涨跌幅并追加
+// ============================================================
+
+// 2026年KRX休市日（不得出现在compareChart标签中）
+const KRX_HOLIDAYS_2026 = new Set([
+  '20260101', // 元旦
+  '20260216', '20260217', '20260218', // 春节
+  '20260302', // 三一节
+  '20260501', // 劳动节
+  '20260505', // 儿童节
+  '20260525', // 佛诞日
+  '20260817', // 光复节
+  '20260924', '20260925', // 秋夕
+  '20261005', // 开天节
+  '20261009', // 韩文日
+  '20261225', // 圣诞
+]);
+
+// compareChart 名称 → stockResult 名称 映射
+const CHART_NAME_MAP = {
+  'Shift Up': 'Shift Up',
+  'Nexon': 'Nexon Games',
+  'Netmarble': 'Netmarble',
+  'NC': 'NC',
+  'Krafton': 'Krafton',
+  'P.Abyss': 'Pearl Abyss',
+};
+
+// compareChart 基准日：动态获取当月首个交易日
+// 规则：每月重置，基准日为当月首个交易日（跳过周末和KRX休市日）
+function getFirstTradingDayOfMonth(year, month) {
+  // month 是 0-based (0=1月)
+  const candidates = [];
+  for (let day = 1; day <= 10; day++) { // 最多看前10天，足够覆盖月初假期
+    const d = new Date(year, month, day);
+    const dayOfWeek = d.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) continue; // 跳过周末
+    const dateStr = formatDate(d);
+    if (KRX_HOLIDAYS_2026.has(dateStr)) continue; // 跳过休市日
+    candidates.push(dateStr);
+    break; // 找到第一个即停止
+  }
+  return candidates[0] || null;
+}
+
+function updateCompareChart(stockResults, targetDate) {
+  const contentFile = join(DATA_DIR, 'content.json');
+  if (!existsSync(contentFile)) {
+    console.log('📊 content.json 不存在，跳过 compareChart 更新');
+    return;
+  }
+
+  let content;
+  try {
+    content = JSON.parse(readFileSync(contentFile, 'utf-8'));
+  } catch (err) {
+    console.error(`📊 读取 content.json 失败: ${err.message}`);
+    return;
+  }
+
+  if (!content.compareChart || !content.compareChart.datasets) {
+    console.log('📊 content.json 中无 compareChart，跳过');
+    return;
+  }
+
+  const dateStr = formatDate(targetDate);
+
+  // 跳过KRX休市日
+  if (KRX_HOLIDAYS_2026.has(dateStr)) {
+    console.log(`📊 ${dateStr} 是KRX休市日，跳过 compareChart 更新`);
+    return;
+  }
+
+  const chart = content.compareChart;
+  const label = `${targetDate.getMonth() + 1}/${targetDate.getDate()}`;
+
+  // 幂等：如果标签已存在则跳过
+  if (chart.labels.includes(label)) {
+    console.log(`📊 compareChart: ${label} 已存在，跳过`);
+    return;
+  }
+
+  // 动态获取当月首个交易日作为基准日
+  const compareBaseDate = getFirstTradingDayOfMonth(targetDate.getFullYear(), targetDate.getMonth());
+  console.log(`📊 compareChart 基准日: ${compareBaseDate}（${targetDate.getMonth() + 1}月首个交易日）`);
+
+  // 检测是否跨月：当前 labels 中是否已存在当月日期
+  const currentMonthPrefix = `${targetDate.getMonth() + 1}/`;
+  const hasCurrentMonthData = chart.labels.some(l => l.startsWith(currentMonthPrefix));
+
+  // 追加标签
+  chart.labels.push(label);
+
+  let updatedCount = 0;
+
+  for (const dataset of chart.datasets) {
+    const stockName = CHART_NAME_MAP[dataset.label] || dataset.label;
+    const stockResult = stockResults.find(r => r?.name === stockName);
+
+    if (!stockResult || !stockResult.price) {
+      // 跨月首个交易日重置为0，否则沿用上一个值
+      if (!hasCurrentMonthData) {
+        dataset.data.push(0);
+        console.log(`  📊 ${dataset.label}: 新月首日，重置为 0%`);
+      } else {
+        const lastVal = dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0;
+        dataset.data.push(lastVal);
+        console.log(`  📊 ${dataset.label}: 无数据，沿用 ${lastVal}%`);
+      }
+      continue;
+    }
+
+    // 策略1：从 _allHistory 直接计算（最准确）
+    if (stockResult._allHistory && stockResult._allHistory.length > 0) {
+      const baseEntry = stockResult._allHistory.find(h => h.date === compareBaseDate);
+      const targetEntry = stockResult._allHistory.find(h => h.date === dateStr);
+
+      if (baseEntry && targetEntry) {
+        const basePrice = baseEntry.close;
+        const targetPrice = targetEntry.close;
+        const cumulative = ((targetPrice - basePrice) / basePrice) * 100;
+        const rounded = Math.round(cumulative * 100) / 100;
+        dataset.data.push(rounded);
+        console.log(`  📊 ${dataset.label}: ${rounded}% (基准₩${basePrice.toLocaleString()} → ₩${targetPrice.toLocaleString()}, 基准日${compareBaseDate})`);
+        updatedCount++;
+        continue;
+      }
+    }
+
+    // 策略2：增量计算（_allHistory 不可用时的回退方案）
+    // 原理：已知昨日累积%和昨收价，反推基准价，再用今日收盘算新累积%
+    // 注意：跨月时基准价变了，增量法会不准确，应尽量用策略1
+    if (dataset.data.length > 0 && stockResult.yesterdayClose) {
+      const prevCumulative = dataset.data[dataset.data.length - 1];
+      const basePrice = stockResult.yesterdayClose / (1 + prevCumulative / 100);
+      const cumulative = ((stockResult.price - basePrice) / basePrice) * 100;
+      const rounded = Math.round(cumulative * 100) / 100;
+      dataset.data.push(rounded);
+      console.log(`  📊 ${dataset.label}: ${rounded}% (增量回退计算)`);
+      updatedCount++;
+      continue;
+    }
+
+    // 策略3：最终回退
+    const lastVal = dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0;
+    dataset.data.push(lastVal);
+    console.log(`  📊 ${dataset.label}: 无法计算，沿用 ${lastVal}%`);
+  }
+
+  // 更新 meta.updatedAt
+  const yyyy = targetDate.getFullYear();
+  const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+  const dd = String(targetDate.getDate()).padStart(2, '0');
+  content.meta.updatedAt = `${yyyy}-${mm}-${dd}`;
+
+  writeFileSync(contentFile, JSON.stringify(content, null, 2), 'utf-8');
+  console.log(`✅ compareChart 已更新: 新增 ${label}，${updatedCount} 家公司使用精确计算`);
 }
 
 main().catch(err => {

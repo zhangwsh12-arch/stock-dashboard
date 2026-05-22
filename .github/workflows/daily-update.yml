@@ -3,15 +3,10 @@ name: Daily Stock Data Update
 on:
   # ====== 外部定时触发（cron-job.org 精准触发，无延迟）======
   repository_dispatch:
-    types: [trigger-update, trigger-notify]
+    types: [trigger-update]
 
   # 手动触发（保留，用于调试）
   workflow_dispatch:
-
-  # 兜底：GitHub schedule（可能延迟 5-30 分钟）
-  schedule:
-    - cron: '30 1 * * 1-5'    # UTC 01:30 = KST 10:30，兜底数据更新
-    - cron: '30 2 * * 1-5'    # UTC 02:30 = KST 11:30，兜底推送
 
   push:
     branches:
@@ -28,13 +23,12 @@ concurrency:
 
 jobs:
   # ====== 数据更新+验证+部署 ======
-  # 触发条件：trigger-update / workflow_dispatch / 兜底schedule / push
+  # 触发条件：trigger-update / workflow_dispatch / push
   update:
     if: |
       github.event.action == 'trigger-update' ||
       github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'push' ||
-      github.event.schedule == '30 1 * * 1-5'
+      github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -82,13 +76,15 @@ jobs:
         id: deploy
         uses: actions/deploy-pages@v4
 
-  # ====== 企业微信推送 ======
-  # 触发条件：trigger-notify / 兜底schedule
+  # ====== 企业微信推送（update 完成后自动执行）======
   notify:
+    needs: update
     if: |
-      github.event.action == 'trigger-notify' ||
-      github.event_name == 'workflow_dispatch' ||
-      github.event.schedule == '30 2 * * 1-5'
+      always() &&
+      needs.update.result == 'success' &&
+      (github.event.action == 'trigger-update' ||
+       github.event_name == 'workflow_dispatch' ||
+       github.event_name == 'push')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
