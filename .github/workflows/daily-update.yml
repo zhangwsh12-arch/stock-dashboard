@@ -19,7 +19,6 @@ concurrency:
 
 jobs:
   # ====== 数据更新+验证+部署 ======
-  # 触发条件：trigger-update / workflow_dispatch / push
   update:
     if: |
       github.event.action == 'trigger-update' ||
@@ -71,7 +70,7 @@ jobs:
         id: deploy
         uses: actions/deploy-pages@v4
 
-  # ====== 企业微信推送（update 完成后自动执行）======
+  # ====== 企业微信推送（update 完成后自动执行，每日仅1次）======
   notify:
     needs: update
     if: |
@@ -81,15 +80,35 @@ jobs:
        github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
+      - name: Get today's date (KST)
+        id: get-date
+        run: echo "date=$(TZ=Asia/Seoul date '+%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+
+      - name: Check if already notified today
+        id: notify-guard
+        uses: actions/cache@v4
+        with:
+          path: /tmp/notify-sent
+          key: notify-sent-${{ steps.get-date.outputs.date }}
+
+      - name: Skip — already notified today
+        if: steps.notify-guard.outputs.cache-hit == 'true'
+        run: |
+          echo "⏭️ 今日 (${{ steps.get-date.outputs.date }}) 已推送过，跳过"
+          exit 0
+
       - name: Checkout
+        if: steps.notify-guard.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
+        if: steps.notify-guard.outputs.cache-hit != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Send WeCom notification
+        if: steps.notify-guard.outputs.cache-hit != 'true'
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
