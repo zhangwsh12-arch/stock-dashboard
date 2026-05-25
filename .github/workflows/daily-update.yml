@@ -83,8 +83,7 @@ jobs:
       always() &&
       needs.update.result == 'success' &&
       (github.event.action == 'trigger-update' ||
-       github.event_name == 'workflow_dispatch' ||
-       github.event_name == 'push')
+       github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
