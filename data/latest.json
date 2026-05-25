@@ -10,12 +10,12 @@
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "28,850",
-    "previousClose": "28,550",
-    "high": "29,750",
-    "low": "28,650",
-    "change": "300",
-    "changePercent": "+1.05%",
+    "price": "29,500",
+    "previousClose": "28,850",
+    "high": "30,300",
+    "low": "28,850",
+    "change": "650",
+    "changePercent": "+2.25%",
     "changeClass": "up",
     "per": "9.05",
     "pbr": "1.79",
@@ -748,35 +748,35 @@
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "41,900",
-      "change": "-0.12%",
-      "changeClass": "down",
-      "per": "10.32"
+      "price": "43,400",
+      "change": "+3.58%",
+      "changeClass": "up",
+      "per": "10.71"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "263,000",
-      "change": "+0.96%",
+      "price": "276,000",
+      "change": "+4.94%",
       "changeClass": "up",
-      "per": "12.99"
+      "per": "13.65"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "258,000",
-      "change": "-2.82%",
-      "changeClass": "down",
-      "per": "14.66"
+      "price": "271,000",
+      "change": "+5.04%",
+      "changeClass": "up",
+      "per": "15.46"
     },
     {
       "code": "225570",
       "name": "Nexon Games",
       "color": "#22c55e",
-      "price": "11,050",
-      "change": "+0.91%",
+      "price": "11,410",
+      "change": "+3.26%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -784,8 +784,8 @@
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "45,450",
-      "change": "+0.11%",
+      "price": "46,050",
+      "change": "+1.32%",
       "changeClass": "up",
       "per": "N/A"
     }
@@ -795,7 +795,7 @@
       "code": "462870",
       "name": "Shift Up",
       "color": "#ff6b9d",
-      "price": "28,850",
+      "price": "29,500",
       "per": 9.05,
       "perRaw": "9.05"
     },
@@ -803,25 +803,25 @@
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "41,900",
-      "per": 10.32,
-      "perRaw": "10.32"
+      "price": "43,400",
+      "per": 10.71,
+      "perRaw": "10.71"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "263,000",
-      "per": 12.99,
-      "perRaw": "12.99"
+      "price": "276,000",
+      "per": 13.65,
+      "perRaw": "13.65"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "258,000",
-      "per": 14.66,
-      "perRaw": "14.66"
+      "price": "271,000",
+      "per": 15.46,
+      "perRaw": "15.46"
     }
   ],
   "chartData": [
@@ -999,6 +999,11 @@
       "date": "20260521",
       "label": "5/21",
       "price": 28850
+    },
+    {
+      "date": "20260522",
+      "label": "5/22",
+      "price": 29500
     }
   ],
   "indices": [

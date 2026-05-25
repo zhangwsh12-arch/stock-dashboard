@@ -175,7 +175,7 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 // 返回: [[日期, 开盘, 高, 低, 收盘, 成交量, 外国人持股率], ...]
 // ============================================================
 
-async function fetchNaverChart(code) {
+async function fetchNaverChart(code, targetDateStr) {
   try {
     // requestType=0 + count=80 拿最近80天数据（含今天）
     // 需要覆盖至少2个月的完整交易日（约40-45个交易日）
@@ -222,31 +222,40 @@ async function fetchNaverChart(code) {
 
     if (allData.length === 0) throw new Error('No data rows after parse');
     
-    // 核心逻辑：取倒数第2条(前一个交易日收盘价)
-    // 最后一条是今天的盘中数据，倒数第二条才是昨天收盘
-    const today = allData[allData.length - 1];
-    const yesterday = allData[allData.length - 2];
-    const dayBefore = allData.length > 2 ? allData[allData.length - 3] : yesterday;
+    const lastEntry = allData[allData.length - 1];
+    const secondLast = allData[allData.length - 2];
+    const thirdLast = allData.length > 2 ? allData[allData.length - 3] : secondLast;
     
-    // price = 前一日收盘价 (看板要求显示昨收，非实时价格)
-    const targetPrice = yesterday.close;
-    const prevPrice = dayBefore.close;
+    // 如果最后一条数据的日期匹配目标交易日，使用最新数据
+    // 否则（盘中可能不完整）回退到倒数第2条
+    let targetPrice, prevPrice, dataDate;
+    if (targetDateStr && lastEntry.date === targetDateStr) {
+      // 目标交易日数据已完整（收盘后/非交易日运行）
+      targetPrice = lastEntry.close;
+      prevPrice = secondLast.close;
+      dataDate = lastEntry;
+    } else {
+      // 盘中运行，最后一条可能不完整，取倒数第2条
+      targetPrice = secondLast.close;
+      prevPrice = thirdLast.close;
+      dataDate = secondLast;
+    }
 
-    console.log(`  ✅ [NaverChart] ${code}: 昨收(${yesterday.date})=${targetPrice.toLocaleString()}, change=${targetPrice - prevPrice}`);
+    console.log(`  ✅ [NaverChart] ${code}: 收盘(${dataDate.date})=${targetPrice.toLocaleString()}, change=${targetPrice - prevPrice}`);
     
     return {
-      price: targetPrice,                    // 前一日收盘价（主显示）
-      date: yesterday.date,                  // 数据日期
-      open: yesterday.open,
-      high: yesterday.high,
-      low: yesterday.low,
-      yesterdayClose: prevPrice,             // 前前日收盘（用于算变化）
+      price: targetPrice,                    // 最新收盘价
+      date: dataDate.date,                   // 数据日期
+      open: dataDate.open,
+      high: dataDate.high,
+      low: dataDate.low,
+      yesterdayClose: prevPrice,             // 前日收盘（用于算变化）
       change: targetPrice - prevPrice,       // 较前日涨跌额
       changePercent: prevPrice > 0 ? (((targetPrice - prevPrice) / prevPrice) * 100).toFixed(2) : null,
-      volume: yesterday.volume,
+      volume: dataDate.volume,
       _source: 'naver_chart_api_v2',
       _allHistory: allData,                  // 走势图 + compareChart 用（全量保留）
-      _todayData: today,                     // 今日数据备用
+      _todayData: lastEntry,                 // 今日数据备用
     };
   } catch (err) {
     console.error(`  ❌ [NaverChart] Failed for ${code}: ${err.message}`);
@@ -478,11 +487,11 @@ async function fetchYahooFinance(yahooSymbol, code) {
 // 统一的数据获取入口 — 三级降级策略
 // ============================================================
 
-async function fetchStockData(comp) {
+async function fetchStockData(comp, targetDateStr) {
   const { code, yahoo } = comp;
 
   // --- 第一级: Naver K线图 API (获取价格、高低点) ---
-  let chartData = await fetchNaverChart(code);
+  let chartData = await fetchNaverChart(code, targetDateStr);
 
   // --- 第二级: Naver HTML (获取 PER/PBR 等估值指标) ---
   let htmlData = await fetchNaverHtml(code);
@@ -567,7 +576,7 @@ async function main() {
   const stockResults = await Promise.all(
     COMPANIES.map(async (comp) => {
       console.log(`\n  ┌─ ${comp.name} (${comp.code})`);
-      const data = await fetchStockData(comp);
+      const data = await fetchStockData(comp, dateStr);
       if (data) {
         data.code = comp.code;
         data.name = comp.name;
@@ -668,9 +677,7 @@ async function main() {
     const currentYear = String(targetDate.getFullYear());
     const prevYear = currentMonth === '01' ? String(targetDate.getFullYear() - 1) : currentYear;
     const months = [prevYear + prevMonth, currentYear + currentMonth];
-    // 排除今日盘中数据(取到倒数第2条)
     const monthData = realShiftUp._allHistory
-      .slice(0, -1)
       .filter(h => months.includes(h.date.slice(0, 6)));
     
     dashboardData.chartData = monthData.map(h => ({
@@ -928,10 +935,16 @@ function updateCompareChart(stockResults, targetDate) {
   const chart = content.compareChart;
   const label = `${targetDate.getMonth() + 1}/${targetDate.getDate()}`;
 
-  // 幂等：如果标签已存在则跳过
-  if (chart.labels.includes(label)) {
-    console.log(`📊 compareChart: ${label} 已存在，跳过`);
-    return;
+  // 幂等：如果标签已存在则更新（而非跳过），以修复盘中计算错误
+  const existingIndex = chart.labels.indexOf(label);
+  if (existingIndex !== -1) {
+    // 标签已存在，更新数据而非追加
+    console.log(`📊 compareChart: ${label} 已存在，更新数据`);
+    // 移除旧标签和数据点（从该位置开始）
+    chart.labels.splice(existingIndex, 1);
+    for (const ds of chart.datasets) {
+      ds.data.splice(existingIndex, 1);
+    }
   }
 
   // 动态获取当月首个交易日作为基准日

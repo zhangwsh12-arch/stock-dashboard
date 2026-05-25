@@ -129,7 +129,7 @@
           1.71,
           -0.74,
           0.16,
-          -3.14
+          3.42
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -177,7 +177,7 @@
           0.36,
           -2.08,
           -2.2,
-          -12.32
+          1.3
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -225,7 +225,7 @@
           5.02,
           3.24,
           4.23,
-          3.18
+          9.38
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -273,7 +273,7 @@
           -3.4,
           -7.07,
           -9.69,
-          -6.07
+          -5.14
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -321,7 +321,7 @@
           -12.45,
           -15.43,
           -15.34,
-          -21.28
+          -14.22
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -614,6 +614,22 @@
       "source": "Naver증권",
       "date": "05.21",
       "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>KOSDAQ暴涨+4.99%！游戏股全线强势反弹</strong>——韩国政府新设国家主权基金投资尖端产业消息刺激KOSDAQ触发买方侧车。前日(5/21)被AI/半导体虹吸的游戏股全面收复失地：Krafton +5.04%领涨、NC +4.94%、Nexon +3.26%、Netmarble +3.58%、Shift Up +2.25%、Pearl Abyss +1.32%。KOSPI +0.41%收7,848。",
+      "source": "Korea Times/Naver증권",
+      "date": "05.22",
+      "url": "https://www.koreatimes.co.kr/economy/20260522/kosdaq-jumps-nearly-5-on-state-backed-fund-optimism-while-kospi-takes-breather"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton暴涨+5.04%领涨游戏板块</strong>——前日(5/21)在KOSPI+8.42%日逆势-2.82%的最差表现后强势反弹。KOSDAQ整体暴涨带动资金回流低估蓝筹，PUBG Steam Q1平均在线30万+创新高提供基本面支撑。",
+      "source": "Naver증권/Krafton 공시",
+      "date": "05.22",
+      "url": ""
     }
   ],
   "industryNews": [
@@ -700,41 +716,41 @@
     {
       "company": "六大游戏公司",
       "color": "#6b7185",
-      "title": "<strong>5月中旬游戏股走势：KOSPI暴涨8%仍被虹吸，板块严重跑输</strong>——5/18 KOSPI触发卖方侧车(期货跌超5%)，5/21暴涨+8.42%触发买方侧车，市场极端波动。但游戏股5/21涨幅远逊大盘(Krafton反而-2.82%)，资金集中涌入AI/半导体板块(IT+14.56%)。机构单日净买入3万亿韩元KOSPI大型股，游戏股作为无AI叙事板块被完全抽离。NC(+28% YTD)领跑，Krafton(+8%)跟随，Shift Up(-19%)/Netmarble(-11%)仍承压。",
-      "source": "뉴데일리/Naver증권",
-      "date": "05.15~21",
-      "url": "https://biz.newdaily.co.kr/site/data/html/2026/05/20/2026052000089.html"
+      "title": "<strong>5月中旬游戏股走势：KOSPI暴涨8%仍被虹吸，板块严重跑输</strong>——5/18 KOSPI触发卖方侧车(期货跌超5%)，5/21暴涨+8.42%触发买方侧车，市场极端波动。但游戏股5/21涨幅远逊大盘(Krafton反而-2.82%)，资金集中涌入AI/半导体板块(IT+14.56%)。5/22 KOSDAQ暴涨+4.99%游戏股全线反弹：Krafton +5.04%、NC +4.94%、Netmarble +3.58%、Nexon +3.26%。国家主权基金投资尖端产业消息刺激KOSDAQ触发买方侧车。",
+      "source": "뉴데일리/Korea Times",
+      "date": "05.15~22",
+      "url": "https://www.koreatimes.co.kr/economy/20260522/kosdaq-jumps-nearly-5-on-state-backed-fund-optimism-while-kospi-takes-breather"
     },
     {
       "company": "NC",
       "color": "#3b82f6",
-      "title": "<strong>Aion 2新副本更新+6月Showcase预告</strong>——5/13新增超越副本'붉은 연심의 거울'及多种便利性更新。6月线下Showcase预告公开，预约持续增长。摩根士丹利将其纳入KOSPI牛市情景关注股，年初至今+28%领跑游戏板块。",
+      "title": "<strong>Aion 2新副本更新+6月Showcase预告</strong>——5/13新增超越副本'붉은 연심의 거울'及多种便利性更新。6月线下Showcase预告公开，预约持续增长。5/22 NC暴涨+4.94%领涨板块，Aion 2催化持续发酵。摩根士丹利将其纳入KOSPI牛市情景关注股。",
       "source": "NC Soft 공시/뉴데일리",
-      "date": "05.15~21",
+      "date": "05.15~22",
       "url": "https://zdnet.co.kr/view/?no=20260513151351"
     },
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>PUBG平台化推进+PAYDAY模式线下活动</strong>——5/16圣水洞线下活动成功，PUBG PC端Q1 Steam平均在线30万(环比+6.1%)，3月34万创历史新高。PAYDAY PvE模式持续拓展内容边界。若平台化正式推进，业绩和估值有望双升。",
+      "title": "<strong>PUBG平台化推进+PAYDAY模式线下活动</strong>——5/16圣水洞线下活动成功，PUBG PC端Q1 Steam平均在线30万(环比+6.1%)，3月34万创历史新高。5/22 Krafton暴涨+5.04%领涨游戏板块，前日被虹吸后强势反弹。PAYDAY PvE模式持续拓展内容边界。",
       "source": "Krafton 공시/뉴데일리",
-      "date": "05.15~21",
+      "date": "05.15~22",
       "url": ""
     },
     {
       "company": "Shift Up",
       "color": "#ff6b9d",
-      "title": "<strong>6月后新作信息为关键变量</strong>——1Q业绩低于预期但NIKKE 3.5周年后排名反弹。SGF(6月)/Gamescom(8月)/TGS(9月)/TGA(12月)为期待节点。年初至今-19%为板块最大跌幅，市场等待新作催化。",
+      "title": "<strong>6月后新作信息为关键变量</strong>——1Q业绩低于预期但NIKKE 3.5周年后排名反弹。SGF(6月)/Gamescom(8月)/TGS(9月)/TGA(12月)为期待节点。5/22 Shift Up +2.25%随板块反弹，但年初至今仍为板块最大跌幅股，市场等待新作催化。",
       "source": "뉴데일리",
-      "date": "05.15~21",
+      "date": "05.15~22",
       "url": "https://biz.newdaily.co.kr/site/data/html/2026/05/20/2026052000089.html"
     },
     {
       "company": "Netmarble",
       "color": "#ef4444",
-      "title": "<strong>新作PLC考验期持续</strong>——《七大罪:Origin》和《MON吉:STARDIVE》初期指标低于市场预期，后续收入稳定性至关重要。《Monster Striker》首月营收超₩300亿提供部分支撑，但年初至今-11%仍承压。",
+      "title": "<strong>新作PLC考验期持续</strong>——《七大罪:Origin》和《MON吉:STARDIVE》初期指标低于市场预期，后续收入稳定性至关重要。《Monster Striker》首月营收超₩300亿提供部分支撑。5/22 Netmarble +3.58%随KOSDAQ暴涨反弹。",
       "source": "Netmarble 공시/뉴데일리",
-      "date": "05.15~21",
+      "date": "05.15~22",
       "url": ""
     },
     {
