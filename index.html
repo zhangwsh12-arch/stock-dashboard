@@ -935,9 +935,16 @@ function generateSUAnalysis() {
   const _isMay12 = d >= '20260512'; // 5/12 新增
   const _isMay13 = d >= '20260513'; // 5/13 新增
   const _isMay14 = d >= '20260514'; // 5/14 NIKKE Mint+Lineage2M更新+PUBG新模式+Nexon AI补贴
+  const _isMay21 = d >= '20260521'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
+  const _isMay22 = d >= '20260522'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
 
   let analysisDetail = '';
-  if (_isMay14) {
+  if (_isMay22) {
+    // 5/22 需要同时解释本月下跌原因和当日反弹
+    analysisDetail = `<strong>本月累计下跌11.54%的多空博弈</strong>——<span style="color:#f87171">下跌主因</span>：①5/11 Q1财报利好公布后机构获利了结，剑星2自主发行+Project Spirits等利好被充分定价；②NIKKE 3.5周年活动高峰(5月初)过后用户数据自然回落，进入催化真空期；③5/21 KOSPI暴涨8.42%日资金虹吸至AI/半导体，游戏股被全面抽离。5/22 KOSDAQ暴涨+4.99%带动全线反弹+2.25%，5/21错杀得到部分修正，但月度跌幅仍居板块首位。`;
+  } else if (_isMay21) {
+    analysisDetail = `<strong>本月累计跌幅扩大至-14.39%（盘中）</strong>——5/11 Q1财报利好公布后获利了结压力持续，NIKKE 3.5周年活动高峰过后进入催化真空期。5/21 KOSPI暴涨8.42%创历史纪录，但资金集中涌入AI/半导体板块，游戏股遭全面虹吸，Shift Up跟随下跌。`;
+  } else if (_isMay14) {
     analysisDetail = `<strong>NIKKE新SSR「Mint」实装+Stellar Blade联动复刻</strong>——5/14新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。`;
   } else if (_isMay13) {
     // 5/13 Q1财报利好消化后震荡整固
@@ -1581,6 +1588,8 @@ function renderCompanyAnalysisSection() {
   const isGE22  = d >= '20260422';  // 4/22 游戏股全面反弹（6家全涨）
   const isGE23  = d >= '20260423';  // 4/23 NIKKE Anis:Star实装
   const isMay4  = d >= '20260504';  // 5/4 5月首个交易日(5/1-5/3劳动节连休)
+  const isMay21 = d >= '20260521'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
+  const isMay22 = d >= '20260522'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
 
   // 公司基础定义（不变的部分）
   const baseItems = [
@@ -1609,6 +1618,8 @@ function renderCompanyAnalysisSection() {
 
     switch(item.code) {
       case '225570': // Nexon Games
+        if (isMay22) return `<strong>本月累计 ${mcStr}</strong>。Blue Archive日本市场长期畅销提供稳定现金流。5/21 KOSPI暴涨8.42%日资金集中涌入AI/半导体，游戏股遭调仓轮动。5/22 KOSDAQ暴涨+4.99%带动反弹+3.26%，月度累计转正。<strong>新作延期风险</strong>仍待观察——Project DX/RX开发进度更新预计Q3公布。`;
+        if (isMay21) return `<strong>本月累计 ${mcStr}</strong>（盘中）。Blue Archive日本市场长期畅销提供稳定现金流。5/21 KOSPI暴涨8.42%日资金虹吸至半导体龙头，游戏股遭全面调仓轮动。<strong>新作延期风险</strong>仍压制估值——Project DX/RX日程部分延迟。`;
         if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。Blue Archive日本市场长期畅销提供稳定现金流，但<strong>新作延期风险</strong>仍压制估值——Project DX/RX开发进度更新预计Q3公布。《Dungeon & Fighter: Arad》日程部分延迟，缺乏新增长引擎。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。月初随大盘暴跌后逐步修复，但<strong>新作延期风险</strong>仍持续压制估值——社长承认"新作曲延是主因"，《Dungeon & Fighter: Arad》、Project DX、Project RX 日程均部分延迟。4/21跟随板块微跌(-0.50%)，显示市场已部分定价延期风险。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩12,020→₩12,080）。月初随大盘暴跌后逐步修复至基本持平。核心IP <strong>Blue Archive</strong> IP扩展战略持续推进中。<strong>新作延期风险</strong>仍压制估值——社长承认"新作曲延是主因"。`;
@@ -1616,6 +1627,8 @@ function renderCompanyAnalysisSection() {
         return `<strong>本月累计 ${mcStr}</strong>。4/2大盘暴跌后持续承压，核心IP Blue Archive全球表现稳健，但<strong>新作延期风险</strong>（社长公开承认）压制估值修复空间。`;
 
       case '251270': // Netmarble
+        if (isMay22) return `<strong>本月累计 ${mcStr}</strong>。《Monster Striker: Star Dive》首月营收超预期突破₩300亿提供基本面支撑，分红收益(年配当约2,800韩元/股)构筑底部。5/21资金虹吸至半导体导致单日-2.20%，5/22 KOSDAQ暴涨+4.99%带动反弹+3.58%。Coway治理争议余波间歇性压制，但新游数据验证后估值逐步修复。`;
+        if (isMay21) return `<strong>本月累计 ${mcStr}</strong>（盘中）。《Monster Striker: Star Dive》首月营收超预期突破₩300亿提供基本面支撑。5/21 KOSPI暴涨8.42%日资金集中涌入AI/半导体，游戏股遭全面调仓轮动，Netmarble单日-2.20%。Coway治理争议余波间歇性压制估值。`;
         if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。《Monster Striker: Star Dive》首月营收超预期突破₩300亿，PC/移动端跨平台联机模式获好评。分红收益(年配当约2,800韩元/股)提供底部支撑。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机。4/21资金虹吸至半导体板块导致单日跌-1.75%。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩51,400→₩51,500）。月初受<strong>Coway追加收购</strong>公告引发治理争议，《Seven Deadly Sins: Origin》运营稳定+分红收益构成底部支撑。<strong>4/15《Monster Striker: Star Dive》全球正式上线</strong>为短期营收贡献。`;
@@ -1623,6 +1636,8 @@ function renderCompanyAnalysisSection() {
         return `<strong>本月累计 ${mcStr}</strong>。月初受<strong>Coway追加收购</strong>公告引发治理争议——Activist基金Align公开批评构成"利益冲突"。市场质疑为何不回购自家股票而投资关联方，但强化控股也带来长期分红收益预期。`;
 
       case '036570': // NC
+        if (isMay22) return `<strong>本月累计 ${mcStr}</strong>${badge}。核心驱动力：<br/>① <strong>Aion 2</strong>韩国预约突破120万+Q1财报超预期（营业利润YoY +1700%）；② 6月全球发布计划稳步推进。5/21 KOSPI暴涨8.42%日资金虹吸至半导体，NC逆势-0.42%。5/22强势反弹+4.94%收复失地，月度累计涨幅扩大至<strong>月度冠军</strong>。`;
+        if (isMay21) return `<strong>本月累计 ${mcStr}</strong>${badge}（盘中）。核心驱动力：<br/>① <strong>Aion 2</strong>韩国预约突破120万+Q1财报超预期（营业利润YoY +1700%）；② 6月全球发布计划稳步推进。5/21 KOSPI暴涨8.42%日资金集中涌入AI/半导体，NC逆势-0.42%领跌游戏股，Aion 2利好已部分定价后遭调仓轮动。`;
         if (isMay4) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>韩国预约突破120万大关（距4/11座谈会后从94万增至120万）；② Q1财报超预期——营业利润YoY +1700%，Lineage Classic BM防御收入下滑趋势缓解；③ 6月全球发布计划稳步推进，预约数据持续验证市场热度。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功；② KSK韩国预约94万+创公司历史新高，30日留存36%；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。4/21 KOSPI创新高但因资金虹吸逆势跌-2.80%(当日领跌)。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>${badge}。主要驱动力：<br/>① <strong>Aion 2</strong>首次线下座谈会4/11超预期成功（600+人参与）；② KSK韩国预约94万+创公司历史新高，30日留存36%远超行业平均；③ Q1财报季实绩改善预期+FnGuide一致预期营业利润YoY +1700%。`;
@@ -1632,6 +1647,8 @@ function renderCompanyAnalysisSection() {
         return `<strong>本月累计 ${mcStr}</strong>。4/2特朗普冲击后深度调整（单日-7.19%），月初游戏板块整体承压。关注后续Aion 2座谈会及Q1财报催化。`;
 
       case '259960': // Krafton
+        if (isMay22) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源生态扩张 + Q1财报超预期(利润YoY+52%) + PUBG Steam Q1平均在线30万创新高提供基本面支撑。但5/18-5/21连续遭AI/半导体板块虹吸（5/21单日-2.82%为板块最差），拖累月度表现。5/22 KOSDAQ暴涨+4.99%带动强势反弹+5.04%<strong>领涨板块</strong>，错杀得到修正。`;
+        if (isMay21) return `<strong>本月累计 ${mcStr}</strong>（盘中）。AI模型<strong>"Raon"</strong>开源生态扩张 + Q1财报超预期(利润YoY+52%) + PUBG联动稳定提供基本面支撑。但5/21 KOSPI暴涨8.42%日资金100%涌入AI/半导体/汽车板块，游戏股遭全面虹吸，Krafton逆势-2.82%为<strong>板块最差</strong>，缺乏AI叙事+前日跌幅最大导致散户持续抛售。`;
         if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源生态持续扩张 + Q1财报超预期(利润YoY+52%)已验证 + PUBG联动稳定。<strong>PUBG Mobile印度回归谈判进入最后阶段</strong>，潜在2亿用户回归预期强烈。Ascend Zero新作开发进展顺利。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健(利润YoY+52%) + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。4/17超预期财报催化后4/21跟随板块回调-2.49%，关注<strong>Ascend Zero</strong>新作后续催化。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩262,000→₩261,500）。AI模型<strong>"Raon"</strong>开源生态发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。Q1超预期财报(利润YoY+52%)后4/17逆势+2.73%，关注<strong>Ascend Zero</strong>新作后续催化。`;
@@ -1639,6 +1656,8 @@ function renderCompanyAnalysisSection() {
         return `<strong>本月累计 ${mcStr}</strong>。AI模型<strong>"Raon"</strong>开源发酵 + Q1销售额稳健 + PUBG联动稳定，但4月初特朗普冲击(-5.53%)拖累全月表现。市值较大导致波动更敏感。`;
 
       case '263750': // Pearl Abyss
+        if (isMay22) return `<strong>本月累计 ${mcStr}</strong>，<strong>月度跌幅最大</strong>。《Crimson Desert》全球销量突破<strong>500万套</strong>+DLC「Boss重战模式」持续更新为长线基本面支撑，Q1扭亏为盈至₩1,250亿已验证。但4月发售后的获利了结卖压延续至5月，月度仍承压。5/22 KOSDAQ暴涨+4.99%带动反弹+1.32%，错杀得到部分修正。`;
+        if (isMay21) return `<strong>本月累计 ${mcStr}</strong>（盘中），<strong>月度跌幅最大</strong>。《Crimson Desert》全球销量突破500万套+DLC持续更新提供基本面支撑。但5/21 KOSPI暴涨8.42%日资金集中涌入AI/半导体，游戏股遭全面虹吸，PA跟随板块调整。前期获利了结卖压仍主导月度走势。`;
         if (isMay4) return `<strong>本月累计 ${mcStr}</strong>。《Crimson Desert》全球销量突破<strong>500万套</strong>（发售不到两个月，创韩国主机游戏史上最快），Steam"特别好评"。<strong>DLC首波内容「Boss重战模式」5月中旬上线</strong>，持续内容更新支撑长线运营。Q1扭亏为盈至₩1,250亿已验证。`;
         if (isGE22) return `<strong>本月累计 ${mcStr}</strong>，月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，4/21在板块调整中相对抗跌(+0.74%)，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
         if (isGE20) return `<strong>本月累计 ${mcStr}</strong>（₩72,000→₩54,000），月度跌幅最大。《Crimson Desert》3月20日发售至今销量突破<strong>400万套</strong>（韩国主机游戏史上最快），Steam"特别好评"，峰值27万。<strong>4/17媒体发布会</strong>公布DLC扩展路线图。前期获利了结卖压主导走势，FnGuide预期Q1扭亏为盈至₩1,250亿。`;
