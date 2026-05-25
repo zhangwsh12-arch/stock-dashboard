@@ -108,5 +108,11 @@
       "perRaw": "18.91"
     }
   ],
-  "chartData": []
+  "chartData": [
+    {
+      "date": "20260504",
+      "label": "5/4",
+      "price": 33350
+    }
+  ]
 }
