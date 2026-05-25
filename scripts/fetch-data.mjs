@@ -716,8 +716,7 @@ async function main() {
     console.log(`✅ 已更新 ${outFile} 的时间戳`);
   }
 
-  const latestFile = join(DATA_DIR, 'latest.json');
-  writeFileSync(latestFile, JSON.stringify(dashboardData, null, 2), 'utf-8');
+  writeFileSync(join(DATA_DIR, 'latest.json'), JSON.stringify(dashboardData, null, 2), 'utf-8');
   console.log(`✅ 最新数据已更新: latest.json`);
 
   updateDatesList(dateStr);
