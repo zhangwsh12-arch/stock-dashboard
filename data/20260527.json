@@ -1,8 +1,8 @@
 {
   "meta": {
-    "date": "20260529",
-    "dateDisplay": "5月（截至29日）",
-    "fetchedAt": "2026-06-01T01:00:55.662Z",
+    "date": "20260527",
+    "dateDisplay": "5月（截至27日）",
+    "fetchedAt": "2026-05-28T01:00:57.596Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -10,17 +10,35 @@
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "28,500",
-    "previousClose": "28,600",
-    "high": "29,200",
-    "low": "28,250",
-    "change": "-100",
-    "changePercent": "-0.35%",
+    "price": "28,200",
+    "previousClose": "29,050",
+    "high": "28,950",
+    "low": "28,200",
+    "change": "-850",
+    "changePercent": "-2.93%",
     "changeClass": "down",
-    "per": "8.91",
-    "pbr": "1.76",
-    "marketCap": "1.67兆元",
+    "per": "8.71",
+    "pbr": "1.72",
+    "marketCap": "1.65兆元",
     "_allHistory": [
+      {
+        "date": "20260128",
+        "open": 37000,
+        "high": 37000,
+        "low": 36050,
+        "close": 36450,
+        "volume": 126487,
+        "foreignRate": 37.13
+      },
+      {
+        "date": "20260129",
+        "open": 36250,
+        "high": 36500,
+        "low": 35200,
+        "close": 36050,
+        "volume": 99003,
+        "foreignRate": 37.16
+      },
       {
         "date": "20260130",
         "open": 36050,
@@ -718,28 +736,10 @@
         "date": "20260528",
         "open": 28200,
         "high": 29100,
-        "low": 27900,
-        "close": 28600,
-        "volume": 104030,
-        "foreignRate": 36.86
-      },
-      {
-        "date": "20260529",
-        "open": 28700,
-        "high": 29200,
-        "low": 28250,
-        "close": 28500,
-        "volume": 101062,
-        "foreignRate": 36.86
-      },
-      {
-        "date": "20260601",
-        "open": 27950,
-        "high": 29200,
-        "low": 27950,
-        "close": 29050,
-        "volume": 21682,
-        "foreignRate": 36.86
+        "low": 28050,
+        "close": 28400,
+        "volume": 23320,
+        "foreignRate": 36.9
       }
     ]
   },
@@ -748,44 +748,44 @@
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "42,500",
-      "change": "+2.29%",
-      "changeClass": "up",
-      "per": "10.31"
+      "price": "41,250",
+      "change": "-1.79%",
+      "changeClass": "down",
+      "per": "9.95"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "289,500",
-      "change": "+1.76%",
+      "price": "277,500",
+      "change": "+2.21%",
       "changeClass": "up",
-      "per": "13.86"
+      "per": "13.67"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "257,500",
-      "change": "+0.78%",
-      "changeClass": "up",
-      "per": "14.01"
-    },
-    {
-      "code": "263750",
-      "name": "Pearl Abyss",
-      "color": "#ec4899",
-      "price": "43,650",
-      "change": "-0.57%",
+      "price": "255,000",
+      "change": "-2.11%",
       "changeClass": "down",
-      "per": "18.94"
+      "per": "13.85"
     },
     {
       "code": "225570",
       "name": "Nexon Games",
       "color": "#22c55e",
-      "price": "10,540",
-      "change": "-1.95%",
+      "price": "10,810",
+      "change": "-2.35%",
+      "changeClass": "down",
+      "per": "N/A"
+    },
+    {
+      "code": "263750",
+      "name": "Pearl Abyss",
+      "color": "#ec4899",
+      "price": "44,300",
+      "change": "-1.88%",
       "changeClass": "down",
       "per": "N/A"
     }
@@ -795,41 +795,33 @@
       "code": "462870",
       "name": "Shift Up",
       "color": "#ff6b9d",
-      "price": "28,500",
-      "per": 8.91,
-      "perRaw": "8.91"
+      "price": "28,200",
+      "per": 8.71,
+      "perRaw": "8.71"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "42,500",
-      "per": 10.31,
-      "perRaw": "10.31"
+      "price": "41,250",
+      "per": 9.95,
+      "perRaw": "9.95"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "289,500",
-      "per": 13.86,
-      "perRaw": "13.86"
+      "price": "277,500",
+      "per": 13.67,
+      "perRaw": "13.67"
     },
     {
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "257,500",
-      "per": 14.01,
-      "perRaw": "14.01"
-    },
-    {
-      "code": "263750",
-      "name": "Pearl Abyss",
-      "color": "#ec4899",
-      "price": "43,650",
-      "per": 18.94,
-      "perRaw": "18.94"
+      "price": "255,000",
+      "per": 13.85,
+      "perRaw": "13.85"
     }
   ],
   "chartData": [
@@ -1026,30 +1018,25 @@
     {
       "date": "20260528",
       "label": "5/28",
-      "price": 28600
-    },
-    {
-      "date": "20260529",
-      "label": "5/29",
-      "price": 28500
+      "price": 28400
     }
   ],
   "indices": [
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "8682.20",
-      "change": "206.05",
-      "changePercent": "2.43",
-      "changeClass": "up"
+      "price": "8202.22",
+      "change": "-26.48",
+      "changePercent": "-0.32",
+      "changeClass": "down"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "1069.58",
-      "change": "-5.22",
-      "changePercent": "-0.49",
-      "changeClass": "down"
+      "price": "1115.53",
+      "change": "1115.53",
+      "changePercent": "0.00",
+      "changeClass": "up"
     }
   ]
 }
