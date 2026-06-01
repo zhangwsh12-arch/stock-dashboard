@@ -2,6 +2,8 @@ name: Daily Stock Data Update
 
 on:
   # ====== 外部定时触发（cron-job.org 精准触发，无延迟）======
+  # 建议配置: 工作日 UTC 02:00 (北京时间 10:00 / 韩国时间 11:00)
+  # 韩国股市收盘时间为 KST 15:30，11:00 推送可确保数据已完整录入
   repository_dispatch:
     types: [trigger-update]
 

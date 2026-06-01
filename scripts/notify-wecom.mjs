@@ -26,6 +26,41 @@ if (!data?.meta) {
   process.exit(1);
 }
 
+// ====== 校验数据日期 ======
+function getExpectedTradingDay() {
+  const d = new Date();
+  const koreaHour = d.getUTCHours() + 9;
+  if (koreaHour >= 6) d.setUTCDate(d.getUTCDate() - 1);
+
+  const KRX_HOLIDAYS = [
+    '20260101', '20260216', '20260217', '20260218',
+    '20260302', '20260501', '20260505', '20260525',
+    '20260817', '20260924', '20260925', '20261005',
+    '20261009', '20261225'
+  ];
+
+  while (true) {
+    const day = d.getUTCDay();
+    if (day === 0) { d.setUTCDate(d.getUTCDate() - 2); continue; }
+    if (day === 6) { d.setUTCDate(d.getUTCDate() - 1); continue; }
+    const y = d.getUTCFullYear();
+    const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const dayStr = String(d.getUTCDate()).padStart(2, '0');
+    const dateStr = `${y}${m}${dayStr}`;
+    if (KRX_HOLIDAYS.includes(dateStr)) { d.setUTCDate(d.getUTCDate() - 1); continue; }
+    break;
+  }
+  return d;
+}
+
+const expectedDate = getExpectedTradingDay();
+const expectedDateStr = `${expectedDate.getUTCFullYear()}${String(expectedDate.getUTCMonth() + 1).padStart(2, '0')}${String(expectedDate.getUTCDate()).padStart(2, '0')}`;
+
+if (data.meta?.date !== expectedDateStr) {
+  console.warn(`[notify] ⚠️ 数据日期异常: latest.json 记录为 ${data.meta?.date}，预期最近交易日为 ${expectedDateStr}`);
+  console.warn(`[notify] 可能原因: 数据抓取失败或使用了旧数据，推送内容可能不准确`);
+}
+
 // ====== 构建消息 ======
 const meta = data.meta;
 const su = data.shiftUp;

@@ -42,6 +42,16 @@ const COMPANIES = [
 ];
 
 // ============================================================
+// KRX 休市日（2026年）
+// ============================================================
+const KRX_HOLIDAYS = [
+  '20260101', '20260216', '20260217', '20260218',
+  '20260302', '20260501', '20260505', '20260525',
+  '20260817', '20260924', '20260925', '20261005',
+  '20261009', '20261225'
+];
+
+// ============================================================
 // 工具函数
 // ============================================================
 function getLatestTradingDay() {
@@ -53,18 +63,23 @@ function getLatestTradingDay() {
   // 如果还没到当天收盘(韩国时间15点=UTC 6点)，取前一个交易日
   if (koreaHour >= 6) d.setUTCDate(d.getUTCDate() - 1);
   
-  const day = d.getUTCDay();
-  // 周末回退到周五
-  if (day === 0) d.setUTCDate(d.getUTCDate() - 2);  // 周日 -> 周五
-  if (day === 6) d.setUTCDate(d.getUTCDate() - 1);  // 周六 -> 周五
+  // 回退非交易日（周末 + KRX 休市日）
+  while (true) {
+    const day = d.getUTCDay();
+    if (day === 0) { d.setUTCDate(d.getUTCDate() - 2); continue; }  // 周日 -> 周五
+    if (day === 6) { d.setUTCDate(d.getUTCDate() - 1); continue; }  // 周六 -> 周五
+    const dateStr = formatDate(d);
+    if (KRX_HOLIDAYS.includes(dateStr)) { d.setUTCDate(d.getUTCDate() - 1); continue; }
+    break;
+  }
   
   return d;
 }
 
 function formatDate(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
   return `${y}${m}${day}`;
 }
 
@@ -561,7 +576,7 @@ async function main() {
   if (existsSync(latestFile)) {
     try {
       const latest = JSON.parse(readFileSync(latestFile, 'utf-8'));
-      if (latest.date === dateStr) {
+      if (latest.meta?.date === dateStr) {
         console.log(`\n⏭️ 今日 (${dateStr}) 数据已更新过，跳过重复执行`);
         process.exit(0);
       }
