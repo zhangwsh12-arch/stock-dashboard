@@ -55,13 +55,23 @@ const KRX_HOLIDAYS = [
 // 工具函数
 // ============================================================
 function getLatestTradingDay() {
-  const d = new Date();
-  // 韩国时间 UTC+9，上午9点到下午3点为交易时间
-  const koreaHour = d.getUTCHours() + 9;
+  const now = new Date();
+  // 精确转换为韩国时间（UTC+9），避免 koreaHour 溢出 24 的 bug
+  const kstTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
   
-  // 始终取前一个交易日收盘（看板显示昨收数据）
-  // 如果还没到当天收盘(韩国时间15点=UTC 6点)，取前一个交易日
-  if (koreaHour >= 6) d.setUTCDate(d.getUTCDate() - 1);
+  let targetYear  = kstTime.getUTCFullYear();
+  let targetMonth = kstTime.getUTCMonth();
+  let targetDay   = kstTime.getUTCDate();
+  const kstHour   = kstTime.getUTCHours();
+  const kstMin    = kstTime.getUTCMinutes();
+  
+  // 韩国股市收盘时间 15:30 KST
+  // 如果还没到收盘，取前一个交易日（看板显示昨收数据）
+  if (kstHour < 15 || (kstHour === 15 && kstMin < 30)) {
+    targetDay -= 1; // Date.UTC 会自动处理跨月/跨年
+  }
+  
+  const d = new Date(Date.UTC(targetYear, targetMonth, targetDay));
   
   // 回退非交易日（周末 + KRX 休市日）
   while (true) {
@@ -569,7 +579,7 @@ async function main() {
   const targetDate = getLatestTradingDay();
   const dateStr = formatDate(targetDate);
 
-  console.log(`\n📅 目标日期: ${dateStr} (${targetDate.getMonth() + 1}月${targetDate.getDate()}日)`);
+  console.log(`\n📅 目标日期: ${dateStr} (${targetDate.getUTCMonth() + 1}月${targetDate.getUTCDate()}日)`);
 
   // ====== 每日一次保护：如果 latest.json 已是今天的数据则跳过 ======
   const latestFile = join(DATA_DIR, 'latest.json');
@@ -627,7 +637,7 @@ async function main() {
   const dashboardData = {
     meta: {
       date: dateStr,
-      dateDisplay: `${targetDate.getMonth() + 1}月（截至${targetDate.getDate()}日）`,
+      dateDisplay: `${targetDate.getUTCMonth() + 1}月（截至${targetDate.getUTCDate()}日）`,
       fetchedAt: new Date().toISOString(),
       source: 'Naver Finance / Multi-source v3',
       updateCount: successCount,
@@ -687,10 +697,10 @@ async function main() {
   // 图表数据 (使用 Shift Up 的历史数据)
   // 保留近2个月数据，支持前端按月份筛选显示
   if (realShiftUp && realShiftUp._allHistory && realShiftUp._allHistory.length > 0) {
-    const currentMonth = String(targetDate.getMonth() + 1).padStart(2, '0');
-    const prevMonth = String(targetDate.getMonth()).padStart(2, '0') || '12';
-    const currentYear = String(targetDate.getFullYear());
-    const prevYear = currentMonth === '01' ? String(targetDate.getFullYear() - 1) : currentYear;
+    const currentMonth = String(targetDate.getUTCMonth() + 1).padStart(2, '0');
+    const prevMonth = String(targetDate.getUTCMonth()).padStart(2, '0') || '12';
+    const currentYear = String(targetDate.getUTCFullYear());
+    const prevYear = currentMonth === '01' ? String(targetDate.getUTCFullYear() - 1) : currentYear;
     const months = [prevYear + prevMonth, currentYear + currentMonth];
     const monthData = realShiftUp._allHistory
       .filter(h => months.includes(h.date.slice(0, 6)));
@@ -707,7 +717,7 @@ async function main() {
   
   // 检查是否是某个月的最后一天（且文件已存在）
   // 如果是，且现有文件的数据比新数据更完整，则保留现有文件
-  const isLastDayOfMonth = targetDate.getDate() === new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0).getDate();
+  const isLastDayOfMonth = targetDate.getUTCDate() === new Date(targetDate.getUTCFullYear(), targetDate.getUTCMonth() + 1, 0).getUTCDate();
   let shouldWrite = true;
   
   if (isLastDayOfMonth && existsSync(outFile)) {
@@ -773,13 +783,13 @@ async function main() {
 async function fixHistoricalMonthData(allHistory, targetDate) {
   if (!allHistory || allHistory.length === 0) return;
 
-  const currentYear = String(targetDate.getFullYear());
-  const currentMonthNum = targetDate.getMonth() + 1; // 1-12
+  const currentYear = String(targetDate.getUTCFullYear());
+  const currentMonthNum = targetDate.getUTCMonth() + 1; // 1-12
   const currentMonth = String(currentMonthNum).padStart(2, '0');
   
   // 计算上个月
-  let prevMonthNum = targetDate.getMonth(); // 0-11
-  let prevYear = targetDate.getFullYear();
+  let prevMonthNum = targetDate.getUTCMonth(); // 0-11
+  let prevYear = targetDate.getUTCFullYear();
   if (prevMonthNum === 0) {
     prevMonthNum = 12;
     prevYear -= 1;
@@ -908,8 +918,8 @@ function getFirstTradingDayOfMonth(year, month) {
   // month 是 0-based (0=1月)
   const candidates = [];
   for (let day = 1; day <= 10; day++) { // 最多看前10天，足够覆盖月初假期
-    const d = new Date(year, month, day);
-    const dayOfWeek = d.getDay();
+    const d = new Date(Date.UTC(year, month, day));
+    const dayOfWeek = d.getUTCDay();
     if (dayOfWeek === 0 || dayOfWeek === 6) continue; // 跳过周末
     const dateStr = formatDate(d);
     if (KRX_HOLIDAYS_2026.has(dateStr)) continue; // 跳过休市日
@@ -948,7 +958,7 @@ function updateCompareChart(stockResults, targetDate) {
   }
 
   const chart = content.compareChart;
-  const label = `${targetDate.getMonth() + 1}/${targetDate.getDate()}`;
+  const label = `${targetDate.getUTCMonth() + 1}/${targetDate.getUTCDate()}`;
 
   // 幂等：如果标签已存在则更新（而非跳过），以修复盘中计算错误
   const existingIndex = chart.labels.indexOf(label);
@@ -963,11 +973,11 @@ function updateCompareChart(stockResults, targetDate) {
   }
 
   // 动态获取当月首个交易日作为基准日
-  const compareBaseDate = getFirstTradingDayOfMonth(targetDate.getFullYear(), targetDate.getMonth());
-  console.log(`📊 compareChart 基准日: ${compareBaseDate}（${targetDate.getMonth() + 1}月首个交易日）`);
+  const compareBaseDate = getFirstTradingDayOfMonth(targetDate.getUTCFullYear(), targetDate.getUTCMonth());
+  console.log(`📊 compareChart 基准日: ${compareBaseDate}（${targetDate.getUTCMonth() + 1}月首个交易日）`);
 
   // 检测是否跨月：当前 labels 中是否已存在当月日期
-  const currentMonthPrefix = `${targetDate.getMonth() + 1}/`;
+  const currentMonthPrefix = `${targetDate.getUTCMonth() + 1}/`;
   const hasCurrentMonthData = chart.labels.some(l => l.startsWith(currentMonthPrefix));
 
   // 追加标签
@@ -1030,9 +1040,9 @@ function updateCompareChart(stockResults, targetDate) {
   }
 
   // 更新 meta.updatedAt
-  const yyyy = targetDate.getFullYear();
-  const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
-  const dd = String(targetDate.getDate()).padStart(2, '0');
+  const yyyy = targetDate.getUTCFullYear();
+  const mm = String(targetDate.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(targetDate.getUTCDate()).padStart(2, '0');
   content.meta.updatedAt = `${yyyy}-${mm}-${dd}`;
 
   writeFileSync(contentFile, JSON.stringify(content, null, 2), 'utf-8');

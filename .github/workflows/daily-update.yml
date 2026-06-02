@@ -99,9 +99,11 @@ jobs:
           echo "⏭️ 今日 (${{ steps.get-date.outputs.date }}) 已推送过，跳过"
           exit 0
 
-      - name: Checkout
+      - name: Checkout latest data
         if: steps.notify-guard.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
+        with:
+          ref: main  # 必须获取 update job 推送的最新 commit，而非触发时的旧 commit
 
       - name: Setup Node.js
         if: steps.notify-guard.outputs.cache-hit != 'true'

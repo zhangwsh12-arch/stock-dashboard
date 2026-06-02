@@ -28,9 +28,21 @@ if (!data?.meta) {
 
 // ====== 校验数据日期 ======
 function getExpectedTradingDay() {
-  const d = new Date();
-  const koreaHour = d.getUTCHours() + 9;
-  if (koreaHour >= 6) d.setUTCDate(d.getUTCDate() - 1);
+  const now = new Date();
+  // 精确转换为韩国时间（UTC+9），避免 koreaHour 溢出 24 的 bug
+  const kstTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  
+  let targetYear  = kstTime.getUTCFullYear();
+  let targetMonth = kstTime.getUTCMonth();
+  let targetDay   = kstTime.getUTCDate();
+  const kstHour   = kstTime.getUTCHours();
+  const kstMin    = kstTime.getUTCMinutes();
+  
+  if (kstHour < 15 || (kstHour === 15 && kstMin < 30)) {
+    targetDay -= 1;
+  }
+  
+  const d = new Date(Date.UTC(targetYear, targetMonth, targetDay));
 
   const KRX_HOLIDAYS = [
     '20260101', '20260216', '20260217', '20260218',
