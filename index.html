@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260522a'; // 更新：修复个股驱动因素拆分逻辑+5/21日期分支
+      var VER = '20260602a'; // 更新：修复todayEvents日期匹配逻辑，避免ddPart误命中旧事件
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -1076,26 +1076,29 @@ function renderDailySummary() {
   // 收集当日事件用于个股原因匹配
   // ⚠️ datePrefix 格式示例: "0408" (来自 meta.date "20260408".slice(4))
   // EVENT_DATA.date 格式示例: "04.08~09" 或 "04.09"
-  // 需要提取 MM.DD 部分进行模糊匹配（支持 04.08 和 4.8 两种格式）
   const dateRaw = (currentData.meta?.date || '').slice(4); // "0408"
-  const mmddNormalized = dateRaw.replace(/^0?(\d{1,2})0?(\d{1,2})$/, '$1.$2'); // "0408" → "4.8"
-  const mmddPadded = mmddNormalized.replace(/^(\d)\./, '0$1.'); // "4.8" → "04.8"
-  const ddPart = dateRaw.slice(2).replace(/^0/, ''); // "08" → "8"
+  const currentMmddNum = parseInt(dateRaw.slice(0, 2), 10) * 100 + parseInt(dateRaw.slice(2), 10);
+  function parseEventDate(ed) {
+    const [m, d] = ed.split(/[~.]/).map(Number).filter(n => !isNaN(n));
+    return m * 100 + d;
+  }
   const todayEvents = EVENT_DATA.filter(e => {
-    // 多种匹配策略确保能命中（同时支持 04.08 和 4.8 格式）
-    const ed = e.date; // e.g. "04.08~09", "04.09", "04.07~09"
-    return ed.includes(mmddNormalized) || // "04.08~09".includes("4.8") → true
-           ed.includes(mmddPadded) ||       // "4.8".includes("04.8") → true (内容为"04.x"时)
-           ed.includes(ddPart) ||           // "08" 匹配 DD部分
-           ed.includes(dateRaw.replace(/^0/,'')); // "408" 匹配（兼容旧格式）
+    const ed = e.date; // e.g. "04.08~09", "04.09"
+    // 精确单日匹配
+    const eventMmdd = parseEventDate(ed);
+    if (eventMmdd === currentMmddNum) return true;
+    // 范围匹配：如 "04.08~09"
+    if (ed.includes('~')) {
+      const parts = ed.split('~');
+      const start = parseEventDate(parts[0]);
+      const end = parseEventDate(parts[0].split('.')[0] + '.' + parts[1]); // "04.08" + "~" + "09" → end="04.09"
+      const today = currentMmddNum;
+      return today >= start && today <= end;
+    }
+    return false;
   });
 
   // 当日资讯严格过滤：只显示精确单日匹配的事件（不含跨日期范围如"04.02~09"）
-  const currentMmddNum = parseInt(dateRaw.slice(0, 2), 10) * 100 + parseInt(dateRaw.slice(2), 10);
-  function parseEventDate(ed) {
-    const [m, d] = ed.split('.').map(Number);
-    return m * 100 + d;
-  }
   todayDailyEvents = EVENT_DATA.filter(e => {
     const ed = e.date;
     if (ed.includes('~')) return false;
