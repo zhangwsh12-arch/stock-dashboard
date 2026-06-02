@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260602a'; // 更新：修复todayEvents日期匹配逻辑，避免ddPart误命中旧事件
+      var VER = '20260602b'; // 更新：修复月度分析isMay22开区间命中6月+首个交易日显示0%问题
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -1590,9 +1590,10 @@ function renderCompanyAnalysisSection() {
   const isGE20  = d >= '20260420';  // 4/20 NIKKE周年
   const isGE22  = d >= '20260422';  // 4/22 游戏股全面反弹（6家全涨）
   const isGE23  = d >= '20260423';  // 4/23 NIKKE Anis:Star实装
-  const isMay4  = d >= '20260504';  // 5/4 5月首个交易日(5/1-5/3劳动节连休)
-  const isMay21 = d >= '20260521'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
-  const isMay22 = d >= '20260522'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
+  const isMay4  = d >= '20260504' && d < '20260521';  // 5/4 5月首个交易日(5/1-5/3劳动节连休)
+  const isMay21 = d >= '20260521' && d < '20260522'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
+  const isMay22 = d >= '20260522' && d < '20260601'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
+  const isJune  = d >= '20260601'; // 6月
 
   // 公司基础定义（不变的部分）
   const baseItems = [
@@ -1618,6 +1619,24 @@ function renderCompanyAnalysisSection() {
     const mcStr = `${sign}${mc.toFixed(2)}%`;
     const isChampion = mc === maxMc && mc > 0;
     const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
+
+    // 6月通用分析：新月份刚开始，避免命中上月过期分支
+    if (isJune) {
+      switch(item.code) {
+        case '225570': // Nexon Games
+          return `<strong>6月首个交易日</strong>。Blue Archive日本市场长期畅销提供稳定现金流。关注Q2财报及Project DX/RX新作进展。`;
+        case '251270': // Netmarble
+          return `<strong>6月首个交易日</strong>。《Monster Striker: Star Dive》首月营收超预期突破₩300亿提供基本面支撑，分红收益(年配当约2,800韩元/股)构筑底部。Coway治理争议余波间歇性压制。`;
+        case '036570': // NC
+          return `<strong>6月首个交易日</strong>。Aion 2韩国预约突破120万，6月全球发布计划稳步推进。Q1财报超预期（营业利润YoY +1700%）提供基本面支撑。`;
+        case '259960': // Krafton
+          return `<strong>6月首个交易日</strong>。AI模型"Raon"开源生态扩张 + Q1财报超预期(利润YoY+52%) + PUBG Steam Q1平均在线30万创新高提供基本面支撑。`;
+        case '263750': // Pearl Abyss
+          return `<strong>6月首个交易日</strong>。《Crimson Desert》全球销量突破500万套+DLC「Boss重战模式」持续更新为长线基本面支撑，Q1扭亏为盈至₩1,250亿已验证。`;
+        default:
+          return `<strong>6月首个交易日</strong>。暂无详细分析。`;
+      }
+    }
 
     switch(item.code) {
       case '225570': // Nexon Games
@@ -1675,6 +1694,13 @@ function renderCompanyAnalysisSection() {
   const dateDisplay = _dl(currentData.meta.date);
   const currentMonthLabel = currentDate ? parseInt(currentDate.slice(4, 6), 10) : '';
 
+  // 判断是否为当月首个交易日
+  const _currentMonth = parseInt(currentDate.slice(4, 6), 10);
+  const _currentLabel = _dl(currentDate);
+  const _monthStartIdx = ALL_LABELS.findIndex(l => parseInt(l.split('/')[0], 10) === _currentMonth);
+  const _endIdx = ALL_LABELS.findIndex(l => l === _currentLabel);
+  const isFirstTradingDay = _monthStartIdx >= 0 && _endIdx >= 0 && _monthStartIdx === _endIdx;
+
   container.innerHTML = `
 <div class="full-width-grid">
     <div class="card">
@@ -1686,9 +1712,14 @@ function renderCompanyAnalysisSection() {
               const changeClass = c.changeClass || 'neutral';
               const perText = c.per ? `PER ${c.per}` : '';
               const mc = item.monthChange || 0;
-              const mcClass = mc >= 0 ? 'up' : 'down';
-              const mcText = (mc >= 0 ? '+' : '') + mc.toFixed(2) + '%';
-              const monthBadge = `<span class="ca-price-change ${mcClass}" style="margin-left:6px;font-size:12px">📊 月: <strong>${mcText}</strong></span>`;
+              let monthBadge;
+              if (isFirstTradingDay) {
+                monthBadge = `<span class="ca-price-change neutral" style="margin-left:6px;font-size:12px">📊 月: <strong>首个交易日</strong></span>`;
+              } else {
+                const mcClass = mc >= 0 ? 'up' : 'down';
+                const mcText = (mc >= 0 ? '+' : '') + mc.toFixed(2) + '%';
+                monthBadge = `<span class="ca-price-change ${mcClass}" style="margin-left:6px;font-size:12px">📊 月: <strong>${mcText}</strong></span>`;
+              }
               const text = getItemText(item, mc);
 
               return `
