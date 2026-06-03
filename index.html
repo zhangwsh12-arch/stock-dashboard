@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260603a'; // 更新：修复generateSUAnalysis开区间日期分支命中6月
+      var VER = '20260603b'; // 更新：修复parseNewsDate无法解析范围日期导致5月14日后新闻不显示
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -1821,7 +1821,7 @@ function renderNewsSection() {
                 ${(() => {
                   const curDate = currentData?.meta?.date || '';
                   const curMmddNum = parseInt(curDate.slice(4, 6), 10) * 100 + parseInt(curDate.slice(6, 8), 10);
-                  const parseNewsDate = d => { const [m, dd] = d.split('.').map(Number); return m * 100 + dd; };
+                  const parseNewsDate = d => { const [m, dd] = d.split(/[.~]/).map(Number).filter(n => !isNaN(n)); return m * 100 + dd; };
                   return NORMAL_DATA.filter(i => parseNewsDate(i.date) <= curMmddNum)
                     .sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date))
                     .map(i => `<tr>
