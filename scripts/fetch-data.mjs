@@ -1039,6 +1039,20 @@ function updateCompareChart(stockResults, targetDate) {
     console.log(`  📊 ${dataset.label}: 无法计算，沿用 ${lastVal}%`);
   }
 
+  // 数据长度一致性校验与修复（防止并发/异常导致data与labels错位）
+  const labelsLen = chart.labels.length;
+  for (const ds of chart.datasets) {
+    if (ds.data.length !== labelsLen) {
+      console.warn(`⚠️ ${ds.label} data长度(${ds.data.length})与labels(${labelsLen})不一致，自动修复`);
+      while (ds.data.length > labelsLen) {
+        ds.data.pop();
+      }
+      while (ds.data.length < labelsLen) {
+        ds.data.push(ds.data.length > 0 ? ds.data[ds.data.length - 1] : 0);
+      }
+    }
+  }
+
   // 更新 meta.updatedAt
   const yyyy = targetDate.getUTCFullYear();
   const mm = String(targetDate.getUTCMonth() + 1).padStart(2, '0');
