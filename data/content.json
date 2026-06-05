@@ -679,6 +679,30 @@
       "source": "Naver증권/Krafton 공시",
       "date": "05.22",
       "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>6月首个交易日：游戏股两极分化</strong>——平均涨跌幅-1.88%，上涨仅6家。NHN和NC创52周新高，但Com2us等10只游戏股创52周新低。资金向头部集中，中小游戏股持续承压。Krafton走弱，Nexon Games微涨。",
+      "source": "GameTalk/조선일보",
+      "date": "06.01",
+      "url": "https://gametalk.tistory.com/6654"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>6/2游戏股反弹但分化依旧</strong>——平均涨跌幅+1.00%，上涨19家下跌12家。NC和韩光软件创52周最高，Big10游戏股火热上涨，板块总市值11个交易日后重回35万亿韩元。但Com2us、Nexon Games等13只个股仍创52周新低。",
+      "source": "GameTalk/뉴스파워",
+      "date": "06.02",
+      "url": "https://gametalk.tistory.com/6660"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC 6/2暴涨创52周新高</strong>——Aion 2全球发布计划稳步推进，6月线下Showcase预告持续发酵，韩国预约突破120万。Q1财报超预期（营业利润YoY+1700%）提供基本面支撑，6月全球发布前估值持续重估。",
+      "source": "NC Soft/AION2 공식",
+      "date": "06.02",
+      "url": "https://aion2.plaync.com/ko-kr/board/notice/list"
     }
   ],
   "industryNews": [
@@ -889,6 +913,30 @@
       "source": "한국경제/Naver증권",
       "date": "04.22",
       "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>6月开局游戏股两极分化</strong>——6/1平均涨跌幅-1.88%，NHN和NC创52周新高，但Com2us等10只游戏股创52周新低。资金向头部集中，中小游戏股持续承压。Krafton走弱，Nexon Games微涨。",
+      "source": "GameTalk/조선일보",
+      "date": "06.01",
+      "url": "https://gametalk.tistory.com/6654"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>6/2游戏股反弹但分化依旧</strong>——平均涨跌幅+1.00%，NC和韩光软件创52周最高，Big10游戏股火热上涨，板块总市值11个交易日后重回35万亿韩元。但Com2us、Nexon Games等13只个股仍创52周新低，中小游戏股压力未减。",
+      "source": "GameTalk/뉴스파워",
+      "date": "06.02",
+      "url": "https://gametalk.tistory.com/6660"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>Aion 2 6月全球发布临近+Showcase预热</strong>——6月线下Showcase预告持续发酵，韩国预约突破120万。6/2 NC暴涨创52周新高，Aion 2催化持续推动估值重估。6/4定期维护后用户活跃度维持高位。",
+      "source": "NC Soft/AION2 공식",
+      "date": "06.01~04",
+      "url": "https://aion2.plaync.com/ko-kr/board/notice/list"
     }
   ]
 }

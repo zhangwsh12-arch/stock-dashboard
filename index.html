@@ -884,26 +884,40 @@ function findCompanyReason(stockName, changeClass) {
     };
 
     // 6月通用原因，避免命中上月过期分支
-    if (isJuneOrLater) {
+    const isJuneFirstDays = currentDate >= '20260601' && currentDate < '20260603'; // 6/1-6/2
+    const isJuneLater = currentDate >= '20260603'; // 6/3起（6/3休市，实际6/4+）
+    if (isJuneFirstDays || isJuneLater) {
       const juneMap = {
         'NC': changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Aion 2全球发布计划稳步推进，韩国预约突破120万+Q1财报超预期（营业利润YoY +1700%）提供基本面支撑。'
-          : '<strong>6月首个交易日调整</strong>——Aion 2利好已部分定价，短期获利了结压力占主导。6月全球发布前或维持震荡整理。',
+          : isJuneFirstDays
+            ? '<strong>6月首个交易日调整</strong>——Aion 2利好已部分定价，短期获利了结压力占主导。6月全球发布前或维持震荡整理。'
+            : '<strong>6月震荡整理</strong>——Aion 2利好已部分定价，短期获利了结与长线资金博弈。6月全球发布前或维持区间震荡。',
         'Pearl Abyss': changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Crimson Desert全球销量突破500万套+DLC「Boss重战模式」持续更新验证长线运营能力，Q1扭亏为盈至₩1,250亿提供基本面支撑。'
-          : '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期。',
+          : isJuneFirstDays
+            ? '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期。'
+            : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力持续，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期，等待新催化。',
         'Shift Up': changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——NIKKE累计营收破$10亿验证IP运营能力，剑星2自主发行+Project Spirits(腾讯发行)长期利好支撑。'
-          : '<strong>6月首个交易日调整</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露。',
+          : isJuneFirstDays
+            ? '<strong>6月首个交易日调整</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露。'
+            : '<strong>6月震荡整理</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露及NIKKE运营数据。',
         'Krafton': changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——PUBG Steam Q1平均在线30万创新高+AI模型"Raon"开源生态扩张提供基本面支撑。'
-          : '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。',
+          : isJuneFirstDays
+            ? '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。'
+            : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力与基本面支撑博弈，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。',
         'Nexon Games': changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Blue Archive日本市场长期畅销提供稳定现金流，AI补贴制度+DNF多元内容推进支撑估值。'
-          : '<strong>6月首个交易日调整</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。',
+          : isJuneFirstDays
+            ? '<strong>6月首个交易日调整</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。'
+            : '<strong>6月震荡整理</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。Blue Archive稳健但难抵估值下行。',
         'Netmarble': changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——《Monster Striker: Star Dive》首月营收超预期突破₩300亿验证后持续运营，分红收益(年配当约2,800韩元/股)构筑底部。'
-          : '<strong>6月首个交易日调整</strong>——Coway治理争议余波间歇性压制，Monster Striker营收持续性待验证。',
+          : isJuneFirstDays
+            ? '<strong>6月首个交易日调整</strong>——Coway治理争议余波间歇性压制，Monster Striker营收持续性待验证。'
+            : '<strong>6月震荡整理</strong>——Coway治理争议余波间歇性压制，Monster Striker营收持续性待验证。分红收益构筑底部支撑。',
       };
       for (const [key, reason] of Object.entries(juneMap)) {
         if (stockName.includes(key) || key.includes(stockName)) return reason;
