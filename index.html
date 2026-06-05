@@ -979,11 +979,13 @@ function generateSUAnalysis() {
   const _isMay14 = d >= '20260514' && d < '20260521'; // 5/14 NIKKE Mint+Lineage2M更新+PUBG新模式+Nexon AI补贴
   const _isMay21 = d >= '20260521' && d < '20260522'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
   const _isMay22 = d >= '20260522' && d < '20260601'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
-  const _isJune = d >= '20260601'; // 6月
+  const _isJuneFirstDays = d >= '20260601' && d < '20260603'; // 6月首个交易日(6/1-6/2)
+  const _isJuneLater = d >= '20260603'; // 6/3起(实际6/4+)
 
   let analysisDetail = '';
-  if (_isJune) {
-    analysisDetail = `<strong>6月首个交易日</strong>。5月催化剂消化完毕，进入新月份估值重估窗口。剑星2自主发行+Project Spirits(腾讯发行)长期利好仍在，NIKKE累计营收破$10亿验证IP运营能力。关注6月新作消息及Q2财报预期。`;
+  const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : '<strong>6月震荡整理</strong>';
+  if (_isJuneFirstDays || _isJuneLater) {
+    analysisDetail = `${_juneSuPrefix}。5月催化剂消化完毕，进入新月份估值重估窗口。剑星2自主发行+Project Spirits(腾讯发行)长期利好仍在，NIKKE累计营收破$10亿验证IP运营能力。关注6月新作消息及Q2财报预期。`;
   } else if (_isMay22) {
     // 5/22 需要同时解释本月下跌原因和当日反弹
     analysisDetail = `<strong>本月累计下跌11.54%的多空博弈</strong>——<span style="color:#f87171">下跌主因</span>：①5/11 Q1财报利好公布后机构获利了结，剑星2自主发行+Project Spirits等利好被充分定价；②NIKKE 3.5周年活动高峰(5月初)过后用户数据自然回落，进入催化真空期；③5/21 KOSPI暴涨8.42%日资金虹吸至AI/半导体，游戏股被全面抽离。5/22 KOSDAQ暴涨+4.99%带动全线反弹+2.25%，5/21错杀得到部分修正，但月度跌幅仍居板块首位。`;
@@ -1638,7 +1640,8 @@ function renderCompanyAnalysisSection() {
   const isMay4  = d >= '20260504' && d < '20260521';  // 5/4 5月首个交易日(5/1-5/3劳动节连休)
   const isMay21 = d >= '20260521' && d < '20260522'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
   const isMay22 = d >= '20260522' && d < '20260601'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
-  const isJune  = d >= '20260601'; // 6月
+  const isJuneFirstDays = d >= '20260601' && d < '20260603'; // 6月首个交易日(6/1-6/2, 6/3休市)
+  const isJuneLater = d >= '20260603'; // 6/3起(实际6/4+)
 
   // 公司基础定义（不变的部分）
   const baseItems = [
@@ -1665,21 +1668,22 @@ function renderCompanyAnalysisSection() {
     const isChampion = mc === maxMc && mc > 0;
     const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
 
-    // 6月通用分析：新月份刚开始，避免命中上月过期分支
-    if (isJune) {
+    // 6月通用分析
+    if (isJuneFirstDays || isJuneLater) {
+      const _junePrefix = isJuneFirstDays ? '<strong>6月首个交易日</strong>' : '<strong>6月震荡整理</strong>';
       switch(item.code) {
         case '225570': // Nexon Games
-          return `<strong>6月首个交易日</strong>。Blue Archive日本市场长期畅销提供稳定现金流。关注Q2财报及Project DX/RX新作进展。`;
+          return `${_junePrefix}。Blue Archive日本市场长期畅销提供稳定现金流。关注Q2财报及Project DX/RX新作进展。`;
         case '251270': // Netmarble
-          return `<strong>6月首个交易日</strong>。《Monster Striker: Star Dive》首月营收超预期突破₩300亿提供基本面支撑，分红收益(年配当约2,800韩元/股)构筑底部。Coway治理争议余波间歇性压制。`;
+          return `${_junePrefix}。《Monster Striker: Star Dive》首月营收超预期突破₩300亿提供基本面支撑，分红收益(年配当约2,800韩元/股)构筑底部。Coway治理争议余波间歇性压制。`;
         case '036570': // NC
-          return `<strong>6月首个交易日</strong>。Aion 2韩国预约突破120万，6月全球发布计划稳步推进。Q1财报超预期（营业利润YoY +1700%）提供基本面支撑。`;
+          return `${_junePrefix}。Aion 2韩国预约突破120万，6月全球发布计划稳步推进。Q1财报超预期（营业利润YoY +1700%）提供基本面支撑。`;
         case '259960': // Krafton
-          return `<strong>6月首个交易日</strong>。AI模型"Raon"开源生态扩张 + Q1财报超预期(利润YoY+52%) + PUBG Steam Q1平均在线30万创新高提供基本面支撑。`;
+          return `${_junePrefix}。AI模型"Raon"开源生态扩张 + Q1财报超预期(利润YoY+52%) + PUBG Steam Q1平均在线30万创新高提供基本面支撑。`;
         case '263750': // Pearl Abyss
-          return `<strong>6月首个交易日</strong>。《Crimson Desert》全球销量突破500万套+DLC「Boss重战模式」持续更新为长线基本面支撑，Q1扭亏为盈至₩1,250亿已验证。`;
+          return `${_junePrefix}。《Crimson Desert》全球销量突破500万套+DLC「Boss重战模式」持续更新为长线基本面支撑，Q1扭亏为盈至₩1,250亿已验证。`;
         default:
-          return `<strong>6月首个交易日</strong>。暂无详细分析。`;
+          return `${_junePrefix}。暂无详细分析。`;
       }
     }
 
