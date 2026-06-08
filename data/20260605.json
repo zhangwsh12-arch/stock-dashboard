@@ -1,22 +1,22 @@
 {
   "meta": {
-    "date": "20260608",
-    "dateDisplay": "6月（截至8日）",
-    "fetchedAt": "2026-06-08T09:18:29.593Z",
-    "source": "Naver Finance / Multi-source v3",
+    "date": "20260605",
+    "dateDisplay": "6月（截至5日）",
+    "fetchedAt": "2026-06-08T09:19:48.055Z",
+    "source": "Naver Finance / Backfill Script",
     "updateCount": 6
   },
   "shiftUp": {
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "30,200",
-    "previousClose": "30,550",
-    "high": "34,050",
-    "low": "29,950",
-    "change": "-350",
-    "changePercent": "-1.15%",
-    "changeClass": "down",
+    "price": "30,550",
+    "previousClose": "30,450",
+    "high": "30,900",
+    "low": "29,650",
+    "change": "100",
+    "changePercent": "+0.33%",
+    "changeClass": "up",
     "per": "9.26",
     "pbr": "1.83",
     "marketCap": "1.77兆元",
@@ -27,8 +27,7 @@
         "high": 34300,
         "low": 33250,
         "close": 33300,
-        "volume": 88734,
-        "foreignRate": 36.97
+        "volume": 88734
       },
       {
         "date": "20260206",
@@ -36,8 +35,7 @@
         "high": 33050,
         "low": 32000,
         "close": 32250,
-        "volume": 118030,
-        "foreignRate": 36.87
+        "volume": 118030
       },
       {
         "date": "20260209",
@@ -45,8 +43,7 @@
         "high": 33550,
         "low": 32700,
         "close": 33350,
-        "volume": 76128,
-        "foreignRate": 36.9
+        "volume": 76128
       },
       {
         "date": "20260210",
@@ -54,8 +51,7 @@
         "high": 34150,
         "low": 33050,
         "close": 33650,
-        "volume": 76834,
-        "foreignRate": 36.94
+        "volume": 76834
       },
       {
         "date": "20260211",
@@ -63,8 +59,7 @@
         "high": 34300,
         "low": 33700,
         "close": 34000,
-        "volume": 71481,
-        "foreignRate": 36.88
+        "volume": 71481
       },
       {
         "date": "20260212",
@@ -72,8 +67,7 @@
         "high": 33800,
         "low": 33200,
         "close": 33400,
-        "volume": 86397,
-        "foreignRate": 36.84
+        "volume": 86397
       },
       {
         "date": "20260213",
@@ -81,8 +75,7 @@
         "high": 33550,
         "low": 33025,
         "close": 33250,
-        "volume": 63997,
-        "foreignRate": 36.88
+        "volume": 63997
       },
       {
         "date": "20260219",
@@ -90,8 +83,7 @@
         "high": 34200,
         "low": 33350,
         "close": 33950,
-        "volume": 111599,
-        "foreignRate": 37.01
+        "volume": 111599
       },
       {
         "date": "20260220",
@@ -99,8 +91,7 @@
         "high": 34150,
         "low": 33600,
         "close": 33600,
-        "volume": 64386,
-        "foreignRate": 37
+        "volume": 64386
       },
       {
         "date": "20260223",
@@ -108,8 +99,7 @@
         "high": 34150,
         "low": 33450,
         "close": 33850,
-        "volume": 63654,
-        "foreignRate": 36.95
+        "volume": 63654
       },
       {
         "date": "20260224",
@@ -117,8 +107,7 @@
         "high": 34200,
         "low": 33600,
         "close": 33750,
-        "volume": 63704,
-        "foreignRate": 36.9
+        "volume": 63704
       },
       {
         "date": "20260225",
@@ -126,8 +115,7 @@
         "high": 33900,
         "low": 33400,
         "close": 33400,
-        "volume": 65434,
-        "foreignRate": 36.89
+        "volume": 65434
       },
       {
         "date": "20260226",
@@ -135,8 +123,7 @@
         "high": 33950,
         "low": 33100,
         "close": 33150,
-        "volume": 62874,
-        "foreignRate": 36.92
+        "volume": 62874
       },
       {
         "date": "20260227",
@@ -144,8 +131,7 @@
         "high": 33250,
         "low": 32350,
         "close": 32350,
-        "volume": 94082,
-        "foreignRate": 36.87
+        "volume": 94082
       },
       {
         "date": "20260303",
@@ -153,8 +139,7 @@
         "high": 32000,
         "low": 30800,
         "close": 30900,
-        "volume": 124879,
-        "foreignRate": 36.82
+        "volume": 124879
       },
       {
         "date": "20260304",
@@ -162,8 +147,7 @@
         "high": 30000,
         "low": 27500,
         "close": 28200,
-        "volume": 208594,
-        "foreignRate": 36.93
+        "volume": 208594
       },
       {
         "date": "20260305",
@@ -171,8 +155,7 @@
         "high": 30350,
         "low": 29050,
         "close": 30200,
-        "volume": 108224,
-        "foreignRate": 37.01
+        "volume": 108224
       },
       {
         "date": "20260306",
@@ -180,8 +163,7 @@
         "high": 31950,
         "low": 29550,
         "close": 31550,
-        "volume": 100762,
-        "foreignRate": 36.98
+        "volume": 100762
       },
       {
         "date": "20260309",
@@ -189,8 +171,7 @@
         "high": 30850,
         "low": 29500,
         "close": 30700,
-        "volume": 72084,
-        "foreignRate": 37
+        "volume": 72084
       },
       {
         "date": "20260310",
@@ -198,8 +179,7 @@
         "high": 31550,
         "low": 30450,
         "close": 30650,
-        "volume": 53773,
-        "foreignRate": 37.02
+        "volume": 53773
       },
       {
         "date": "20260311",
@@ -207,8 +187,7 @@
         "high": 32700,
         "low": 31050,
         "close": 31200,
-        "volume": 79389,
-        "foreignRate": 37.08
+        "volume": 79389
       },
       {
         "date": "20260312",
@@ -216,8 +195,7 @@
         "high": 31300,
         "low": 30600,
         "close": 30850,
-        "volume": 32468,
-        "foreignRate": 37.07
+        "volume": 32468
       },
       {
         "date": "20260313",
@@ -225,8 +203,7 @@
         "high": 31700,
         "low": 30000,
         "close": 30950,
-        "volume": 53618,
-        "foreignRate": 37.1
+        "volume": 53618
       },
       {
         "date": "20260316",
@@ -234,8 +211,7 @@
         "high": 31850,
         "low": 29900,
         "close": 30000,
-        "volume": 55079,
-        "foreignRate": 37.09
+        "volume": 55079
       },
       {
         "date": "20260317",
@@ -243,8 +219,7 @@
         "high": 30550,
         "low": 29900,
         "close": 30150,
-        "volume": 75893,
-        "foreignRate": 37.1
+        "volume": 75893
       },
       {
         "date": "20260318",
@@ -252,8 +227,7 @@
         "high": 30900,
         "low": 30350,
         "close": 30850,
-        "volume": 47102,
-        "foreignRate": 37.08
+        "volume": 47102
       },
       {
         "date": "20260319",
@@ -261,8 +235,7 @@
         "high": 30450,
         "low": 29950,
         "close": 30150,
-        "volume": 45712,
-        "foreignRate": 37.14
+        "volume": 45712
       },
       {
         "date": "20260320",
@@ -270,8 +243,7 @@
         "high": 30750,
         "low": 30000,
         "close": 30350,
-        "volume": 46132,
-        "foreignRate": 37.15
+        "volume": 46132
       },
       {
         "date": "20260323",
@@ -279,8 +251,7 @@
         "high": 30350,
         "low": 29100,
         "close": 29150,
-        "volume": 70738,
-        "foreignRate": 37.12
+        "volume": 70738
       },
       {
         "date": "20260324",
@@ -288,8 +259,7 @@
         "high": 30100,
         "low": 29300,
         "close": 29800,
-        "volume": 55730,
-        "foreignRate": 37.12
+        "volume": 55730
       },
       {
         "date": "20260325",
@@ -297,8 +267,7 @@
         "high": 31950,
         "low": 30050,
         "close": 31500,
-        "volume": 119980,
-        "foreignRate": 37.17
+        "volume": 119980
       },
       {
         "date": "20260326",
@@ -306,8 +275,7 @@
         "high": 32100,
         "low": 31000,
         "close": 31100,
-        "volume": 66482,
-        "foreignRate": 37.17
+        "volume": 66482
       },
       {
         "date": "20260327",
@@ -315,8 +283,7 @@
         "high": 32700,
         "low": 30400,
         "close": 32300,
-        "volume": 130330,
-        "foreignRate": 37.17
+        "volume": 130330
       },
       {
         "date": "20260330",
@@ -324,8 +291,7 @@
         "high": 32500,
         "low": 31200,
         "close": 31650,
-        "volume": 76293,
-        "foreignRate": 37.11
+        "volume": 76293
       },
       {
         "date": "20260331",
@@ -333,8 +299,7 @@
         "high": 33250,
         "low": 31650,
         "close": 32050,
-        "volume": 138137,
-        "foreignRate": 37.1
+        "volume": 138137
       },
       {
         "date": "20260401",
@@ -342,8 +307,7 @@
         "high": 34200,
         "low": 32300,
         "close": 33900,
-        "volume": 174292,
-        "foreignRate": 37.09
+        "volume": 174292
       },
       {
         "date": "20260402",
@@ -351,8 +315,7 @@
         "high": 34500,
         "low": 31900,
         "close": 32250,
-        "volume": 107486,
-        "foreignRate": 37.02
+        "volume": 107486
       },
       {
         "date": "20260403",
@@ -360,8 +323,7 @@
         "high": 33150,
         "low": 32300,
         "close": 33000,
-        "volume": 62547,
-        "foreignRate": 36.99
+        "volume": 62547
       },
       {
         "date": "20260406",
@@ -369,8 +331,7 @@
         "high": 33400,
         "low": 32450,
         "close": 32900,
-        "volume": 70155,
-        "foreignRate": 36.98
+        "volume": 70155
       },
       {
         "date": "20260407",
@@ -378,8 +339,7 @@
         "high": 33200,
         "low": 31500,
         "close": 32000,
-        "volume": 105048,
-        "foreignRate": 37.01
+        "volume": 105048
       },
       {
         "date": "20260408",
@@ -387,8 +347,7 @@
         "high": 33650,
         "low": 30950,
         "close": 33400,
-        "volume": 224201,
-        "foreignRate": 36.95
+        "volume": 224201
       },
       {
         "date": "20260409",
@@ -396,8 +355,7 @@
         "high": 33500,
         "low": 32650,
         "close": 33200,
-        "volume": 47567,
-        "foreignRate": 36.94
+        "volume": 47567
       },
       {
         "date": "20260410",
@@ -405,8 +363,7 @@
         "high": 33700,
         "low": 32800,
         "close": 32850,
-        "volume": 51261,
-        "foreignRate": 36.89
+        "volume": 51261
       },
       {
         "date": "20260413",
@@ -414,8 +371,7 @@
         "high": 33400,
         "low": 32300,
         "close": 32850,
-        "volume": 46547,
-        "foreignRate": 36.89
+        "volume": 46547
       },
       {
         "date": "20260414",
@@ -423,8 +379,7 @@
         "high": 34100,
         "low": 33200,
         "close": 33750,
-        "volume": 51770,
-        "foreignRate": 36.91
+        "volume": 51770
       },
       {
         "date": "20260415",
@@ -432,8 +387,7 @@
         "high": 34050,
         "low": 33000,
         "close": 33000,
-        "volume": 76706,
-        "foreignRate": 36.85
+        "volume": 76706
       },
       {
         "date": "20260416",
@@ -441,8 +395,7 @@
         "high": 34100,
         "low": 33200,
         "close": 33700,
-        "volume": 62460,
-        "foreignRate": 37.12
+        "volume": 62460
       },
       {
         "date": "20260417",
@@ -450,8 +403,7 @@
         "high": 34000,
         "low": 33250,
         "close": 33500,
-        "volume": 44712,
-        "foreignRate": 37.1
+        "volume": 44712
       },
       {
         "date": "20260420",
@@ -459,8 +411,7 @@
         "high": 34300,
         "low": 33650,
         "close": 33750,
-        "volume": 63704,
-        "foreignRate": 37.12
+        "volume": 63704
       },
       {
         "date": "20260421",
@@ -468,8 +419,7 @@
         "high": 34450,
         "low": 33700,
         "close": 34100,
-        "volume": 71686,
-        "foreignRate": 37.1
+        "volume": 71686
       },
       {
         "date": "20260422",
@@ -477,8 +427,7 @@
         "high": 34800,
         "low": 33850,
         "close": 34550,
-        "volume": 71546,
-        "foreignRate": 37.15
+        "volume": 71546
       },
       {
         "date": "20260423",
@@ -486,8 +435,7 @@
         "high": 35150,
         "low": 34300,
         "close": 34750,
-        "volume": 72698,
-        "foreignRate": 37.13
+        "volume": 72698
       },
       {
         "date": "20260424",
@@ -495,8 +443,7 @@
         "high": 36200,
         "low": 34650,
         "close": 34750,
-        "volume": 132803,
-        "foreignRate": 37.13
+        "volume": 132803
       },
       {
         "date": "20260427",
@@ -504,8 +451,7 @@
         "high": 35300,
         "low": 34450,
         "close": 34850,
-        "volume": 53677,
-        "foreignRate": 37.09
+        "volume": 53677
       },
       {
         "date": "20260428",
@@ -513,8 +459,7 @@
         "high": 35600,
         "low": 34800,
         "close": 34800,
-        "volume": 39352,
-        "foreignRate": 37.08
+        "volume": 39352
       },
       {
         "date": "20260429",
@@ -522,8 +467,7 @@
         "high": 35100,
         "low": 34250,
         "close": 34350,
-        "volume": 52068,
-        "foreignRate": 37.07
+        "volume": 52068
       },
       {
         "date": "20260430",
@@ -531,8 +475,7 @@
         "high": 34550,
         "low": 32550,
         "close": 32550,
-        "volume": 124975,
-        "foreignRate": 37.06
+        "volume": 124975
       },
       {
         "date": "20260504",
@@ -540,8 +483,7 @@
         "high": 34300,
         "low": 32950,
         "close": 33350,
-        "volume": 53758,
-        "foreignRate": 37.06
+        "volume": 53758
       },
       {
         "date": "20260506",
@@ -549,8 +491,7 @@
         "high": 33700,
         "low": 32500,
         "close": 32900,
-        "volume": 52911,
-        "foreignRate": 37.04
+        "volume": 52911
       },
       {
         "date": "20260507",
@@ -558,8 +499,7 @@
         "high": 32700,
         "low": 31500,
         "close": 31900,
-        "volume": 91853,
-        "foreignRate": 37.01
+        "volume": 91853
       },
       {
         "date": "20260508",
@@ -567,8 +507,7 @@
         "high": 31950,
         "low": 30850,
         "close": 31150,
-        "volume": 96273,
-        "foreignRate": 37.02
+        "volume": 96273
       },
       {
         "date": "20260511",
@@ -576,8 +515,7 @@
         "high": 32050,
         "low": 30350,
         "close": 31400,
-        "volume": 75933,
-        "foreignRate": 37.03
+        "volume": 75933
       },
       {
         "date": "20260512",
@@ -585,8 +523,7 @@
         "high": 31350,
         "low": 29550,
         "close": 30150,
-        "volume": 162325,
-        "foreignRate": 36.94
+        "volume": 162325
       },
       {
         "date": "20260513",
@@ -594,8 +531,7 @@
         "high": 30500,
         "low": 29550,
         "close": 29800,
-        "volume": 69922,
-        "foreignRate": 36.93
+        "volume": 69922
       },
       {
         "date": "20260514",
@@ -603,8 +539,7 @@
         "high": 31300,
         "low": 29650,
         "close": 31000,
-        "volume": 82188,
-        "foreignRate": 36.94
+        "volume": 82188
       },
       {
         "date": "20260515",
@@ -612,8 +547,7 @@
         "high": 31300,
         "low": 29800,
         "close": 30200,
-        "volume": 70452,
-        "foreignRate": 36.94
+        "volume": 70452
       },
       {
         "date": "20260518",
@@ -621,8 +555,7 @@
         "high": 30250,
         "low": 28950,
         "close": 29400,
-        "volume": 72947,
-        "foreignRate": 36.94
+        "volume": 72947
       },
       {
         "date": "20260519",
@@ -630,8 +563,7 @@
         "high": 29900,
         "low": 29050,
         "close": 29550,
-        "volume": 60111,
-        "foreignRate": 36.95
+        "volume": 60111
       },
       {
         "date": "20260520",
@@ -639,8 +571,7 @@
         "high": 29550,
         "low": 28450,
         "close": 28550,
-        "volume": 80938,
-        "foreignRate": 36.92
+        "volume": 80938
       },
       {
         "date": "20260521",
@@ -648,8 +579,7 @@
         "high": 29750,
         "low": 28650,
         "close": 28850,
-        "volume": 59428,
-        "foreignRate": 36.92
+        "volume": 59428
       },
       {
         "date": "20260522",
@@ -657,8 +587,7 @@
         "high": 30300,
         "low": 28850,
         "close": 29500,
-        "volume": 64690,
-        "foreignRate": 36.93
+        "volume": 64690
       },
       {
         "date": "20260526",
@@ -666,8 +595,7 @@
         "high": 30050,
         "low": 28800,
         "close": 29050,
-        "volume": 62317,
-        "foreignRate": 36.93
+        "volume": 62317
       },
       {
         "date": "20260527",
@@ -675,8 +603,7 @@
         "high": 28950,
         "low": 28200,
         "close": 28200,
-        "volume": 80030,
-        "foreignRate": 36.9
+        "volume": 80030
       },
       {
         "date": "20260528",
@@ -684,8 +611,7 @@
         "high": 29100,
         "low": 27900,
         "close": 28600,
-        "volume": 104030,
-        "foreignRate": 36.86
+        "volume": 104030
       },
       {
         "date": "20260529",
@@ -693,8 +619,7 @@
         "high": 29200,
         "low": 28250,
         "close": 28500,
-        "volume": 101062,
-        "foreignRate": 36.86
+        "volume": 101062
       },
       {
         "date": "20260601",
@@ -702,8 +627,7 @@
         "high": 29950,
         "low": 27950,
         "close": 29250,
-        "volume": 118651,
-        "foreignRate": 36.87
+        "volume": 118651
       },
       {
         "date": "20260602",
@@ -711,8 +635,7 @@
         "high": 30900,
         "low": 28600,
         "close": 30450,
-        "volume": 140695,
-        "foreignRate": 36.91
+        "volume": 140695
       },
       {
         "date": "20260604",
@@ -720,8 +643,7 @@
         "high": 30850,
         "low": 29350,
         "close": 30450,
-        "volume": 77728,
-        "foreignRate": 36.83
+        "volume": 77728
       },
       {
         "date": "20260605",
@@ -729,8 +651,7 @@
         "high": 30900,
         "low": 29650,
         "close": 30550,
-        "volume": 81598,
-        "foreignRate": 36.81
+        "volume": 81598
       },
       {
         "date": "20260608",
@@ -738,8 +659,7 @@
         "high": 34050,
         "low": 29950,
         "close": 30200,
-        "volume": 239453,
-        "foreignRate": 36.81
+        "volume": 239453
       }
     ]
   },
@@ -747,45 +667,45 @@
     {
       "code": "251270",
       "name": "Netmarble",
-      "color": "#ef4444",
-      "price": "40,050",
-      "change": "-4.64%",
+      "color": "#666",
+      "price": "42,000",
+      "change": "-4.22%",
       "changeClass": "down",
       "per": "9.53"
     },
     {
       "code": "036570",
       "name": "NC",
-      "color": "#3b82f6",
-      "price": "267,000",
-      "change": "-5.15%",
+      "color": "#666",
+      "price": "281,500",
+      "change": "-2.76%",
       "changeClass": "down",
       "per": "12.57"
     },
     {
       "code": "259960",
       "name": "Krafton",
-      "color": "#f59e0b",
-      "price": "244,500",
-      "change": "-5.05%",
-      "changeClass": "down",
+      "color": "#666",
+      "price": "257,500",
+      "change": "+1.18%",
+      "changeClass": "up",
       "per": "13.23"
     },
     {
       "code": "263750",
       "name": "Pearl Abyss",
-      "color": "#ec4899",
-      "price": "38,500",
-      "change": "-4.94%",
+      "color": "#666",
+      "price": "40,500",
+      "change": "-4.26%",
       "changeClass": "down",
       "per": "16.59"
     },
     {
       "code": "225570",
       "name": "Nexon Games",
-      "color": "#22c55e",
-      "price": "9,660",
-      "change": "-4.45%",
+      "color": "#666",
+      "price": "10,110",
+      "change": "-0.88%",
       "changeClass": "down",
       "per": "N/A"
     }
@@ -794,40 +714,40 @@
     {
       "code": "462870",
       "name": "Shift Up",
-      "color": "#ff6b9d",
-      "price": "30,200",
+      "color": "#666",
+      "price": "30,550",
       "per": 9.26,
       "perRaw": "9.26"
     },
     {
       "code": "251270",
       "name": "Netmarble",
-      "color": "#ef4444",
-      "price": "40,050",
+      "color": "#666",
+      "price": "42,000",
       "per": 9.53,
       "perRaw": "9.53"
     },
     {
       "code": "036570",
       "name": "NC",
-      "color": "#3b82f6",
-      "price": "267,000",
+      "color": "#666",
+      "price": "281,500",
       "per": 12.57,
       "perRaw": "12.57"
     },
     {
       "code": "259960",
       "name": "Krafton",
-      "color": "#f59e0b",
-      "price": "244,500",
+      "color": "#666",
+      "price": "257,500",
       "per": 13.23,
       "perRaw": "13.23"
     },
     {
       "code": "263750",
       "name": "Pearl Abyss",
-      "color": "#ec4899",
-      "price": "38,500",
+      "color": "#666",
+      "price": "40,500",
       "per": 16.59,
       "perRaw": "16.59"
     }
@@ -949,22 +869,5 @@
       "price": 30200
     }
   ],
-  "indices": [
-    {
-      "code": "KOSPI",
-      "name": "KOSPI",
-      "price": "7484.41",
-      "change": "-676.18",
-      "changePercent": "-8.29",
-      "changeClass": "down"
-    },
-    {
-      "code": "KOSDAQ",
-      "name": "KOSDAQ",
-      "price": "911.39",
-      "change": "-91.05",
-      "changePercent": "-9.08",
-      "changeClass": "down"
-    }
-  ]
+  "indices": []
 }
