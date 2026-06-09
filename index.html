@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260609c'; // 更新：修复新闻过滤逻辑 - 单日新闻作为历史时间线显示，跨日期新闻只在有效期内显示，限制10条
+      var VER = '20260609d'; // 更新：跨日期新闻也作为历史时间线一直显示，无有效期限制
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -1858,9 +1858,6 @@ function renderNewsSection() {
                   };
                   const filtered = NORMAL_DATA.filter(i => {
                     const range = parseNewsDateRange(i.date);
-                    if (i.date.includes('~')) {
-                      return range.start <= curMmddNum && curMmddNum <= range.end;
-                    }
                     return range.start <= curMmddNum;
                   }).sort((a, b) => {
                     const ra = parseNewsDateRange(a.date);
