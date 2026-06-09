@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260609b'; // 更新：修复跨日期 end 缺少月份解析 bug
+      var VER = '20260609c'; // 更新：修复新闻过滤逻辑 - 单日新闻作为历史时间线显示，跨日期新闻只在有效期内显示，限制10条
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -1858,12 +1858,15 @@ function renderNewsSection() {
                   };
                   const filtered = NORMAL_DATA.filter(i => {
                     const range = parseNewsDateRange(i.date);
-                    return range.start <= curMmddNum && curMmddNum <= range.end;
+                    if (i.date.includes('~')) {
+                      return range.start <= curMmddNum && curMmddNum <= range.end;
+                    }
+                    return range.start <= curMmddNum;
                   }).sort((a, b) => {
                     const ra = parseNewsDateRange(a.date);
                     const rb = parseNewsDateRange(b.date);
-                    return rb.end - ra.end;
-                  });
+                    return rb.start - ra.start;
+                  }).slice(0, 10);
                   console.log(`📊 News filter for ${curDate}: ${filtered.length} items (curMmddNum=${curMmddNum})`);
                   filtered.forEach(i => console.log(`  📊 ${i.date} | ${i.company}`));
                   return filtered.map(i => `<tr>
