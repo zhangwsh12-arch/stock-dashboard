@@ -406,6 +406,7 @@ async function loadContentData() {
 
     contentLoaded = true;
     console.log(`✅ Content loaded: ${ALL_LABELS.length} labels, ${EVENT_DATA.length} events, ${NORMAL_DATA.length} news`);
+    console.log('📊 NORMAL_DATA dates:', NORMAL_DATA.map(e => e.date).join(', '));
     return true;
   } catch (err) {
     console.error('⚠️ Failed to load content.json:', err.message);
@@ -1843,9 +1844,11 @@ function renderNewsSection() {
                   const curDate = currentData?.meta?.date || '';
                   const curMmddNum = parseInt(curDate.slice(4, 6), 10) * 100 + parseInt(curDate.slice(6, 8), 10);
                   const parseNewsDate = d => { const [m, dd] = d.split(/[.~]/).map(Number).filter(n => !isNaN(n)); return m * 100 + dd; };
-                  return NORMAL_DATA.filter(i => parseNewsDate(i.date) <= curMmddNum)
-                    .sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date))
-                    .map(i => `<tr>
+                  const filtered = NORMAL_DATA.filter(i => parseNewsDate(i.date) <= curMmddNum)
+                    .sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date));
+                  console.log(`📊 News filter for ${curDate}: ${filtered.length} items (curMmddNum=${curMmddNum})`);
+                  filtered.forEach(i => console.log(`  📊 ${i.date} | ${i.company}`));
+                  return filtered.map(i => `<tr>
                     <td><strong style="color:${i.color};font-size:12.5px">${i.company}</strong></td>
                     <td>${i.url ? `<a href="${i.url}" target="_blank" class="news-link"><span class="news-title">${i.title}</span><div class="news-source">${i.source}</div></a>` : `<span class="news-title">${i.title}</span>`}</td>
                     <td style="color:var(--text-muted);font-size:12.5px;text-align:right;white-space:nowrap">${i.date}</td>
