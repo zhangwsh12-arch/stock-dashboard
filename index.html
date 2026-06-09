@@ -980,11 +980,14 @@ function generateSUAnalysis() {
   const _isMay21 = d >= '20260521' && d < '20260522'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
   const _isMay22 = d >= '20260522' && d < '20260601'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
   const _isJuneFirstDays = d >= '20260601' && d < '20260603'; // 6月首个交易日(6/1-6/2)
-  const _isJuneLater = d >= '20260603'; // 6/3起(实际6/4+)
+  const _isJune5SGF = d >= '20260605' && d < '20260606'; // 6/5 SGF Stellar Blade 2 公布
+  const _isJuneLater = d >= '20260606'; // 6/6起（SGF公布后）
 
   let analysisDetail = '';
-  const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : '<strong>6月震荡整理</strong>';
-  if (_isJuneFirstDays || _isJuneLater) {
+  const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : (_isJuneLater ? '<strong>6月SGF催化兑现后震荡</strong>' : '<strong>6月震荡整理</strong>');
+  if (_isJune5SGF) {
+    analysisDetail = `${_juneSuPrefix}。<strong>6/5 Summer Game Fest 2026:《Stellar Blade: Blood Rain》正式公布</strong>——续作新主角为Evie（可变拳套武器），前作主Eve转为配角。SHIFT UP自主发行（不再依赖索尼），目标2027年发售。SGF公布带动全球关注度飙升，验证IP长期价值。6/5韩股整体暴跌（KOSPI熔断），外资调仓导致无差别抛售，实际基本面强劲。`;
+  } else if (_isJuneFirstDays || _isJuneLater) {
     analysisDetail = `${_juneSuPrefix}。5月催化剂消化完毕，进入新月份估值重估窗口。剑星2自主发行+Project Spirits(腾讯发行)长期利好仍在，NIKKE累计营收破$10亿验证IP运营能力。关注6月新作消息及Q2财报预期。`;
   } else if (_isMay22) {
     // 5/22 需要同时解释本月下跌原因和当日反弹
