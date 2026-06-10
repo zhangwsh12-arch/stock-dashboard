@@ -2,7 +2,7 @@
   "meta": {
     "version": "3.0",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-06-09",
+    "updatedAt": "2026-06-10",
     "note": "此文件由人工维护，每日需同步更新事件和分析文字"
   },
   "compareChart": {
@@ -756,6 +756,14 @@
       "source": "Summer Game Fest/_SHIFT UP",
       "date": "06.05",
       "url": "https://www.youtube.com/watch?v=StellarBladeBloodRain"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up 6/9暴涨10%+！SGF催化延迟效应集中释放</strong>——6/5 SGF公布《Stellar Blade: Blood Rain》预告片当日因KOSPI熔断被压制，6/9下一个交易日利好兑现暴涨。核心驱动：①自主发行=利润结构永久性重塑（不再依赖索尼，利润分成根本性改变）；②"双重质疑"被打破——续作确认真实存在+自主发行转换，市场两大利空同时被证伪；③外资+机构同步净买入（外资净买入12.84万股+机构净买入1.40万股），成交量飙升至20日均量4倍。券商共识目标价：Kiwoom 65,000/新永 53,000/大宇 48,000韩元。",
+      "source": "NewsPim/알파증류소/Naver증권",
+      "date": "06.09",
+      "url": "https://alphadistill.com/report/1902"
     }
   ],
   "industryNews": [
@@ -994,7 +1002,7 @@
     {
       "company": "六大游戏公司",
       "color": "#6b7185",
-      "title": "<strong>6月第一周：SGF催化兑现+外资调仓震荡</strong>——6/5 Summer Game Fest 2026上SHIFT UP正式公布《Stellar Blade: Blood Rain》（新主角Evie+拳套武器，2027年发售，自主发行）。同日韩股暴跌（KOSPI熔断），外资杠杆调仓导致游戏股无差别抛售。NC因Aion 2全球发布临近相对抗跌（-4.74%），PA回调较多（-7.11%）。",
+      "title": "<strong>6月第一周：SGF催化兑现+外资调仓震荡</strong>——6/5 Summer Game Fest 2026上SHIFT UP正式公布《Stellar Blade: Blood Rain》（新主角Evie+拳套武器，2027年发售，自主发行），预告片全球关注度飙升。同日韩股暴跌（KOSPI熔断），外资杠杆调仓导致游戏股无差别抛售，SGF利好被压制。6/9 SGF延迟效应集中释放，Shift Up暴涨10%+：自主发行=利润结构永久性重塑，外资+机构同步净买入。NC因Aion 2全球发布临近相对抗跌（-4.74%），PA回调较多（-7.11%）。",
       "source": "GameTalk/Summer Game Fest/KeenGamer",
       "date": "06.01~05",
       "url": ""
@@ -1038,6 +1046,22 @@
       "source": "NC Soft IR/뉴데일리",
       "date": "06.08",
       "url": "https://aion2.plaync.com/ko-kr/board/notice/list"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up 6/9暴涨10%+：SGF《剑星：血雨》预告片延迟效应爆发</strong>——6/5 SGF公布后因KOSPI熔断被压制，6/9利好集中释放。自主发行=利润结构重塑（不再依赖索尼），"双重质疑"被打破（续作确认+自主发行），外资净买入12.84万股+机构净买入1.40万股，成交量飙升至20日均量4倍。券商目标价Kiwoom 65,000/新永 53,000韩元。",
+      "source": "NewsPim/알파증류소",
+      "date": "06.09",
+      "url": "https://alphadistill.com/report/1902"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7185",
+      "title": "<strong>6/9韩股反弹+游戏板块回暖</strong>——前日(6/5)KOSPI熔断暴跌后技术性反弹，外资调仓压力缓解。Shift Up因SGF催化领涨暴涨10%+，其他游戏股跟随反弹。",
+      "source": "Naver증권/조선비즈",
+      "date": "06.09",
+      "url": ""
     }
   ]
 }

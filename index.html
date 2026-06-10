@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260609e'; // 更新：游戏公司相关资讯同时从 EVENT_DATA 和 NORMAL_DATA 读取
+      var VER = '20260610a'; // 更新：SU月度分析加入6/9 SGF催化暴涨原因+剑星2预告片信息
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -981,15 +981,18 @@ function generateSUAnalysis() {
   const _isMay21 = d >= '20260521' && d < '20260522'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
   const _isMay22 = d >= '20260522' && d < '20260601'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
   const _isJuneFirstDays = d >= '20260601' && d < '20260603'; // 6月首个交易日(6/1-6/2)
-  const _isJune5SGF = d >= '20260605' && d < '20260606'; // 6/5 SGF Stellar Blade 2 公布
-  const _isJuneLater = d >= '20260606'; // 6/6起（SGF公布后）
+  const _isJune5SGF = d >= '20260605' && d < '20260606'; // 6/5 SGF Stellar Blade 2 公布（当日KOSPI熔断压制股价）
+  const _isJuneLater = d >= '20260606' && d < '20260609'; // 6/6-6/8 SGF公布后消化期
+  const _isJune9Surge = d >= '20260609'; // 6/9 SGF延迟效应+外资涌入暴涨10%+
 
   let analysisDetail = '';
-  const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : (_isJuneLater ? '<strong>6月SGF催化兑现后震荡</strong>' : '<strong>6月震荡整理</strong>');
-  if (_isJune5SGF) {
-    analysisDetail = `${_juneSuPrefix}。<strong>6/5 Summer Game Fest 2026:《Stellar Blade: Blood Rain》正式公布</strong>——续作新主角为Evie（可变拳套武器），前作主Eve转为配角。SHIFT UP自主发行（不再依赖索尼），目标2027年发售。SGF公布带动全球关注度飙升，验证IP长期价值。6/5韩股整体暴跌（KOSPI熔断），外资调仓导致无差别抛售，实际基本面强劲。`;
+  const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : (_isJune9Surge ? '<strong>6月SGF催化兑现后暴涨</strong>' : (_isJuneLater ? '<strong>6月SGF催化兑现后震荡</strong>' : '<strong>6月震荡整理</strong>'));
+  if (_isJune9Surge) {
+    analysisDetail = `${_juneSuPrefix}——<span style="color:#34d399">暴涨主因</span>：①6/5 SGF公布《Stellar Blade: Blood Rain》预告片的延迟效应集中释放——6/5当日因KOSPI熔断暴跌被压制，6/8收盘仅+3.25%，6/9利好兑现暴涨10%+；②自主发行=利润结构永久性重塑，从索尼发行转为Shift Up自主发行，利润分成根本性改变，SOTP估值给予更高PE倍数；③"双重质疑"被打破——续作确认真实存在+自主发行转换，此前市场两大利空同时被证伪；④外资+机构同步净买入（外资净买入12.84万股+机构净买入1.40万股），成交量飙升至20日均量4倍，机构资金实质性入场。券商共识目标价：Kiwoom 65,000/新永 53,000/大宇 48,000韩元。`;
+  } else if (_isJune5SGF) {
+    analysisDetail = `${_juneSuPrefix}。<strong>6/5 Summer Game Fest 2026:《Stellar Blade: Blood Rain》正式公布</strong>——续作新主角为Evie（可变拳套武器），前作主Eve转为配角。SHIFT UP自主发行（不再依赖索尼），目标2027年发售。SGF公布带动全球关注度飙升，验证IP长期价值。6/5韩股整体暴跌（KOSPI熔断），外资调仓导致无差别抛售，实际基本面强劲，利好被压制待后续释放。`;
   } else if (_isJuneFirstDays || _isJuneLater) {
-    analysisDetail = `${_juneSuPrefix}。5月催化剂消化完毕，进入新月份估值重估窗口。剑星2自主发行+Project Spirits(腾讯发行)长期利好仍在，NIKKE累计营收破$10亿验证IP运营能力。关注6月新作消息及Q2财报预期。`;
+    analysisDetail = `${_juneSuPrefix}。6/5 SGF公布《Stellar Blade: Blood Rain》预告片——新主角Evie+拳套武器+Shift Up自主发行，2027年发售，全球关注度飙升。6/5当日因KOSPI熔断暴跌被压制，SGF利好尚未充分反映在股价中。Project Spirits(腾讯发行)长期利好仍在，NIKKE累计营收破$10亿验证IP运营能力。`;
   } else if (_isMay22) {
     // 5/22 需要同时解释本月下跌原因和当日反弹
     analysisDetail = `<strong>本月累计下跌11.54%的多空博弈</strong>——<span style="color:#f87171">下跌主因</span>：①5/11 Q1财报利好公布后机构获利了结，剑星2自主发行+Project Spirits等利好被充分定价；②NIKKE 3.5周年活动高峰(5月初)过后用户数据自然回落，进入催化真空期；③5/21 KOSPI暴涨8.42%日资金虹吸至AI/半导体，游戏股被全面抽离。5/22 KOSDAQ暴涨+4.99%带动全线反弹+2.25%，5/21错杀得到部分修正，但月度跌幅仍居板块首位。`;
