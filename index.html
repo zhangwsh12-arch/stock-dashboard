@@ -900,7 +900,9 @@ function findCompanyReason(stockName, changeClass) {
             ? '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期。'
             : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力持续，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期，等待新催化。',
         'Shift Up': changeClass === 'up'
-          ? '<strong>6月新月份估值重估窗口</strong>——NIKKE累计营收破$10亿验证IP运营能力，剑星2自主发行+Project Spirits(腾讯发行)长期利好支撑。'
+          ? (currentDate >= '20260609'
+            ? '<strong>6月SGF催化兑现后暴涨</strong>——①6/5 SGF公布《Stellar Blade: Blood Rain》预告片的延迟效应集中释放（6/5当日KOSPI熔断被压制，6/9利好兑现）；②自主发行=利润结构永久性重塑，SOTP估值给予更高PE倍数；③"双重质疑"被打破——续作确认+自主发行转换同时证伪；④外资+机构同步净买入（外资12.84万股+机构1.40万股），成交量飙升至20日均量4倍。'
+            : '<strong>6月新月份估值重估窗口</strong>——NIKKE累计营收破$10亿验证IP运营能力，剑星2自主发行+Project Spirits(腾讯发行)长期利好支撑。')
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露。'
             : '<strong>6月震荡整理</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露及NIKKE运营数据。',
