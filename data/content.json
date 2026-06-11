@@ -2,7 +2,7 @@
   "meta": {
     "version": "3.0",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-06-10",
+    "updatedAt": "2026-06-11",
     "note": "此文件由人工维护，每日需同步更新事件和分析文字"
   },
   "compareChart": {
@@ -764,9 +764,41 @@
       "source": "NewsPim/알파증류소/Naver증권",
       "date": "06.09",
       "url": "https://alphadistill.com/report/1902"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Nintendo Direct 2026：《Stellar Blade》登陆Switch 2确认</strong>——6/9 Nintendo Direct公布《Stellar Blade》将于2026年内登陆Nintendo Switch 2，这是继PS5和PC(Steam)之后的第3平台扩展。针对Switch 2环境进行了动作与视觉优化。代表金亨泰表示将确保新平台完整体验游戏特有动作感和沉浸感。",
+      "source": "GameMeca/닌텐도 다이렉트",
+      "date": "06.09",
+      "url": "https://www.gamemeca.com/view.php?gid=1776288"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>6/10 KOSPI暴跌-4.52%拖累游戏板块全线下跌</strong>——中东局势（伊朗封锁霍尔木兹海峡）+美股暴跌传导+外资连续23个交易日净卖出KOSPI，三星电子-6.1%/SK海力士-7.5%领跌。游戏板块指数跌-2.79%（22只下跌/7只上涨），外资+机构同步抛售。",
+      "source": "NSP통신/뉴시스",
+      "date": "06.10",
+      "url": "https://www.nspna.com/report/?mode=view&newsid=816193"
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>6/10 KOSPI暴跌-4.52%游戏板块全线重挫</strong>——中东局势（伊朗封锁霍尔木兹海峡）+美股暴跌传导，外资连续23个交易日净卖出KOSPI，三星电子-6.1%/SK海力士-7.5%领跌权重股。游戏板块指数跌-2.79%（22只下跌/7只上涨），Shift Up 6/9暴涨后获利了结-6.31%跌幅最大。韩元兑美元汇率升至1,524.2。",
+      "source": "NSP통신/뉴시스/KRX",
+      "date": "06.10",
+      "url": "https://www.nspna.com/report/?mode=view&newsid=816193"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Nintendo Direct 2026：《Stellar Blade》确认登陆Switch 2</strong>——6/9 Nintendo Direct公布《Stellar Blade》将于2026年内发售Nintendo Switch 2版本，这是继PS5和Steam之后的第3平台扩展。针对Switch 2进行了动作与视觉优化，代表金亨泰表示将确保完整体验。6/9暴涨+10.26%后6/10因大盘暴跌-6.31%回调。",
+      "source": "GameMeca/닌텐도 다이렉트",
+      "date": "06.09~10",
+      "url": "https://www.gamemeca.com/view.php?gid=1776288"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7185",

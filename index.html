@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260610a'; // 更新：SU月度分析加入6/9 SGF催化暴涨原因+剑星2预告片信息
+      var VER = '20260611a'; // 更新：6/10 KOSPI暴跌分析+SU获利了结+Switch 2+Nintendo Direct事件
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -886,32 +886,43 @@ function findCompanyReason(stockName, changeClass) {
 
     // 6月通用原因，避免命中上月过期分支
     const isJuneFirstDays = currentDate >= '20260601' && currentDate < '20260603'; // 6/1-6/2
+    const isJune10Crash = currentDate >= '20260610' && currentDate < '20260611'; // 6/10 KOSPI暴跌-4.52%拖累全板块
     const isJuneLater = currentDate >= '20260603'; // 6/3起（6/3休市，实际6/4+）
     if (isJuneFirstDays || isJuneLater) {
       const juneMap = {
-        'NC': changeClass === 'up'
+        'NC': changeClass === 'down' && isJune10Crash
+          ? '<strong>6/10 KOSPI暴跌拖累板块</strong>——KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资连续23个交易日净卖出KOSPI，游戏板块指数跌-2.79%全线承压。Aion 2基本面未变，等待大盘企稳。'
+          : changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Aion 2全球发布计划稳步推进，韩国预约突破120万+Q1财报超预期（营业利润YoY +1700%）提供基本面支撑。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——Aion 2利好已部分定价，短期获利了结压力占主导。6月全球发布前或维持震荡整理。'
             : '<strong>6月震荡整理</strong>——Aion 2利好已部分定价，短期获利了结与长线资金博弈。6月全球发布前或维持区间震荡。',
-        'Pearl Abyss': changeClass === 'up'
+        'Pearl Abyss': changeClass === 'down' && isJune10Crash
+          ? '<strong>6/10 KOSPI暴跌拖累板块</strong>——KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资+机构同步抛售，游戏板块指数跌-2.79%。Crimson Desert长线运营基本面稳健。'
+          : changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Crimson Desert全球销量突破500万套+DLC「Boss重战模式」持续更新验证长线运营能力，Q1扭亏为盈至₩1,250亿提供基本面支撑。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期。'
             : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力持续，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期，等待新催化。',
-        'Shift Up': changeClass === 'up'
+        'Shift Up': changeClass === 'down' && isJune10Crash
+          ? '<strong>6/9暴涨+10.26%后获利了结+KOSPI暴跌-4.52%双杀</strong>——①6/9暴涨后技术性获利盘涌出（前日收盘33,300→31,200，回调幅度-6.31%）；②KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资连续23日净卖出，游戏板块指数跌-2.79%；③即使6/9 Nintendo Direct公布《Stellar Blade》登陆Switch 2（年内发售），利好仍被大盘恐慌情绪吞没。'
+          : changeClass === 'up'
           ? (currentDate >= '20260609'
-            ? '<strong>6月SGF催化兑现后暴涨</strong>——①6/5 SGF公布《Stellar Blade: Blood Rain》预告片的延迟效应集中释放（6/5当日KOSPI熔断被压制，6/9利好兑现）；②自主发行=利润结构永久性重塑，SOTP估值给予更高PE倍数；③"双重质疑"被打破——续作确认+自主发行转换同时证伪；④外资+机构同步净买入（外资12.84万股+机构1.40万股），成交量飙升至20日均量4倍。'
+            ? '<strong>6月SGF催化兑现后暴涨</strong>——①6/5 SGF公布《Stellar Blade: Blood Rain》预告片的延迟效应集中释放（6/5当日KOSPI熔断被压制，6/9利好兑现）；②自主发行=利润结构永久性重塑，SOTP估值给予更高PE倍数；③「双重质疑」被打破——续作确认+自主发行转换同时证伪；④外资+机构同步净买入（外资12.84万股+机构1.40万股），成交量飙升至20日均量4倍。'
             : '<strong>6月新月份估值重估窗口</strong>——NIKKE累计营收破$10亿验证IP运营能力，剑星2自主发行+Project Spirits(腾讯发行)长期利好支撑。')
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露。'
             : '<strong>6月震荡整理</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露及NIKKE运营数据。',
-        'Krafton': changeClass === 'up'
+        'Krafton': changeClass === 'down' && isJune10Crash
+          ? '<strong>6/10 KOSPI暴跌拖累板块</strong>——KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资+机构同步抛售，游戏板块指数跌-2.79%。PUBG Steam在线Q1创新高基本面稳健。'
+          : changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——PUBG Steam Q1平均在线30万创新高+AI模型"Raon"开源生态扩张提供基本面支撑。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。'
             : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力与基本面支撑博弈，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。',
-        'Nexon Games': changeClass === 'up'
+        'Nexon Games': changeClass === 'down' && isJune10Crash
+          ? '<strong>6/10 KOSPI暴跌拖累板块</strong>——KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资+机构同步抛售，游戏板块指数跌-2.79%。Blue Archive日本市场稳健提供底部支撑。'
+          : changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Blue Archive日本市场长期畅销提供稳定现金流，AI补贴制度+DNF多元内容推进支撑估值。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。'
@@ -985,12 +996,16 @@ function generateSUAnalysis() {
   const _isJuneFirstDays = d >= '20260601' && d < '20260603'; // 6月首个交易日(6/1-6/2)
   const _isJune5SGF = d >= '20260605' && d < '20260606'; // 6/5 SGF Stellar Blade 2 公布（当日KOSPI熔断压制股价）
   const _isJuneLater = d >= '20260606' && d < '20260609'; // 6/6-6/8 SGF公布后消化期
-  const _isJune9Surge = d >= '20260609'; // 6/9 SGF延迟效应+外资涌入暴涨10%+
+  const _isJune9Surge = d >= '20260609' && d < '20260610'; // 6/9 SGF延迟效应+外资涌入暴涨10%+
+  const _isJune10Crash = d >= '20260610' && d < '20260611'; // 6/9暴涨后获利了结+KOSPI暴跌-4.52%双杀
+  const _isJunePost10 = d >= '20260610'; // 6/10起（含6/10回调及之后）
 
   let analysisDetail = '';
-  const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : (_isJune9Surge ? '<strong>6月SGF催化兑现后暴涨</strong>' : (_isJuneLater ? '<strong>6月SGF催化兑现后震荡</strong>' : '<strong>6月震荡整理</strong>'));
-  if (_isJune9Surge) {
-    analysisDetail = `${_juneSuPrefix}——<span style="color:#34d399">暴涨主因</span>：①6/5 SGF公布《Stellar Blade: Blood Rain》预告片的延迟效应集中释放——6/5当日因KOSPI熔断暴跌被压制，6/8收盘仅+3.25%，6/9利好兑现暴涨10%+；②自主发行=利润结构永久性重塑，从索尼发行转为Shift Up自主发行，利润分成根本性改变，SOTP估值给予更高PE倍数；③"双重质疑"被打破——续作确认真实存在+自主发行转换，此前市场两大利空同时被证伪；④外资+机构同步净买入（外资净买入12.84万股+机构净买入1.40万股），成交量飙升至20日均量4倍，机构资金实质性入场。券商共识目标价：Kiwoom 65,000/新永 53,000/大宇 48,000韩元。`;
+  const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : (_isJune9Surge ? '<strong>6月SGF催化兑现后暴涨</strong>' : (_isJune10Crash ? '<strong>6月暴涨后获利了结+大盘暴跌双杀</strong>' : (_isJuneLater ? '<strong>6月SGF催化兑现后震荡</strong>' : '<strong>6月震荡整理</strong>')));
+  if (_isJune10Crash) {
+    analysisDetail = `${_juneSuPrefix}——<span style="color:#f87171">下跌主因</span>：①6/9暴涨+10.26%后技术性获利盘涌出，前日收盘₩33,300→₩31,200（-6.31%），暴涨后回调属于正常获利了结；②KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资连续23个交易日净卖出KOSPI，游戏板块指数跌-2.79%（22只下跌/7只上涨）全线承压；③即使6/9 Nintendo Direct 2026公布《Stellar Blade》登陆Switch 2（年内发售，第3平台扩展），利好仍被大盘恐慌情绪吞没。SGF催化+自主发行+Switch 2多平台三重利好支撑估值底部，等待大盘企稳后修复。`;
+  } else if (_isJune9Surge) {
+    analysisDetail = `${_juneSuPrefix}——<span style="color:#34d399">暴涨主因</span>：①6/5 SGF公布《Stellar Blade: Blood Rain》预告片的延迟效应集中释放——6/5当日因KOSPI熔断暴跌被压制，6/8收盘仅+3.25%，6/9利好兑现暴涨10%+；②自主发行=利润结构永久性重塑，从索尼发行转为Shift Up自主发行，利润分成根本性改变，SOTP估值给予更高PE倍数；③「双重质疑」被打破——续作确认真实存在+自主发行转换，此前市场两大利空同时被证伪；④外资+机构同步净买入（外资净买入12.84万股+机构净买入1.40万股），成交量飙升至20日均量4倍，机构资金实质性入场。券商共识目标价：Kiwoom 65,000/新永 53,000/大宇 48,000韩元。`;
   } else if (_isJune5SGF) {
     analysisDetail = `${_juneSuPrefix}。<strong>6/5 Summer Game Fest 2026:《Stellar Blade: Blood Rain》正式公布</strong>——续作新主角为Evie（可变拳套武器），前作主Eve转为配角。SHIFT UP自主发行（不再依赖索尼），目标2027年发售。SGF公布带动全球关注度飙升，验证IP长期价值。6/5韩股整体暴跌（KOSPI熔断），外资调仓导致无差别抛售，实际基本面强劲，利好被压制待后续释放。`;
   } else if (_isJuneFirstDays || _isJuneLater) {
