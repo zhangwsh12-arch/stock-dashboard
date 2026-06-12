@@ -656,6 +656,11 @@ function findCompanyReason(stockName, changeClass) {
       // 此静态表仅为 fallback，每日必须根据当日实际事件更新！
       // 关键规则：原因必须与涨跌方向逻辑自洽！
   const currentDate = (currentData.meta?.date || ''); // e.g. "20260408"
+  const LAST_MAINTAINED_DATE = '20260612'; // 硬编码分析最后维护日期，超过此日期返回null防过期
+  if (currentDate > LAST_MAINTAINED_DATE) {
+    console.warn(`[findCompanyReason] ${stockName}: date ${currentDate} > ${LAST_MAINTAINED_DATE}, skipping stale hardcoded analysis`);
+    return null;
+  }
   const isBeforeApril8 = currentDate < '20260408'; // 4/8联动前的日期
   const isApril10OrLater = currentDate >= '20260410' && currentDate < '20260501'; // 4/10 Q1财报季预期
   const isApril13OrLater = currentDate >= '20260413' && currentDate < '20260501'; // 4/13 Aion2座谈会+Crimson Desert发布会临近
@@ -976,6 +981,8 @@ function generateSUAnalysis() {
 
   // ====== SU 月度分析文字（按日期分支，累积上下文，与其他5家公司 getItemText 同级） ======
   const d = currentData?.meta?.date || '';  // 从 currentData 获取当前日期（不依赖外部局部变量）
+  const LAST_MAINTAINED_DATE_SU = '20260612'; // 硬编码分析最后维护日期
+  let useHardcoded = d <= LAST_MAINTAINED_DATE_SU; // 超过维护日期则不使用硬编码
   const _isGE8  = d >= '20260408' && d < '20260501';  // 4/8 联动上线
   const _isGE10 = d >= '20260410' && d < '20260501';  // 4/10 联动消化
   const _isGE13 = d >= '20260413' && d < '20260501';  // 4/13 座谈会临近
@@ -1052,6 +1059,9 @@ function generateSUAnalysis() {
     analysisDetail = `<strong>PUBG×Stellar Blade联动(4/8)短期催化已充分反应</strong>，进入获利了结阶段。<strong>4/1全资收购三上真司工作室UNBOUND</strong>强化全球PC/主机发行能力。短期缺乏新催化剂或受板块回调拖累。`;
   } else if (_isGE8) {
     analysisDetail = `<strong>4/1全资收购三上真司工作室UNBOUND + 4/8 PUBG×Stellar Blade联动上线</strong>：收购强化全球PC/主机发行能力，联动验证IP跨平台价值。前期超跌后技术性反弹。`;
+  } else if (!useHardcoded) {
+    // 超过硬编码维护日期，不显示过期4月分析
+    analysisDetail = `硬编码分析数据暂未更新至本月，当前显示为通用参考。请关注实时新闻获取最新分析。`;
   } else {
     analysisDetail = `<strong>4月首个交易日韩国股市整体大涨</strong>（KOSPI/KOSDAQ双升），月初资金配置驱动板块轮动。游戏股作为高Beta成长股领涨市场，Shift Up +5.77% 为月初行情龙头。`;
   }
