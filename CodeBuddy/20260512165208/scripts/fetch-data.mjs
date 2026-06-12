@@ -46,8 +46,9 @@ const COMPANIES = [
 // ============================================================
 function getLatestTradingDay() {
   const d = new Date();
-  // 韩国时间 UTC+9，上午9点到下午3点为交易时间
-  const koreaHour = d.getUTCHours() + 9;
+  // 韩国时间 UTC+9，精确转换
+  const koreaTime = new Date(d.getTime() + 9 * 60 * 60 * 1000);
+  const koreaHour = koreaTime.getUTCHours();
   
   // 始终取前一个交易日收盘（看板显示昨收数据）
   // 如果还没到当天收盘(韩国时间15点=UTC 6点)，取前一个交易日
@@ -57,6 +58,17 @@ function getLatestTradingDay() {
   // 周末回退到周五
   if (day === 0) d.setUTCDate(d.getUTCDate() - 2);  // 周日 -> 周五
   if (day === 6) d.setUTCDate(d.getUTCDate() - 1);  // 周六 -> 周五
+  
+  // KRX休市日回退（逐步回退到最近交易日）
+  let dateStr = formatDate(d);
+  let maxRetry = 10;
+  while (KRX_HOLIDAYS_2026.has(dateStr) && maxRetry-- > 0) {
+    d.setUTCDate(d.getUTCDate() - 1);
+    const newDay = d.getUTCDay();
+    if (newDay === 0) d.setUTCDate(d.getUTCDate() - 2);
+    if (newDay === 6) d.setUTCDate(d.getUTCDate() - 1);
+    dateStr = formatDate(d);
+  }
   
   return d;
 }
@@ -592,6 +604,16 @@ async function main() {
     console.error('\n❌ 所有公司数据获取失败！请检查网络或数据源是否可用。');
     process.exit(1);
   }
+  
+  // ====== 6家公司完整性校验（<4家视为异常，exit 1）======
+  if (successCount < 4) {
+    console.error(`\n❌ 数据严重不完整：仅获取 ${successCount}/${COMPANIES.length} 家公司数据！`);
+    console.error('缺失公司:', COMPANIES.filter(c => !stockResults.find(r => r?.code === c.code)).map(c => c.name).join(', '));
+    process.exit(1);
+  } else if (successCount < COMPANIES.length) {
+    console.warn(`\n⚠️ 数据部分缺失：获取 ${successCount}/${COMPANIES.length} 家公司，缺失：`);
+    console.warn(COMPANIES.filter(c => !stockResults.find(r => r?.code === c.code)).map(c => c.name).join(', '));
+  }
 
   // 抓取大盘指数
   const indexResults = await fetchAllIndices();
@@ -742,6 +764,23 @@ async function main() {
   console.log(
     `   其他: ${dashboardData.companies.map(c => `${c.name}:${c.price}`).join(', ')}`
   );
+
+  // ====== 自动更新 index.html 的 VER 版本号 ======
+  try {
+    const htmlFile = join(__dirname, '..', 'index.html');
+    if (existsSync(htmlFile)) {
+      let html = readFileSync(htmlFile, 'utf-8');
+      const newVer = dateStr + 'a'; // e.g. "20260611a"
+      const verRegex = /var VER = '[^']+'/;
+      if (verRegex.test(html)) {
+        html = html.replace(verRegex, `var VER = '${newVer}'`);
+        writeFileSync(htmlFile, html, 'utf-8');
+        console.log(`✅ VER 版本号已自动更新: ${newVer}`);
+      }
+    }
+  } catch (verErr) {
+    console.warn(`⚠️ VER版本号更新失败: ${verErr.message}`);
+  }
 }
 
 /**

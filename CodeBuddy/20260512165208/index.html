@@ -366,6 +366,7 @@ let ALL_LABELS = [];       // 对比图 X 轴标签
 let ALL_DATASETS = [];     // 对比图数据集
 let EVENT_DATA = [];       // 当日事件/新闻
 let NORMAL_DATA = [];      // 行业资讯
+let ANALYSIS_CACHE = {};   // AI自动生成的涨跌分析缓存（按 日期_公司名 索引）
 let contentLoaded = false; // 标记内容是否已加载
 
 /**
@@ -406,6 +407,18 @@ async function loadContentData() {
 
     contentLoaded = true;
     console.log(`✅ Content loaded: ${ALL_LABELS.length} labels, ${EVENT_DATA.length} events, ${NORMAL_DATA.length} news`);
+
+    // 加载 AI 生成的涨跌分析缓存
+    try {
+      const cacheResp = await fetch('data/analysis-cache.json' + CACHE_BUSTER);
+      if (cacheResp.ok) {
+        ANALYSIS_CACHE = await cacheResp.json();
+        console.log(`✅ Analysis cache loaded: ${Object.keys(ANALYSIS_CACHE).length} entries`);
+      }
+    } catch (e) {
+      console.warn('⚠️ Could not load analysis-cache.json:', e.message);
+    }
+
     return true;
   } catch (err) {
     console.error('⚠️ Failed to load content.json:', err.message);
@@ -651,10 +664,25 @@ function showErrorState() {
 // ====== findCompanyReason（移到顶层，供 generateSUAnalysis 和 renderDailySummary 共用）======
 function findCompanyReason(stockName, changeClass) {
     // 按涨跌方向分开存储原因，避免逻辑矛盾
-      // 数据来源优先级：1) Naver Finance 实时分析文章 2) DART 公示 3) 当日新闻
+      // 数据来源优先级：1) ANALYSIS_CACHE（AI自动生成的分析） 2) Naver Finance 实时分析文章 3) DART 公示 4) 当日新闻
       // 此静态表仅为 fallback，每日必须根据当日实际事件更新！
       // 关键规则：原因必须与涨跌方向逻辑自洽！
-  const currentDate = (currentData.meta?.date || ''); // e.g. "20260408"
+
+  // ====== 优先级1: 从 ANALYSIS_CACHE 读取 AI 自动生成的分析 ======
+  const currentDate = (currentData.meta?.date || '');
+  const cacheKey = `${currentDate}_${stockName}`;
+  if (ANALYSIS_CACHE[cacheKey]?.reason) {
+    console.log(`📋 [AnalysisCache] hit: ${cacheKey}`);
+    return ANALYSIS_CACHE[cacheKey].reason;
+  }
+
+  // ====== 日期截止保护：硬编码数据最新维护到2026-05-21，超出后不再返回过时分析 ======
+  const LAST_MAINTAINED_DATE = '20260521';
+  if (currentDate > LAST_MAINTAINED_DATE) {
+    console.warn(`[findCompanyReason] ${stockName}: date ${currentDate} > ${LAST_MAINTAINED_DATE}, skipping stale hardcoded analysis`);
+    return null;
+  }
+
   const isBeforeApril8 = currentDate < '20260408'; // 4/8联动前的日期
   const isApril10OrLater = currentDate >= '20260410'; // 4/10 Q1财报季预期
   const isApril13OrLater = currentDate >= '20260413'; // 4/13 Aion2座谈会+Crimson Desert发布会临近
@@ -886,6 +914,44 @@ function generateSUAnalysis() {
   const price = su.price || '-';
   const prevClose = su.previousClose || '-';
 
+  // ====== 优先级1: 从 ANALYSIS_CACHE 读取 AI 自动生成的 SU 月度分析 ======
+  const currentDate = (currentData?.meta?.date || '');
+  const suCacheKey = `${currentDate}_su_analysis`;
+  if (ANALYSIS_CACHE[suCacheKey]?.analysis) {
+    console.log(`📋 [AnalysisCache] SU monthly hit: ${suCacheKey}`);
+    const cachedAnalysis = ANALYSIS_CACHE[suCacheKey].analysis;
+
+    // 仍然计算月度累计涨跌数据
+    const chartDate = currentDate;
+    const chartMonth = chartDate.slice(0, 6) || '202605';
+    const chartDay = chartDate.length >= 8 ? parseInt(chartDate.slice(6, 8), 10) : 31;
+    const chartData = (currentData.chartData || []).filter(d => {
+      if (!d.date.startsWith(chartMonth)) return false;
+      const day = parseInt(d.date.slice(6, 8), 10);
+      return day <= chartDay;
+    });
+    let monthText = '';
+    if (chartData.length >= 2) {
+      const firstPrice = chartData[0].price;
+      const lastPrice = chartData[chartData.length - 1].price;
+      const monthChange = ((lastPrice - firstPrice) / firstPrice * 100);
+      const mcSign = monthChange >= 0 ? '+' : '';
+      monthText = `本月累计 <strong style="color:${monthChange >= 0 ? '#34d399' : '#f87171'}">${mcSign}${monthChange.toFixed(2)}%</strong>（₩${firstPrice.toLocaleString()} → ₩${lastPrice.toLocaleString()}）`;
+    }
+
+    let html = '';
+    if (monthText) html += `<p>${monthText}</p>`;
+    html += `<p><strong>主要原因</strong>：${cachedAnalysis}</p>`;
+    return html;
+  }
+
+  // ====== 优先级2: 原有硬编码逻辑（兜底，仅覆盖到2026-05-21） ======
+
+  // 日期截止保护：超出硬编码维护范围后不再显示过时分析
+  const LAST_MAINTAINED_DATE_SU = '20260521';
+  const suDate = currentData?.meta?.date || '';
+  let useHardcoded = suDate <= LAST_MAINTAINED_DATE_SU;
+
   // 计算月度累计涨跌（从 chartData 计算，截断到当前日期）
   const chartDate = currentData?.meta?.date || '';
   const chartMonth = chartDate.slice(0, 6) || '202605';
@@ -924,7 +990,10 @@ function generateSUAnalysis() {
   const _isMay14 = d >= '20260514'; // 5/14 NIKKE Mint+Lineage2M更新+PUBG新模式+Nexon AI补贴
 
   let analysisDetail = '';
-  if (_isMay14) {
+  if (!useHardcoded) {
+    // 超出硬编码维护范围，显示通用提示
+    analysisDetail = `硬编码分析数据暂未更新至本月，以下为基于当日股价与大盘走势的通用观察。请关注行业资讯板块获取最新动态，或通过 GitHub Actions 自动触发 analysis-cache 生成。`;
+  } else if (_isMay14) {
     analysisDetail = `<strong>NIKKE新SSR「Mint」实装+Stellar Blade联动复刻</strong>——5/14新角色Mint上线，超稀有限定召唤进行中。Stellar Blade联动内容复刻验证IP跨平台运营价值。`;
   } else if (_isMay13) {
     // 5/13 Q1财报利好消化后震荡整固
@@ -1104,6 +1173,11 @@ function renderDailySummary() {
   }
 
   function findStockReason(stock, events) {
+    // 优先级0: 从 ANALYSIS_CACHE 读取 AI 自动生成的分析
+    const cacheKey = `${currentData.meta?.date}_${stock.name}`;
+    if (ANALYSIS_CACHE[cacheKey]?.reason) {
+      return { source: 'ai_cache', text: ANALYSIS_CACHE[cacheKey].reason, color: ANALYSIS_CACHE[cacheKey].color || stock.color, url: null };
+    }
     // 1. 优先从当日事件数据中精确匹配（跳过韩语/英语标题）
     const matched = events.find(e => {
       const ms = matchEventToStock(e);
