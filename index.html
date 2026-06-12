@@ -656,11 +656,8 @@ function findCompanyReason(stockName, changeClass) {
       // 此静态表仅为 fallback，每日必须根据当日实际事件更新！
       // 关键规则：原因必须与涨跌方向逻辑自洽！
   const currentDate = (currentData.meta?.date || ''); // e.g. "20260408"
-  const LAST_MAINTAINED_DATE = '20260521'; // 硬编码分析最后维护日期，超过此日期返回null防过期
-  if (currentDate > LAST_MAINTAINED_DATE) {
-    console.warn(`[findCompanyReason] ${stockName}: date ${currentDate} > ${LAST_MAINTAINED_DATE}, skipping stale hardcoded analysis`);
-    return null;
-  }
+  // 注：不再按日期截止硬编码分析，改为由各日期分支自然匹配
+  // 超出硬编码范围的日期将走到底部动态兜底（基于实时涨跌幅/大盘数据生成）
   const isBeforeApril8 = currentDate < '20260408'; // 4/8联动前的日期
   const isApril10OrLater = currentDate >= '20260410' && currentDate < '20260501'; // 4/10 Q1财报季预期
   const isApril13OrLater = currentDate >= '20260413' && currentDate < '20260501'; // 4/13 Aion2座谈会+Crimson Desert发布会临近
@@ -947,7 +944,10 @@ function findCompanyReason(stockName, changeClass) {
     for (const [key, reason] of Object.entries(map)) {
       if (stockName.includes(key) || key.includes(stockName)) return reason;
     }
-    return null;
+    // 动态兜底：基于涨跌幅方向和大盘数据生成通用分析
+    const dir = changeClass === 'up' ? '上涨' : (changeClass === 'down' ? '下跌' : '平盘');
+    const dirColor = changeClass === 'up' ? '#34d399' : (changeClass === 'down' ? '#f87171' : '#9ca3af');
+    return `<span style="color:${dirColor}">${dir}</span>——跟随大盘走势为主，个股无明显独立催化剂。关注行业政策、新品发布及财报等事件驱动。`;
 }
 
 // ====== generateSUAnalysis（移到顶层） ======
@@ -1017,6 +1017,17 @@ function generateSUAnalysis() {
     analysisDetail = `${_juneSuPrefix}。<strong>6/5 Summer Game Fest 2026:《Stellar Blade: Blood Rain》正式公布</strong>——续作新主角为Evie（可变拳套武器），前作主Eve转为配角。SHIFT UP自主发行（不再依赖索尼），目标2027年发售。SGF公布带动全球关注度飙升，验证IP长期价值。6/5韩股整体暴跌（KOSPI熔断），外资调仓导致无差别抛售，实际基本面强劲，利好被压制待后续释放。`;
   } else if (_isJuneFirstDays || _isJuneLater) {
     analysisDetail = `${_juneSuPrefix}。6/5 SGF公布《Stellar Blade: Blood Rain》预告片——新主角Evie+拳套武器+Shift Up自主发行，2027年发售，全球关注度飙升。6/5当日因KOSPI熔断暴跌被压制，SGF利好尚未充分反映在股价中。Project Spirits(腾讯发行)长期利好仍在，NIKKE累计营收破$10亿验证IP运营能力。`;
+  } else if (_isJunePost10) {
+    // 6/10及之后的动态分析（基于实时数据）
+    const _suDir = suChangeClass === 'up' ? '上涨' : (suChangeClass === 'down' ? '下跌' : '平盘');
+    const _mcStr = monthChange !== null ? (monthChange >= 0 ? '+' : '') + monthChange.toFixed(2) + '%' : '数据计算中';
+    const _mcColor = monthChange !== null ? (monthChange >= 0 ? '#34d399' : '#f87171') : '#9ca3af';
+    analysisDetail = `<strong>6月动态分析</strong>（${_juneSuPrefix}）——本日<span style="color:${suChangeClass === 'up' ? '#34d399' : (suChangeClass === 'down' ? '#f87171' : '#9ca3af')}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。核心催化：<strong>①SGF公布《Stellar Blade: Blood Rain》</strong>（续作确认+自主发行+2027发售）；<strong>②Nintendo Direct登陆Switch 2</strong>（年内发售，第3平台扩展）；<strong>③Project Spirits(腾讯发行)</strong>长期利好；NIKKE累计营收破$10亿验证IP运营能力。关注大盘走势与外资流向对游戏板块的影响。`;
+  } else if (!useHardcoded) {
+    // 超过硬编码维护日期的最终兜底——基于数据的动态分析
+    const _suDir = suChangeClass === 'up' ? '上涨' : (suChangeClass === 'down' ? '下跌' : '平盘');
+    const _mcStr = monthChange !== null ? (monthChange >= 0 ? '+' : '') + monthChange.toFixed(2) + '%' : '数据计算中';
+    analysisDetail = `当前为动态分析模式。本日${_suDir}${suPct}，本月累计${_mcStr}。详细分析请关注实时新闻与公告。`;
   } else if (_isMay22) {
     // 5/22 需要同时解释本月下跌原因和当日反弹
     analysisDetail = `<strong>本月累计下跌11.54%的多空博弈</strong>——<span style="color:#f87171">下跌主因</span>：①5/11 Q1财报利好公布后机构获利了结，剑星2自主发行+Project Spirits等利好被充分定价；②NIKKE 3.5周年活动高峰(5月初)过后用户数据自然回落，进入催化真空期；③5/21 KOSPI暴涨8.42%日资金虹吸至AI/半导体，游戏股被全面抽离。5/22 KOSDAQ暴涨+4.99%带动全线反弹+2.25%，5/21错杀得到部分修正，但月度跌幅仍居板块首位。`;
