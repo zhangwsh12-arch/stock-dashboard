@@ -656,7 +656,7 @@ function findCompanyReason(stockName, changeClass) {
       // 此静态表仅为 fallback，每日必须根据当日实际事件更新！
       // 关键规则：原因必须与涨跌方向逻辑自洽！
   const currentDate = (currentData.meta?.date || ''); // e.g. "20260408"
-  const LAST_MAINTAINED_DATE = '20260612'; // 硬编码分析最后维护日期，超过此日期返回null防过期
+  const LAST_MAINTAINED_DATE = '20260521'; // 硬编码分析最后维护日期，超过此日期返回null防过期
   if (currentDate > LAST_MAINTAINED_DATE) {
     console.warn(`[findCompanyReason] ${stockName}: date ${currentDate} > ${LAST_MAINTAINED_DATE}, skipping stale hardcoded analysis`);
     return null;
@@ -981,7 +981,7 @@ function generateSUAnalysis() {
 
   // ====== SU 月度分析文字（按日期分支，累积上下文，与其他5家公司 getItemText 同级） ======
   const d = currentData?.meta?.date || '';  // 从 currentData 获取当前日期（不依赖外部局部变量）
-  const LAST_MAINTAINED_DATE_SU = '20260612'; // 硬编码分析最后维护日期
+  const LAST_MAINTAINED_DATE_SU = '20260521'; // 硬编码分析最后维护日期
   let useHardcoded = d <= LAST_MAINTAINED_DATE_SU; // 超过维护日期则不使用硬编码
   const _isGE8  = d >= '20260408' && d < '20260501';  // 4/8 联动上线
   const _isGE10 = d >= '20260410' && d < '20260501';  // 4/10 联动消化
