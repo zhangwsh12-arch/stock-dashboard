@@ -930,10 +930,10 @@ function findCompanyReason(stockName, changeClass) {
             ? '<strong>6月首个交易日调整</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。'
             : '<strong>6月震荡整理</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。Blue Archive稳健但难抵估值下行。',
         'Netmarble': changeClass === 'up'
-          ? '<strong>6月新月份估值重估窗口</strong>——《Monster Striker: Star Dive》首月营收超预期突破₩300亿验证后持续运营，分红收益(年配当约2,800韩元/股)构筑底部。'
+          ? '<strong>6月新月份估值重估窗口</strong>——Monster Striker首月超₩300亿+分红年配当2,800韩元/股筑底。'
           : isJuneFirstDays
-            ? '<strong>6月首个交易日调整</strong>——Coway治理争议余波间歇性压制，Monster Striker营收持续性待验证。'
-            : '<strong>6月震荡整理</strong>——Coway治理争议余波间歇性压制，Monster Striker营收持续性待验证。分红收益构筑底部支撑。',
+            ? '<strong>6月首个交易日调整</strong>——Monster Striker持续性待验证+Coway争议压制。'
+            : '<strong>6月震荡整理</strong>——Monster Striker进入常态化运营期，用户留存待验证。Coway关联交易争议仍在发酵中。分红收益提供底部支撑。',
       };
       for (const [key, reason] of Object.entries(juneMap)) {
         if (stockName.includes(key) || key.includes(stockName)) return reason;
@@ -1720,7 +1720,7 @@ function renderCompanyAnalysisSection() {
         case '225570': // Nexon Games
           return `${_junePrefix}。Blue Archive日本市场长期畅销提供稳定现金流。关注Q2财报及Project DX/RX新作进展。`;
         case '251270': // Netmarble
-          return `${_junePrefix}。《Monster Striker: Star Dive》首月营收超预期突破₩300亿提供基本面支撑，分红收益(年配当约2,800韩元/股)构筑底部。Coway治理争议余波间歇性压制。`;
+          return `${_junePrefix}。《Monster Striker: Star Dive》首月营收超₩300亿进入常态化运营，用户留存与LTV持续验证中。《Seven Deadly Sins: Origin》运营稳健但缺乏增量催化。Coway追加收购股权引发治理争议（Align Partners指控"利益冲突"：Netmarble持股25.8%为最大股东，收购反而受益于股价走低），外资卖出压力间歇性出现。分红收益（年配当约2,800韩元/股）提供防御性支撑。`;
         case '036570': // NC
           return `${_junePrefix}。Aion 2韩国预约突破120万，6月全球发布计划稳步推进。Q1财报超预期（营业利润YoY +1700%）提供基本面支撑。`;
         case '259960': // Krafton
