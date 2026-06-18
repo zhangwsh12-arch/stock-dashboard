@@ -2,6 +2,8 @@ name: Daily Stock Data Update
 
 on:
   # ====== 外部定时触发（cron-job.org 精准触发，无延迟）======
+  # 可通过 client_payload.force_notify=true 强制推送
+  # 例: gh api repos/.../dispatches -f event_type=trigger-update -f '{"force_notify":true}'
   # 建议配置: 工作日 UTC 02:00 (北京时间 10:00 / 韩国时间 11:00)
   # 韩国股市收盘时间为 KST 15:30，11:00 推送可确保数据已完整录入
   repository_dispatch:
@@ -9,6 +11,12 @@ on:
 
   # 手动触发（保留，用于调试）
   workflow_dispatch:
+    inputs:
+      force_notify:
+        description: '强制推送企微通知（忽略每日去重）'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -82,6 +90,17 @@ jobs:
        github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve force_notify flag
+        id: resolve-force
+        run: |
+          # workflow_dispatch: inputs.force_notify
+          # repository_dispatch: client_payload.force_notify
+          FN="${{ github.event.inputs.force_notify }}"
+          if [ "$FN" = "" ] || [ "$FN" = "false" ]; then
+            FN="${{ github.event.client_payload.force_notify }}"
+          fi
+          echo "force_notify=${FN:-false}" >> "$GITHUB_OUTPUT"
+
       - name: Get today's date (KST)
         id: get-date
         run: echo "date=$(TZ=Asia/Seoul date '+%Y-%m-%d')" >> "$GITHUB_OUTPUT"
@@ -94,25 +113,40 @@ jobs:
           key: notify-sent-${{ steps.get-date.outputs.date }}
 
       - name: Skip — already notified today
-        if: steps.notify-guard.outputs.cache-hit == 'true'
+        if: >-
+          steps.notify-guard.outputs.cache-hit == 'true' &&
+          steps.resolve-force.outputs.force_notify != 'true'
         run: |
-          echo "⏭️ 今日 (${{ steps.get-date.outputs.date }}) 已推送过，跳过"
+          echo "⏭️ 今日 (${{ steps.get-date.outputs.date }}) 已推送过，跳过（如需强制推送请勾选 force_notify 或传 client_payload.force_notify=true）"
           exit 0
 
+      - name: Force notify — bypassing cache guard
+        if: >-
+          steps.notify-guard.outputs.cache-hit == 'true' &&
+          steps.resolve-force.outputs.force_notify == 'true'
+        run: |
+          echo "🔄 force_notify=true，忽略缓存去重，强制推送"
+
       - name: Checkout latest data
-        if: steps.notify-guard.outputs.cache-hit != 'true'
+        if: >-
+          steps.notify-guard.outputs.cache-hit != 'true' ||
+          steps.resolve-force.outputs.force_notify == 'true'
         uses: actions/checkout@v4
         with:
           ref: main  # 必须获取 update job 推送的最新 commit，而非触发时的旧 commit
 
       - name: Setup Node.js
-        if: steps.notify-guard.outputs.cache-hit != 'true'
+        if: >-
+          steps.notify-guard.outputs.cache-hit != 'true' ||
+          steps.resolve-force.outputs.force_notify == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Send WeCom notification
-        if: steps.notify-guard.outputs.cache-hit != 'true'
+        if: >-
+          steps.notify-guard.outputs.cache-hit != 'true' ||
+          steps.resolve-force.outputs.force_notify == 'true'
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
