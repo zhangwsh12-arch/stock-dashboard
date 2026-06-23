@@ -898,14 +898,14 @@ function findCompanyReason(stockName, changeClass) {
           ? '<strong>6月新月份估值重估窗口</strong>——Aion 2全球发布计划稳步推进，韩国预约突破120万+Q1财报超预期（营业利润YoY +1700%）提供基本面支撑。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——Aion 2利好已部分定价，短期获利了结压力占主导。6月全球发布前或维持震荡整理。'
-            : '<strong>6月震荡整理</strong>——Aion 2利好已部分定价，短期获利了结与长线资金博弈。6月全球发布前或维持区间震荡。',
+            : '<strong>6月震荡整理</strong>——Aion 2利好已部分定价，短期获利了结与长线资金博弈。若KOSPI上涨（半导体虹吸）则逆势下跌属板块轮动正常现象；若KOSPI下跌则跟随大盘回调。6月全球发布前或维持区间震荡。',
         'Pearl Abyss': changeClass === 'down' && isJune10Crash
           ? '<strong>6/10 KOSPI暴跌拖累板块</strong>——KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资+机构同步抛售，游戏板块指数跌-2.79%。Crimson Desert长线运营基本面稳健。'
           : changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Crimson Desert全球销量突破500万套+DLC「Boss重战模式」持续更新验证长线运营能力，Q1扭亏为盈至₩1,250亿提供基本面支撑。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期。'
-            : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力持续，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期，等待新催化。',
+            : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力持续，500万套销量利好已部分定价。Q1扭亏为盈后进入业绩真空期，等待新催化。注意KOSPI创新高时半导体虹吸可能导致逆势下跌。',
         'Shift Up': changeClass === 'down' && isJune10Crash
           ? '<strong>6/9暴涨+10.26%后获利了结+KOSPI暴跌-4.52%双杀</strong>——①6/9暴涨后技术性获利盘涌出（前日收盘33,300→31,200，回调幅度-6.31%）；②KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资连续23日净卖出，游戏板块指数跌-2.79%；③即使6/9 Nintendo Direct公布《Stellar Blade》登陆Switch 2（年内发售），利好仍被大盘恐慌情绪吞没。'
           : changeClass === 'up'
@@ -914,26 +914,26 @@ function findCompanyReason(stockName, changeClass) {
             : '<strong>6月新月份估值重估窗口</strong>——NIKKE累计营收破$10亿验证IP运营能力，剑星2自主发行+Project Spirits(腾讯发行)长期利好支撑。')
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露。'
-            : '<strong>6月震荡整理</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露及NIKKE运营数据。',
+            : '<strong>6月震荡整理</strong>——缺乏新催化剂，5月利好消化后进入估值整固期。关注6月新作消息披露及NIKKE运营数据。若KOSPI上涨但Shift Up下跌，多为半导体虹吸导致板块轮动（非公司基本面变化）。',
         'Krafton': changeClass === 'down' && isJune10Crash
           ? '<strong>6/10 KOSPI暴跌拖累板块</strong>——KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资+机构同步抛售，游戏板块指数跌-2.79%。PUBG Steam在线Q1创新高基本面稳健。'
           : changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——PUBG Steam Q1平均在线30万创新高+AI模型"Raon"开源生态扩张提供基本面支撑。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——前期涨幅后获利了结，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。'
-            : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力与基本面支撑博弈，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。',
+            : '<strong>6月震荡整理</strong>——前期涨幅后获利了结压力与基本面支撑博弈，印度回归谈判时间表未定。Q1利润YoY+52%利好已充分定价。若KOSPI上涨时逆势下跌，多为半导体资金虹吸所致（5/21曾出现KOSPI+8.42%但Krafton-2.82%的先例）。',
         'Nexon Games': changeClass === 'down' && isJune10Crash
           ? '<strong>6/10 KOSPI暴跌拖累板块</strong>——KOSPI暴跌-4.52%（中东局势+伊朗封锁霍尔木兹海峡+美股暴跌传导），外资+机构同步抛售，游戏板块指数跌-2.79%。Blue Archive日本市场稳健提供底部支撑。'
           : changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Blue Archive日本市场长期畅销提供稳定现金流，AI补贴制度+DNF多元内容推进支撑估值。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。'
-            : '<strong>6月震荡整理</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。Blue Archive稳健但难抵估值下行。',
+            : '<strong>6月震荡整理</strong>——新作延期风险（Project DX/RX）持续压制估值，缺乏新增长引擎。Blue Archive稳健但难抵估值下行。KOSPI创新高时若逆势下跌，多为半导体虹吸导致板块轮动。',
         'Netmarble': changeClass === 'up'
           ? '<strong>6月新月份估值重估窗口</strong>——Monster Striker首月超₩300亿+分红年配当2,800韩元/股筑底。'
           : isJuneFirstDays
             ? '<strong>6月首个交易日调整</strong>——Monster Striker持续性待验证+Coway争议压制。'
-            : '<strong>6月震荡整理</strong>——Monster Striker进入常态化运营期，用户留存待验证。Coway关联交易争议仍在发酵中。分红收益提供底部支撑。',
+            : '<strong>6月震荡整理</strong>——Monster Striker进入常态化运营期，用户留存待验证。Coway关联交易争议仍在发酵中。分红收益提供底部支撑。KOSPI上涨时若逆势下跌，多为资金流向半导体/权重股的板块轮动现象。',
       };
       for (const [key, reason] of Object.entries(juneMap)) {
         if (stockName.includes(key) || key.includes(stockName)) return reason;
@@ -1018,11 +1018,17 @@ function generateSUAnalysis() {
   } else if (_isJuneFirstDays || _isJuneLater) {
     analysisDetail = `${_juneSuPrefix}。6/5 SGF公布《Stellar Blade: Blood Rain》预告片——新主角Evie+拳套武器+Shift Up自主发行，2027年发售，全球关注度飙升。6/5当日因KOSPI熔断暴跌被压制，SGF利好尚未充分反映在股价中。Project Spirits(腾讯发行)长期利好仍在，NIKKE累计营收破$10亿验证IP运营能力。`;
   } else if (_isJunePost10) {
-    // 6/10及之后的动态分析（基于实时数据）
+    // 6/10及之后的动态分析（基于实时数据，区分上涨/下跌场景）
     const _suDir = suChangeClass === 'up' ? '上涨' : (suChangeClass === 'down' ? '下跌' : '平盘');
     const _mcStr = monthChange !== null ? (monthChange >= 0 ? '+' : '') + monthChange.toFixed(2) + '%' : '数据计算中';
     const _mcColor = monthChange !== null ? (monthChange >= 0 ? '#34d399' : '#f87171') : '#9ca3af';
-    analysisDetail = `<strong>6月动态分析</strong>（${_juneSuPrefix}）——本日<span style="color:${suChangeClass === 'up' ? '#34d399' : (suChangeClass === 'down' ? '#f87171' : '#9ca3af')}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。核心催化：<strong>①SGF公布《Stellar Blade: Blood Rain》</strong>（续作确认+自主发行+2027发售）；<strong>②Nintendo Direct登陆Switch 2</strong>（年内发售，第3平台扩展）；<strong>③Project Spirits(腾讯发行)</strong>长期利好；NIKKE累计营收破$10亿验证IP运营能力。关注大盘走势与外资流向对游戏板块的影响。`;
+    const _suColor = suChangeClass === 'up' ? '#34d399' : (suChangeClass === 'down' ? '#f87171' : '#9ca3af');
+    if (suChangeClass === 'down') {
+      // 下跌场景：重点解释是否为大盘虹吸（KOSPI上涨但游戏股跌）或真正回调
+      analysisDetail = `<strong>6月动态分析</strong>（${_juneSuPrefix}）——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<span style="color:#f87171">下跌原因判断</span>：若当日KOSPI上涨（尤其是半导体领涨），则大概率是<strong>「资金虹吸」现象</strong>——三星电子/SK海力士等半导体权重股吸走绝大部分资金（6/19 KOSPI破9300点当日仅115只涨/787只跌），游戏股作为非主线板块被边缘化；若KOSPI同步下跌则属大盘联动回调。核心催化仍在：<strong>①SGF《Stellar Blade: Blood Rain》</strong>（续作+自主发行）；<strong>②Switch 2登陆</strong>（年内第3平台）；<strong>③Project Spirits</strong>(腾讯发行)。`;
+    } else {
+      analysisDetail = `<strong>6月动态分析</strong>（${_juneSuPrefix}）——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。核心催化：<strong>①SGF公布《Stellar Blade: Blood Rain》</strong>（续作确认+自主发行+2027发售）；<strong>②Nintendo Direct登陆Switch 2</strong>（年内发售，第3平台扩展）；<strong>③Project Spirits(腾讯发行)</strong>长期利好；NIKKE累计营收破$10亿验证IP运营能力。关注大盘走势与外资流向对游戏板块的影响。`;
+    }
   } else if (!useHardcoded) {
     // 超过硬编码维护日期的最终兜底——基于数据的动态分析
     const _suDir = suChangeClass === 'up' ? '上涨' : (suChangeClass === 'down' ? '下跌' : '平盘');
