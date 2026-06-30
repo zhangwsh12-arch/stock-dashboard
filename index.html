@@ -1786,10 +1786,14 @@ function renderCompanyAnalysisSection() {
     const sign = mc >= 0 ? '+' : '';
     const mcStr = `${sign}${mc.toFixed(2)}%`;
     const isChampion = mc === maxMc && mc > 0;
-    const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
+    const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span> : '';
+
+    // 6月日期辅助变量（与 generateSUAnalysis 保持一致）
+    const _currentDateForItem = labels.length > 0 ? labels[labels.length - 1] : '';
+    const _isJuneCrashWeekItem = _currentDateForItem >= '20260623'; // 6/23起崩盘周期
 
     // 6月通用分析（区分崩盘周期前后）
-    if (isJuneCrashWeek) {
+    if (_isJuneCrashWeekItem) {
       // ★★★ 6/23起崩盘周期的月度波动叙事 ★★★
       const _crashNarrative = `<br/><span style="color:#dc2626;font-size:11px">【6月回顾】KOSPI 9114(历史新高)→8203(黑色星期二-9.99%)→年内第5次熔断(-5.81%)→V型反转。游戏股经历SGF催化→获利了结→系统性崩盘→外资创纪录出逃的完整周期。</span>`;
       switch(item.code) {
