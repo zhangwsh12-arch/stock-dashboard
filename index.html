@@ -929,7 +929,7 @@ function findCompanyReason(stockName, changeClass) {
         'Shift Up': changeClass === 'down' && isJune10Crash
           ? '<strong>6/9暴涨后获利了结+KOSPI-4.52%双杀</strong>——6/9涨10.26%后回调-6.31%，叠加KOSPI暴跌拖累。Switch 2利好被大盘恐慌吞没。'
           : changeClass === 'up' && isJuneVReverse
-          ? '<strong>V型反弹：高Beta弹性修复</strong>——KOSDAQ+8%中SU弹性最大，但外资7.7万亿史上最大抛售仍在。催化：Blood Rain续作+Switch2+NIKKE $10亿。'
+          ? '<strong>V型反弹：高Beta弹性修复</strong>——KOSDAQ+8%中SU弹性最大，但外资7.7万亿史上最大抛售仍在。催化：剑星《Blood Rain》续作+Switch2+NIKKE $10亿。'
           : changeClass === 'down' && isJuneBlackTue
           ? '<strong>6/23「黑色星期二」高Beta股首当其冲</strong>——KOSPI-9.99%崩盘中SU作为高Beta+高换手股被系统性重创。核心催化完全未变。'
           : changeClass === 'down' && isJuneCircuit5
@@ -1084,19 +1084,19 @@ function generateSUAnalysis() {
     const _juneMonthNarrative = `<span style="color:#94a3b8;font-size:11.5px">【6月回顾】SGF催化暴涨(+10.26%→₩36,650高点) → KOSPI暴跌回调(-4.52%) → 黑色星期二KOSPI -9.99%(系统性崩盘) → 第5次熔断-5.81%(杠杆爆仓余震) → V型反转+外资史上最大单日抛售(7.7万亿韩元)</span>`;
 
     if (_isJuneBlackTue) {
-      analysisDetail = `<strong>⚠️6/23「黑色星期二」KOSPI -9.99%</strong><br/>本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<br/>前日KOSPI刚创9114历史新高，次日蒸发910点！半导体双雄领跌→杠杆爆仓连环强平→外资恐慌出逃三重驱动。SU被系统性抛售殃及。<br/><strong>催化完全未变</strong>：SGF Blood Rain+Switch 2+NIKKE $10亿。<br/>${_juneMonthNarrative}`;
+      analysisDetail = `<strong>⚠️6/23「黑色星期二」KOSPI -9.99%</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。前日KOSPI刚创9114历史新高，次日蒸发910点！半导体双雄领跌→杠杆爆仓连环强平→外资恐慌出逃三重驱动，SU被系统性抛售殃及。<strong>核心催化完全未变</strong>：剑星《Blood Rain》续作确认+自主发行+Switch 2登陆+NIKKE $10亿营收。${_juneMonthNarrative}`;
     } else if (_isJuneCircuit5) {
-      analysisDetail = `<strong>⚠️6/26年内第5次熔断(-5.81%)</strong><br/>本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<br/>距黑色星期二仅3交易日再熔断（盘中逼近-9%，年内第5次/历史仅11次）。"爆仓→强平→再下跌"负向螺旋未破。<br/>SU从6/19高点(₩36,650)已大幅回撤，估值回归合理区间。<br/>${_juneMonthNarrative}`;
+      analysisDetail = `<strong>⚠️6/26年内第5次熔断(-5.81%)</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。距黑色星期二仅3交易日再熔断（盘中逼近-9%，年内第5次/历史仅11次），"爆仓→强平→再下跌"负向螺旋未破。SU从6/19高点(₩36,650)已大幅回撤，估值回归合理区间，剑星《Blood Rain》+Switch 2+NIKKE $10亿催化仍在。${_juneMonthNarrative}`;
     } else if (_isJuneVReverse && suChangeClass === 'down') {
-      analysisDetail = `<strong>⚠️6/29 V型反转日仍下跌</strong><br/>本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<br/>午后V型反转(KOSPI -3%→-0.2%, KOSDAQ +8%)但SU仍跌。<br/><strong>核心原因：外资单日净卖出7.7万亿韩元(史上最大)</strong>，海外基金被动再平衡全板块无差别抛售。SU外资持股~37%。中长期逻辑未变。<br/>${_juneMonthNarrative}`;
+      analysisDetail = `<strong>⚠️6/29 V型反转日仍下跌</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。午后V型反转(KOSPI -3%→-0.2%, KOSDAQ +8%)但SU仍跌，<strong>核心原因：外资单日净卖出7.7万亿韩元(史上最大)</strong>，海外基金被动再平衡全板块无差别抛售，SU外资持股~37%受影响显著。中长期逻辑（剑星《Blood Rain》+Switch 2+NIKKE $10亿）未变。${_juneMonthNarrative}`;
     } else if (_isJuneVReverse && suChangeClass !== 'down') {
-      analysisDetail = `<strong>V型反弹：高Beta弹性修复</strong><br/>本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<br/>KOSDAQ+8%中SU弹性最大受益于流动性修复。外资7.7万亿史上最大抛售仍在。<br/>催化：Blood Rain续作+Switch 2+NIKKE $10亿。<br/>${_juneMonthNarrative}`;
+      analysisDetail = `<strong>V型反弹：高Beta弹性修复</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。KOSDAQ+8%中SU弹性最大受益于流动性修复，但外资7.7万亿史上最大抛售压力仍在。催化：剑星《Blood Rain》续作确认+Switch 2登陆+NIKKE $10亿营收。${_juneMonthNarrative}`;
     } else if (suChangeClass === 'down' && _isJuneCrashWeek) {
-      analysisDetail = `崩盘周期余震<br/>本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<br/><span style="color:#f87171">处于6/23→6/26→6/29崩盘周期</span>，外资创纪录出逃持续压制。<br/>催化未变：①Blood Rain续作+自主发行；②Switch 2；③Project Spirits(腾讯)。<br/>${_juneMonthNarrative}`;
+      analysisDetail = `崩盘周期余震——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<span style="color:#f87171">处于6/23→6/26→6/29历史性崩盘周期</span>，外资创纪录出逃持续压制买盘。催化未变：①剑星《Blood Rain》续作+自主发行；②Switch 2登陆；③Project Spirits(腾讯发行)。${_juneMonthNarrative}`;
     } else if (suChangeClass === 'down') {
-      analysisDetail = `6月动态分析<br/>本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<br/><span style="color:#f87171">若KOSPI上涨则属半导体虹吸</span>；若KOSPI同步跌则属大盘联动。<br/>催化：①Blood Rain续作+自主发行；②Switch 2；③Project Spirits。`;
+      analysisDetail = `6月动态分析——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<span style="color:#f87171">若KOSPI上涨则属半导体虹吸现象</span>（三星/SK海力士吸走绝大部分资金，游戏股被边缘化）；若KOSPI同步下跌则属大盘联动回调。催化：①剑星《Blood Rain》续作+自主发行；②Switch 2登陆；③Project Spirits(腾讯发行)。`;
     } else {
-      analysisDetail = `6月动态分析<br/>本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。<br/>催化：①SGF Blood Rain(续作确认+自主发行+2027)；②Switch 2(第3平台)；③NIKKE $10亿营收。`;
+      analysisDetail = `6月动态分析——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。催化：①SGF公布剑星《Blood Rain》（续作确认+自主发行+2027发售）；②Nintendo Direct登陆Switch 2（第3平台扩展）；③NIKKE $10亿营收验证IP能力。关注大盘与外资流向对游戏股影响。`;
     }
   } else if (!useHardcoded) {
     // 超过硬编码维护日期的最终兜底——基于数据的动态分析
