@@ -1786,7 +1786,7 @@ function renderCompanyAnalysisSection() {
     const sign = mc >= 0 ? '+' : '';
     const mcStr = `${sign}${mc.toFixed(2)}%`;
     const isChampion = mc === maxMc && mc > 0;
-    const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span> : '';
+    const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
 
     // 6月日期辅助变量（与 generateSUAnalysis 保持一致）
     const _currentDateForItem = labels.length > 0 ? labels[labels.length - 1] : '';
