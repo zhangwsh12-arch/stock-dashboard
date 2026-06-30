@@ -49,9 +49,11 @@ jobs:
       - name: Run data fetcher
         run: node scripts/fetch-data.mjs
 
-      # ====== 新闻抓取已禁用（韩语新闻导致界面显示问题）======
-      # - name: Run news fetcher
-      #   run: node scripts/fetch-news.mjs || echo "News fetcher skipped (may have network issues)"
+      # ====== 新闻抓取（AI 翻译为中文，追加模式不覆盖人工数据）======
+      - name: Run news fetcher
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/fetch-news.mjs || echo "News fetcher skipped (may have network issues)"
 
       - name: Validate data
         run: node scripts/validate-data.mjs
