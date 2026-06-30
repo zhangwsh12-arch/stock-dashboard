@@ -1789,8 +1789,7 @@ function renderCompanyAnalysisSection() {
     const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
 
     // 6月日期辅助变量（与 generateSUAnalysis 保持一致）
-    const _currentDateForItem = labels.length > 0 ? labels[labels.length - 1] : '';
-    const _isJuneCrashWeekItem = _currentDateForItem >= '20260623'; // 6/23起崩盘周期
+    const _isJuneCrashWeekItem = currentDate >= '20260623'; // 6/23起崩盘周期
 
     // 6月通用分析（区分崩盘周期前后）
     if (_isJuneCrashWeekItem) {
