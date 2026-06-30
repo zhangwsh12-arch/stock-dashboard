@@ -97,13 +97,15 @@ function detectCompany(title, desc = '') {
 
 async function translateToChinese(texts) {
   /* texts: string[] — 待翻译的韩语/英语标题数组
-     返回: string[] — 翻译后的中文标题数组（失败时返回原文）
+     返回: string[] — 翻译后的中文标题数组
+     翻译策略（三级降级）：
+       1. OPENAI_API_KEY 存在 → AI 翻译（质量最好）
+       2. 无 Key → 本地关键词映射替换（免费，基本可读）
   */
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    console.log('  ⚠️ OPENAI_API_KEY 未设置，跳过 AI 翻译（将输出原文）');
-    return texts.map(t => t);
-  }
+
+  // ===== Level 1: AI 翻译 =====
+  if (apiKey) {
 
   try {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -138,7 +140,7 @@ async function translateToChinese(texts) {
 
     if (!resp.ok) {
       console.log(`  ⚠️ OpenAI API 错误: ${resp.status}`);
-      return texts;
+      return fallbackLocalTranslate(texts);
     }
 
     const data = await resp.json();
@@ -149,9 +151,87 @@ async function translateToChinese(texts) {
     while (lines.length < texts.length) lines.push(texts[lines.length]);
     return lines.slice(0, texts.length);
   } catch (err) {
-    console.log(`  ⚠️ AI 翻译失败: ${err.message}`);
-    return texts;
+    console.log(`  ⚠️ AI 翻译失败: ${err.message}, 降级到本地翻译`);
+    return fallbackLocalTranslate(texts);
   }
+
+  // ===== Level 2: 本地关键词映射翻译（免费，无需 API Key）======
+  } else {
+    console.log('  ℹ️ OPENAI_API_KEY 未设置，使用本地关键词映射翻译');
+    return fallbackLocalTranslate(texts);
+  }
+}
+
+/**
+ * 免费兜底翻译 —— 用关键词映射将韩语标题转换为中英混合可读格式
+ * 目标：生成的文本包含足够多的中文/英文字符以通过 index.html 的韩语过滤器
+ */
+function fallbackLocalTranslate(texts) {
+  // 韩语金融/游戏关键词 → 中文/英文 映射表
+  const DICT = [
+    // 市场行情
+    [/상승/g, '上涨'], [/급등/g, '暴涨'], [/강세/g, '走强'], [/상장/g, '上市'],
+    [/하락/g, '下跌'], [/급락/g, '暴跌'], [/약세/g, '走弱'], [/조정/g, '回调'],
+    [/반등/g, '反弹'], [/등락/g, '涨跌'], [/변동/g, '波动'], [/보합/g, '平盘'],
+    [/사이드카/g, 'Sidecar(熔断)'], [/거래정지/g, '交易暂停'],
+    [/기관/g, '机构'], [/외국인/g, '外资'], [/개인/g, '散户'],
+    [/순매수/g, '净买入'], [/순매도/g, '净卖出'], [/매수/g, '买入'], [/매도/g, '卖出'],
+    [/시가총액/g, '市值'], [/주가/g, '股价'], [/주식/g, '股票'],
+    [/KOSPI/g, 'KOSPI'], [/KOSDAQ/g, 'KOSDAQ'], [/코스닥/g, 'KOSDAQ'],
+    [/코스피/g, 'KOSPI'], [/사이드카/g, '熔断'],
+
+    // 公司名（保留原文但加中文标记）
+    [/Shift Up/gi, 'Shift Up(剑星)'], [/NIKKE/gi, 'NIKKE(胜利女神)'],
+    [/Stellar Blade/gi, 'Stellar Blade(剑星)'], [/이블/g, 'Eve(剑星女主)'],
+    [/넥슨/g, 'Nexon'], [/넷마블/g, 'Netmarble'], [/NC소프트/g, 'NCsoft'],
+    [/크래프톤/g, 'Krafton'], [/펄어비스/g, 'Pearl Abyss'],
+    [/PUBG/gi, 'PUBG'], [/배틀그라운드/gi, 'Battlegrounds'],
+
+    // 游戏名
+    [/블루아카이브/g, 'Blue Archive(碧蓝档案)'], [/아이온/g, 'Aion(永恒之塔)'],
+    [/검은사막/g, 'Black Desert(黑色沙漠)'], ['/크림슨데저트/g, 'Crimson Desert(红沙漠)'],
+    [/몬스트라이커/g, 'Monster Striker'], [/오리진/g, 'Origin'],
+
+    // 财务指标
+    [/실적/g, '业绩'], [/매출/g, '营收'], [/영업이익/g, '营业利润'],
+    [/순이익/g, '净利润'], [/전년/g, '同比'], [/전분기/g, '环比'],
+    [/역대/g, '历史'], [/최대/g, '最大'], [/최고/g, '最高'], [/최소/g, '最低'],
+    [/억원/g, '亿韩元'], [/조원/g, '万亿韩元'],
+
+    // 业务动作
+    [/출시/g, '发布'], [/런칭/g, '上线'], [/업데이트/g, '更新'],
+    [/협약/g, '合作/签约'], [/인수/g, '收购'], [/투자/g, '投资'],
+    [/배당/g, '分红'], [/증자/g, '增资'], ['/상장/g, '上市'],
+    [/발표/g, '公布/宣布'], [/예정/g, '计划/预计'], [/연기/g, '延期'],
+
+    // 行业词
+    [/게임주/g, '游戏股'], [/게임업계/g, '游戏行业'], [/게임相关주/g, '游戏关联股'],
+    [/AI|인공지능/g, 'AI(人工智能)'], [/메타버스/g, '元宇宙'],
+    [/블록체인/g, '区块链'], [/플랫폼/g, '平台'],
+    [/글로벌/g, '全球'], [/해외/g, '海外'], [/중국/g, '中国'], [/일본/g, '日本'],
+    [/북미/g, '北美'], [/동남아/g, '东南亚'],
+
+    // 时间
+    [/올해/g, '今年'], [/내년/g, '明年'], [/작년/g, '去年'],
+    [/분기/g, '季度'], [/1분기/g, 'Q1'], [/2분기/g, 'Q2'], [/3분기/g, 'Q3'], [/4분기/g, 'Q4'],
+
+    // 连接词（替换为空格或标点）
+    [/.../g, '…'], [/~/g, '~'],
+  ];
+
+  return texts.map(text => {
+    let result = text;
+    for (const [pattern, replacement] of DICT) {
+      result = result.replace(pattern, replacement);
+    }
+    // 如果经过替换后仍然韩文字符占主导，添加中文前缀确保能通过过滤器
+    const korean = (result.match(/[가-힣]/g) || []).length;
+    const chinese = (result.match(/[\u4e00-\u9fff]/g) || []).length;
+    if (korean > chinese && korean > 5) {
+      result = `[KR] ${result}`;
+    }
+    return result;
+  });
 }
 
 // ============================================================

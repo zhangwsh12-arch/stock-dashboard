@@ -384,20 +384,23 @@ async function loadContentData() {
       ALL_DATASETS = content.compareChart.datasets || [];
     }
 
-    // 新闻事件（过滤韩语/英语标题，只保留中文内容）
+    // 新闻事件（过滤纯韩语标题，保留：①中文内容 ②AI已翻译 ③[KR]/[원文]标记的自动抓取内容）
     if (content.events) {
       EVENT_DATA = content.events.filter(e => {
         const plain = (e.title || '').replace(/<[^>]+>/g, '');
+        // 带标记的自动抓取内容直接放行
+        if (plain.includes('[KR]') || plain.includes('[원문]')) return true;
         const korean = (plain.match(/[가-힣]/g) || []).length;
         const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
         return korean <= chinese || korean <= 5;
       });
     }
 
-    // 行业资讯（同样过滤韩语标题）
+    // 行业资讯（同样规则）
     if (content.industryNews) {
       NORMAL_DATA = content.industryNews.filter(e => {
         const plain = (e.title || '').replace(/<[^>]+>/g, '');
+        if (plain.includes('[KR]') || plain.includes('[원문]')) return true;
         const korean = (plain.match(/[가-힣]/g) || []).length;
         const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
         return korean <= chinese || korean <= 5;
@@ -1287,6 +1290,8 @@ function renderDailySummary() {
   // 检测文本是否主要是韩语/英语（非中文内容，不应在中文界面显示）
   function isNonChineseText(text) {
     const plain = text.replace(/<[^>]+>/g, ''); // 去掉HTML标签
+    // 带标记的自动抓取内容不算"非中文"
+    if (plain.includes('[KR]') || plain.includes('[원문]')) return false;
     const korean = (plain.match(/[가-힣]/g) || []).length;
     const chinese = (plain.match(/[\u4e00-\u9fff]/g) || []).length;
     // 韩语字符多于中文字符 → 判定为韩语内容
