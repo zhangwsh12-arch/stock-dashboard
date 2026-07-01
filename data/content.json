@@ -856,6 +856,22 @@
       "url": "https://www.youtube.com/watch?v=StellarBladeBloodRain"
     },
     {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>黄仁勋访韩与NC CEO金泽辰会面——Aion 2 AI深度合作</strong>——6/7 英伟达CEO黄仁勋访韩，与NCSoft CEO金泽辰会面，聚焦《Aion 2》AI驱动动态内容生成、智能NPC及RTX Spark平台适配。NC作为AI游戏融合先锋获英伟达技术背书。",
+      "source": "东方财富/Seoul Economic Daily",
+      "date": "06.07",
+      "url": "https://caifuhao.eastmoney.com/news/20260605110409684675460"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>黄仁勋访韩与Krafton董事长张秉圭会面——具身AI+机器人协同</strong>——6/7 英伟达CEO黄仁勋与Krafton董事长张秉圭会面，探讨游戏技术迁移至人形机器人开发、具身实体AI合作。PUBG AI功能深化同步推进。",
+      "source": "东方财富/Seoul Economic Daily",
+      "date": "06.07",
+      "url": "https://caifuhao.eastmoney.com/news/20260605110409684675460"
+    },
+    {
       "company": "Shift Up",
       "color": "#ff6b9d",
       "title": "<strong>Shift Up 6/9暴涨10%+！SGF催化延迟效应集中释放</strong>——6/5 SGF公布《Stellar Blade: Blood Rain》预告片当日因KOSPI熔断被压制，6/9下一个交易日利好兑现暴涨。核心驱动：①自主发行=利润结构永久性重塑（不再依赖索尼，利润分成根本性改变）；②「双重质疑」被打破——续作确认真实存在+自主发行转换，市场两大利空同时被证伪；③外资+机构同步净买入（外资净买入12.84万股+机构净买入1.40万股），成交量飙升至20日均量4倍。券商共识目标价：Kiwoom 65,000/新永 53,000/大宇 48,000韩元。",
@@ -1253,6 +1269,14 @@
       "company": "六大游戏公司",
       "color": "#f59e0b",
       "title": "<strong>韩国800万亿韩元半导体投资计划落地——李在明总统确认打造全球第二大半导体集群</strong>——6/29韩国产业通商资源部宣布投入800万亿韩元(约3.52万亿元人民币)在西南光州/全罗区域落地四座存储芯片晶圆制造厂。其中三星电子+SK海力士共同出资81万亿韩元布局忠清道先进封装基地(AI HBM扩产)。此消息是6/29午后V型反转的核心驱动因素之一。但也因此前传闻引发海外基金恐慌性再平衡(触发韩股持仓上限)，导致6/23-6/26连续崩盘。",
+      "source": "한국산업통상자원부/이베스트증권/新浪财经",
+      "date": "06.29",
+      "url": "https://news.10jqka.com.cn/20260629/c677785428.shtml"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#f59e0b",
+      "title": "<strong>韩国800万亿韩元半导体投资计划落地——李在明总统确认</strong>——6/29韩国产业通商资源部宣布投入800万亿韩元在西南光州/全罗区域落地四座存储芯片晶圆厂。三星电子+SK海力士共同出资81万亿韩元布局先进封装基地。此消息是6/29午后V型反转的核心驱动，但也因前传闻引发海外基金恐慌性再平衡导致6/23-6/26连续崩盘。",
       "source": "한국산업통상자원부/이베스트증권/新浪财经",
       "date": "06.29",
       "url": "https://news.10jqka.com.cn/20260629/c677785428.shtml"
