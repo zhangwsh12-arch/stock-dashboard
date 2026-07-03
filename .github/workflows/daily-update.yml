@@ -44,7 +44,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Run data fetcher
         run: node scripts/fetch-data.mjs
@@ -78,8 +78,14 @@ jobs:
         with:
           path: '.'
 
-      - name: Deploy to GitHub Pages
+      # ====== 部署到GitHub Pages（带重试机制）======
+      - name: Deploy to GitHub Pages (attempt 1)
         id: deploy
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Deploy to GitHub Pages (retry)
+        if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v4
 
   # ====== 企业微信推送（update 完成后自动执行，每日仅1次）======
@@ -143,7 +149,7 @@ jobs:
           steps.resolve-force.outputs.force_notify == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Send WeCom notification
         if: >-
