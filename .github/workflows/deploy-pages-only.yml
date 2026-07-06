@@ -8,12 +8,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'data/**'
-      - 'index.html'
-      - 'static/**'
-      - 'CNAME'
-      - '.nojekyll'
+
+# 注意: 去掉 paths 限制，确保任何 push 到 main 都能触发 Pages 部署
 
 permissions:
   contents: read
