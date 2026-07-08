@@ -1,9 +1,9 @@
 {
   "meta": {
-    "version": "3.0",
+    "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-07-03",
-    "note": "此文件由人工维护，每日需同步更新事件和分析文字"
+    "updatedAt": "2026-07-08",
+    "note": "此文件由人工维护，每日需同步更新事件和分析文字。7月新闻已补充(含7/1~7/3事件+7/5高盛展望)"
   },
   "compareChart": {
     "labels": [
@@ -947,6 +947,70 @@
       "source": "이베스트증권/연합뉴스/财联社/东方财富网",
       "date": "06.29",
       "url": "https://baijiahao.baidu.com/s?id=1869318787385648222&wfr=spider&for=pc"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>7/1 KOSPI -2.04%开启下半年——AI板块获利了结+外资持续流出</strong>——KOSDAQ成立30周年纪念日，KOSDAQ逆势收涨约1%但KOSPI下跌2.04%报8,303点。核心驱动：①贝莱德等全球资管下调新兴市场展望，AI持仓过度集中风险引发机构大举锁定收益（Q2 KOSPI暴涨68-70%后获利回吐）；②韩元兑美元汇率维持历史低位(~1,558)加速创纪录外资流出（上半年净卖出148万亿韩元）；③美伊卡塔尔和平谈判遭遇挫折加剧地缘风险；④SK海力士美国IPO申请未能提振内存市场情绪。游戏股普遍承压随大盘调整。",
+      "source": "Atlas.ML/한국경제/중앙일보",
+      "date": "07.01",
+      "url": "https://encyclopediaofstocks.substack.com/p/kospi-market-wrap-july-1-2026"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up 7/2-7/3公开增发认购——725万股获341倍超额认购</strong>——Shift Up进行上市后首次公开增发(SPO)，面向一般投资者发行181.25万股(总发行量25%)。认购价格区间₩47,000~60,000，主承销商为韩国投资证券/NH投资证券/JP摩根。截至7/3收盘共收到约6.185亿股有效认购申请，超额认购倍数达341.2倍，为7月最受瞩目IPO项目。预计7月5日上市交易。增发资金将用于《Stellar Blade: Blood Rain》开发及新IP Project Spirits制作。",
+      "source": "GameLook/韩国经济TV/38 Communications",
+      "date": "07.02~03",
+      "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#dc2626",
+      "title": "<strong>7/2「黑色星期四」——KOSPI暴跌-7.89%，年内第6次熔断！</strong>——Meta宣布向外部客户出售闲置AI算力资源，引发全球芯片过剩恐慌。VanEck半导体ETF暴跌5.4%，三星电子-SK海力士合计800万亿韩元产能扩张计划加剧供给过剩预期。KOSPI单日暴跌655点至7,648点（距6/19历史高点9,385已回落-18.5%），触发卖方侧车机制暂停程序化交易。SK海力士单日-14.57%（距高点回撤-26.78%）创史上最惨烈跌幅之一。但资金从硬件/半导体轮动至软件/内容板块：**NC逆势大涨+3.72%**（Top 5涨幅榜第二），成为资金避风港。Shift Up增发首日认购情绪未受大盘暴跌影响。",
+      "source": "조선일보/Chosun English/Atlas.ML/CNBC",
+      "date": "07.02",
+      "url": "https://www.chosun.com/english/market-money-en/2026/07/02/OE5YUREPIRD7HFYPEYCFRDQFHM/"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC 7/2逆势大涨+3.72%——崩盘中唯一收红的游戏股</strong>——在KOSPI暴跌-7.89%、半导体股集体熔断的极端市场中，NC成为资金从硬件轮流向软件/内容的最大受益者。6月累计下跌超过20%后的技术性反弹+Aion 2全球发布临近的估值支撑，使NC成为当日Top 5涨幅榜中唯一的非半导体科技公司。与5/21「KOSPI+8.42%但游戏股被虹吸」形成鲜明对比——这次资金方向完全反转。",
+      "source": "Atlas.ML/Naver증권",
+      "date": "07.02",
+      "url": "https://encyclopediaofstocks.substack.com/p/kospi-market-wrap-july-2-2026"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#f59e0b",
+      "title": "<strong>7/3 史诗级V型反转！KOSPI +5.76%收复8,000点，盘中触发买方侧车</strong>——美国6月新增就业仅5.7万人(远低于预期)缓解美联储激进加息担忧，提振全球风险偏好。KOSPI从前一日-7.89%暴跌中强势反弹，收盘8,088点(+5.76%)。盘中一度暴涨近6%触发买方侧车(暂停程序化买盘5分钟)。三星电子飙升+8.22%(传闻与Anthropic洽谈定制AI芯片代工)，SK海力士暴涨+10.88%。机构净买入约4.46万亿韩元。**但游戏板块再次跑输大盘**：Krafton -3.68%(当日最大跌幅权重股之一)，资金偏好硬件/半导体而抛弃游戏等非主线成长股。Shift Up +2.34%收红，增发341倍认购信心支撑股价。",
+      "source": "Atlas.ML/ Korea Times/新浪财经/CNBC",
+      "date": "07.03",
+      "url": "https://www.koreatimes.co.kr/economy/20260703/kospi-snaps-back-to-8000-as-samsung-sk-hynix-rally"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton 7/3逆势大跌-3.68%——V型反弹中表现最差权重股</strong>——KOSPI史诗级+5.76% V型反转日，Krafton成为当日表现最差的主要权重股之一。核心原因：①市场呈现明显「风险偏好→硬件」特征，资金100%涌入半导体/芯片板块，游戏等科技成长股被轮出；②PUBG印度回归谈判无新进展+Ascend Zero催化剂真空期持续；③Q1超预期财报(+52% YoY)利好已被充分定价，短期缺乏新驱动。这与6/23-6/29崩盘周中的表现一致——Krafton在系统性风险释放和风险偏好切换周期中持续处于弱势。",
+      "source": "Atlas.ML/Naver증권",
+      "date": "07.03",
+      "url": "https://encyclopediaofstocks.substack.com/p/kospi-market-wrap-july-3-2026"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up 7月首周总结：增发341倍认购+股价抗跌</strong>——7月前3个交易日(KOSPI剧烈波动：-2.04%→-7.89%→+5.76%)，Shift Up展现超强韧性：7/1随大盘微调(+0.29% vs KOSPI -2.04%)、7/2增发认购日逆势收跌有限(-2.01% vs KOSPI -7.89%)、7/3增发收官日收红(+2.34% vs KOSPI +5.76%但跑赢多数游戏股)。341倍超额认购验证市场对Stellar Blade: Blood Rain + Project Spirits双IP管线的高度认可。7/5增发股上市后流动性进一步提升，关注是否触发新的估值重估。",
+      "source": "GameLook/韩国投资证券/Shift Up IR",
+      "date": "07.01~03",
+      "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>高盛发布下半年韩股展望：目标KOSPI 12,000点，涨幅空间+20%+</strong>——7月初高盛维持对韩国股市的超配立场，12个月目标价12,000点(当前点位意味着+48%空间)。核心逻辑：①2026全年盈利增长预计+320%，2027年进一步+35%；②即使剔除三星和SK海力士，其余公司盈利增长仍达+74%；③KOSPI远期PER仅6.65x，较历史均值大幅折让。但同时警告「下半年波动性将显著放大」，杠杆率处于历史高位是主要风险。对游戏板块而言，若盈利兑现有望迎来估值修复行情。",
+      "source": "Goldman Sachs/百度百家号/财联社/雪球",
+      "date": "07.05",
+      "url": "https://baijiahao.baidu.com/s?id=1869933907840489618&wfr=spider&for=pc"
     }
   ],
   "industryNews": [
@@ -1301,6 +1365,62 @@
       "source": "한국산업통상자원부/이베스트증권/新浪财经",
       "date": "06.29",
       "url": "https://news.10jqka.com.cn/20260629/c677785428.shtml"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>7月开门黑：KOSPI -2.04%——AI获利了结+外资148万亿韩元净卖出持续</strong>——下半年首个交易日，KOSDAQ 30周年庆典日KOSDAQ收涨但KOSPI下跌2.04%。贝莱德下调新兴市场展望，Q2暴涨68-70%后机构锁定收益。韩元汇率历史低位(~1,558)加速外资流出。SK海力士美国IPO申请未提振情绪。游戏股普遍随大盘承压。",
+      "source": "Atlas.ML/중앙일보/Daramji85 Tistory",
+      "date": "07.01",
+      "url": "https://daramji85.tistory.com/350"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up增发341倍超额认购！——韩国游戏行业年度最大SPO</strong>——7/2-7/3 Shift Up公开增发(181.25万股面向一般投资者)，获341.2倍认购。发行价₩47,000~60,000，主承销韩投/NH/JP摩根。市场对Stellar Blade: Blood Rain + Project Spirits双IP管线高度认可。预计7/5上市交易。",
+      "source": "GameLook/한국경제TV/38 Communications",
+      "date": "07.02~03",
+      "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#dc2626",
+      "title": "<strong>「黑色星期四」KOSPI -7.89%！年内第6次熔断——Meta AI算力出售引爆芯片恐慌</strong>——Meta向外部客户出售闲置AI算力→全球芯片过剩恐慌→VanEck半导体ETF -5.4%。三星/SK海力士800万亿扩产计划雪上加霜。KOSPI距历史高点(9,385)已回落-18.5%。**但NC逆势+3.72%**成为资金避风港（硬件→软件轮动），Shift Up增发认购不受影响。",
+      "source": "조선일보 English/Atlas.ML/CNBC",
+      "date": "07.02",
+      "url": "https://www.chosun.com/english/market-money-en/2026/07/02/OE5YUREPIRD7HFYPEYCFRDQFHM/"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC成崩盘日唯一亮点：+3.72%逆势领涨——资金从硬件转向软件</strong>——7/2 KOSPI -7.89%暴跌中，NC成为Top 5涨幅榜唯一非半导体科技公司。6月超跌20%后技术性反弹+Aion 2全球发布临近提供估值支撑。与5/21「KOSPI+8.42%但游戏被虹吸」形成完美镜像——资本轮动方向彻底逆转。",
+      "source": "Atlas.ML/Naver증권",
+      "date": "07.02",
+      "url": "https://encyclopediaofstocks.substack.com/p/kospi-market-wrap-july-2-2026"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#f59e0b",
+      "title": "<strong>史诗级V型反转！KOSPI +5.76%——半导体绝地反击触发买方侧车</strong>——7/3 美国就业数据疲软(仅5.7万)缓解加息恐慌，全球风险偏好回升。KOSPI从前日-7.89%强势反弹至8,088点(+5.76%)，盘中涨近6%触发买方侧车。三星+8.22%，SK海力士+10.88%。机构净买入4.46万亿韩元。但游戏股再次跑输：Krafton -3.68%(最差权重股)，Shift Up +2.34%(增发支撑)。",
+      "source": "Korea Times/Atlas.ML/CNBC/新浪财经",
+      "date": "07.03",
+      "url": "https://www.koreatimes.co.kr/economy/20260703/kospi-snaps-back-to-8000-as-samsung-sk-hynix-rally"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up 7月首周抗跌总结：增发341倍+股价跑赢板块</strong>——7月前3个交易日KOSPI波动率极端(-2.04%/-7.89%/+5.76%)，Shift Up展现韧性：7/1 +5.96%相对收益、7/2 -2.01%(跑赢KOSPI 5.88%)、7/3 +2.34%(跑赢Krafton 6%)。341倍验证IP管线信心。7/5增发上市后关注流动性溢价。",
+      "source": "GameLook/Shift Up IR/한국투자증권",
+      "date": "07.01~03",
+      "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#22c55e",
+      "title": "<strong>高盛下半年展望：KOSPI目标12,000点(+48%)，游戏股估值修复窗口</strong>——高盛维持超配，核心逻辑：全年盈利增长+320%、远期PER 6.65x(历史低位)、剔除半导体后其余公司增长+74%。警告杠杆率高位风险但对盈利兑现场景下游戏等低估值成长股有望迎来重估。",
+      "source": "Goldman Sachs/财联社/百度百家号/雪球",
+      "date": "07.05",
+      "url": "https://baijiahao.baidu.com/s?id=1869933907840489618&wfr=spider&for=pc"
     }
   ]
 }
