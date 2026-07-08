@@ -2,7 +2,7 @@
   "meta": {
     "version": "3.0",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-07-06",
+    "updatedAt": "2026-07-07",
     "note": "此文件由人工维护，每日需同步更新事件和分析文字"
   },
   "compareChart": {
@@ -69,7 +69,8 @@
       "7/1",
       "7/2",
       "7/3",
-      "7/6"
+      "7/6",
+      "7/7"
     ],
     "datasets": [
       {
@@ -137,7 +138,8 @@
           0,
           -2.01,
           0.29,
-          0
+          0,
+          4.02
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -213,7 +215,8 @@
           0,
           0,
           0,
-          -0.57
+          -0.57,
+          2.05
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -289,7 +292,8 @@
           0,
           1.59,
           1.06,
-          1.32
+          1.32,
+          3.84
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -365,7 +369,8 @@
           0,
           3.72,
           2.15,
-          -1.17
+          -1.17,
+          -0.2
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -441,7 +446,8 @@
           0,
           -0.2,
           -3.88,
-          -4.29
+          -4.29,
+          0
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -517,7 +523,8 @@
           0,
           -0.66,
           -3.84,
-          -3.58
+          -3.58,
+          -1.06
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
