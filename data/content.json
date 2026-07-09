@@ -70,7 +70,8 @@
       "7/2",
       "7/3",
       "7/6",
-      "7/7"
+      "7/7",
+      "7/8"
     ],
     "datasets": [
       {
@@ -139,7 +140,8 @@
           -2.01,
           0.29,
           0,
-          4.02
+          4.02,
+          3.3
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -216,7 +218,8 @@
           0,
           0,
           -0.57,
-          2.05
+          2.05,
+          0.68
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -293,7 +296,8 @@
           1.59,
           1.06,
           1.32,
-          3.84
+          3.84,
+          2.65
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -370,7 +374,8 @@
           3.72,
           2.15,
           -1.17,
-          -0.2
+          -0.2,
+          1.17
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -447,6 +452,7 @@
           -0.2,
           -3.88,
           -4.29,
+          0,
           0
         ],
         "borderColor": "#f59e0b",
@@ -524,7 +530,8 @@
           -0.66,
           -3.84,
           -3.58,
-          -1.06
+          -1.06,
+          -3.71
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
