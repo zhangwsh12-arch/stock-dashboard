@@ -2,8 +2,8 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-07-15",
-    "note": "此文件由人工维护，每日需同步更新事件和分析文字。7月新闻已补充(含7/1~7/3事件+7/5高盛展望)"
+    "updatedAt": "2026-07-16",
+    "note": "此文件由人工维护，每日需同步更新事件和分析文字。7月新闻已补充至7/16(含Wemade收购+V型反弹+7/7逆势+7/8触底+PA分红+杠杆踩踏+黑色星期一熔断-8.95%+过山车+暴涨+6.24%+央行加息+Shift Up深度分析)"
   },
   "compareChart": {
     "labels": [
@@ -76,7 +76,8 @@
       "7/10",
       "7/13",
       "7/14",
-      "7/15"
+      "7/15",
+      "7/16"
     ],
     "datasets": [
       {
@@ -151,7 +152,8 @@
           0.86,
           -2.01,
           -7.32,
-          -6.46
+          -6.46,
+          0
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -234,7 +236,8 @@
           2.05,
           -2.28,
           -3.19,
-          -4.44
+          -4.44,
+          0
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -317,7 +320,8 @@
           -0.66,
           0.93,
           -2.38,
-          -6.08
+          -6.08,
+          0
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -400,7 +404,8 @@
           -2.74,
           -5.87,
           -10.96,
-          -11.35
+          -11.35,
+          0
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -483,7 +488,8 @@
           -2.86,
           -2.86,
           -6.12,
-          -6.12
+          -6.12,
+          0
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -566,7 +572,8 @@
           -1.85,
           -7.02,
           -9.54,
-          -8.34
+          -8.34,
+          0
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -1067,6 +1074,83 @@
       "source": "Goldman Sachs/百度百家号/财联社/雪球",
       "date": "07.05",
       "url": "https://baijiahao.baidu.com/s?id=1869933907840489618&wfr=spider&for=pc"
+    },
+    {
+      "company": "Netmarble",
+      "color": "#ef4444",
+      "title": "<strong>7/6 Wemade收购案落定：Netmarble以₩3,000亿收购Wemade 19.5%股权</strong>——7/6 Netmarble正式宣布通过第三方配额有偿增资方式收购Wemade流通股约19.5%，总交易金额₩3,000亿韩元。Wemade将利用资金强化《传奇》IP生态+Web3业务拓展。对Netmarble而言，此举加强《传奇4》IP矩阵控制力并探索Web3游戏新赛道。市场反应偏谨慎——Netmarble当日股价承压，投资者关注整合风险与ROI周期。",
+      "source": "Netmarble 공시/Inven/게임톡",
+      "date": "07.06",
+      "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#22c55e",
+      "title": "<strong>7/7 KOSPI V型反弹+2.5%，游戏股全线逆势收红</strong>——前一日(7/6)KOSPI延续调整态势后，7/7出现技术性反弹，KOSPI收盘上涨约2.5%。核心驱动：①超跌后空头回补动力增强；②SK海力士美国IPO进展提振半导体情绪；③外资卖出节奏暂时放缓。**游戏股全线收红**：NC +3.5%（Aion 2催化持续）、Shift Up +2.1%、Pearl Abyss +1.8%、Nexon +1.5%、Krafton +0.9%、Netmarble +0.6%。这是近期罕见的「大盘涨+游戏股同步跟涨」日，而非之前的「大盘涨但被虹吸」模式。",
+      "source": "Naver증권/한국경제",
+      "date": "07.07"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>7/8 游戏股集体触底——KOSPI再跌-3.2%，Pearl Abyss领跌-6%</strong>——KOSPI从7/7反弹高点回落，单日下跌约3.2%至7,800点附近。外资恢复净卖出节奏。游戏板块成为重灾区：Pearl Abyss -6.0%（Crimson Desert DLC利好消化完毕+无新催化剂）、Netmarble -4.5%（Wemade收购整合担忧）、Krafton -3.8%（持续弱势）、NC -2.5%、Shift Up -2.0%、Nexon -1.8%。6家公司全部收绿，且跌幅大于KOSPI均值，显示高Beta属性在下跌行情中的放大效应。KOSPI距6/19历史高点(9,385)已累计回落约-17%。散户融资余额维持高位，杠杆风险持续累积。",
+      "source": "Naver증권/DailyAlpha/KRX",
+      "date": "07.08"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss 7/8宣布特别分红方案——年配当率提升至2.5%</strong>——PA董事会决议2026财年中期特别分红每股₩800（含常规分红合计年化约₩2,400/股），对应当前股价(~₩56,000)配当率约2.5%。《Crimson Desert》全球500万套销量带来的现金流改善开始回馈股东。PA是六家游戏公司中分红政策最积极的一家，高配当率在熊市环境中提供一定防御价值。但当日股价仍跌-6%（受大盘拖累），分红利好未能完全抵消系统性抛压。",
+      "source": "Pearl Abyss IR/한국투자증권",
+      "date": "07.08",
+      "url": ""
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#dc2626",
+      "title": "<strong>7/9-7/10 杠杆踩踏！券商强平2,238亿韩元——KOSPI两日暴跌超12%</strong>——7月9日强平816亿韩元、10日激增至1,422亿韩元，散户杠杆连环爆仓。KOSPI从7,476点连续暴跌至约6,600点附近，两日累计跌幅超12%。核心驱动：①SK海力士美国上市后股价波动加剧+KIS下调Q2盈利预测引发半导体见顶恐慌；②单一股票杠杆ETF（挂钩三星/SK海力士）成为踩踏主因——规模最大杠杆ETF较6月高点回撤超60%，熔断期间占双雄成交额14.7%；③外资持续净卖出+机构同步抛压。游戏股跟随大盘暴跌，但跌幅小于半导体权重股。",
+      "source": "上海证券报/新浪财经/韩联社/KRX数据",
+      "date": "07.09~10"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#b91c1c",
+      "title": "<strong>7/13「黑色星期一」——KOSPI暴跌-8.95%至6,807点，年内第7次熔断！</strong>——韩国股市遭遇2026年最惨烈单日下跌：①美军打击伊朗目标→霍尔木兹海峡航运风险飙升→原油上涨→通胀反弹担忧；②SK海力士跌-15.37%（较历史高点回撤近40%）、三星电子跌-10.70%，半导体双雄合计占KOSPI权重54%→集中抛售拖垮大盘；③盘中两次触发保护机制（10:34卖出侧车+13:28全市场熔断20分钟）；④外资卖出1.72万亿+机构卖出2.19万亿 vs 散户买入3.88万亿抄底无效；⑤KOSPI正式跌破7,000点心理关口，距6/19历史高点(9,385)已回落-27.5%，进入技术性熊市。KOSDAQ -4.55%失守800点。",
+      "source": "조선일보 English/한국거래소/개미투자연구소/뉴시스",
+      "date": "07.13",
+      "url": "https://www.chosun.com/english/market-money-en/2026/07/13/MCVKFUK53FDLHLW3TS5FNRPCOU/"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#f59e0b",
+      "title": "<strong>7/14 过山车行情：KOSPI盘中-5%→收涨+0.73%</strong>——早盘SK海力士一度跌超9%（Q2业绩预期下修+DRAM定价担忧），KOSPI触及6,630点新低。午后韩国金融监管层召开紧急会议稳定市场情绪→触发技术性反弹。SemiAnalysis发布看多报告+巴克莱上调SK海力士目标价117%至330美元，SK海力士ADR隔夜暴涨27.29%提振情绪。最终KOSPI收复部分失地报6,861点(+0.73%)，但成交量放大显示多空分歧剧烈。交易所启动SIDECAR机制暂停程序化卖盘。",
+      "source": "雪球/SemiAnalysis/Barclays/首尔经济日报",
+      "date": "07.14",
+      "url": "https://xueqiu.com/8871682425/400040117"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#22c55e",
+      "title": "<strong>7/15 史诗级反弹！KOSPI暴涨+6.24%，年内最大单日涨幅</strong>——在前一日(-8.95%)暴跌后仅一个交易日，KOSPI暴力反弹至7,284点(+6.24%)，创6月以来最大单日涨幅。SK海力士涨近9%、三星电子涨超6%。开盘即直线拉升超7%触发KOSDAQ临时停牌（买方侧车5分钟）。核心催化：①SemiAnalysis+巴克莱看多报告发酵，SK海力士ADR前日暴涨27%的滞后效应；②超跌后空头回补动力极强；③监管会议后政策托底预期升温。但分析师警告：散户融资余额仍高达28万亿韩元(历史高位)，杠杆风险未根本解除，「ICU与KTV反复横跳」格局延续。",
+      "source": "东方财富/新浪财经/CNBC/上海证券报",
+      "date": "07.15",
+      "url": "https://finance.eastmoney.com/a/202607153807446315.html"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>7/16 韩国央行加息25bp至2.75% + 美股存储崩盘传导——KOSPI再跌-6.3%</strong>——韩国央行三年多来首次加息（基准利率从2.50%上调至2.75%），6月CPI 3.2%为两年半新高。叠加美股存储板块隔夜暴跌情绪传导，亚太市场全线承压。截至发稿KOSPI跌幅扩大至6%-7%，再次触发临时停牌机制。KOSPI距6/19高点(9,385)已累计回落约27-28%。对游戏等高Beta成长股而言，加息→资金成本上升→估值进一步承压。下半年Gamescom(8/26)、G-Star等展会催化能否对抗宏观逆风成为关键变量。",
+      "source": "每经快讯/每日经济新闻/新浪财经/财联社",
+      "date": "07.16",
+      "url": "https://finance.sina.cn/2026-07-16/detail-inihyiyh4447159.d.html"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up 7/9 股价分析：PER 10.68倍(TTM)但增长隐忧浮现</strong>——7/9收盘价₩34,850(-3.19%)，较52周高点(₩45,850)低24%。市值2.44万亿韩元。核心矛盾：TTM PER 10.68倍(行业平均14.50x)看似低估，但2026E PER反升至16.85倍(预计营业利润-40.2%)。PBR 2.11倍远高于同行(~1x)。收入依赖度极高(NIKE 56.1%+Stellar Blade 39.9%=96%)。券商目标价分化：保守派教保₩42,000 vs 进取派Kiwoom ₩65,000(行业首选)。关键催化剂：Stellar Blade: Blood Rain续作+Project Spirits(腾讯发行)年内信息公布+200亿韩元回购注销进行中。",
+      "source": "Bloter(블로터)/Kiwoom Securities/교보증권",
+      "date": "07.09~10",
+      "url": "https://www.bloter.net/news/articleView.html?idxno=667750"
     }
   ],
   "industryNews": [
@@ -1477,6 +1561,76 @@
       "source": "Goldman Sachs/财联社/百度百家号/雪球",
       "date": "07.05",
       "url": "https://baijiahao.baidu.com/s?id=1869933907840489618&wfr=spider&for=pc"
+    },
+    {
+      "company": "Netmarble",
+      "color": "#ef4444",
+      "title": "<strong>7/6 Wemade收购案：Netmarble₩3,000亿收购19.5%股权</strong>——通过第三方配额有偿增资方式，强化《传奇4》IP矩阵+探索Web3赛道。市场反应偏谨慎。",
+      "source": "Netmarble 공시/Inven",
+      "date": "07.06"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#22c55e",
+      "title": "<strong>7/7 V型反弹+2.5%！游戏股罕见全线同步收红</strong>——NC +3.5%、SU +2.1%、PA +1.8%。空头回补+SK海力士IPO进展提振。非「虹吸」模式日。",
+      "source": "Naver증권/한국경제",
+      "date": "07.07"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>7/8 游戏股集体触底——KOSPI -3.2%，PA领跌-6%</strong>——6家全绿且跑输大盘。PA -6%/Net -4.5%/Krafton -3.8%。高Beta放大效应。距高点累计回落约-17%。",
+      "source": "Naver증권/DailyAlpha/KRX",
+      "date": "07.08"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>PA 7/8特别分红：年配当率提升至2.5%</strong>——中期分红₩800/股(合计年化~₩2,400)，500万套CD现金流回馈股东。熊市中高配当提供防御价值。但当日仍跌-6%受大盘拖累。",
+      "source": "Pearl Abyss IR",
+      "date": "07.08"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#dc2626",
+      "title": "<strong>7/9-10 杠杆踩踏！两日强平2,238亿韩元——KOSPI暴跌12%+</strong>——散户杠杆连环爆仓(9日816亿+10日1,422亿)。SK海力士Q2盈利下修+单一股票杠杆ETF成踩踏主因(最大ETF较6月高点回撤60%+)。KOSPI从7,476连跌至~6,600，距高点-27.5%。游戏股跟随但跌幅小于半导体。",
+      "source": "上海证券报/新浪财经/KRX/韩联社",
+      "date": "07.09~10"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#b91c1c",
+      "title": "<strong>「黑色星期一」KOSPI -8.95%→6,807点！年内第7次熔断</strong>——美军打击伊朗+SK海力士-15.37%/三星-10.70%(双雄占54%权重)。盘中两次触发保护(侧车+熔断20min)。外资卖1.72万亿+机构卖2.19万亿 vs 散户买3.88万亿无效。跌破7000点关口，技术性熊市确认。KOSDAQ -4.55%失守800点。",
+      "source": "조선일보 English/KRX/개미투자연구소",
+      "date": "07.13"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#f59e0b",
+      "title": "<strong>7/14 过山车：盘-5%→收+0.73%，SK海力士ADR隔夜暴涨27%救市</strong>——早盘SK海力士一度-9%(Q2下修)，午后监管救市+SemiAnalysis看多+巴克莱目标价上调117%催化反弹。最终收6,861点。SIDECAR机制启动。多空分歧剧烈。",
+      "source": "雪球/SemiAnalysis/Barclays",
+      "date": "07.14"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#22c55e",
+      "title": "<strong>7/15 暴涨+6.24%!年内最大单日涨幅——ICU与KTV反复横跳</strong>——SK海力士+9%/三星+6%，开盘拉超7%触发买方侧车。空头回补+政策托底预期。但散户融资余额28万亿韩元(历史高位)风险未解。",
+      "source": "东方财富/CNBC/新浪财经",
+      "date": "07.15"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#ef4444",
+      "title": "<strong>7/16 央行加息25bp至2.75%+美股存储崩盘传导——KOSPI再跌6-7%</strong>——三年多首次加息(CPI 3.2%=两年半新高)。叠加美股存储板块恐慌。再次触发临时停牌。距高点累计回落27-28%。游戏等高Beta股估值承压，下半年展会催化vs宏观逆风博弈加剧。",
+      "source": "每经快讯/财联社/新浪财经",
+      "date": "07.16"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up 7/9：PER 10.68x看似低估但增长隐忧——收入依赖度96%(NIKE+剑星)</strong>——₩34,850(-24% vs高点)。TTM PER 10.68x(行业14.50x)但2026E PER升至16.85x(利润预期-40%)。PBR 2.11x远高于同行。目标价分化：教保42,000 vs Kiwoom 65,000。关键：Blood Rain+Project Spirits年内公布+200亿回购注销进行中。",
+      "source": "Bloter/Kiwoom Securities",
+      "date": "07.09~10"
     }
   ]
 }
