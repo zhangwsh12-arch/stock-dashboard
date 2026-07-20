@@ -24,8 +24,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "daily-stock-update"
+  cancel-in-progress: true
 
 jobs:
   # ====== 数据更新+验证+部署 ======
