@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260611a'; // 更新：6/10 KOSPI暴跌分析+SU获利了结+Switch 2+Nintendo Direct事件
+      var VER = '20260722a'; // 更新：7月史诗级高波动周期分析(开门黑+黑色星期四+V型反转+杠杆踩踏+黑色星期一+过山车+暴涨+央行加息)+ICU与KTV反复横跳叙事
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -1064,7 +1064,18 @@ function generateSUAnalysis() {
   const _isJuneCrashWeek = d >= '20260623'; // 6/23起：黑色星期二-9.99%→第5次熔断-5.81%→V型反转+史上最大外资抛售
   const _isJuneBlackTue = d === '20260623'; // 6/23 黑色星期二 KOSPI -9.99%
   const _isJuneCircuit5 = d === '20260626'; // 6/26 年内第5次熔断 KOSPI -5.81%
-  const _isJuneVReverse = d >= '20260629'; // 6/29 V型反转 + 外资抛售7.7万亿韩元(史上最大)
+  const _isJuneVReverse = d >= '20260629' && d < '20260701'; // 6/29 V型反转 + 外资抛售7.7万亿韩元(史上最大)
+
+  // ====== 7月日期分支（高波动+系统性风险周期）======
+  const _isJulyFirstDay = d === '20260701'; // 7/1 开门黑 KOSPI -2.04%
+  const _isJulyBlackThu = d === '20260702'; // 7/2 黑色星期四 KOSPI -7.89% 年内第6次熔断
+  const _isJulyVReverse = d === '20260703'; // 7/3 史诗级V型反转 KOSPI +5.76%
+  const _isJulyCrashLev = d >= '20260709' && d < '20260713'; // 7/9-7/10 杠杆踩踏周期
+  const _isJulyBlackMon = d === '20260713'; // 7/13 黑色星期一 KOSPI -8.95% 第7次熔断
+  const _isJulyRoller = d === '20260714'; // 7/14 过山车：盘-5%→收+0.73%
+  const _isJulySurge = d === '20260715'; // 7/15 暴涨+6.24% 年内最大单日涨幅
+  const _isJulyRateHike = d >= '20260716'; // 7/16 央行加息25bp→KOSPI再跌-6.3%+
+  const _isJulyOverall = d >= '20260701' && d < '20260801'; // 7月通用区间
 
   let analysisDetail = '';
   const _juneSuPrefix = _isJuneFirstDays ? '<strong>6月首个交易日</strong>' : (_isJune9Surge ? '<strong>6月SGF催化兑现后暴涨</strong>' : (_isJune10Crash ? '<strong>6月暴涨后获利了结+大盘暴跌双杀</strong>' : (_isJuneLater ? '<strong>6月SGF催化兑现后震荡</strong>' : '<strong>6月震荡整理</strong>')));
@@ -1086,7 +1097,27 @@ function generateSUAnalysis() {
     // ★ 6月完整时间线叙事（用于所有崩盘周期分支的月度背景）
     const _juneMonthNarrative = `<span style="color:#94a3b8;font-size:11.5px">【6月回顾】SGF催化暴涨(+10.26%→₩36,650高点) → KOSPI暴跌回调(-4.52%) → 黑色星期二KOSPI -9.99%(系统性崩盘) → 第5次熔断-5.81%(杠杆爆仓余震) → V型反转+外资史上最大单日抛售(7.7万亿韩元)</span>`;
 
-    if (_isJuneBlackTue) {
+    // ★ 7月完整时间线叙事（系统性危机+ICU与KTV反复横跳）
+    const _julyMonthNarrative = `<span style="color:#94a3b8;font-size:11.5px">【7月回顾】开门黑KOSPI -2.04% → 黑色星期四-7.89%(年内第6次熔断) → V型反转+5.76% → 7/7暴涨+4.78%(PA分红催化) → 7/9-10杠杆踩踏-12%+ → 黑色星期一-8.95%(第7次熔断) → 7/14过山车-5%→+0.73% → 7/15暴涨+6.24%(年内最大) → 7/16央行加息25bp至2.75%+美股存储崩盘→KOSPI -6.3%</span>`;
+
+    // ★★★ 7月分支（必须在6月分支之前判断）★★★
+    if (_isJulyFirstDay) {
+      analysisDetail = `<strong>7月开门黑：KOSPI -2.04%</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。下半年首个交易日，AI/半导体板块Q2暴涨68-70%后机构锁定收益（贝莱德下调新兴市场展望），外资148万亿韩元累计净卖出持续，韩元汇率历史低位(~1,558)加速外资流出。SK海力士美国IPO申请未提振情绪。SU跟随大盘承压但跌幅可控（外资持股~37%已部分释放压力）。催化未变：①剑星《Blood Rain》续作+自主发行；②Switch 2登陆；③Project Spirits(腾讯发行)。${_julyMonthNarrative}`;
+    } else if (_isJulyBlackThu) {
+      analysisDetail = `<strong>⚠️7/2「黑色星期四」KOSPI -7.89%！年内第6次熔断</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。Meta向外部客户出售闲置AI算力→全球芯片过剩恐慌→VanEck半导体ETF -5.4%。三星/SK海力士800万亿扩产计划雪上加霜。KOSPI距历史高点(9,385)已回落-18.5%。<strong>但NC逆势+3.72%成为资金避风港</strong>（硬件→软件轮动），SU增发341倍超额认购支撑。${_julyMonthNarrative}`;
+    } else if (_isJulyVReverse) {
+      analysisDetail = `<strong>史诗级V型反转！KOSPI +5.76%</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。7/2 -7.89%暴跌后，7/3美国就业数据疲软(仅5.7万)缓解加息恐慌，全球风险偏好回升。KOSPI强势反弹至8,088点(+5.76%)，盘中涨近6%触发买方侧车。三星+8.22%/SK海力士+10.88%，机构净买入4.46万亿韩元。但游戏股再次跑输：Krafton -3.68%(最差权重股)，SU +2.34%(增发支撑)。${_julyMonthNarrative}`;
+    } else if (_isJulyCrashLev) {
+      analysisDetail = `<strong>⚠️7/9-7/10 杠杆踩踏！两日强平2,238亿韩元</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。散户杠杆连环爆仓(9日816亿+10日1,422亿)，SK海力士Q2盈利下修+单一股票杠杆ETF成踩踏主因(最大ETF较6月高点回撤60%+)。KOSPI从7,476连跌至~6,600，距高点-27.5%。<strong>SU相对抗跌</strong>：外资持股37%但7/9 PER 10.68x(行业14.5x)低估值提供支撑+200亿回购注销进行中。催化未变：剑星《Blood Rain》+Switch 2+Project Spirits年内公布。${_julyMonthNarrative}`;
+    } else if (_isJulyBlackMon) {
+      analysisDetail = `<strong>⚠️⚠️7/13「黑色星期一」KOSPI -8.95%→6,807点！年内第7次熔断</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。美军打击伊朗+SK海力士-15.37%/三星-10.70%(双雄占54%权重)。盘中两次触发保护(侧车+熔断20min)。外资卖1.72万亿+机构卖2.19万亿 vs 散户买3.88万亿无效。跌破7000点关口，<strong>技术性熊市确认</strong>。SU被系统性抛售但PER 9.55倍(行业最低)估值优势凸显。${_julyMonthNarrative}`;
+    } else if (_isJulyRoller) {
+      analysisDetail = `<strong>7/14 过山车行情：KOSPI盘中-5%→收涨+0.73%</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。早盘SK海力士一度跌超9%（Q2业绩预期下修+DRAM定价担忧），KOSPI触及6,630点新低。午后韩国金融监管层召开紧急会议稳定市场情绪→触发技术性反弹。SemiAnalysis发布看多报告+巴克莱上调SK海力士目标价117%至330美元，SK海力士ADR隔夜暴涨27.29%提振情绪。SU跟随反弹，多空分歧剧烈。${_julyMonthNarrative}`;
+    } else if (_isJulySurge) {
+      analysisDetail = `<strong>7/15 史诗级反弹！KOSPI暴涨+6.24%，年内最大单日涨幅</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。在前一日(-8.95%)暴跌后仅一个交易日，KOSPI暴力反弹至7,284点(+6.24%)。SK海力士涨近9%、三星电子涨超6%。开盘即直线拉升超7%触发KOSDAQ临时停牌（买方侧车5分钟）。核心催化：①SemiAnalysis+巴克莱看多报告发酵；②超跌后空头回补；③监管会议后政策托底预期。<strong>但分析师警告：散户融资余额仍高达28万亿韩元(历史高位)，杠杆风险未根本解除</strong>，「ICU与KTV反复横跳」格局延续。${_julyMonthNarrative}`;
+    } else if (_isJulyRateHike) {
+      analysisDetail = `<strong>⚠️7/16 韩国央行加息25bp至2.75% + 美股存储崩盘传导</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。韩国央行三年多来首次加息（基准利率从2.50%上调至2.75%），6月CPI 3.2%为两年半新高。叠加美股存储板块隔夜暴跌情绪传导，亚太市场全线承压。KOSPI距6/19高点(9,385)已累计回落约27-28%。对游戏等高Beta成长股而言，加息→资金成本上升→估值进一步承压。<strong>下半年Gamescom(8/26)、G-Star等展会催化能否对抗宏观逆风成为关键变量</strong>。催化未变：剑星《Blood Rain》+Switch 2+Project Spirits年内公布+200亿回购注销进行中。${_julyMonthNarrative}`;
+    } else if (_isJuneBlackTue) {
       analysisDetail = `<strong>⚠️6/23「黑色星期二」KOSPI -9.99%</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。前日KOSPI刚创9114历史新高，次日蒸发910点！半导体双雄领跌→杠杆爆仓连环强平→外资恐慌出逃三重驱动，SU被系统性抛售殃及。<strong>核心催化完全未变</strong>：剑星《Blood Rain》续作确认+自主发行+Switch 2登陆+NIKKE $10亿营收。${_juneMonthNarrative}`;
     } else if (_isJuneCircuit5) {
       analysisDetail = `<strong>⚠️6/26年内第5次熔断(-5.81%)</strong>——本日<span style="color:${_suColor}">${_suDir}${suPct}</span>，本月累计<span style="color:${_mcColor}">${_mcStr}</span>。距黑色星期二仅3交易日再熔断（盘中逼近-9%，年内第5次/历史仅11次），"爆仓→强平→再下跌"负向螺旋未破。SU从6/19高点(₩36,650)已大幅回撤，估值回归合理区间，剑星《Blood Rain》+Switch 2+NIKKE $10亿催化仍在。${_juneMonthNarrative}`;
@@ -1766,7 +1797,7 @@ function renderCompanyAnalysisSection() {
   const isMay21 = d >= '20260521' && d < '20260522'; // 5/21 KOSPI暴涨8.42%游戏股遭虹吸
   const isMay22 = d >= '20260522' && d < '20260601'; // 5/22 KOSDAQ暴涨+4.99%游戏股全线反弹修正错杀
   const isJuneFirstDays = d >= '20260601' && d < '20260603'; // 6月首个交易日(6/1-6/2, 6/3休市)
-  const isJuneLater = d >= '20260603'; // 6/3起(实际6/4+)
+  const isJuneLater = d >= '20260603' && d < '20260701'; // 6/3起(实际6/4+，限定到6月底)
 
   // 公司基础定义（不变的部分）
   const baseItems = [
@@ -1794,7 +1825,29 @@ function renderCompanyAnalysisSection() {
     const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
 
     // 6月日期辅助变量（与 generateSUAnalysis 保持一致）
-    const _isJuneCrashWeekItem = currentDate >= '20260623'; // 6/23起崩盘周期
+    const _isJuneCrashWeekItem = currentDate >= '20260623' && currentDate < '20260701'; // 6/23起崩盘周期(限于6月)
+
+    // 7月日期辅助变量
+    const _isJulyCycleItem = currentDate >= '20260701' && currentDate < '20260801';
+
+    // ★★★ 7月分支：ICU与KTV反复横跳（高波动+系统性危机周期）★★★
+    if (_isJulyCycleItem) {
+      const _julyCycleNarrative = `<br/><span style="color:#dc2626;font-size:11px">【7月回顾】开门黑-2.04%→黑色星期四-7.89%(第6次熔断)→V型反转+5.76%→7/7暴涨+4.78%(PA分红催化)→7/9-10杠杆踩踏-12%+→黑色星期一-8.95%(第7次熔断)→7/14过山车→7/15暴涨+6.24%(年内最大)→7/16央行加息25bp+美股存储崩盘→KOSPI -6.3%。</span>`;
+      switch(item.code) {
+        case '225570': // Nexon Games
+          return `<strong>本月累计 ${mcStr}</strong>。7月经历史诗级高波动周期，Nexon Games相对抗跌：7/2黑色星期四-7.89%熔断日中估值压制放大，<strong>新作延期(DX/RX)风险</strong>在系统性风险释放中被持续定价。Blue Archive日本市场稳定运营+新作延期风险降低(7/9分析师上调Q2收入预期)提供底部支撑。8月底Gamescom(8/26)新作公布窗口期临近。${_julyCycleNarrative}`;
+        case '251270': // Netmarble
+          return `<strong>本月累计 ${mcStr}</strong>。7月系统性危机+杠杆爆仓周期中，<strong>高分红(2,800韩元/股~7-8%收益率)提供防御属性</strong>。Coway治理争议余波+MS常态化运营不确定性在崩盘中放大。Wemade收购事件+7/8 PA触底反弹中相对抗跌。但本月整体仍跟随大盘承压。${_julyCycleNarrative}`;
+        case '036570': // NC
+          return `<strong>本月累计 ${mcStr}${badge}</strong>。Aion 2韩国预约120万+Q1利润YoY +1700%的基本面在7月史诗级崩盘中<strong>被系统性风险释放完全覆盖</strong>。但7/2黑色星期四中<strong>NC逆势+3.72%领涨资金避风港</strong>(硬件→软件轮动)，Aion 2全球发布窗口临近提供差异化催化。中长期逻辑未受影响。${_julyCycleNarrative}`;
+        case '259960': // Krafton
+          return `<strong>本月累计 ${mcStr}</strong>。7月经历KOSPI -7.89%/-8.95%两次熔断冲击，<strong>Krafton作为KOSPI权重股+外资重仓股</strong>遭机构降杠杆和海外基金被动再平衡双重打击(7/13外资卖1.72万亿+机构卖2.19万亿)。但PUBG Q1在线30万+AI Raon生态+Ascend Zero新作进展+5/21*2.82%但Krafton-2.82%"的结构性分化中相对抗跌(Q1利润+52%基本面对冲)。${_julyCycleNarrative}`;
+        case '263750': // Pearl Abyss
+          return `<strong>本月累计 ${mcStr}</strong>。CD 500万套销量+Q1扭亏为盈₩1,250亿业绩验证在7月崩盘周期中无法抵御系统性抛压。<strong>7/8触底反弹+7/7宣布特别分红+Wemade收购事件</strong>催化阶段性反弹，但PA在4月已因获利了结大幅回调(P/B~16x已部分反映改善预期)，本轮崩盘属于"超跌后再超跌"。8月底Gamescom(8/26)CD新DLC公布窗口期。${_julyCycleNarrative}`;
+        default:
+          return `<strong>本月累计 ${mcStr}</strong>。7月史诗级高波动周期，KOSPI从7,500跌至6,600再反弹至7,300后加息再跌-6.3%。游戏股作为高Beta非主线板块承压，但各公司基本面均未发生变化。${_julyCycleNarrative}`;
+      }
+    }
 
     // 6月通用分析（区分崩盘周期前后）
     if (_isJuneCrashWeekItem) {
