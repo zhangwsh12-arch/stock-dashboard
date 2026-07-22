@@ -295,6 +295,7 @@
 // ============================================================
 let currentData = null;
 let allDates = [];
+let cachedContent = null; // content.json 缓存（含 analysis 字段，供分析函数使用）
 const CACHE_BUSTER = '?v=' + new Date().getTime();
 const LATEST_DATA_URL = 'data/latest.json' + CACHE_BUSTER;
 const DATES_URL = 'data/dates.json' + CACHE_BUSTER;
@@ -408,6 +409,10 @@ async function loadContentData() {
     }
 
     contentLoaded = true;
+    // 缓存 analysis 字段供 generateSUAnalysis / getItemText 使用
+    if (content.analysis) {
+      cachedContent = content;
+    }
     console.log(`✅ Content loaded: ${ALL_LABELS.length} labels, ${EVENT_DATA.length} events, ${NORMAL_DATA.length} news`);
     console.log('📊 NORMAL_DATA dates:', NORMAL_DATA.map(e => e.date).join(', '));
     return true;
@@ -1034,10 +1039,36 @@ function generateSUAnalysis() {
     monthText = `本月累计 <strong style="color:${monthChange >= 0 ? '#34d399' : '#f87171'}">${mcSign}${monthChange.toFixed(2)}%</strong>（₩${firstPrice.toLocaleString()} → ₩${lastPrice.toLocaleString()}）`;
   }
 
-  // ====== SU 月度分析文字（按日期分支，累积上下文，与其他5家公司 getItemText 同级） ======
-  const d = currentData?.meta?.date || '';  // 从 currentData 获取当前日期（不依赖外部局部变量）
-  const LAST_MAINTAINED_DATE_SU = '20260521'; // 硬编码分析最后维护日期
-  let useHardcoded = d <= LAST_MAINTAINED_DATE_SU; // 超过维护日期则不使用硬编码
+  // ====== 优先读取 content.json 中的分析（支持自动更新） ======
+  const d = currentData?.meta?.date || '';
+  // 从全局 content.json 中读取分析（由 loadContentForAnalysis 在页面加载时缓存）
+  if (cachedContent && cachedContent.analysis && cachedContent.analysis.su) {
+    const suAnalysis = cachedContent.analysis.su;
+    // 先尝试按精确日期匹配（如 "20260722"）
+    const exactKey = d;
+    // 再尝试按月匹配（如 "202607"）
+    const monthKey = d.slice(0, 6);
+    if (suAnalysis[exactKey]) {
+      const analysisDetail = suAnalysis[exactKey];
+      let html = '';
+      if (monthText) html += `<p>${monthText}</p>`;
+      html += `<p><strong>主要原因</strong>：${analysisDetail}</p>`;
+      return html;
+    }
+    // 按月匹配：取当月最后一条
+    const monthKeys = Object.keys(suAnalysis).filter(k => k.startsWith(monthKey)).sort();
+    if (monthKeys.length > 0) {
+      const analysisDetail = suAnalysis[monthKeys[monthKeys.length - 1]];
+      let html = '';
+      if (monthText) html += `<p>${monthText}</p>`;
+      html += `<p><strong>主要原因</strong>：${analysisDetail}</p>`;
+      return html;
+    }
+  }
+
+  // ====== 兜底：硬编码日期分支（content.json 无匹配时使用） ======
+  const LAST_MAINTAINED_DATE_SU = '20260521';
+  let useHardcoded = d <= LAST_MAINTAINED_DATE_SU;
   const _isGE8  = d >= '20260408' && d < '20260501';  // 4/8 联动上线
   const _isGE10 = d >= '20260410' && d < '20260501';  // 4/10 联动消化
   const _isGE13 = d >= '20260413' && d < '20260501';  // 4/13 座谈会临近
@@ -1821,8 +1852,16 @@ function renderCompanyAnalysisSection() {
   function getItemText(item, mc) {
     const sign = mc >= 0 ? '+' : '';
     const mcStr = `${sign}${mc.toFixed(2)}%`;
-    const isChampion = mc === maxMc && mc > 0;
     const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
+
+    // ★★★ 优先读取 content.json 中的分析文本（自动更新）★★★
+    if (cachedContent && cachedContent.analysis && cachedContent.analysis.company) {
+      const companyAnalysis = cachedContent.analysis.company;
+      if (companyAnalysis[item.code]) {
+        const analysisText = companyAnalysis[item.code];
+        return `<strong>本月累计 ${mcStr}${badge}</strong>。${analysisText}`;
+      }
+    }
 
     // 6月日期辅助变量（与 generateSUAnalysis 保持一致）
     const _isJuneCrashWeekItem = currentDate >= '20260623' && currentDate < '20260701'; // 6/23起崩盘周期(限于6月)
