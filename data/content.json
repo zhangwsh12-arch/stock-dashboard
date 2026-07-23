@@ -2,8 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-07-22",
-    "note": "此文件由人工维护，每日需同步更新事件和分析文字。7月新闻已补充至7/16(含Wemade收购+V型反弹+7/7逆势+7/8触底+PA分红+杠杆踩踏+黑色星期一熔断-8.95%+过山车+暴涨+6.24%+央行加息+Shift Up深度分析)"
+    "updatedAt": "2026-07-23",
+    "note": "此文件由人工维护 + 自动抓取混合更新。7月新闻已补充至7/16(含Wemade收购+V型反弹+7/7逆势+7/8触底+PA分红+杠杆踩踏+黑色星期一熔断-8.95%+过山车+暴涨+6.24%+央行加息+Shift Up深度分析)。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。",
+    "newsAutoUpdatedAt": "2026-07-23T02:38:18.384Z",
+    "newsAutoCount": {
+      "events": 3,
+      "industryNews": 1,
+      "skippedUntranslated": 36
+    }
   },
   "analysis": {
     "version": "1.0",
@@ -621,6 +627,30 @@
     ]
   },
   "events": [
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss' Crimson Desert Wins Best Technical Innovation at UK's Develop:Star Awards - Korea IT Times</strong>",
+      "source": "Korea IT Times",
+      "date": "07.16",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFA0T0pjcGxGcjF3Z21jc0l5UG9vUHVhSTdXSHYwcmRaTjljRkNwM2M0alRObUE1N01GWU80T0M3ZUpvS012NU5tRFRyU0F1ekc3VFNCcVh5ZG51VFkyU2Y4aXU4cnRScGxYZDVNYWtiM0E?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss’ ‘Crimson Desert’ Wins Best Technical Innovation at Develop:Star Awards - 경향게임스</strong>",
+      "source": "경향게임스",
+      "date": "07.18",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFA5bHk4X2xHUjVFcTlVSFJpem9vOVk5LUwzekphUnlMSDcxLUppbG5oV3dLSi02WGxxOUdWUHFIYzBQd2hQNUwycXh5ejdabXYyYkV5X0M5X2JiMVVvWjVKVnFLTGZRc0pVU3hHMw?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss adds cross-save feature across platforms for ‘Crimson Desert’ - 스포츠경향</strong>",
+      "source": "스포츠경향",
+      "date": "07.20",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1rTzNaQk12bHVWdF95T01oVFUzaURFWUlOVGllaXNrSEdfcVhfWmNCSUc5ZDhNMEJfaVRKM2QwOFR4cTRMRDV6cl9uRXItalVISzBMM3BSZ2hMRjBxT1FncDR3?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7185",

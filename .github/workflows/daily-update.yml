@@ -50,10 +50,23 @@ jobs:
         run: node scripts/fetch-data.mjs
 
       # ====== 新闻抓取（AI 翻译为中文，追加模式不覆盖人工数据）======
+      # 注意：不用 `|| echo` 静默吞掉失败——2026-06-30 曾因脚本语法错误导致此步骤
+      # 静默失败超过3周未被发现（错误被吞掉，日志只显示"skipped"看起来像网络问题）。
+      # 现改为：失败时仍写入 GitHub Step Summary 明确告警，但 continue-on-error 保证
+      # 不阻断后续 commit/deploy（新闻抓取非关键路径，允许失败）。
       - name: Run news fetcher
+        id: news-fetcher
+        continue-on-error: true
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: node scripts/fetch-news.mjs || echo "News fetcher skipped (may have network issues)"
+        run: node scripts/fetch-news.mjs
+
+      - name: Warn if news fetcher failed
+        if: steps.news-fetcher.outcome == 'failure'
+        run: |
+          echo "### ⚠️ 新闻抓取失败" >> "$GITHUB_STEP_SUMMARY"
+          echo "fetch-news.mjs 本次运行失败，资讯数据未更新。请检查脚本是否存在语法错误或网络问题。" >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::fetch-news.mjs failed — 资讯抓取未成功，请检查日志"
 
       - name: Validate data
         run: node scripts/validate-data.mjs

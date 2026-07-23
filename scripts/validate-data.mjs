@@ -263,6 +263,48 @@ if (content) {
     }
   }
   pass('销量数据来源标注检查完成');
+
+  // 7e. 资讯新鲜度检查（避免 fetch-news.mjs 静默失败导致资讯长期停更却无人发现）
+  // 背景：2026-06-30 引入的语法错误导致 fetch-news.mjs 崩溃超过3周未被发现，
+  // 因为 workflow 用 `|| echo "skipped"` 吞掉了错误。此检查作为兜底防线。
+  const allNews = [...events, ...industryNews];
+  function parseNewsDateToDayOfYear(dateStr) {
+    // 格式: "07.16" 或 "07.16~20"（取起始日期）
+    const m = String(dateStr).match(/^(\d{1,2})\.(\d{1,2})/);
+    if (!m) return null;
+    const month = parseInt(m[1], 10);
+    const day = parseInt(m[2], 10);
+    // 用 2026 年构造日期用于比较（本项目数据均为 2026 年）
+    return new Date(Date.UTC(2026, month - 1, day));
+  }
+  const newsDates = allNews.map(n => parseNewsDateToDayOfYear(n.date)).filter(Boolean);
+  if (newsDates.length > 0) {
+    const latestNewsDate = new Date(Math.max(...newsDates.map(d => d.getTime())));
+    // 用 latest.json 的 meta.date（数据当前所处日期）作为基准，而非机器当前时间，
+    // 避免脏跑校验脚本时因为"今天"日期而产生误报
+    const baseDateStr = data?.meta?.date; // "20260721"
+    let baseDate = null;
+    if (baseDateStr && /^\d{8}$/.test(baseDateStr)) {
+      baseDate = new Date(Date.UTC(
+        parseInt(baseDateStr.slice(0, 4), 10),
+        parseInt(baseDateStr.slice(4, 6), 10) - 1,
+        parseInt(baseDateStr.slice(6, 8), 10)
+      ));
+    }
+    if (baseDate) {
+      const diffDays = (baseDate.getTime() - latestNewsDate.getTime()) / (1000 * 60 * 60 * 24);
+      const STALE_THRESHOLD_DAYS = 5; // 超过5天未更新资讯视为异常（正常应每日/隔日更新）
+      if (diffDays > STALE_THRESHOLD_DAYS) {
+        fail(`资讯已停更 ${Math.round(diffDays)} 天！最新资讯日期=${allNews.find(n => parseNewsDateToDayOfYear(n.date)?.getTime() === latestNewsDate.getTime())?.date}，股价数据日期=${baseDateStr}。请检查 fetch-news.mjs 是否正常运行（历史上曾因语法错误静默失败超过3周未被发现）`);
+      } else {
+        pass(`资讯新鲜度正常（最新资讯距股价数据日期 ${Math.round(diffDays)} 天）`);
+      }
+    } else {
+      warn('无法解析 meta.date，跳过资讯新鲜度检查');
+    }
+  } else {
+    warn('events/industryNews 中没有可解析的日期，跳过资讯新鲜度检查');
+  }
 }
 
 // ====== 8. 每日JSON文件日期检查 ======

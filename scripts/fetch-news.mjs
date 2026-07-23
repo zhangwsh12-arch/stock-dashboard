@@ -32,8 +32,9 @@ const COMPANIES = {
   'Shift Up':     { code: '462870', color: '#ff6b9d', keywords: ['Shift Up', 'NIKKE', 'Stellar Blade', '이블', '스텔라이드'] },
   'Nexon':        { code: '3659',   color: '#22c55e', keywords: ['Nexon', '넥슨', 'Blue Archive', '블루아카이브'] },
   'Netmarble':    { code: '251270', color: '#ef4444', keywords: ['Netmarble', '넷마블', 'Monster Striker', '몬스터스트라이커'] },
-  'NC':           { code: '036570', color: '#3b82f6', keywords: ['NC', 'NC소프트', 'NCSoft', 'Aion', '아이온'] },
-  'Krafton':      { code: '344760', color: '#f59e0b', keywords: ['Krafton', '크래프톤', 'PUBG', '박 Battlegrounds'] },
+  // 注意：不能用裸 "NC" 作为关键词——会误命中 "LG-NC"(棒球队)、"First Bancorp NC"(北卡罗来纳州)等无关内容
+  'NC':           { code: '036570', color: '#3b82f6', keywords: ['NC소프트', 'NCSoft', '엔씨소프트', '엔씨(NC)', 'Aion', '아이온'] },
+  'Krafton':      { code: '344760', color: '#f59e0b', keywords: ['Krafton', '크래프톤', 'PUBG', 'Battlegrounds', '배틀그라운드'] },
   'Pearl Abyss':  { code: '263750', color: '#a855f7', keywords: ['Pearl Abyss', '펄어비스', 'Crimson Desert', 'Black Desert', '검은사막'] },
 };
 
@@ -68,6 +69,33 @@ function formatDate(dateStr) {
   return '';
 }
 
+/**
+ * 解析新闻发布日期为可比较的 Date 对象（用于时效性过滤）
+ * Google News RSS 会返回历史文章（如去年10月），必须过滤掉旧闻，
+ * 否则会违反"不能把旧闻当新闻"的规则。
+ */
+function parseFullDate(dateStr) {
+  if (!dateStr) return null;
+  const iso = dateStr.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (iso) return new Date(`${iso[1]}-${iso[2]}-${iso[3]}T00:00:00Z`);
+  const rfc = dateStr.match(/(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})/i);
+  if (rfc) {
+    const months = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
+    return new Date(Date.UTC(parseInt(rfc[3], 10), months[rfc[2].toLowerCase()], parseInt(rfc[1], 10)));
+  }
+  return null;
+}
+
+// 新闻时效性窗口：只保留最近 N 天内发布的新闻，避免旧闻被当作新闻展示
+const NEWS_FRESHNESS_DAYS = 14;
+function isFreshNews(pubDateStr) {
+  const d = parseFullDate(pubDateStr);
+  if (!d) return true; // 无法解析日期时不过滤（保留原有行为，避免误删）
+  const now = new Date();
+  const diffDays = (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24);
+  return diffDays >= -1 && diffDays <= NEWS_FRESHNESS_DAYS; // 允许1天的时区误差
+}
+
 function cleanHTML(html) {
   return html
     .replace(/<[^>]+>/g, '')
@@ -81,14 +109,44 @@ function cleanHTML(html) {
     .trim();
 }
 
-function detectCompany(title, desc = '') {
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// 行业综合关键词搜索（如"한국 게임 주식"）范围较宽，Google News 有时会混入完全不相关的内容
+// （如体育新闻等只是碰巧命中某个宽泛词）。用游戏/股票相关关键词做二次相关性校验。
+const RELEVANCE_KEYWORDS = [
+  '게임', 'game', '주식', '股', 'KOSPI', 'KOSDAQ', '코스피', '코스닥',
+  'Shift Up', 'NIKKE', 'Stellar Blade', 'Nexon', '넥슨', 'Netmarble', '넷마블',
+  'NCSoft', 'NC소프트', 'Aion', '아이온', 'Krafton', '크래프톤', 'PUBG', 'Battlegrounds',
+  'Pearl Abyss', '펄어비스', 'Crimson Desert', 'Black Desert', '검은사막',
+];
+function isRelevantToGaming(title, desc = '') {
   const text = (title + ' ' + desc).toLowerCase();
+  return RELEVANCE_KEYWORDS.some(kw => text.includes(kw.toLowerCase()));
+}
+
+function detectCompany(title, desc = '') {
+  const text = title + ' ' + desc;
+  // 优先匹配长关键词（避免短关键词如 "NC" 提前误命中，例如覆盖 Pearl Abyss 的新闻）
+  const candidates = [];
   for (const [name, cfg] of Object.entries(COMPANIES)) {
     for (const kw of cfg.keywords) {
-      if (text.includes(kw.toLowerCase())) return name;
+      // 短关键词（≤3个字符的纯拉丁字母，如 "NC"）容易在英文单词内部产生子串误匹配
+      // （如 "announce"/"France" 都包含 "nc"），必须用词边界严格匹配
+      const isShortLatin = /^[A-Za-z]{1,3}$/.test(kw);
+      const re = isShortLatin
+        ? new RegExp(`\\b${escapeRegExp(kw)}\\b`, 'i')
+        : new RegExp(escapeRegExp(kw), 'i');
+      if (re.test(text)) {
+        candidates.push({ name, len: kw.length });
+      }
     }
   }
-  return null; // 无法匹配任何公司 → 归入 industryNews 而非 events
+  if (candidates.length === 0) return null;
+  // 取匹配到的最长关键词对应的公司，更可靠（如同时匹配到 "NC" 和 "Crimson Desert" 时优先后者）
+  candidates.sort((a, b) => b.len - a.len);
+  return candidates[0].name; // 无法匹配任何公司 → 归入 industryNews 而非 events
 }
 
 // ============================================================
@@ -189,7 +247,7 @@ function fallbackLocalTranslate(texts) {
 
     // 游戏名
     [/블루아카이브/g, 'Blue Archive(碧蓝档案)'], [/아이온/g, 'Aion(永恒之塔)'],
-    [/검은사막/g, 'Black Desert(黑色沙漠)'], ['/크림슨데저트/g, 'Crimson Desert(红沙漠)'],
+    [/검은사막/g, 'Black Desert(黑色沙漠)'], [/크림슨데저트/g, 'Crimson Desert(红沙漠)'],
     [/몬스트라이커/g, 'Monster Striker'], [/오리진/g, 'Origin'],
 
     // 财务指标
@@ -201,7 +259,7 @@ function fallbackLocalTranslate(texts) {
     // 业务动作
     [/출시/g, '发布'], [/런칭/g, '上线'], [/업데이트/g, '更新'],
     [/협약/g, '合作/签约'], [/인수/g, '收购'], [/투자/g, '投资'],
-    [/배당/g, '分红'], [/증자/g, '增资'], ['/상장/g, '上市'],
+    [/배당/g, '分红'], [/증자/g, '增资'], [/상장/g, '上市'],
     [/발표/g, '公布/宣布'], [/예정/g, '计划/预计'], [/연기/g, '延期'],
 
     // 行业词
@@ -215,8 +273,8 @@ function fallbackLocalTranslate(texts) {
     [/올해/g, '今年'], [/내년/g, '明年'], [/작년/g, '去年'],
     [/분기/g, '季度'], [/1분기/g, 'Q1'], [/2분기/g, 'Q2'], [/3분기/g, 'Q3'], [/4분기/g, 'Q4'],
 
-    // 连接词（替换为空格或标点）
-    [/.../g, '…'], [/~/g, '~'],
+    // 连接词（替换为空格或标点）—— 注意：必须转义句点，否则 /.../ 会匹配任意3个字符导致乱码
+    [/\.\.\./g, '…'], [/~/g, '~'],
   ];
 
   return texts.map(text => {
@@ -224,11 +282,14 @@ function fallbackLocalTranslate(texts) {
     for (const [pattern, replacement] of DICT) {
       result = result.replace(pattern, replacement);
     }
-    // 如果经过替换后仍然韩文字符占主导，添加中文前缀确保能通过过滤器
+    // 如果经过关键词映射后仍然韩文字符占主导，说明翻译质量不达标。
+    // 之前用 [KR] 前缀强行绕过 index.html 的韩语过滤器展示原始韩文，
+    // 这违反了"韩语内容过滤"规则——正确做法是标记为失败，由上层跳过该条目，
+    // 而不是把未翻译的韩文硬塞给用户看。
     const korean = (result.match(/[가-힣]/g) || []).length;
     const chinese = (result.match(/[\u4e00-\u9fff]/g) || []).length;
     if (korean > chinese && korean > 5) {
-      result = `[KR] ${result}`;
+      return null; // 标记为翻译失败，上层过滤掉
     }
     return result;
   });
@@ -302,7 +363,9 @@ async function fetchGoogleNewsForCompany(companyName, keywords) {
     const items = parseRSSXML(xml);
     const dateInfo = getCurrentDateKST();
 
-    for (const item of items.slice(0, 8)) {
+    let skippedStale = 0;
+    for (const item of items) {
+      if (!isFreshNews(item.pubDate)) { skippedStale++; continue; } // 过滤旧闻
       entries.push({
         rawTitle: item.title,
         description: item.description,
@@ -310,7 +373,9 @@ async function fetchGoogleNewsForCompany(companyName, keywords) {
         date: formatDate(item.pubDate) || dateInfo.mmdd,
         url: item.link || '',
       });
+      if (entries.length >= 8) break;
     }
+    if (skippedStale > 0) console.log(`    ⏭️ 过滤旧闻 ${skippedStale} 条（超过${NEWS_FRESHNESS_DAYS}天）`);
   } catch (err) {
     console.log(`    ⚠️ 失败: ${err.message}`);
   }
@@ -338,7 +403,11 @@ async function fetchGoogleNewsIndustry() {
       const items = parseRSSXML(xml);
       const dateInfo = getCurrentDateKST();
 
-      for (const item of items.slice(0, 5)) {
+      let count = 0;
+      for (const item of items) {
+        if (!isFreshNews(item.pubDate)) continue; // 过滤旧闻
+        // 宽泛关键词搜索容易混入无关内容（如体育新闻），必须二次校验相关性
+        if (!isRelevantToGaming(item.title, item.description)) continue;
         entries.push({
           rawTitle: item.title,
           description: item.description,
@@ -347,6 +416,8 @@ async function fetchGoogleNewsIndustry() {
           url: item.link || '',
           isIndustry: true,
         });
+        count++;
+        if (count >= 5) break;
       }
     } catch (err) {
       console.log(`    ⚠️ 行业新闻失败: ${err.message}`);
@@ -449,12 +520,25 @@ async function main() {
   let addedEvents = 0;
   let addedIndustry = 0;
 
+  let skippedUntranslated = 0;
   for (const entry of uniqueEntries) {
-    const titleText = `<strong>${entry.translatedTitle}</strong>`;
-    // 如果翻译与原文相同（未翻译），追加原文标记
-    const displayTitle = entry.translatedTitle === entry.rawTitle
-      ? `<strong>[원문] ${entry.rawTitle}</strong>`
-      : titleText;
+    // translateToChinese 对翻译质量不达标的条目返回 null，此时不应展示原始韩文
+    // （之前用 [원문]/[KR] 标记强行绕过韩语过滤器是错误做法，违反"韩语内容过滤"规则）
+    if (entry.translatedTitle == null) {
+      skippedUntranslated++;
+      continue;
+    }
+    // 翻译结果等于原文，说明是纯英文/无需翻译的内容，直接展示；
+    // 否则若原文本身仍是韩语主导也应跳过
+    if (entry.translatedTitle === entry.rawTitle) {
+      const korean = (entry.rawTitle.match(/[가-힣]/g) || []).length;
+      const chinese = (entry.rawTitle.match(/[\u4e00-\u9fff]/g) || []).length;
+      if (korean > chinese && korean > 5) {
+        skippedUntranslated++;
+        continue;
+      }
+    }
+    const displayTitle = `<strong>${entry.translatedTitle}</strong>`;
 
     const record = {
       company: entry.detectedCompany || '六大游戏公司',
@@ -485,16 +569,24 @@ async function main() {
     }
   }
 
-  // 限制数组大小
-  contentData.events = contentData.events.slice(0, 50);
-  contentData.industryNews = contentData.industryNews.slice(0, 50);
+  // 限制数组大小（阈值调高，避免截断人工维护的历史高质量资讯；
+  // 当前 events/industryNews 已各有 50~80+ 条人工数据，50 太小会导致误删）
+  const MAX_ARRAY_SIZE = 200;
+  if (contentData.events.length > MAX_ARRAY_SIZE) {
+    console.log(`   ⚠️ events 超过 ${MAX_ARRAY_SIZE} 条 (${contentData.events.length})，裁剪最旧的记录`);
+    contentData.events = contentData.events.slice(0, MAX_ARRAY_SIZE);
+  }
+  if (contentData.industryNews.length > MAX_ARRAY_SIZE) {
+    console.log(`   ⚠️ industryNews 超过 ${MAX_ARRAY_SIZE} 条 (${contentData.industryNews.length})，裁剪最旧的记录`);
+    contentData.industryNews = contentData.industryNews.slice(0, MAX_ARRAY_SIZE);
+  }
 
   // 更新 meta（注意：不覆写 updatedAt 的人工标记）
   contentData.meta = {
     ...(contentData.meta || {}),
     newsAutoUpdatedAt: new Date().toISOString(),
-    newsAutoCount: { events: addedEvents, industryNews: addedIndustry },
-    note: '此文件由人工维护 + 自动抓取混合更新。events/industryNews 中带 [원文] 标记为自动抓取的韩语原文（无 AI 翻译），其余为人工编写或 AI 已翻译。',
+    newsAutoCount: { events: addedEvents, industryNews: addedIndustry, skippedUntranslated },
+    note: '此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。',
   };
 
   // 写回
