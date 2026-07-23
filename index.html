@@ -1852,6 +1852,7 @@ function renderCompanyAnalysisSection() {
   function getItemText(item, mc) {
     const sign = mc >= 0 ? '+' : '';
     const mcStr = `${sign}${mc.toFixed(2)}%`;
+    const isChampion = mc === maxMc && mc > 0;
     const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
 
     // ★★★ 优先读取 content.json 中的分析文本（自动更新）★★★
