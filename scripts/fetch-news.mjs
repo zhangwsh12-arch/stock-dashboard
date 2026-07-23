@@ -282,14 +282,19 @@ function fallbackLocalTranslate(texts) {
     for (const [pattern, replacement] of DICT) {
       result = result.replace(pattern, replacement);
     }
-    // 如果经过关键词映射后仍然韩文字符占主导，说明翻译质量不达标。
-    // 之前用 [KR] 前缀强行绕过 index.html 的韩语过滤器展示原始韩文，
-    // 这违反了"韩语内容过滤"规则——正确做法是标记为失败，由上层跳过该条目，
-    // 而不是把未翻译的韩文硬塞给用户看。
+    // 翻译质量校验：
+    // 1) 韩文字符占主导 → 关键词映射不够，翻译失败
+    // 2) 英文字符占主导且几乎没有中文 → 本地词典只处理韩语，
+    //    纯英文/主要英文的标题（如英文媒体标题）完全没被翻译，
+    //    之前的判断漏了这种情况，导致英文原文直接展示（违反"中文展示"要求）
     const korean = (result.match(/[가-힣]/g) || []).length;
     const chinese = (result.match(/[\u4e00-\u9fff]/g) || []).length;
+    const english = (result.match(/[a-zA-Z]/g) || []).length;
     if (korean > chinese && korean > 5) {
-      return null; // 标记为翻译失败，上层过滤掉
+      return null; // 韩语未译，标记为翻译失败，上层过滤掉
+    }
+    if (english > 10 && chinese < 3) {
+      return null; // 英文未译，标记为翻译失败，上层过滤掉
     }
     return result;
   });
@@ -528,12 +533,14 @@ async function main() {
       skippedUntranslated++;
       continue;
     }
-    // 翻译结果等于原文，说明是纯英文/无需翻译的内容，直接展示；
-    // 否则若原文本身仍是韩语主导也应跳过
+    // 翻译结果等于原文，说明关键词映射没有命中任何替换（无论是韩语还是英文原文均未被翻译）。
+    // 此时需要用同 translateToChinese 一致的规则判断是否达标——不能想当然认为"等于原文=已是可展示内容"，
+    // 纯英文媒体标题（如英文媒体标题）经过韩语词典处理后也会等于原文，但用户要求全部展示中文。
     if (entry.translatedTitle === entry.rawTitle) {
       const korean = (entry.rawTitle.match(/[가-힣]/g) || []).length;
       const chinese = (entry.rawTitle.match(/[\u4e00-\u9fff]/g) || []).length;
-      if (korean > chinese && korean > 5) {
+      const english = (entry.rawTitle.match(/[a-zA-Z]/g) || []).length;
+      if ((korean > chinese && korean > 5) || (english > 10 && chinese < 3)) {
         skippedUntranslated++;
         continue;
       }

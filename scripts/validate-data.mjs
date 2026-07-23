@@ -237,22 +237,33 @@ if (content) {
   }
   pass('Shift Up 事件分析中未包含其他公司信息');
 
-  // 7c. 韩语内容过滤检查
+  // 7c. 韩语/英语内容过滤检查（覆盖 events 和 industryNews 两个数组）
+  // 背景：曾发生 fetch-news.mjs 的翻译质量判断只检测"韩语占主导"，
+  // 漏检了"英文标题未翻译"的情况（本地词典只处理韩语，纯英文媒体标题直接展示未译），
+  // 导致资讯板块混入未翻译的英文原文。此检查同时覆盖两种语言 + 两个数组作为兜底防线。
   const koreanRegex = /[\uAC00-\uD7AF\u1100-\u11FF]/g;
   const chineseRegex = /[\u4E00-\u9FFF]/g;
+  const englishRegex = /[a-zA-Z]/g;
   const industryNews = content.industryNews || [];
-  for (const news of industryNews) {
-    const koreanCount = (news.title?.match(koreanRegex) || []).length;
-    const chineseCount = (news.title?.match(chineseRegex) || []).length;
-    if (koreanCount > chineseCount && koreanCount > 5) {
-      warn(`industryNews 韩语内容过多: "${news.title?.slice(0, 40)}" (韩${koreanCount}/中${chineseCount})`);
-    }
-    // 检查 JS 字符串引号问题
-    if (news.title?.includes("'") && news.title?.startsWith("'")) {
-      warn(`industryNews 标题可能存在引号问题: "${news.title?.slice(0, 40)}"`);
+  const eventsForLangCheck = content.events || [];
+  for (const [label, list] of [['industryNews', industryNews], ['events', eventsForLangCheck]]) {
+    for (const news of list) {
+      const koreanCount = (news.title?.match(koreanRegex) || []).length;
+      const chineseCount = (news.title?.match(chineseRegex) || []).length;
+      const englishCount = (news.title?.match(englishRegex) || []).length;
+      if (koreanCount > chineseCount && koreanCount > 5) {
+        warn(`${label} 韩语内容过多: "${news.title?.slice(0, 40)}" (韩${koreanCount}/中${chineseCount})`);
+      }
+      if (englishCount > 10 && chineseCount < 3) {
+        warn(`${label} 存在未翻译的英文标题: "${news.title?.slice(0, 60)}" (英${englishCount}/中${chineseCount})`);
+      }
+      // 检查 JS 字符串引号问题
+      if (news.title?.includes("'") && news.title?.startsWith("'")) {
+        warn(`${label} 标题可能存在引号问题: "${news.title?.slice(0, 40)}"`);
+      }
     }
   }
-  pass('industryNews 韩语和引号检查完成');
+  pass('events/industryNews 韩语、英语和引号检查完成');
 
   // 7d. 销量数据来源标注
   for (const news of industryNews) {
