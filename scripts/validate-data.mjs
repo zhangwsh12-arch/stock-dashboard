@@ -275,6 +275,49 @@ if (content) {
   }
   pass('销量数据来源标注检查完成');
 
+  // 7e-pre. 重复新闻检查（events/industryNews 两个数组合并展示时不应出现同一事件重复）
+  // 背景：历史上同一天同一公司的同一事件常被同时写入 events 和 industryNews（措辞略有差异），
+  // 导致 index.html "游戏公司相关资讯"表格固定10条展示位被重复内容挤占。
+  function stripForDupCheck(title) {
+    return (title || '').replace(/<[^>]+>/g, '')
+      .replace(/[0-9a-zA-Z%.,()（）\-+/\s，。！？：；、“”‘’「」『』——…~]/g, '')
+      .trim();
+  }
+  function dupBigrams(str) {
+    const set = new Set();
+    for (let i = 0; i < str.length - 1; i++) set.add(str.slice(i, i + 2));
+    return set;
+  }
+  function dupSimilarity(a, b) {
+    const sa = dupBigrams(a), sb = dupBigrams(b);
+    if (sa.size === 0 || sb.size === 0) return 0;
+    let inter = 0;
+    sa.forEach(x => { if (sb.has(x)) inter++; });
+    return inter / (sa.size + sb.size - inter);
+  }
+  const allNewsForDup = [...events, ...industryNews];
+  const byDateCompanyForDup = {};
+  allNewsForDup.forEach(e => {
+    if (!e.date) return;
+    const dKey = e.date + '|' + e.company;
+    if (!byDateCompanyForDup[dKey]) byDateCompanyForDup[dKey] = [];
+    byDateCompanyForDup[dKey].push(e);
+  });
+  let dupFound = 0;
+  Object.entries(byDateCompanyForDup).forEach(([dKey, items]) => {
+    if (items.length < 2) return;
+    for (let i = 0; i < items.length; i++) {
+      for (let j = i + 1; j < items.length; j++) {
+        const sim = dupSimilarity(stripForDupCheck(items[i].title), stripForDupCheck(items[j].title));
+        if (sim >= 0.4) {
+          dupFound++;
+          warn(`发现重复资讯 [${dKey}] sim=${sim.toFixed(2)}: "${items[i].title?.replace(/<[^>]+>/g, '').slice(0, 40)}" 与 "${items[j].title?.replace(/<[^>]+>/g, '').slice(0, 40)}"`);
+        }
+      }
+    }
+  });
+  if (dupFound === 0) pass('events/industryNews 未发现重复资讯');
+
   // 7e. 资讯新鲜度检查（避免 fetch-news.mjs 静默失败导致资讯长期停更却无人发现）
   // 背景：2026-06-30 引入的语法错误导致 fetch-news.mjs 崩溃超过3周未被发现，
   // 因为 workflow 用 `|| echo "skipped"` 吞掉了错误。此检查作为兜底防线。

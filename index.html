@@ -1855,12 +1855,29 @@ function renderCompanyAnalysisSection() {
     const isChampion = mc === maxMc && mc > 0;
     const badge = isChampion ? '<span style="color:#22c55e"> 🏆 月度涨幅冠军</span>' : '';
 
-    // ★★★ 优先读取 content.json 中的分析文本（自动更新）★★★
+    // ★★★ 优先读取 content.json 中的分析文本（自动更新，按日期匹配，与 generateSUAnalysis 逻辑一致）★★★
+    // 注意：analysis.company[code] 现在是 {日期key: 文本} 的映射（而非单一固定字符串），
+    // 避免出现"7月的分析文字在8月依然原样展示"的过期问题。
     if (cachedContent && cachedContent.analysis && cachedContent.analysis.company) {
-      const companyAnalysis = cachedContent.analysis.company;
-      if (companyAnalysis[item.code]) {
-        const analysisText = companyAnalysis[item.code];
-        return `<strong>本月累计 ${mcStr}${badge}</strong>。${analysisText}`;
+      const companyAnalysisAll = cachedContent.analysis.company[item.code];
+      if (companyAnalysisAll && typeof companyAnalysisAll === 'object') {
+        const d = currentDate || '';
+        const exactKey = d;
+        const monthKey = d.slice(0, 6);
+        let analysisText = null;
+        if (companyAnalysisAll[exactKey]) {
+          analysisText = companyAnalysisAll[exactKey];
+        } else {
+          const monthKeys = Object.keys(companyAnalysisAll).filter(k => k.startsWith(monthKey)).sort();
+          if (monthKeys.length > 0) analysisText = companyAnalysisAll[monthKeys[monthKeys.length - 1]];
+        }
+        if (analysisText) {
+          return `<strong>本月累计 ${mcStr}${badge}</strong>。${analysisText}`;
+        }
+      } else if (typeof companyAnalysisAll === 'string') {
+        // 向后兼容：旧格式（无日期维度的固定字符串）仍可读取，但会打印警告提示需迁移
+        console.warn(`⚠️ analysis.company[${item.code}] 仍为旧格式（无日期维度），建议迁移为 {日期: 文本} 结构`);
+        return `<strong>本月累计 ${mcStr}${badge}</strong>。${companyAnalysisAll}`;
       }
     }
 

@@ -515,12 +515,40 @@ async function main() {
   const dateInfo = getCurrentDateKST();
 
   // 收集已存在的日期集合（避免重复添加同日新闻）
+  // 注意：existingKeys 精确匹配前40字符只能防止逐字相同的重复，
+  // 无法防止"同一事件被措辞略有不同的方式重复写入"（历史上这是导致
+  // events/industryNews 出现大量近似重复内容的根因）。
+  // 因此额外用 isSimilarToExisting() 做同日期+同公司的相似度校验作为第二道防线。
   const existingEventKeys = new Set(
     contentData.events.map(e => `${e.date}:${cleanHTML(e.title).slice(0, 40)}`)
   );
   const existingIndustryKeys = new Set(
     contentData.industryNews.map(n => `${n.date}:${cleanHTML(n.title).slice(0, 40)}`)
   );
+
+  function stripForCompare(title) {
+    return cleanHTML(title)
+      .replace(/[0-9a-zA-Z%.,()（）\-+/\s，。！？：；、“”‘’「」『』——…~]/g, '')
+      .trim();
+  }
+  function bigrams(str) {
+    const set = new Set();
+    for (let i = 0; i < str.length - 1; i++) set.add(str.slice(i, i + 2));
+    return set;
+  }
+  function similarity(a, b) {
+    const sa = bigrams(a), sb = bigrams(b);
+    if (sa.size === 0 || sb.size === 0) return 0;
+    let inter = 0;
+    sa.forEach(x => { if (sb.has(x)) inter++; });
+    return inter / (sa.size + sb.size - inter);
+  }
+  function isSimilarToExisting(newTitle, newDate, newCompany) {
+    const allExisting = [...contentData.events, ...contentData.industryNews];
+    const candidates = allExisting.filter(e => e.date === newDate && e.company === newCompany);
+    const strippedNew = stripForCompare(newTitle);
+    return candidates.some(e => similarity(strippedNew, stripForCompare(e.title)) >= 0.4);
+  }
 
   let addedEvents = 0;
   let addedIndustry = 0;
@@ -561,14 +589,14 @@ async function main() {
     if (entry.isIndustry || !entry.detectedCompany) {
       // → 归入 industryNews
       record.company = '六大游戏公司';
-      if (!existingIndustryKeys.has(key)) {
+      if (!existingIndustryKeys.has(key) && !isSimilarToExisting(record.title, record.date, record.company)) {
         contentData.industryNews.unshift(record);
         existingIndustryKeys.add(key);
         addedIndustry++;
       }
     } else {
       // → 归入 events（个股新闻）
-      if (!existingEventKeys.has(key)) {
+      if (!existingEventKeys.has(key) && !isSimilarToExisting(record.title, record.date, record.company)) {
         contentData.events.unshift(record);
         existingEventKeys.add(key);
         addedEvents++;
