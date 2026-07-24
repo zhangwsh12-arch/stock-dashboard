@@ -3,12 +3,12 @@
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-07-23",
-    "note": "此文件由人工维护 + 自动抓取混合更新。7月新闻已补充至7/16(含Wemade收购+V型反弹+7/7逆势+7/8触底+PA分红+杠杆踩踏+黑色星期一熔断-8.95%+过山车+暴涨+6.24%+央行加息+Shift Up深度分析)。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。",
-    "newsAutoUpdatedAt": "2026-07-23T02:38:18.384Z",
+    "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。",
+    "newsAutoUpdatedAt": "2026-07-24T02:01:22.249Z",
     "newsAutoCount": {
-      "events": 3,
-      "industryNews": 1,
-      "skippedUntranslated": 36
+      "events": 0,
+      "industryNews": 0,
+      "skippedUntranslated": 39
     }
   },
   "analysis": {
@@ -109,7 +109,8 @@
       "7/16",
       "7/20",
       "7/21",
-      "7/22"
+      "7/22",
+      "7/23"
     ],
     "datasets": [
       {
@@ -188,7 +189,8 @@
           -6.89,
           -9.47,
           -10.04,
-          -13.92
+          -13.92,
+          -11.19
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -275,7 +277,8 @@
           -4.66,
           -6.26,
           -7.51,
-          -7.85
+          -7.85,
+          -2.28
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -362,7 +365,8 @@
           -3.97,
           -7.67,
           -7.41,
-          -5.95
+          -5.95,
+          -2.65
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -449,7 +453,8 @@
           -12.72,
           -17.61,
           -16.44,
-          -14.68
+          -14.68,
+          -11.94
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -536,7 +541,8 @@
           -1.84,
           -9.18,
           -4.29,
-          -5.71
+          -5.71,
+          -3.06
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -623,7 +629,8 @@
           -9.54,
           -13.11,
           -11.66,
-          -12.45
+          -12.45,
+          -9.27
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
