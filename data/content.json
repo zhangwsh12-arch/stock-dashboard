@@ -2,13 +2,13 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-07-23",
+    "updatedAt": "2026-07-24",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。",
-    "newsAutoUpdatedAt": "2026-07-24T02:01:22.249Z",
+    "newsAutoUpdatedAt": "2026-07-27T02:01:23.715Z",
     "newsAutoCount": {
-      "events": 0,
+      "events": 1,
       "industryNews": 0,
-      "skippedUntranslated": 39
+      "skippedUntranslated": 40
     }
   },
   "analysis": {
@@ -110,7 +110,8 @@
       "7/20",
       "7/21",
       "7/22",
-      "7/23"
+      "7/23",
+      "7/24"
     ],
     "datasets": [
       {
@@ -190,7 +191,8 @@
           -9.47,
           -10.04,
           -13.92,
-          -11.19
+          -11.19,
+          -12.05
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -278,7 +280,8 @@
           -6.26,
           -7.51,
           -7.85,
-          -2.28
+          -2.28,
+          -0.34
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -366,7 +369,8 @@
           -7.67,
           -7.41,
           -5.95,
-          -2.65
+          -2.65,
+          -2.38
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -454,7 +458,8 @@
           -17.61,
           -16.44,
           -14.68,
-          -11.94
+          -11.94,
+          -10.76
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -542,7 +547,8 @@
           -9.18,
           -4.29,
           -5.71,
-          -3.06
+          -3.06,
+          -1.02
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -630,7 +636,8 @@
           -13.11,
           -11.66,
           -12.45,
-          -9.27
+          -9.27,
+          -12.85
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -644,6 +651,14 @@
     ]
   },
   "events": [
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Analysts Say Stellar Blade(剑星)'s Sequel 'Blood Raine' Will Out-Earn Shift Up(剑星)'s Cash Cow NIKKE(胜利女神) Threefold - 게임와이</strong>",
+      "source": "게임와이",
+      "date": "07.24",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE0wRFkwOGZwNzJqVmJ3cTk5NEdfTnA0VEZObUxibV9nUmJqWkFudlhNVUZCOWRrWnRLUlZrY2VRYW13cmY4N2JxUU8za3k0MVlxY3NTVW5IZzBLc0J4YkF1OG5MaVRUZ9IBakFVX3lxTE1LVGdfTzdrYmNxYzVnLWh6dnVqUGVLYl85SmJWSUZsVGZVdlRVeDFtS19oY3NlMDNQbTEwb1F2THVMOUJJV1Q4TDlMZDgxaGRIMkRqRXVNek5MenFQTHN1aTl5WU5zbkZWenc?oc=5"
+    },
     {
       "company": "Pearl Abyss",
       "color": "#a855f7",
