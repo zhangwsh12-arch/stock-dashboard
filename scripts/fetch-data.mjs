@@ -120,29 +120,54 @@ function changeClass(change) {
 // 大盘指数抓取 (KOSPI / KOSDAQ)
 // ============================================================
 
-async function fetchIndexData(index) {
+async function fetchIndexData(index, targetDateStr) {
+  // 主数据源: Naver K线图 API（与个股一致，能正确锁定"已完结交易日"收盘价）
+  // 注意：Naver 的 siseJson 接口对 KOSPI/KOSDAQ 指数同样有效（symbol=KOSPI/KOSDAQ）
+  // 修复根因：旧实现用 Yahoo 实时 chart 的 closes[length-1] 作为"当前价"，
+  // 若工作流在交易时段内运行，取到的是"今天盘中实时价"而非"目标交易日收盘价"，
+  // 导致 meta.date 标注的日期与指数实际涨跌幅错配（例如把7/29盘中数据误标为7/28）。
+  console.log(`  📈 [Index] Fetching: ${index.name}`);
+  try {
+    const chartData = await fetchNaverChart(index.code, targetDateStr);
+    if (chartData && chartData.price) {
+      const changePercent = chartData.changePercent ?? '0.00';
+      console.log(`  ✅ [Index-Naver] ${index.name}: ${chartData.price} (${chartData.change >= 0 ? '+' : ''}${changePercent}%) [${chartData.date}]`);
+      return {
+        code: index.code,
+        name: index.name,
+        price: Number(chartData.price).toFixed(2),
+        change: Number(chartData.change).toFixed(2),
+        changePercent: changePercent,
+        changeClass: changeClass(chartData.change),
+      };
+    }
+    throw new Error('Naver chart data unavailable');
+  } catch (naverErr) {
+    console.warn(`  ⚠️ [Index] Naver数据源失败 (${naverErr.message})，回退到 Yahoo Finance`);
+  }
+
+  // 备用数据源: Yahoo Finance（存在盘中数据错配风险，仅作最终降级方案）
   try {
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${index.yahoo}?interval=1d&range=5d`;
-    console.log(`  📈 [Index] Fetching: ${index.name}`);
-    
+
     const resp = await fetchWithRetry(url, {
       headers: { 'Referer': 'https://finance.yahoo.com/' },
     });
-    
+
     const json = await resp.json();
     const result = json?.chart?.result?.[0];
     if (!result) throw new Error('No index data');
-    
+
     const closes = result.indicators?.quote?.[0]?.close || [];
     if (closes.length < 2) throw new Error('Insufficient data');
-    
+
     const currentPrice = closes[closes.length - 1];
     const prevPrice = closes[closes.length - 2];
     const change = currentPrice - prevPrice;
     const changePercent = prevPrice > 0 ? ((change / prevPrice) * 100).toFixed(2) : '0.00';
-    
-    console.log(`  ✅ [Index] ${index.name}: ${currentPrice.toFixed(2)} (${change >= 0 ? '+' : ''}${changePercent}%)`);
-    
+
+    console.log(`  ✅ [Index-Yahoo-fallback] ${index.name}: ${currentPrice.toFixed(2)} (${change >= 0 ? '+' : ''}${changePercent}%)`);
+
     return {
       code: index.code,
       name: index.name,
@@ -157,9 +182,9 @@ async function fetchIndexData(index) {
   }
 }
 
-async function fetchAllIndices() {
+async function fetchAllIndices(targetDateStr) {
   console.log('\n📊 正在抓取大盘指数...\n');
-  const results = await Promise.all(INDICES.map(fetchIndexData));
+  const results = await Promise.all(INDICES.map(idx => fetchIndexData(idx, targetDateStr)));
   return results.filter(r => r !== null);
 }
 
@@ -628,8 +653,8 @@ async function main() {
     process.exit(1);
   }
 
-  // 抓取大盘指数
-  const indexResults = await fetchAllIndices();
+  // 抓取大盘指数（传入目标交易日，锁定"已完结交易日"收盘价，避免盘中数据错配）
+  const indexResults = await fetchAllIndices(dateStr);
 
   // 构建看板数据包
   // Shift Up (462870) 必须是真正的 Shift Up 数据，绝不回退到其他公司

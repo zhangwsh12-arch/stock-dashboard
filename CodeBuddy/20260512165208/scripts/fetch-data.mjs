@@ -557,6 +557,14 @@ async function main() {
   const targetDate = getLatestTradingDay();
   const dateStr = formatDate(targetDate);
 
+  // ====== 非交易日保护：KRX休市日直接跳过（防止 repository_dispatch 在节假日误触发）======
+  const todayKST = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  const todayStr = formatDate(todayKST);
+  if (KRX_HOLIDAYS_2026.has(todayStr)) {
+    console.log(`\n⛔ 今日 (${todayStr}) 是韩国 KRX 休市日，跳过数据抓取`);
+    process.exit(0);
+  }
+
   console.log(`\n📅 目标日期: ${dateStr} (${targetDate.getMonth() + 1}月${targetDate.getDate()}日)`);
 
   // ====== 每日一次保护：如果 latest.json 已是今天的数据则跳过 ======
@@ -903,6 +911,7 @@ const KRX_HOLIDAYS_2026 = new Set([
   '20260501', // 劳动节
   '20260505', // 儿童节
   '20260525', // 佛诞日
+  '20260717', // 制宪절
   '20260817', // 光复节
   '20260924', '20260925', // 秋夕
   '20261005', // 开天节

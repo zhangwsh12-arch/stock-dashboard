@@ -2,15 +2,58 @@
 // ============================================================
 // 企业微信群机器人推送 - 韩国游戏股价看板
 // 用途：每日数据更新后，将"股价概况"推送到企业微信群
-// 触发方式：GitHub Actions workflow 中调用
-// 环境变量：WECOM_WEBHOOK_URL（群机器人 Webhook 地址）
+// 触发方式：GitHub Actions / 工蜂 CI workflow 中调用
+// 环境变量：
+//   WECOM_WEBHOOK_URL - 群机器人 Webhook 地址
+//   FORCE_NOTIFY       - 'true' 时忽略每日去重，强制推送
 // ============================================================
+//
+// 每日去重说明：
+// GitHub Actions 版本用 actions/cache@v4 做跨 job 的每日去重缓存，
+// 工蜂 CI（蓝盾）没有等价的开箱即用缓存插件，因此改为在脚本内部实现：
+// 读写 data/.notify-sent-YYYYMMDD 标记文件并随 data/ 一起提交到仓库，
+// 下次运行时如果标记文件存在（且日期匹配、非强制推送）则跳过推送。
+// 这样无论运行在 GitHub Actions 还是工蜂 CI，逻辑完全一致，不依赖平台特性。
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DATA_PATH = join(import.meta.dirname || '.', '..', 'data', 'latest.json');
+const DATA_DIR = join(import.meta.dirname || '.', '..', 'data');
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://nebula.kr.stock-dashboard.com';
+const FORCE_NOTIFY = String(process.env.FORCE_NOTIFY || '').toLowerCase() === 'true';
+
+// ====== 每日去重：基于 KST 日期的标记文件 ======
+function getTodayKSTStr() {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const y = kst.getUTCFullYear();
+  const m = String(kst.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(kst.getUTCDate()).padStart(2, '0');
+  return `${y}${m}${d}`;
+}
+
+const todayStr = getTodayKSTStr();
+const markerPath = join(DATA_DIR, `.notify-sent-${todayStr}`);
+
+if (existsSync(markerPath) && !FORCE_NOTIFY) {
+  console.log(`[notify] ⏭️ 今日 (${todayStr}) 已推送过，跳过（如需强制推送请设置环境变量 FORCE_NOTIFY=true）`);
+  process.exit(0);
+}
+if (existsSync(markerPath) && FORCE_NOTIFY) {
+  console.log(`[notify] 🔄 FORCE_NOTIFY=true，忽略去重标记，强制推送`);
+}
+
+// 清理往日遗留的标记文件（只保留最近的，避免 data/ 目录堆积垃圾文件）
+try {
+  for (const f of readdirSync(DATA_DIR)) {
+    if (/^\.notify-sent-\d{8}$/.test(f) && f !== `.notify-sent-${todayStr}`) {
+      unlinkSync(join(DATA_DIR, f));
+    }
+  }
+} catch (e) {
+  console.warn('[notify] 清理旧标记文件失败（非致命）:', e.message);
+}
 
 // ====== 读取数据 ======
 let data;
@@ -206,3 +249,11 @@ for (const url of webhookUrls) {
 
 if (successCount === 0) process.exit(1);
 console.log(`[notify] 全部完成: ${successCount}/${webhookUrls.length} 个群推送成功`);
+
+// 至少成功推送一个群，才写入今日已推送标记，避免全部失败时误标记导致次日无法重推
+try {
+  writeFileSync(markerPath, new Date().toISOString());
+  console.log(`[notify] 已写入去重标记: .notify-sent-${todayStr}`);
+} catch (e) {
+  console.warn('[notify] 写入去重标记失败（非致命）:', e.message);
+}
