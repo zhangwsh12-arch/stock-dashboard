@@ -1,0 +1,8 @@
+{
+  "accounts": [
+    { "handle": "jamm3rd",       "name": "jamm3rd" },
+    { "handle": "_yoojoonseok",  "name": "yoojoonseok" },
+    { "handle": "hsyoo___",      "name": "hsyoo" }
+  ],
+  "note": "handle 不带 @；name 为看板显示名。"
+}

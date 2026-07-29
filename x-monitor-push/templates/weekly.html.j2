@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X 账号周报 · {{ week }}</title>
+<style>
+  :root{--bg:#f7f8fa;--card:#fff;--border:#e6e8eb;--text:#1f2329;--muted:#8a9099;--accent:#1d9bf0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.8;padding:24px 16px}
+  .wrap{max-width:820px;margin:0 auto}
+  h1{font-size:22px;font-weight:700}
+  .date{color:var(--muted);font-size:14px;margin:4px 0 20px}
+  .nav{margin-bottom:22px}
+  .nav a{font-size:13px;color:var(--accent);text-decoration:none;padding:5px 12px;
+    background:var(--card);border:1px solid var(--border);border-radius:20px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:22px 24px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .analysis{font-size:15px}
+  .analysis h3{font-size:16px;margin:18px 0 6px;color:#1a5fa8}
+  .analysis p{margin:8px 0}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📈 X 账号周度趋势分析</h1>
+  <div class="date">周报 · {{ week }}（KST）· 覆盖近 7 日</div>
+  <nav class="nav"><a href="index.html">← 返回日报看板</a></nav>
+  <div class="card"><div class="analysis">{{ analysis_html }}</div></div>
+  <footer>自动生成 · 数据来源 TwitterAPI.io · {{ generated_at }}</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+name: X Account Monitor
+
+on:
+  schedule:
+    # 日报：KST 07:00 = UTC 22:00
+    - cron: "0 22 * * *"
+    # 周报：KST 周一 08:00 = UTC 周日 23:00
+    - cron: "0 23 * * 0"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "手动运行模式"
+        required: true
+        default: "daily"
+        type: choice
+        options: [daily, weekly]
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install requests jinja2
+
+      - name: Determine mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "mode=${{ github.event.inputs.mode }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "0 23 * * 0" ]; then
+            echo "mode=weekly" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=daily" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run
+        env:
+          TWITTERAPI_IO_KEY: ${{ secrets.TWITTERAPI_IO_KEY }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_API_BASE: ${{ secrets.LLM_API_BASE }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+          WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+        run: |
+          cd scripts
+          if [ "${{ steps.mode.outputs.mode }}" = "weekly" ]; then
+            python run_weekly.py
+          else
+            python run_daily.py
+          fi
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data docs
+          if git diff --staged --quiet; then
+            echo "无变更"
+          else
+            git commit -m "chore: update X monitor data ($(date -u +%Y-%m-%d))"
+            git push
+          fi
