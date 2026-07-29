@@ -1055,8 +1055,9 @@ function generateSUAnalysis() {
       html += `<p><strong>主要原因</strong>：${analysisDetail}</p>`;
       return html;
     }
-    // 按月匹配：取当月最后一条
-    const monthKeys = Object.keys(suAnalysis).filter(k => k.startsWith(monthKey)).sort();
+    // 按月匹配：取当月内、且不晚于当前查看日期(exactKey)的最新一条
+    // ⚠️ 修复：原逻辑只按 startsWith(monthKey) 过滤，会把"未来日期"（如查看7/24时的7/28分析）泄漏出来
+    const monthKeys = Object.keys(suAnalysis).filter(k => k.startsWith(monthKey) && k <= exactKey).sort();
     if (monthKeys.length > 0) {
       const analysisDetail = suAnalysis[monthKeys[monthKeys.length - 1]];
       let html = '';
@@ -1868,7 +1869,8 @@ function renderCompanyAnalysisSection() {
         if (companyAnalysisAll[exactKey]) {
           analysisText = companyAnalysisAll[exactKey];
         } else {
-          const monthKeys = Object.keys(companyAnalysisAll).filter(k => k.startsWith(monthKey)).sort();
+          // ⚠️ 修复：过滤条件加上 k <= exactKey，避免"未来日期"分析（如查看7/24时的7/28分析）泄漏出来
+          const monthKeys = Object.keys(companyAnalysisAll).filter(k => k.startsWith(monthKey) && k <= exactKey).sort();
           if (monthKeys.length > 0) analysisText = companyAnalysisAll[monthKeys[monthKeys.length - 1]];
         }
         if (analysisText) {
