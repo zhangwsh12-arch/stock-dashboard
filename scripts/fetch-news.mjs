@@ -282,16 +282,15 @@ function fallbackLocalTranslate(texts) {
     for (const [pattern, replacement] of DICT) {
       result = result.replace(pattern, replacement);
     }
-    // 翻译质量校验：
-    // 1) 韩文字符占主导 → 关键词映射不够，翻译失败
-    // 2) 英文字符占主导且几乎没有中文 → 本地词典只处理韩语，
-    //    纯英文/主要英文的标题（如英文媒体标题）完全没被翻译，
-    //    之前的判断漏了这种情况，导致英文原文直接展示（违反"中文展示"要求）
+    // 翻译质量校验（收紧版）：
+    // 1) 任何韩语字符残留 → 翻译失败（原逻辑只判断"韩语占主导"，
+    //    导致中韩混杂病句被放行，如"历史 最大 业绩에 3%대 上涨세"）
+    // 2) 英文字符占主导且几乎没有中文 → 英文未译，翻译失败
     const korean = (result.match(/[가-힣]/g) || []).length;
     const chinese = (result.match(/[\u4e00-\u9fff]/g) || []).length;
     const english = (result.match(/[a-zA-Z]/g) || []).length;
-    if (korean > chinese && korean > 5) {
-      return null; // 韩语未译，标记为翻译失败，上层过滤掉
+    if (korean > 0) {
+      return null; // 任何韩语残留 → 翻译失败
     }
     if (english > 10 && chinese < 3) {
       return null; // 英文未译，标记为翻译失败，上层过滤掉
@@ -436,6 +435,20 @@ async function fetchGoogleNewsIndustry() {
 // 去重
 // ============================================================
 
+/**
+ * 清洗 Google News 标题末尾夹带的韩语来源名（如 " - 게임와이", " - 뉴스1"）
+ * 
+ * Google News RSS 的 <title> 字段经常包含 "标题 - 来源名" 格式，
+ * 来源名会在独立 <source> 字段出现，但也会以韩语形式残留在标题末尾。
+ * 若不清洗，这些韩语来源名会在翻译后作为未翻译的韩语字符残留，
+ * 污染 content.json 的 title 字段，最终出现在"变动原因分析"文案中。
+ */
+function cleanTitleStrip(rawTitle) {
+  // 匹配末尾的 " - 韩语来源名" 或 " | 韩语来源名"
+  // 韩语来源名通常由韩语字符 + 可选数字/英文组成
+  return rawTitle.replace(/[\s]*[-–—|]\s*[가-힣a-zA-Z0-9.]{2,30}$/u, '').trim();
+}
+
 function deduplicateEntries(entries) {
   const seen = new Set();
   return entries.filter(e => {
@@ -485,7 +498,13 @@ async function main() {
     return;
   }
 
-  // ===== Step 4: AI 批量翻译 =====
+  // ===== Step 4: 标题清洗（剥离末尾韩语来源名）=====
+  console.log('\n[处理] 标题清洗...');
+  for (const entry of uniqueEntries) {
+    entry.rawTitle = cleanTitleStrip(entry.rawTitle);
+  }
+
+  // ===== Step 5: AI 批量翻译 =====
   console.log('\n[处理] AI 翻译中...');
   const titlesToTranslate = uniqueEntries.map(e => e.rawTitle);
   const translatedTitles = await translateToChinese(titlesToTranslate);
@@ -568,7 +587,7 @@ async function main() {
       const korean = (entry.rawTitle.match(/[가-힣]/g) || []).length;
       const chinese = (entry.rawTitle.match(/[\u4e00-\u9fff]/g) || []).length;
       const english = (entry.rawTitle.match(/[a-zA-Z]/g) || []).length;
-      if ((korean > chinese && korean > 5) || (english > 10 && chinese < 3)) {
+      if (korean > 0 || (english > 10 && chinese < 3)) {
         skippedUntranslated++;
         continue;
       }

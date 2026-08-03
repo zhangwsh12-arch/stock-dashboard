@@ -98,10 +98,17 @@ async function polishWithLLM(factsText, companyName) {
 }
 
 // ====== 规则引擎：基于真实数据拼装事实性分析文本 ======
-function buildRuleBasedText({ companyName, changePercent, kospiPct, kosdaqPct, matchedEvents, isBigIndexMove, indexHeadline }) {
+function buildRuleBasedText({ companyName, changePercent, kospiPct, kosdaqPct, matchedEvents, isBigIndexMove, indexHeadline, monthChange, monthLabel }) {
   const pct = parseFloat(changePercent) || 0;
   const direction = pct > 0 ? '上涨' : pct < 0 ? '下跌' : '平盘';
   let text = '';
+
+  // 月度累计涨跌背景（当累计变动≥1%时展示，体现"本月变动分析"而非纯"当日分析"）
+  if (monthChange != null && Math.abs(monthChange) >= 1) {
+    const monthDir = monthChange >= 0 ? '上涨' : '下跌';
+    const monthStr = monthLabel || '本月';
+    text += `${companyName}${monthStr}累计${monthDir}${fmtPct(monthChange)}，`;
+  }
 
   if (isBigIndexMove) {
     const relative = Math.abs(pct) < Math.min(Math.abs(kospiPct), Math.abs(kosdaqPct))
@@ -109,13 +116,22 @@ function buildRuleBasedText({ companyName, changePercent, kospiPct, kosdaqPct, m
       : Math.abs(pct) > Math.max(Math.abs(kospiPct), Math.abs(kosdaqPct))
         ? '跌幅超过大盘整体水平，波动被进一步放大'
         : '跌幅与大盘基本同步';
-    text += `${indexHeadline}中，${companyName}${direction}${fmtPct(changePercent)}，${pct < 0 ? relative : '跟随大盘走势'}。`;
+    text += `${indexHeadline}中，${companyName}当日${direction}${fmtPct(changePercent)}，${pct < 0 ? relative : '跟随大盘走势'}。`;
   } else {
-    text += `${companyName}当日${direction}${fmtPct(changePercent)}，`;
+    text += `当日${direction}${fmtPct(changePercent)}，`;
   }
 
-  if (matchedEvents.length > 0) {
-    const evt = matchedEvents[0];
+  // 韩语残留二次校验：过滤掉 title 中仍含韩语字符的事件
+  // （fetch-news.mjs 的本地词典翻译偶尔产出中韩混杂病句，
+  //   即使已有收紧的质量校验，仍有历史脏数据可能留在 content.json 中，
+  //   此处作为最终防线，保证分析文案不会出现韩语字符）
+  const validEvents = matchedEvents.filter(e => {
+    const cleaned = e.title.replace(/<[^>]+>/g, '');
+    return !/[가-힣]/.test(cleaned);
+  });
+
+  if (validEvents.length > 0) {
+    const evt = validEvents[0];
     const evtTitle = evt.title.replace(/<[^>]+>/g, '');
     text += `叠加当日消息面「${evtTitle}」。`;
   } else if (!isBigIndexMove) {
@@ -163,6 +179,25 @@ async function main() {
   const allEvents = [...(content.events || []), ...(content.industryNews || [])];
   const todayEvents = allEvents.filter(e => e.date === mmdd);
 
+  // 计算月度累计涨跌：从 chartData 筛选当月数据
+  function calcMonthChange(chartData, dateStr) {
+    if (!chartData || chartData.length < 2) return null;
+    const month = dateStr.slice(0, 6);
+    const monthData = chartData
+      .filter(d => d.date && d.date.startsWith(month) && d.date <= dateStr)
+      .sort((a, b) => a.date.localeCompare(b.date));
+    if (monthData.length < 2) return null;
+    const firstPrice = monthData[0].price;
+    const lastPrice = monthData[monthData.length - 1].price;
+    if (!firstPrice || !lastPrice || firstPrice === 0) return null;
+    return ((lastPrice - firstPrice) / firstPrice * 100);
+  }
+  // 当月标签（如 "7月"）
+  const monthLabel = dateStr ? `${parseInt(dateStr.slice(4, 6), 10)}月` : '本月';
+
+  // SU 月度涨跌（从 chartData 计算）
+  const suMonthChange = calcMonthChange(latest.chartData, dateStr);
+
   if (!content.analysis) content.analysis = { version: '1.0', su: {}, company: {} };
   if (!content.analysis.su) content.analysis.su = {};
   if (!content.analysis.company) content.analysis.company = {};
@@ -179,6 +214,7 @@ async function main() {
       let text = buildRuleBasedText({
         companyName: SU_NAME, changePercent: su.changePercent, kospiPct, kosdaqPct,
         matchedEvents, isBigIndexMove, indexHeadline,
+        monthChange: suMonthChange, monthLabel,
       });
       const polished = await polishWithLLM(text, SU_NAME);
       if (polished) text = polished;
@@ -206,6 +242,7 @@ async function main() {
       let text = buildRuleBasedText({
         companyName: name, changePercent: c.change, kospiPct, kosdaqPct,
         matchedEvents, isBigIndexMove, indexHeadline,
+        monthChange: null, monthLabel,
       });
       const polished = await polishWithLLM(text, name);
       if (polished) text = polished;
