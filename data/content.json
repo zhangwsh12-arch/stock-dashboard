@@ -38,7 +38,7 @@
         "20260722": "7月KOSPI两次熔断冲击中Krafton作为权重股+外资重仓股遭双重打击。但PUBG Q1在线30万+AI Raon生态+Ascend Zero新作进展+Q1利润+52%基本面提供对冲。",
         "20260728": "7/28芯片股崩盘引发的KOSPI年内第8次熔断(-10.84%)中，Krafton回落-1.61%，作为非半导体权重股表现明显抗跌，PUBG Q1在线30万+基本面持续提供支撑，与三星电子、SK海力士两位数跌幅形成鲜明对比。",
         "20260729": "<strong>大盘异动：KOSDAQ -6.10%</strong>中，Krafton平盘+0.00%，跟随大盘走势。",
-        "20260730": "Krafton当日上涨+6.15%，叠加当日消息面「[특징주] Krafton, 历史 最大 业绩에 3%대 上涨세 - v.daum.net」。",
+        "20260730": "Krafton当日上涨+6.15%，叠加当日消息面「[特征股] Krafton，历史最大业绩中上涨3%以上」。",
         "20260731": "<strong>大盘异动：KOSPI +17.92%</strong>中，Krafton下跌-6.18%，表现明显抗跌，跌幅远小于大盘。"
       },
       "263750": {
@@ -51,7 +51,7 @@
       "036570": {
         "20260722": "7月史诗级崩盘中NC基本面(Aion 2预约120万+Q1利润YoY+1700%)被系统性风险完全覆盖。但7/2黑色星期四中NC逆势+3.72%领涨资金避风港(硬件→软件轮动)。Aion 2全球发布窗口临近提供差异化催化。",
         "20260728": "7/28中国长鑫存储上市引发的三星电子、SK海力士崩盘式抛售联动KOSPI年内第8次熔断(-10.84%)中，NC回落-3.23%，跌幅居中，Aion 2全球发布窗口临近的基本面催化未受影响。",
-        "20260729": "<strong>大盘异动：KOSDAQ -6.10%</strong>中，NC下跌-1.11%，表现明显抗跌，跌幅远小于大盘。叠加当日消息面「엔씨, 'Aion(永恒之塔)'으로 中国·北美 동시 공략…业绩 反弹 全球로 잇는다 - news.nate.com」。",
+        "20260729": "<strong>大盘异动：KOSDAQ -6.10%</strong>中，NC下跌-1.11%，表现明显抗跌，跌幅远小于大盘。叠加当日消息面「NC以《Aion(永恒之塔)》同时进军中国与北美…业绩反弹，全球延续」。",
         "20260730": "NC当日上涨+2.92%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
         "20260731": "<strong>大盘异动：KOSPI +17.92%</strong>中，NC上涨+2.40%，跟随大盘走势。"
       }
@@ -712,7 +712,7 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>[특징주] Krafton, 历史 最大 业绩에 3%대 上涨세 - v.daum.net</strong>",
+      "title": "<strong>[特征股] Krafton，历史最大业绩中上涨3%以上</strong>",
       "source": "v.daum.net",
       "date": "07.30",
       "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1lbXlUcUJuVWhhZXRZcGxacnJySV9tSFE0Szk5VkRIQm1mTmNlYWZGX1hxXzU0bGxYUFJjNm8xWEFwRHdzaFZ3dzZYUTZEem8?oc=5"
@@ -720,7 +720,7 @@
     {
       "company": "NC",
       "color": "#3b82f6",
-      "title": "<strong>엔씨, 'Aion(永恒之塔)'으로 中国·北美 동시 공략…业绩 反弹 全球로 잇는다 - news.nate.com</strong>",
+      "title": "<strong>NC以《Aion(永恒之塔)》同时进军中国与北美…业绩反弹，全球延续</strong>",
       "source": "news.nate.com",
       "date": "07.29",
       "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE9RSnN0Rld1SXp1X2NnX29KRUFXeXM4eGx1czlJWU1qbkdROTFlamVLVDZSQUg5RjJLZFZuVlY2LVVhU1VJeG5fRkVrNVkzZFBJalJv?oc=5"
