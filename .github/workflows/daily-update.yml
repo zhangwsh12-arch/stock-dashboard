@@ -95,7 +95,26 @@ jobs:
           git add data/
           if ! git diff --cached --quiet; then
             git commit -m "📊 自动更新股价数据 $(date '+%Y-%m-%d %H:%M KST')"
-            git push
+
+            # 远程可能在本次运行期间被其他触发（如手动 rerun 与定时触发重叠）推送过新 commit，
+            # 直接 push 会因 "fetch first" 被拒绝。这里加入 fetch+rebase 重试，
+            # 最多尝试 3 次，避免因一次性的远程领先而导致整条流水线失败（2026-08-06 曾发生此问题）。
+            push_ok=false
+            for attempt in 1 2 3; do
+              if git push; then
+                echo "推送成功 (第 $attempt 次尝试)"
+                push_ok=true
+                break
+              fi
+              echo "推送被拒绝（远程有新提交），fetch + rebase 后重试..."
+              git fetch origin main
+              git rebase origin/main
+              sleep 2
+            done
+            if [ "$push_ok" != "true" ]; then
+              echo "::error::推送失败，已重试 3 次仍无法完成，请检查远程仓库状态"
+              exit 1
+            fi
           else
             echo "No data changes to commit"
           fi
@@ -182,6 +201,7 @@ jobs:
           node-version: '22'
 
       - name: Send WeCom notification
+        id: send-notify
         if: >-
           steps.notify-guard.outputs.cache-hit != 'true' ||
           steps.resolve-force.outputs.force_notify == 'true'
@@ -190,3 +210,12 @@ jobs:
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
         run: node scripts/notify-wecom.mjs
         continue-on-error: true
+
+      # continue-on-error 会让此步骤失败时 job 整体仍显示绿色✅，容易被忽略。
+      # 显式写入告警，避免"推送失败但看起来一切正常"（2026-08-06 曾因 fetch failed 静默漏推）。
+      - name: Warn if notification failed
+        if: steps.send-notify.outcome == 'failure'
+        run: |
+          echo "### 企业微信推送失败" >> "$GITHUB_STEP_SUMMARY"
+          echo "notify-wecom.mjs 本次运行失败（多次重试后仍无法送达），今日消息未推送。请检查 Webhook 是否有效或网络问题。" >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::notify-wecom.mjs failed — 企业微信通知未推送成功，请检查日志"

@@ -225,25 +225,41 @@ if (webhookUrls.length === 0) {
   process.exit(0); // 非致命错误，不阻断 workflow
 }
 
-let successCount = 0;
-for (const url of webhookUrls) {
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(message),
-    });
-
-    const result = await res.json();
-
-    if (result.errcode === 0) {
-      successCount++;
-      console.log(`[notify] 推送成功! (${displayDate}, ${upCount}涨/${downCount}跌/${neutralCount}平) [${successCount}/${webhookUrls.length}]`);
-    } else {
-      console.error(`[notify] 推送失败: errcode=${result.errcode}, errmsg=${result.errmsg}`);
+// 单个 URL 发送，网络层失败（fetch failed / 超时）时自动重试，
+// 避免因偶发网络抖动（如运营商/CI runner 到腾讯 API 的瞬时连接问题）导致整日推送缺失。
+async function sendWithRetry(url, body, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        signal: AbortSignal.timeout(15000), // 15s 超时，避免卡死
+      });
+      const result = await res.json();
+      return { ok: result.errcode === 0, result };
+    } catch (e) {
+      const isLastAttempt = attempt === maxRetries;
+      console.error(`[notify] 发送请求失败 (第${attempt}/${maxRetries}次):`, e.message);
+      if (isLastAttempt) return { ok: false, error: e };
+      const delayMs = attempt * 2000; // 2s, 4s 递增等待
+      console.log(`[notify] ${delayMs / 1000}s 后重试...`);
+      await new Promise(r => setTimeout(r, delayMs));
     }
-  } catch (e) {
-    console.error(`[notify] 发送请求失败:`, e.message);
+  }
+}
+
+let successCount = 0;
+const body = JSON.stringify(message);
+for (const url of webhookUrls) {
+  const { ok, result, error } = await sendWithRetry(url, body);
+  if (ok) {
+    successCount++;
+    console.log(`[notify] 推送成功! (${displayDate}, ${upCount}涨/${downCount}跌/${neutralCount}平) [${successCount}/${webhookUrls.length}]`);
+  } else if (result) {
+    console.error(`[notify] 推送失败: errcode=${result.errcode}, errmsg=${result.errmsg}`);
+  } else {
+    console.error(`[notify] 该 Webhook 多次重试后仍失败:`, error?.message);
   }
 }
 
