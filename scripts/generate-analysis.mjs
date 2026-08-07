@@ -202,20 +202,13 @@ async function main() {
   if (!content.analysis.su) content.analysis.su = {};
   if (!content.analysis.company) content.analysis.company = {};
 
-  // 月末保护：当月内已有任何 analysis key 时，不再写入新 key
-  // 原因：7/22/28 等关键日已生成"月度叙事"（如"7月史诗级高波动周期..."），
-  //       7/22 之后若再写入"大盘异动：KOSPI +X%中，XXX上涨/下跌"这种单日分析，
-  //       会被 index.html 的"按月兜底"逻辑（取当月最大key）优先取到，
-  //       覆盖掉优质月度叙事，导致"本月变动原因分析"和"主要游戏公司本月股价波动分析"
-  //       两个卡片错误地显示单日文案。
-  // 阈值：当月日 >= 20（每月20号之后进入月末保护期）
-  const day = dateStr ? parseInt(dateStr.slice(6, 8), 10) : 1;
-  const isMonthEnd = day >= 20;
-  const monthKey = dateStr ? dateStr.slice(0, 6) : '';
-  const hasMonthAnalysis = (bag) => {
-    if (!bag || !monthKey) return false;
-    return Object.keys(bag).some(k => k.startsWith(monthKey) && k !== dateStr);
-  };
+  // 注：曾有"月末保护"逻辑（当月已有analysis key时跳过后续写入），用于规避
+  // index.html 旧版"按月兜底"bug（取当月最大key，不管是否晚于当前查看日期）。
+  // 该bug已在 index.html 的 generateSUAnalysis()/getItemText() 中修复
+  // （兜底过滤条件改为 k.startsWith(monthKey) && k <= exactKey，只取"不晚于
+  // 当前查看日期"的最新分析）。因此"月末保护"已无必要，且会错误阻止
+  // 每月20号之后的新增大幅波动（如7/29、7/31）被记录，导致月末汇总不完整。
+  // 已移除该保护逻辑，改为每个交易日独立写入各自日期key，互不覆盖。
 
   let generatedCount = 0;
   let skippedCount = 0;
@@ -225,23 +218,17 @@ async function main() {
   if (su) {
     const pct = Math.abs(parseFloat(su.changePercent) || 0);
     if ((pct >= STOCK_THRESHOLD || isBigIndexMove) && !content.analysis.su[dateStr]) {
-      // 月末保护：当月已有 analysis 时不再写入，避免覆盖月度叙事
-      if (isMonthEnd && hasMonthAnalysis(content.analysis.su)) {
-        console.log(`  ⏭️ [SU] 月末保护：${monthKey} 已有月度叙事，跳过 ${dateStr} 单日 analysis 写入`);
-        skippedCount++;
-      } else {
-        const matchedEvents = todayEvents.filter(e => e.company === SU_NAME || e.company === '六大游戏公司');
-        let text = buildRuleBasedText({
-          companyName: SU_NAME, changePercent: su.changePercent, kospiPct, kosdaqPct,
-          matchedEvents, isBigIndexMove, indexHeadline,
-          monthChange: suMonthChange, monthLabel,
-        });
-        const polished = await polishWithLLM(text, SU_NAME);
-        if (polished) text = polished;
-        content.analysis.su[dateStr] = text;
-        console.log(`  ✅ [SU] 已生成 ${dateStr} 分析: ${text.slice(0, 40)}...`);
-        generatedCount++;
-      }
+      const matchedEvents = todayEvents.filter(e => e.company === SU_NAME || e.company === '六大游戏公司');
+      let text = buildRuleBasedText({
+        companyName: SU_NAME, changePercent: su.changePercent, kospiPct, kosdaqPct,
+        matchedEvents, isBigIndexMove, indexHeadline,
+        monthChange: suMonthChange, monthLabel,
+      });
+      const polished = await polishWithLLM(text, SU_NAME);
+      if (polished) text = polished;
+      content.analysis.su[dateStr] = text;
+      console.log(`  ✅ [SU] 已生成 ${dateStr} 分析: ${text.slice(0, 40)}...`);
+      generatedCount++;
     } else if (content.analysis.su[dateStr]) {
       console.log(`  ⏭️ [SU] ${dateStr} 已有分析，跳过`);
       skippedCount++;
@@ -259,23 +246,17 @@ async function main() {
     if (!content.analysis.company[code]) content.analysis.company[code] = {};
 
     if ((pct >= STOCK_THRESHOLD || isBigIndexMove) && !content.analysis.company[code][dateStr]) {
-      // 月末保护：当月已有 analysis 时不再写入，避免覆盖月度叙事
-      if (isMonthEnd && hasMonthAnalysis(content.analysis.company[code])) {
-        console.log(`  ⏭️ [${name}] 月末保护：${monthKey} 已有月度叙事，跳过 ${dateStr} 单日 analysis 写入`);
-        skippedCount++;
-      } else {
-        const matchedEvents = todayEvents.filter(e => e.company === name || e.company === '六大游戏公司');
-        let text = buildRuleBasedText({
-          companyName: name, changePercent: c.change, kospiPct, kosdaqPct,
-          matchedEvents, isBigIndexMove, indexHeadline,
-          monthChange: null, monthLabel,
-        });
-        const polished = await polishWithLLM(text, name);
-        if (polished) text = polished;
-        content.analysis.company[code][dateStr] = text;
-        console.log(`  ✅ [${name}] 已生成 ${dateStr} 分析: ${text.slice(0, 40)}...`);
-        generatedCount++;
-      }
+      const matchedEvents = todayEvents.filter(e => e.company === name || e.company === '六大游戏公司');
+      let text = buildRuleBasedText({
+        companyName: name, changePercent: c.change, kospiPct, kosdaqPct,
+        matchedEvents, isBigIndexMove, indexHeadline,
+        monthChange: null, monthLabel,
+      });
+      const polished = await polishWithLLM(text, name);
+      if (polished) text = polished;
+      content.analysis.company[code][dateStr] = text;
+      console.log(`  ✅ [${name}] 已生成 ${dateStr} 分析: ${text.slice(0, 40)}...`);
+      generatedCount++;
     } else if (content.analysis.company[code][dateStr]) {
       console.log(`  ⏭️ [${name}] ${dateStr} 已有分析，跳过`);
       skippedCount++;
