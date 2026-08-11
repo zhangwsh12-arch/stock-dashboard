@@ -293,7 +293,12 @@ function fallbackLocalTranslate(texts) {
       return null; // 任何韩语残留 → 翻译失败
     }
     if (english > 10 && chinese < 3) {
-      return null; // 英文未译，标记为翻译失败，上层过滤掉
+      // 根因：原逻辑把英文未译标题全数返回 null，但本函数仅在 OpenAI API 失效（401/429/quota）
+      //      或未配置 OPENAI_API_KEY 时作为兜底被调用——若这里再把英文全跳过，脚本会静默失败
+      //      数十天导致行业资讯停更，validate-data 5 天后 fail 红字阻塞 deploy。
+      // 修改：保留英文原标题（含少量 DICT 替换后中文），调用方按 translationStatus='fallback'
+      //      识别后受限保留（每公司/行业最多 3 条），英文新闻不刷屏但能维持时间线连续。
+      return result;
     }
     return result;
   });
@@ -573,6 +578,14 @@ async function main() {
   let addedIndustry = 0;
 
   let skippedUntranslated = 0;
+  let addedFallback = 0;
+  // OpenAI API 失效（401/429/quota）或未配置 Key 时，fallbackLocalTranslate 只能处理韩语词典，
+  // 纯英文标题无法译成中文。此前这类条目被全数丢弃，一旦 Key 失效脚本便"跑成功但零写入"，
+  // 资讯静默停更数天后才由 validate-data 的新鲜度检查 fail 出来（本次 8/3~8/10 即此原因）。
+  // 现改为：英文原标题作为降级条目有限保留，每家公司/行业分类最多 N 条，保证时间线不断裂。
+  const FALLBACK_PER_BUCKET_LIMIT = 3;
+  const fallbackCountByBucket = new Map();
+
   for (const entry of uniqueEntries) {
     // translateToChinese 对翻译质量不达标的条目返回 null，此时不应展示原始韩文
     // （之前用 [원문]/[KR] 标记强行绕过韩语过滤器是错误做法，违反"韩语内容过滤"规则）
@@ -581,15 +594,26 @@ async function main() {
       continue;
     }
     // 翻译结果等于原文，说明关键词映射没有命中任何替换（无论是韩语还是英文原文均未被翻译）。
-    // 此时需要用同 translateToChinese 一致的规则判断是否达标——不能想当然认为"等于原文=已是可展示内容"，
-    // 纯英文媒体标题（如英文媒体标题）经过韩语词典处理后也会等于原文，但用户要求全部展示中文。
+    let isFallbackEntry = false;
     if (entry.translatedTitle === entry.rawTitle) {
       const korean = (entry.rawTitle.match(/[가-힣]/g) || []).length;
       const chinese = (entry.rawTitle.match(/[\u4e00-\u9fff]/g) || []).length;
       const english = (entry.rawTitle.match(/[a-zA-Z]/g) || []).length;
-      if (korean > 0 || (english > 10 && chinese < 3)) {
+      // 韩语残留必须丢弃——展示未翻译韩文违反"韩语内容过滤"规则，无兜底余地
+      if (korean > 0) {
         skippedUntranslated++;
         continue;
+      }
+      // 纯英文未译 → 降级保留，但按 bucket 限流
+      if (english > 10 && chinese < 3) {
+        const bucket = entry.isIndustry || !entry.detectedCompany ? '__industry__' : entry.detectedCompany;
+        const used = fallbackCountByBucket.get(bucket) || 0;
+        if (used >= FALLBACK_PER_BUCKET_LIMIT) {
+          skippedUntranslated++;
+          continue;
+        }
+        fallbackCountByBucket.set(bucket, used + 1);
+        isFallbackEntry = true;
       }
     }
     const displayTitle = `<strong>${entry.translatedTitle}</strong>`;
@@ -602,6 +626,11 @@ async function main() {
       date: entry.date,
       url: entry.url || '',
     };
+    // 标记降级条目，便于 validate-data / index.html 识别，也方便日后人工回补中文翻译
+    if (isFallbackEntry) {
+      record.translationStatus = 'fallback';
+      addedFallback++;
+    }
 
     const key = `${record.date}:${cleanHTML(entry.translatedTitle).slice(0, 40)}`;
 
@@ -639,8 +668,8 @@ async function main() {
   contentData.meta = {
     ...(contentData.meta || {}),
     newsAutoUpdatedAt: new Date().toISOString(),
-    newsAutoCount: { events: addedEvents, industryNews: addedIndustry, skippedUntranslated },
-    note: '此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。',
+    newsAutoCount: { events: addedEvents, industryNews: addedIndustry, skippedUntranslated, fallback: addedFallback },
+    note: '此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。',
   };
 
   // 写回
@@ -649,7 +678,20 @@ async function main() {
   console.log(`\n✅ 更新完成!`);
   console.log(`   新增 events: ${addedEvents} 条 (总计 ${contentData.events.length})`);
   console.log(`   新增 industryNews: ${addedIndustry} 条 (总计 ${contentData.industryNews.length})`);
+  console.log(`   跳过未翻译: ${skippedUntranslated} 条`);
+  if (addedFallback > 0) {
+    console.log(`   ⚠️ 其中 ${addedFallback} 条为英文降级条目（translationStatus=fallback）——OPENAI_API_KEY 可能已失效，请尽快检查`);
+  }
   console.log(`   文件: ${CONTENT_FILE}`);
+
+  // 关键防线：若本次一条都没写入，说明抓取/翻译链路存在问题（如 Key 失效 + 全部韩语残留），
+  // 必须以非零退出码让 workflow 的 "Warn if news fetcher failed" 步骤亮起告警，
+  // 而不是"跑成功但零写入"地静默停更（本次 8/3~8/10 停更 7 天正是因为缺少此检查）。
+  if (addedEvents === 0 && addedIndustry === 0 && uniqueEntries.length > 0) {
+    console.error(`\n❌ 抓取到 ${uniqueEntries.length} 条新闻但零条写入（全部被去重或翻译不达标），资讯未更新！`);
+    console.error(`   请检查 OPENAI_API_KEY 是否有效（本次跳过未翻译 ${skippedUntranslated} 条）`);
+    process.exitCode = 1;
+  }
 
   return contentData;
 }

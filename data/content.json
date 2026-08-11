@@ -2,14 +2,16 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-07",
+    "updatedAt": "2026-08-11",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。",
     "newsAutoUpdatedAt": "2026-08-10T02:01:31.258Z",
     "newsAutoCount": {
       "events": 0,
       "industryNews": 0,
       "skippedUntranslated": 37
-    }
+    },
+    "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
+    "newsManualBackfillNote": "8/4~8/11 期间因 OPENAI_API_KEY 失效导致自动抓取零写入，此批条目为人工中文翻译补录"
   },
   "analysis": {
     "version": "1.0",
@@ -772,6 +774,102 @@
   },
   "events": [
     {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC在Gamescom 2026公布三款全球新作——《Aion 2》《Cinder City》《Project Bonfire》登上ONL舞台，正式启动欧美市场攻势</strong>",
+      "source": "이투데이/디지털데일리",
+      "date": "08.06",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5ORVZDRHE4am5FTHA1dW9xWDlSY05ncUR4Zm9pTGMwMjh5VzRIaDNhcHlKMTh4M1h1ZmdQakNiRF9jbTFQTUM0T1JPMDNjdnRTVzhKXzA0NC1US3VFdFlERGliSHBaQm93?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton并购踩雷：8447亿韩元收购的Unknown Worlds估值腰斩，《Subnautica 2》开发纠纷余波未平</strong>",
+      "source": "딜사이트",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE90VzJCQlVMVTM1QWFpNS1faWF3NzFMcWhUOG5ocVc3d2wzdDEwMDZ4NWFfWWN6dUlFOWx2UEMwSmVSQUJsQVNXRUpQQTJDSkE?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Gamescom 2026：Krafton与NC以新作为主力，全面进攻欧洲与北美市场</strong>",
+      "source": "신아일보",
+      "date": "08.11",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5ORVZDRHE4am5FTHA1dW9xWDlSY05ncUR4Zm9pTGMwMjh5VzRIaDNhcHlKMTh4M1h1ZmdQakNiRF9jbTFQTUM0T1JPMDNjdnRTVzhKXzA0NC1US3VFdFlERGliSHBaQm93?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton把《PUBG》\"蓝区\"搬进现实——首尔圣水PUBG体验馆开设夏季避暑活动，加速线下IP扩张</strong>",
+      "source": "뉴시스/디지털데일리",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFA5bmU5d2lPMTNFRnR5QW1uRmF5a0JaazhCZ1VETnhFalFISjZObV93RE81Q083ZHRjOTBTcWR6MnozU1J2LVlmYlF6WmRBRERyU1BCWFZEdzB5SHIt?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>《PUBG》引入\"Meta Rotation\"机制：定期有意上调特定武器强度，主动轮换战术生态</strong>",
+      "source": "네이트",
+      "date": "08.11",
+      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE0weUh3YzBGMkVxb09Gb0VZb0Zpb0JIaWRFdjVfcFJ6bmFISFlISi1sSXdJZXpFU1d1RUQyODY5X1lZWVgyN1A4dmVVZXNvX3JsNTI4?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon继《Blue Archive》后《Mabinogi Mobile》再陷道具氪金争议，敷衍应对引发用户不满爆发</strong>",
+      "source": "비즈니스포스트",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1TZmJic05fTTI0TUdYWk03NG0tN0JNUlp0Smx4MmR0SkhrRGlQN2ZCMkJCQzFJSjdpSm1fbUNrMkhLeW9GQ1FKX01jcERjMmdQcHdyY1dfSjhDcnlULU9yUEJBQnlod2hRLXhuNndFWGFJLUU?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>《Blue Archive》常设主题咖啡厅\"Cafe Memorial\"开业一周年，8月每周日举办特别活动</strong>",
+      "source": "게임포커스/글로벌이코노믹",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE96RjZ5M0wxVGlNZzQzdjZmQVA3dGRkRW81THZZblp3YmlhLVdxVV9Ta2NQN0VkbFV5ZW1jZDVVcURsaDdPX1RPcnAxSEhBZDl6TnJWVGZYN0RHSDF1dEhObw?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon金龙夏：新作《Project RX》与《Blue Archive》的差异化核心在于\"生活感\"</strong>",
+      "source": "게임메카",
+      "date": "08.08",
+      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBXVm5lTmlsaXVQZG5yUDQtc1JhYzR2U3doZW5CX0VyWGtXa0E3N0QtNXYxd1pTR2tLVEdWZ2JuZ3FEbTItNEFaSXo5blNyUWsycVRfdXBrbjLSAVtBVV95cUxQOVRPZGFwV1JRVnQwQ0JLblRHcHEzV3hIVTJsZ1RaRUwzWFhubFU3RkRjejRLUEtncTRZUjR1R0gwT3RXanpmNllZUUY1ZkZ3WXVHekx1U1laUy1j?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>《Crimson Desert》将在Gamescom dev 2026公开开放世界开发技术细节</strong>",
+      "source": "Korea IT Times",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9lYk4yd1Y2UUd5NVREdHNSRURzZHgzV0loU2RXVHlyTThjTkJ4V2d1b25vd196anc5eC16OHVMdDdTeG85aEt4UFQ1MTFJZjZDanJWWlpEdFZ4by0xVGRJZ0FlSEhhZ0ZKOENKZ2pMUDU?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss公布《Crimson Desert》全球视频大赛\"Beyond the Abyss\"获奖作品</strong>",
+      "source": "Pearl Abyss/경향게임스",
+      "date": "08.06",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE00Z3lMN2VlOUVEQ2t1d0J6bDVDS2xNSzFOeWRNNUh5Y1VrVWcxenQ3cWltYm93NTFpd2lhNlgydEdCalJ0em5iRUt2U3pmU1doVnRHRFVrRGNGTzJZVGFTeVYwbUQ?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss为《Black Desert》新增\"公会声望系统\"，强化长线社群运营</strong>",
+      "source": "Pearl Abyss",
+      "date": "08.05",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBKb1phVFN1QmJjY2ttUXFqaTJ6MDlZM0JOTURmbmkyWTFkUFAwZThSMTktZ0w3bFhFRVZiUXZITGs0S3MzMTNtcG45VGotZ3hQcktSQUcyaUM4cTVWSlFRbjNSQ3hvY1hNRk9J?oc=5"
+    },
+    {
+      "company": "Netmarble",
+      "color": "#ef4444",
+      "title": "<strong>Netmarble游戏博物馆开设\"韩国游戏产业之根\"PC游戏常设展</strong>",
+      "source": "연합뉴스",
+      "date": "08.04",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5VaTUzZWlxN3Bmc0NPQko3WXJ1TGIzdzZLemlHV0VSYUxTeHdwMW5ZdUNTQlZhbEljTjBnekduNEFNWWNPWlVNczlOTXpOZEY3cElaTHpEVkw3clnSAWBBVV95cUxQcXIwN0VyM280TGFfc08yYVJRbmR3TzdGUXU5UVpySE9EVTJNbVExdTJoQWxyODlvZmlTZGxPMDF1TnNWRzUtbzZ4b1A3am5ZTnFTMHVHLTFwSzZIYTQtX0s?oc=5"
+    },
+    {
       "company": "Shift Up",
       "color": "#ff6b9d",
       "title": "<strong>Shift Up(剑星) defends AI(人工智能)-made music video after gamer backlash</strong>",
@@ -1362,6 +1460,46 @@
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>新作决定成败：韩国游戏行业Q2业绩两极分化</strong>——有新作储备的公司业绩反弹，处于\"新作空窗期\"的公司持续承压，板块内部分化加剧",
+      "source": "부산일보",
+      "date": "08.06",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5IUmdTZHU0dDBLbm9IbXBTXzJLUTR2VTZWeEVnNlBNNC10cE43WmVfbFE3S2ZyMDN0WUdMTkRHMzhtQVQxTi1NaVRvRUQ4VV9ZTGpVQURFc3JWdlBqeFl6U3JvbkxiMjBjSjNYNERzTXVqNlBN?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Kakao Games Q2亏损230亿韩元</strong>——\"新作空窗期\"冲击持续，印证Q2行业业绩两极分化格局",
+      "source": "한국경제",
+      "date": "08.05",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1CRjBQU2JnLUg3RlJyb3I0NkhLTEFFOGs2bVBuMUV4Q1NZNGtGdmpPeWI4anlVVHFBZHlPU3loVThhazVhZzNTTjFFR3RvdjZVRGNIX1IxT2tmZw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>OpenAI也在关注K-游戏行业</strong>——\"Game Builders Seoul\"在韩国举办，AI与游戏开发结合成为行业新焦点",
+      "source": "아시아경제",
+      "date": "08.05",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5kQWxSNDZmajNfNlFBMDJITmJMYk1telcxWEl4Y1J3RkR2Z012RWFTVDlYUmxCRTZvQVpLS1YtN0dfa0FHY2dDR2dfREpZSDB4Q2hISUJ4MU03Sy1NemxuZw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>从游戏走向日常：韩国游戏行业加速IP扩张</strong>——线下体验馆、主题咖啡厅、联名商品成为各大厂商延长IP生命周期的共同选择",
+      "source": "한국면세뉴스",
+      "date": "08.06",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE0wUXVoNWV3WndWUUJNeW1HTTh0Ylhkam4zbmM1czRKcDJGRzhteUxETWlzNGdDUlZmRDdkNjRMWnVPcHRMYWRNZ0FhUlNRUUZMak13RE1wVW1oREF0dVJFRHIyT0FobWdiZmlVMy1wRllyQQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>8/11 KOSPI下跌1.2%</strong>——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压",
+      "source": "supple.kr",
+      "date": "08.11",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE55a3ZxaTIxWmNzVnFxSHltMEFJZ0JFUnVjeWgwSDVzekVjbUxsR3hGaC0xQncxVWlVbmdGdzJlcmtVSGE4X093eS1JMU03SGItMlpoUHRQZk81d1Ji?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#ef4444",
