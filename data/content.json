@@ -3,12 +3,13 @@
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-08-11",
-    "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射，翻译质量不达标（韩语字符仍占主导）的条目会被跳过，不展示未翻译原文。",
-    "newsAutoUpdatedAt": "2026-08-10T02:01:31.258Z",
+    "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
+    "newsAutoUpdatedAt": "2026-08-12T02:01:30.573Z",
     "newsAutoCount": {
-      "events": 0,
+      "events": 3,
       "industryNews": 0,
-      "skippedUntranslated": 37
+      "skippedUntranslated": 38,
+      "fallback": 3
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
     "newsManualBackfillNote": "8/4~8/11 期间因 OPENAI_API_KEY 失效导致自动抓取零写入，此批条目为人工中文翻译补录"
@@ -24,7 +25,8 @@
       "20260803": "<strong>大盘异动：KOSPI -5.13%</strong>中，Shift Up当日下跌-1.74%，表现明显抗跌，跌幅远小于大盘。叠加当日消息面「Shift Up(剑星) defends AI(人工智能)-made music video after gamer backlash」。",
       "20260804": "Shift Up8月累计上涨+5.15%，<strong>大盘异动：KOSDAQ +5.83%</strong>中，Shift Up当日上涨+5.15%，跟随大盘走势。",
       "20260805": "Shift Up8月累计上涨+4.03%，<strong>大盘异动：KOSPI +3.77%</strong>中，Shift Up当日下跌-1.07%，表现明显抗跌，跌幅远小于大盘。",
-      "20260806": "Shift Up8月累计上涨+5.64%，<strong>大盘异动：KOSPI -4.58%</strong>中，Shift Up当日上涨+1.55%，跟随大盘走势。"
+      "20260806": "Shift Up8月累计上涨+5.64%，<strong>大盘异动：KOSPI -4.58%</strong>中，Shift Up当日上涨+1.55%，跟随大盘走势。",
+      "20260811": "Shift Up8月累计上涨+8.37%，当日上涨+3.86%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
     },
     "company": {
       "225570": {
@@ -35,7 +37,8 @@
         "20260803": "<strong>大盘异动：KOSPI -5.13%</strong>中，Nexon Games当日下跌-0.67%，表现明显抗跌，跌幅远小于大盘。",
         "20260804": "<strong>大盘异动：KOSDAQ +5.83%</strong>中，Nexon Games当日上涨+5.92%，跟随大盘走势。",
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，Nexon Games当日下跌-5.16%，跌幅超过大盘整体水平，波动被进一步放大。",
-        "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Nexon Games当日上涨+0.67%，跟随大盘走势。"
+        "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Nexon Games当日上涨+0.67%，跟随大盘走势。",
+        "20260811": "当日上涨+3.20%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
       },
       "251270": {
         "20260722": "7月系统性危机中高分红(2,800韩元/股~7-8%收益率)提供防御属性，但Coway治理争议+MS常态化运营不确定性在崩盘中放大。Wemade收购事件催化阶段性反弹。",
@@ -70,7 +73,8 @@
         "20260803": "<strong>大盘异动：KOSPI -5.13%</strong>中，Pearl Abyss当日上涨+1.96%，跟随大盘走势。",
         "20260804": "<strong>大盘异动：KOSDAQ +5.83%</strong>中，Pearl Abyss当日上涨+5.17%，跟随大盘走势。",
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，Pearl Abyss当日下跌-2.67%，跌幅与大盘基本同步。",
-        "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Pearl Abyss当日上涨+1.59%，跟随大盘走势。"
+        "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Pearl Abyss当日上涨+1.59%，跟随大盘走势。",
+        "20260811": "当日上涨+2.07%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
       },
       "036570": {
         "20260722": "7月史诗级崩盘中NC基本面(Aion 2预约120万+Q1利润YoY+1700%)被系统性风险完全覆盖。但7/2黑色星期四中NC逆势+3.72%领涨资金避风港(硬件→软件轮动)。Aion 2全球发布窗口临近提供差异化催化。",
@@ -82,7 +86,8 @@
         "20260804": "<strong>大盘异动：KOSDAQ +5.83%</strong>中，NC当日上涨+3.66%，跟随大盘走势。",
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，NC当日下跌-2.29%，表现明显抗跌，跌幅远小于大盘。",
         "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，NC当日上涨+1.91%，跟随大盘走势。",
-        "20260807": "当日上涨+3.76%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。"
+        "20260807": "当日上涨+3.76%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
+        "20260811": "当日上涨+4.93%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
       }
     }
   },
@@ -173,7 +178,8 @@
       "8/4",
       "8/5",
       "8/6",
-      "8/7"
+      "8/7",
+      "8/11"
     ],
     "datasets": [
       {
@@ -264,7 +270,8 @@
           5.15,
           4.03,
           5.64,
-          5.48
+          5.48,
+          8.37
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -363,7 +370,8 @@
           5.92,
           0.45,
           1.12,
-          1.79
+          1.79,
+          4.35
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -462,7 +470,8 @@
           2.61,
           -0.91,
           1.83,
-          6.79
+          6.79,
+          5.87
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -561,7 +570,8 @@
           3.66,
           1.29,
           3.23,
-          7.11
+          7.11,
+          10.13
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -660,7 +670,8 @@
           1.28,
           -2.55,
           -2.13,
-          2.77
+          2.77,
+          3.83
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -759,7 +770,8 @@
           5.17,
           2.36,
           3.99,
-          5.17
+          5.17,
+          9.01
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -773,6 +785,33 @@
     ]
   },
   "events": [
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss Announces Winners of ‘Crimson Desert’ Global Gameplay Video Contest - Korea IT Times</strong>",
+      "source": "Korea IT Times",
+      "date": "08.06",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5MWVBlelF0dks3R2FqVTd2ek40bThEbWRNOXBVdGRPUWo5czlvM0wyNUNYTDhmeGtXWHBMWkFPdmZ2RmhWdmZiLTBsQ0JscDFMVmxxdGZPVk12VUJfdDgwOEUyVmp3SjhSQVE3bEQwY1g?oc=5",
+      "translationStatus": "fallback"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss Announces Winners of Crimson Desert Global Video Contest ‘Beyond the Abyss’</strong>",
+      "source": "경향게임스",
+      "date": "08.08",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE8yQ0VFMUlXS2Q4NHVraGZpUy16UFB2U2dKT3pYSVAwUzhZY05TMVU5MDllTUVHMGdzSmNVU0dOOU51T1ItNXVDY2wwdzZZa0NTXzFZZFBob0dBT25EM0hwcGUxdFBmTTJ0dnVHRw?oc=5",
+      "translationStatus": "fallback"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>‘Crimson Desert’ to Showcase Open-World Development at Gamescom dev 2026 - Korea IT Times</strong>",
+      "source": "Korea IT Times",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9lYk4yd1Y2UUd5NVREdHNSRURzZHgzV0loU2RXVHlyTThjTkJ4V2d1b25vd196anc5eC16OHVMdDdTeG85aEt4UFQ1MTFJZjZDanJWWlpEdFZ4by0xVGRJZ0FlSEhhZ0ZKOENKZ2pMUDU?oc=5",
+      "translationStatus": "fallback"
+    },
     {
       "company": "NC",
       "color": "#3b82f6",
