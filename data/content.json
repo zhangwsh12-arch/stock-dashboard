@@ -2,13 +2,13 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-11",
+    "updatedAt": "2026-08-12",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-12T02:01:30.573Z",
+    "newsAutoUpdatedAt": "2026-08-13T02:01:26.950Z",
     "newsAutoCount": {
-      "events": 3,
+      "events": 1,
       "industryNews": 0,
-      "skippedUntranslated": 38,
+      "skippedUntranslated": 40,
       "fallback": 3
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -26,7 +26,8 @@
       "20260804": "Shift Up8月累计上涨+5.15%，<strong>大盘异动：KOSDAQ +5.83%</strong>中，Shift Up当日上涨+5.15%，跟随大盘走势。",
       "20260805": "Shift Up8月累计上涨+4.03%，<strong>大盘异动：KOSPI +3.77%</strong>中，Shift Up当日下跌-1.07%，表现明显抗跌，跌幅远小于大盘。",
       "20260806": "Shift Up8月累计上涨+5.64%，<strong>大盘异动：KOSPI -4.58%</strong>中，Shift Up当日上涨+1.55%，跟随大盘走势。",
-      "20260811": "Shift Up8月累计上涨+8.37%，当日上涨+3.86%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
+      "20260811": "Shift Up8月累计上涨+8.37%，当日上涨+3.86%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。",
+      "20260812": "Shift Up8月累计上涨+2.25%，<strong>大盘异动：KOSPI +3.69%</strong>中，Shift Up当日下跌-5.65%，跌幅超过大盘整体水平，波动被进一步放大。"
     },
     "company": {
       "225570": {
@@ -38,7 +39,8 @@
         "20260804": "<strong>大盘异动：KOSDAQ +5.83%</strong>中，Nexon Games当日上涨+5.92%，跟随大盘走势。",
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，Nexon Games当日下跌-5.16%，跌幅超过大盘整体水平，波动被进一步放大。",
         "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Nexon Games当日上涨+0.67%，跟随大盘走势。",
-        "20260811": "当日上涨+3.20%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
+        "20260811": "当日上涨+3.20%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。",
+        "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Nexon Games当日下跌-1.82%，跌幅与大盘基本同步。"
       },
       "251270": {
         "20260722": "7月系统性危机中高分红(2,800韩元/股~7-8%收益率)提供防御属性，但Coway治理争议+MS常态化运营不确定性在崩盘中放大。Wemade收购事件催化阶段性反弹。",
@@ -50,7 +52,8 @@
         "20260804": "<strong>大盘异动：KOSDAQ +5.83%</strong>中，Netmarble当日上涨+2.61%，跟随大盘走势。",
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，Netmarble当日下跌-3.44%，跌幅与大盘基本同步。",
         "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Netmarble当日上涨+2.77%，跟随大盘走势。",
-        "20260807": "当日上涨+4.87%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。"
+        "20260807": "当日上涨+4.87%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
+        "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Netmarble当日下跌-1.97%，跌幅与大盘基本同步。"
       },
       "259960": {
         "20260722": "7月KOSPI两次熔断冲击中Krafton作为权重股+外资重仓股遭双重打击。但PUBG Q1在线30万+AI Raon生态+Ascend Zero新作进展+Q1利润+52%基本面提供对冲。",
@@ -62,7 +65,8 @@
         "20260804": "<strong>大盘异动：KOSDAQ +5.83%</strong>中，Krafton当日上涨+1.28%，跟随大盘走势。",
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，Krafton当日下跌-3.78%，跌幅超过大盘整体水平，波动被进一步放大。",
         "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Krafton当日上涨+0.44%，跟随大盘走势。",
-        "20260807": "当日上涨+5.00%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。"
+        "20260807": "当日上涨+5.00%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
+        "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Krafton当日下跌-3.69%，跌幅与大盘基本同步。"
       },
       "263750": {
         "20260722": "CD 500万套销量+Q1扭亏为盈业绩验证在7月崩盘周期中无法抵御系统性抛压。7/8触底反弹+特别分红+Wemade收购催化阶段性反弹，但PA在4月已大幅回调，本轮属于超跌后再超跌。",
@@ -74,7 +78,8 @@
         "20260804": "<strong>大盘异动：KOSDAQ +5.83%</strong>中，Pearl Abyss当日上涨+5.17%，跟随大盘走势。",
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，Pearl Abyss当日下跌-2.67%，跌幅与大盘基本同步。",
         "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，Pearl Abyss当日上涨+1.59%，跟随大盘走势。",
-        "20260811": "当日上涨+2.07%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
+        "20260811": "当日上涨+2.07%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。",
+        "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Pearl Abyss当日下跌-14.50%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Pearl Abyss Q2 OP misses market estimates despite Crimson Desert sales」。"
       },
       "036570": {
         "20260722": "7月史诗级崩盘中NC基本面(Aion 2预约120万+Q1利润YoY+1700%)被系统性风险完全覆盖。但7/2黑色星期四中NC逆势+3.72%领涨资金避风港(硬件→软件轮动)。Aion 2全球发布窗口临近提供差异化催化。",
@@ -87,7 +92,8 @@
         "20260805": "<strong>大盘异动：KOSPI +3.77%</strong>中，NC当日下跌-2.29%，表现明显抗跌，跌幅远小于大盘。",
         "20260806": "<strong>大盘异动：KOSPI -4.58%</strong>中，NC当日上涨+1.91%，跟随大盘走势。",
         "20260807": "当日上涨+3.76%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
-        "20260811": "当日上涨+4.93%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。"
+        "20260811": "当日上涨+4.93%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。",
+        "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，NC当日下跌-3.52%，跌幅与大盘基本同步。"
       }
     }
   },
@@ -179,7 +185,8 @@
       "8/5",
       "8/6",
       "8/7",
-      "8/11"
+      "8/11",
+      "8/12"
     ],
     "datasets": [
       {
@@ -271,7 +278,8 @@
           4.03,
           5.64,
           5.48,
-          8.37
+          8.37,
+          2.25
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -371,7 +379,8 @@
           0.45,
           1.12,
           1.79,
-          4.35
+          4.35,
+          2.46
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -471,7 +480,8 @@
           -0.91,
           1.83,
           6.79,
-          5.87
+          5.87,
+          3.79
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -571,7 +581,8 @@
           1.29,
           3.23,
           7.11,
-          10.13
+          10.13,
+          6.25
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -671,7 +682,8 @@
           -2.55,
           -2.13,
           2.77,
-          3.83
+          3.83,
+          0
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -771,7 +783,8 @@
           2.36,
           3.99,
           5.17,
-          9.01
+          9.01,
+          -6.79
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -785,6 +798,15 @@
     ]
   },
   "events": [
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss Q2 OP misses market estimates despite Crimson Desert sales</strong>",
+      "source": "네이트",
+      "date": "08.12",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9HSFZTclpnQXF1dDFwUzRSUFNtQ19OS3R2UUwwQ3dWRUJsT1o2LW5JWDV5dWZSc1VYazY5Vzk4bVVRc050LVptUnowMXNER3NaVUowZ3djYkkyTHNzZE00dVE2ak1QR0pKWElQR1NibFJzaVRQa0RFZw?oc=5",
+      "translationStatus": "fallback"
+    },
     {
       "company": "Pearl Abyss",
       "color": "#a855f7",
