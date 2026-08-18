@@ -4,11 +4,11 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-08-14",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-17T02:01:25.093Z",
+    "newsAutoUpdatedAt": "2026-08-18T02:01:20.171Z",
     "newsAutoCount": {
       "events": 0,
       "industryNews": 0,
-      "skippedUntranslated": 31,
+      "skippedUntranslated": 27,
       "fallback": 3
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
