@@ -17,6 +17,11 @@ on:
         required: false
         type: boolean
         default: false
+      skip_notify:
+        description: '本次不推送企微通知（仅更新数据+部署页面，调试时勾选）'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -144,11 +149,15 @@ jobs:
         uses: actions/deploy-pages@v4
 
   # ====== 企业微信推送（update 完成后自动执行，每日仅1次）======
+  # skip_notify=true 时整个 job 不执行——用于"只想更新数据/验证抓取链路，
+  # 不想惊动企微群"的手动调试场景（每日去重缓存也不会被写入，不影响当天正常推送）。
   notify:
     needs: update
     if: |
       always() &&
       needs.update.result == 'success' &&
+      github.event.inputs.skip_notify != 'true' &&
+      github.event.client_payload.skip_notify != true &&
       (github.event.action == 'trigger-update' ||
        github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
