@@ -59,6 +59,10 @@ jobs:
         continue-on-error: true
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # 可选：指向任意 OpenAI 兼容网关（DeepSeek / 通义千问 / 智谱 / Kimi / 混元等），
+          # 未配置则默认走 https://api.openai.com/v1 + gpt-4o-mini
+          OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
         run: node scripts/fetch-news.mjs
 
       - name: Warn if news fetcher failed
@@ -76,6 +80,8 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
         run: node scripts/generate-analysis.mjs
 
       - name: Warn if analysis generator failed

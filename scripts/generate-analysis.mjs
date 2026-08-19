@@ -14,6 +14,9 @@
 //
 // 环境变量（可选，未配置时使用规则引擎兜底，不影响主流程）：
 //   OPENAI_API_KEY / ANTHROPIC_API_KEY - 用于润色规则引擎生成的事实文本
+//   OPENAI_BASE_URL - OpenAI 兼容网关地址（默认 https://api.openai.com/v1）
+//                     可指向 DeepSeek / 通义千问 / 智谱 / 月之暗面 / 混元等兼容服务
+//   OPENAI_MODEL    - 模型名（默认 gpt-4o-mini；换厂商时必须一并指定）
 //
 // 用法: node scripts/generate-analysis.mjs
 // ============================================================
@@ -27,6 +30,11 @@ const CONTENT_PATH = join(DATA_DIR, 'content.json');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+// OpenAI 官方 API 在部分地区注册/支付门槛较高，因此把网关与模型抽成环境变量，
+// 使其可直接复用任何"OpenAI 兼容"服务（DeepSeek、通义千问、智谱、Kimi、混元等），
+// 无需改代码。未配置时行为与之前完全一致。
+const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
 // 跟踪公司：code -> name（与 validate-data.mjs 保持一致）
 const TRACKED_COMPANY = {
@@ -64,11 +72,11 @@ async function polishWithLLM(factsText, companyName) {
   const userPrompt = `请润色以下关于 ${companyName} 的涨跌分析文本（保留所有<strong>标签和数字）：\n\n${factsText}`;
   try {
     if (OPENAI_API_KEY) {
-      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      const resp = await fetch(`${OPENAI_BASE_URL}/chat/completions`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: OPENAI_MODEL,
           messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userPrompt }],
           temperature: 0.2,
           max_tokens: 500,

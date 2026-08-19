@@ -15,7 +15,10 @@
  *
  * 用法: node scripts/fetch-news.mjs
  * 环境变量:
- *   OPENAI_API_KEY - OpenAI API Key（用于翻译，可选；无则跳过翻译输出原文）
+ *   OPENAI_API_KEY  - AI 翻译用（可选；无则自动降级到免费机器翻译 → 本地词典）
+ *   OPENAI_BASE_URL - OpenAI 兼容网关地址（默认 https://api.openai.com/v1）
+ *                     可指向 DeepSeek / 通义千问 / 智谱 / 月之暗面 / 混元等兼容服务
+ *   OPENAI_MODEL    - 模型名（默认 gpt-4o-mini；换厂商时必须一并指定）
  */
 
 import { writeFileSync, readFileSync, existsSync } from 'fs';
@@ -26,6 +29,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, '..');
 const DATA_DIR = join(ROOT_DIR, 'data');
 const CONTENT_FILE = join(DATA_DIR, 'content.json');
+
+// OpenAI 官方 API 在部分地区注册/支付门槛较高，因此把网关与模型抽成环境变量，
+// 使其可直接复用任何"OpenAI 兼容"服务，无需改代码。未配置时行为与之前完全一致。
+const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
 // 公司配置（用于检测新闻归属）
 const COMPANIES = {
@@ -168,14 +176,14 @@ async function translateToChinese(texts) {
   if (apiKey) {
 
   try {
-    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+    const resp = await fetch(`${OPENAI_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: OPENAI_MODEL,
         messages: [
           {
             role: 'system',
