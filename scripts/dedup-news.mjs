@@ -6,14 +6,22 @@
  * 两个数组（措辞略有差异），导致 index.html 的"游戏公司相关资讯"表格合并两个
  * 数组后展示了大量重复内容，挤占了固定10条的展示位。
  *
- * 判重规则（同日期+同公司分组内，任一条件满足视为重复）：
+ * 判重规则：
+ *   0. 【最高优先】原文 URL 规范化后相同 —— 无视日期/公司/译文差异直接判重。
+ *      2026-08-19 新增：换用不同翻译引擎（免费机翻 → DeepSeek）后，同一条新闻
+ *      产生两种措辞的译文，相似度低于 0.4 阈值而被判为"新新闻"，一次性造成
+ *      37 组重复。URL 是新闻的天然唯一标识，不受翻译影响。
+ *   以下规则在"同日期+同公司"分组内生效（用于无 URL 的人工条目）：
  *   1. 去除数字/标点后的中文字符 bigram 相似度 >= 0.4
  *   2. 提取的关键数字（百分比/点位等，≥2位）重叠比例 >= 0.5（如果双方都有数字特征）
  *
  * 聚类方式：并查集（Union-Find），避免同组内既有重复对、又有不同事件时的误判
  * （如 06.09 Shift Up 组：3条中2条重复+1条完全不同的 Nintendo Direct 新闻）
  *
- * 保留策略：每个重复聚类保留标题最长（信息最完整）的一条
+ * 保留策略（每个重复聚类保留一条，依次比较）：
+ *   1. 非 translationStatus=fallback 优先（即中文译文优先于英文原标题）
+ *   2. 中文字符更多者优先（AI 译文通常比机翻/英文原文更完整地中文化）
+ *   3. 标题更长者优先（信息更完整）
  *
  * 用法: node scripts/dedup-news.mjs
  */
@@ -62,6 +70,29 @@ function isDuplicate(a, b) {
   return false;
 }
 
+// URL 规范化：去锚点、去追踪参数、去末尾斜杠，统一小写
+function normalizeUrl(u) {
+  if (!u) return '';
+  return String(u)
+    .split('#')[0]
+    .split('?')[0]
+    .replace(/\/+$/, '')
+    .toLowerCase();
+}
+
+// 保留优先级：中文译文 > 中文字符多 > 标题长
+function isBetterThan(a, b) {
+  const aFallback = a.translationStatus === 'fallback' ? 1 : 0;
+  const bFallback = b.translationStatus === 'fallback' ? 1 : 0;
+  if (aFallback !== bFallback) return aFallback < bFallback;
+
+  const zh = t => (stripHtml(t).match(/[\u4e00-\u9fff]/g) || []).length;
+  const aZh = zh(a.title), bZh = zh(b.title);
+  if (aZh !== bZh) return aZh > bZh;
+
+  return stripHtml(a.title).length > stripHtml(b.title).length;
+}
+
 // 并查集
 class UnionFind {
   constructor(n) { this.parent = Array.from({ length: n }, (_, i) => i); }
@@ -86,6 +117,25 @@ function dedupeArrayPair(events, industryNews) {
 
   const uf = new UnionFind(tagged.length);
   let dupPairCount = 0;
+
+  // ===== 规则 0：URL 相同直接判重（跨日期、跨公司、跨译文均生效）=====
+  const byUrl = {};
+  tagged.forEach((e, globalIdx) => {
+    const u = normalizeUrl(e.url);
+    if (!u) return;
+    if (!byUrl[u]) byUrl[u] = [];
+    byUrl[u].push(globalIdx);
+  });
+  let urlDupGroups = 0;
+  Object.values(byUrl).forEach(indices => {
+    if (indices.length < 2) return;
+    urlDupGroups++;
+    for (let i = 1; i < indices.length; i++) {
+      uf.union(indices[0], indices[i]);
+      dupPairCount++;
+    }
+  });
+
   Object.values(byDateCompany).forEach(indices => {
     if (indices.length < 2) return;
     for (let i = 0; i < indices.length; i++) {
@@ -113,10 +163,10 @@ function dedupeArrayPair(events, industryNews) {
       keepGlobalIdx.add(idxs[0]);
       return;
     }
-    // 多条聚类 -> 保留标题最长的一条
+    // 多条聚类 -> 按"中文译文 > 中文字符多 > 标题长"选出最优的一条
     let best = idxs[0];
     for (const idx of idxs) {
-      if (stripHtml(tagged[idx].title).length > stripHtml(tagged[best].title).length) best = idx;
+      if (isBetterThan(tagged[idx], tagged[best])) best = idx;
     }
     keepGlobalIdx.add(best);
     removedCount += idxs.length - 1;
@@ -133,17 +183,18 @@ function dedupeArrayPair(events, industryNews) {
     else newIndustryNews.push(clean);
   });
 
-  return { newEvents, newIndustryNews, dupPairCount, removedCount };
+  return { newEvents, newIndustryNews, dupPairCount, removedCount, urlDupGroups };
 }
 
 function main() {
   const content = JSON.parse(readFileSync(CONTENT_FILE, 'utf8'));
-  const { newEvents, newIndustryNews, dupPairCount, removedCount } = dedupeArrayPair(
+  const { newEvents, newIndustryNews, dupPairCount, removedCount, urlDupGroups } = dedupeArrayPair(
     content.events || [],
     content.industryNews || []
   );
 
   console.log(`原始: events=${content.events.length}, industryNews=${content.industryNews.length}`);
+  console.log(`URL 相同的重复组: ${urlDupGroups}`);
   console.log(`检测到重复对: ${dupPairCount}`);
   console.log(`清理后: events=${newEvents.length}, industryNews=${newIndustryNews.length}（移除 ${removedCount} 条重复）`);
 

@@ -4,10 +4,10 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-08-18",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-19T02:37:12.227Z",
+    "newsAutoUpdatedAt": "2026-08-19T02:48:43.476Z",
     "newsAutoCount": {
-      "events": 0,
-      "industryNews": 0,
+      "events": 14,
+      "industryNews": 13,
       "skippedUntranslated": 0,
       "fallback": 0
     },
@@ -841,6 +841,14 @@
   },
   "events": [
     {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>在线游戏_Nexon、Smilegate(8.19)</strong>",
+      "source": "위클리오늘",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9QeGdVU2hkR2RzQXJGdnZ5YmhEdHJUaTQ0NXNyVnNVSFlNb1IxRFRQaXYxeTNnMXI4Vl96al9haEN4a1BmbEs0T2pVSkEzZHVTZkhaRFJoMlBwVTAyM05rM1J4bDA0QWg3eW8zVXh3?oc=5"
+    },
+    {
       "company": "Pearl Abyss",
       "color": "#a855f7",
       "title": "<strong>尽管《Crimson Desert》销量强劲，《Pearl Abyss》第二季度 OP 仍未达到市场预期</strong>",
@@ -977,42 +985,6 @@
       "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOOFBHbEFJeGk2RVg1T1l2bnhicVlaX3VaVzZESGtCa3R6QjhqekJVSm9mYm42WkJSbEtDV240ZlFWQm56bUdid0l2V1hPekRkOWxZM3k1emtaZ093RVd3OS1HWXhEZ0JRVkY4WEFGdWx4T1ZjdGR4cHd2N3E1Q191TndqTm1sT1l4Y2VVRXNJVkxfdzFyQVJoeTk4aGZjRUxpM1ZDd2RaM002WmIyTnAweHk0dmZZSFdJWGxVSlk3aFlqUWc3WFE?oc=5"
     },
     {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss Q2 OP misses market estimates despite Crimson Desert sales</strong>",
-      "source": "네이트",
-      "date": "08.12",
-      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9HSFZTclpnQXF1dDFwUzRSUFNtQ19OS3R2UUwwQ3dWRUJsT1o2LW5JWDV5dWZSc1VYazY5Vzk4bVVRc050LVptUnowMXNER3NaVUowZ3djYkkyTHNzZE00dVE2ak1QR0pKWElQR1NibFJzaVRQa0RFZw?oc=5",
-      "translationStatus": "fallback"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss Announces Winners of ‘Crimson Desert’ Global Gameplay Video Contest - Korea IT Times</strong>",
-      "source": "Korea IT Times",
-      "date": "08.06",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5MWVBlelF0dks3R2FqVTd2ek40bThEbWRNOXBVdGRPUWo5czlvM0wyNUNYTDhmeGtXWHBMWkFPdmZ2RmhWdmZiLTBsQ0JscDFMVmxxdGZPVk12VUJfdDgwOEUyVmp3SjhSQVE3bEQwY1g?oc=5",
-      "translationStatus": "fallback"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss Announces Winners of Crimson Desert Global Video Contest ‘Beyond the Abyss’</strong>",
-      "source": "경향게임스",
-      "date": "08.08",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE8yQ0VFMUlXS2Q4NHVraGZpUy16UFB2U2dKT3pYSVAwUzhZY05TMVU5MDllTUVHMGdzSmNVU0dOOU51T1ItNXVDY2wwdzZZa0NTXzFZZFBob0dBT25EM0hwcGUxdFBmTTJ0dnVHRw?oc=5",
-      "translationStatus": "fallback"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>‘Crimson Desert’ to Showcase Open-World Development at Gamescom dev 2026 - Korea IT Times</strong>",
-      "source": "Korea IT Times",
-      "date": "08.10",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9lYk4yd1Y2UUd5NVREdHNSRURzZHgzV0loU2RXVHlyTThjTkJ4V2d1b25vd196anc5eC16OHVMdDdTeG85aEt4UFQ1MTFJZjZDanJWWlpEdFZ4by0xVGRJZ0FlSEhhZ0ZKOENKZ2pMUDU?oc=5",
-      "translationStatus": "fallback"
-    },
-    {
       "company": "NC",
       "color": "#3b82f6",
       "title": "<strong>NC在Gamescom 2026公布三款全球新作——《Aion 2》《Cinder City》《Project Bonfire》登上ONL舞台，正式启动欧美市场攻势</strong>",
@@ -1031,14 +1003,6 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>Gamescom 2026：Krafton与NC以新作为主力，全面进攻欧洲与北美市场</strong>",
-      "source": "신아일보",
-      "date": "08.11",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5ORVZDRHE4am5FTHA1dW9xWDlSY05ncUR4Zm9pTGMwMjh5VzRIaDNhcHlKMTh4M1h1ZmdQakNiRF9jbTFQTUM0T1JPMDNjdnRTVzhKXzA0NC1US3VFdFlERGliSHBaQm93?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
       "title": "<strong>Krafton把《PUBG》\"蓝区\"搬进现实——首尔圣水PUBG体验馆开设夏季避暑活动，加速线下IP扩张</strong>",
       "source": "뉴시스/디지털데일리",
       "date": "08.10",
@@ -1051,14 +1015,6 @@
       "source": "네이트",
       "date": "08.11",
       "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE0weUh3YzBGMkVxb09Gb0VZb0Zpb0JIaWRFdjVfcFJ6bmFISFlISi1sSXdJZXpFU1d1RUQyODY5X1lZWVgyN1A4dmVVZXNvX3JsNTI4?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon继《Blue Archive》后《Mabinogi Mobile》再陷道具氪金争议，敷衍应对引发用户不满爆发</strong>",
-      "source": "비즈니스포스트",
-      "date": "08.10",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1TZmJic05fTTI0TUdYWk03NG0tN0JNUlp0Smx4MmR0SkhrRGlQN2ZCMkJCQzFJSjdpSm1fbUNrMkhLeW9GQ1FKX01jcERjMmdQcHdyY1dfSjhDcnlULU9yUEJBQnlod2hRLXhuNndFWGFJLUU?oc=5"
     },
     {
       "company": "Nexon",
@@ -1165,22 +1121,6 @@
       "url": "https://www.hankyung.com/article/2026040159801"
     },
     {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>完成Unbound Games 100%收购整合</strong>——开发商→发行商战略转型标志事件。三上真司工作室完全并入Shift Up体系，强化全球PC/主机发行能力。",
-      "source": "Inven/ZDNet Korea",
-      "date": "04.01",
-      "url": "https://www.inven.co.kr/webzine/news/?news=314941"
-    },
-    {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>PUBG × Stellar Blade 联动正式上线</strong>——Eve以PUBG史上首位Ultimate Contender身份进入艾伦格地图，包含角色+武器+服装。验证IP跨平台价值。",
-      "source": "Inven/PUBG STUDIO",
-      "date": "04.08",
-      "url": "https://www.inven.co.kr/webzine/news/?news=315253"
-    },
-    {
       "company": "NC",
       "color": "#3b82f6",
       "title": "<strong>Aion 2 首次线下座谈会超预期成功</strong>——600+人参与，现场演示核心玩法。KSK韩国预约94万+创公司历史新高，30日留存率36%远超行业平均。",
@@ -1189,36 +1129,12 @@
       "url": "https://www.inven.co.kr/webzine/news/?news=315384&site=aion2"
     },
     {
-      "company": "Netmarble",
-      "color": "#ef4444",
-      "title": "<strong>《Mongil: Star Dive》全球正式上线</strong>——PC(Steam/Epic)·移动端跨平台联机。Coway追加收购引发治理争议持续发酵中。",
-      "source": "Inven/ZDNet Korea",
-      "date": "04.15",
-      "url": "https://www.inven.co.kr/webzine/news/?news=314282"
-    },
-    {
       "company": "Pearl Abyss",
       "color": "#a855f7",
       "title": "<strong>《Crimson Desert》公布DLC路线图</strong>——Boss重战模式、区域再封锁、难度选项等扩展计划。全球销量突破400万套（韩国主机游戏史上最快），FnGuide预期Q1扭亏为盈。",
       "source": "Inven/Pearl Abyss IR",
       "date": "04.17",
       "url": "https://orandagames.tistory.com/73"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Q1财报超预期发布</strong>——销售额₩4,862亿(+13% YoY)，营业利润₩1,959亿(+52% YoY)。AI模型Raon开源后生态持续扩张。Ascend Zero新作后续催化关注。",
-      "source": "Inven/한국경제",
-      "date": "04.17",
-      "url": "https://www.inven.co.kr/webzine/news/?news=316035"
-    },
-    {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>NIKKE 3.5周年特别生放送</strong>——新角色Anis: Star确认4/23实装，超160次免费召唤活动进行中。用户活跃度回升信号明确。",
-      "source": "Inven/Level Infinite",
-      "date": "04.18",
-      "url": "https://www.inven.co.kr/webzine/news/?news=315526"
     },
     {
       "company": "四大游戏公司",
@@ -1267,14 +1183,6 @@
       "source": "Netmarble 공시/매일경제",
       "date": "04.23",
       "url": ""
-    },
-    {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>NIKKE新角色Anis: Star正式实装</strong>——4/23如期上线，用户活跃度和充值数据短期提振。Shift Up在游戏股普跌中唯一收红(+0.58%)，IP运营能力再次验证。",
-      "source": "Inven/게임토트",
-      "date": "04.23",
-      "url": "https://www.inven.co.kr/webzine/news/?news=315808"
     },
     {
       "company": "六大游戏公司",
@@ -1357,36 +1265,12 @@
       "url": ""
     },
     {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>NIKKE 新SSR'Mint'更新 + Stellar Blade 联动复刻</strong>——5月14日NIKKE实装新角色Mint，超稀有限定召唤进行中。Stellar Blade联动内容复刻上线，验证IP跨平台运营价值。",
-      "source": "Inven",
-      "date": "05.14",
-      "url": "https://www.inven.co.kr/webzine/news/"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>《Lineage 2M》5/27'REQUIEM'大更新</strong>——李道流(Re:Boot)重启预告，经典IP现代化改造。距Aion 2六月全球发布前序曲，Lineage系列持续迭代。",
-      "source": "Inven",
-      "date": "05.14",
-      "url": "https://www.inven.co.kr/webzine/news/"
-    },
-    {
       "company": "Krafton",
       "color": "#f59e0b",
       "title": "<strong>PUBG × Stellabreeze 新PvE模式'PAYDAY'上线</strong>——与Stellabreeze联合开发的合作突袭模式，联手全球艺术家070 Shaker收录原创曲目。PUBG持续内容创新。",
       "source": "Krafton 공시/Inven",
       "date": "05.14",
       "url": "https://www.krafton.com/news/press/"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>《Aion 2》新超越副本'红心之镜'更新</strong>——5/13更新新增超越难度副本、阿卡纳套装效果3种、每日副本'克罗帕金的秘密储藏室'等。6月线下Showcase预告公开，预约持续增长。",
-      "source": "NC Soft 공시/ZDNet Korea",
-      "date": "05.15",
-      "url": "https://zdnet.co.kr/view/?no=20260513151351"
     },
     {
       "company": "Krafton",
@@ -1429,14 +1313,6 @@
       "url": ""
     },
     {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>KOSDAQ暴涨+4.99%！游戏股全线强势反弹</strong>——韩国政府新设国家主权基金投资尖端产业消息刺激KOSDAQ触发买方侧车。前日(5/21)被AI/半导体虹吸的游戏股全面收复失地：Krafton +5.04%领涨、NC +4.94%、Nexon +3.26%、Netmarble +3.58%、Shift Up +2.25%、Pearl Abyss +1.32%。KOSPI +0.41%收7,848。",
-      "source": "Korea Times/Naver증권",
-      "date": "05.22",
-      "url": "https://www.koreatimes.co.kr/economy/20260522/kosdaq-jumps-nearly-5-on-state-backed-fund-optimism-while-kospi-takes-breather"
-    },
-    {
       "company": "Krafton",
       "color": "#f59e0b",
       "title": "<strong>Krafton暴涨+5.04%领涨游戏板块</strong>——前日(5/21)在KOSPI+8.42%日逆势-2.82%的最差表现后强势反弹。KOSDAQ整体暴涨带动资金回流低估蓝筹，PUBG Steam Q1平均在线30万+创新高提供基本面支撑。",
@@ -1459,22 +1335,6 @@
       "source": "GameTalk/뉴스파워",
       "date": "06.02",
       "url": "https://gametalk.tistory.com/6660"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC 6/2暴涨创52周新高</strong>——Aion 2全球发布计划稳步推进，6月线下Showcase预告持续发酵，韩国预约突破120万。Q1财报超预期（营业利润YoY+1700%）提供基本面支撑，6月全球发布前估值持续重估。",
-      "source": "NC Soft/AION2 공식",
-      "date": "06.02",
-      "url": "https://aion2.plaync.com/ko-kr/board/notice/list"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC 6/4 定期维护后用户活跃度维持高位</strong>——Aion 2 韩国预约突破120万，6月全球发布前最后准备阶段。Q1财报超预期（营业利润YoY +1700%）持续发酵，外资连续3日净买入。",
-      "source": "NC Soft/AION2 공식",
-      "date": "06.04",
-      "url": "https://aion2.plaync.com/ko-kr/board/notice/list"
     },
     {
       "company": "六大游戏公司",
@@ -1501,14 +1361,6 @@
       "url": "https://www.youtube.com/watch?v=StellarBladeBloodRain"
     },
     {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>黄仁勋访韩与NC CEO金泽辰会面——Aion 2 AI深度合作</strong>——6/7 英伟达CEO黄仁勋访韩，与NCSoft CEO金泽辰会面，聚焦《Aion 2》AI驱动动态内容生成、智能NPC及RTX Spark平台适配。NC作为AI游戏融合先锋获英伟达技术背书。",
-      "source": "东方财富/Seoul Economic Daily",
-      "date": "06.07",
-      "url": "https://caifuhao.eastmoney.com/news/20260605110409684675460"
-    },
-    {
       "company": "Shift Up",
       "color": "#ff6b9d",
       "title": "<strong>Shift Up 6/9暴涨10%+！SGF催化延迟效应集中释放</strong>——6/5 SGF公布《Stellar Blade: Blood Rain》预告片当日因KOSPI熔断被压制，6/9下一个交易日利好兑现暴涨。核心驱动：①自主发行=利润结构永久性重塑（不再依赖索尼，利润分成根本性改变）；②「双重质疑」被打破——续作确认真实存在+自主发行转换，市场两大利空同时被证伪；③外资+机构同步净买入（外资净买入12.84万股+机构净买入1.40万股），成交量飙升至20日均量4倍。券商共识目标价：Kiwoom 65,000/新永 53,000/大宇 48,000韩元。",
@@ -1523,30 +1375,6 @@
       "source": "GameMeca/닌텐도 다이렉트",
       "date": "06.09",
       "url": "https://www.gamemeca.com/view.php?gid=1776288"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#f59e0b",
-      "title": "<strong>KOSPI六连涨后首破9100点，但游戏股全线逆势下跌——半导体虹吸再现</strong>——6/22 KOSPI收涨+0.69%报9,114点（6/11以来六连涨累计+8.5%，6/19盘中首破9,380点创历史新高），但上涨动力高度集中于三星电子/SK海力士等半导体双雄（合计占KOSPI市值超40%）。当日市场呈现极端分化：KOSPI仅靠权重股拉动，多数个股下跌。游戏板块6家公司全线承压：Krafton跌幅最大(-6.83%)，Pearl Abyss/Netmarble/NC/Nexon Games/Shift Up同步下跌。这与5/21「KOSPI+8.42%但游戏股被虹吸」的场景高度相似——资金从非主线板块抽离涌向有AI/半导体叙事的权重股。李在明总统连续公开点名市场'两极分化令人担忧'。",
-      "source": "纽斯频通讯社/조선일보/한국거래소",
-      "date": "06.22",
-      "url": "https://baijiahao.baidu.com/s?id=1868651320730964189&wfr=spider&for=pc"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#dc2626",
-      "title": "<strong>6/23「黑色星期二」——KOSPI单日暴跌-9.99%，蒸发910点！</strong>——前一日(6/22)KOSPI刚以9114点创历史新高，次日即遭遇史上最惨烈单日下跌之一：①三星电子/SK海力士因800万亿韩元半导体投资计划传闻开盘跌超5-7%；②韩国散户杠杆率创历史高位(人均超2账户)，暴跌触发保证金追缴→强制平仓→再暴跌的负向螺旋；③外资+机构同步恐慌性抛售。KOSPI从9114→8203，年内第4次触发熔断(全市场暂停20分钟)。游戏板块全线重挫，6家公司均大幅下跌。这是典型的系统性风险释放，非游戏行业基本面变化。",
-      "source": "연합뉴스/조선일보/한국거래소/뉴시스",
-      "date": "06.23",
-      "url": "https://baijiahao.baidu.com/s?id=1868834852995202289&wfr=spider&for=pc"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#dc2626",
-      "title": "<strong>6/26年内第5次熔断——KOSPI再跌-5.81%，距黑色星期二仅3交易日</strong>——6/23崩盘后仅3个交易日，KOSPI盘中一度逼近-9%再次触发年内第5次全市场熔断（交易暂停20分钟）。SK海力士盘中跌超9%。「爆仓→强平→再下跌」的恶性循环尚未打破，市场情绪极度脆弱。韩国股市年内已累计熔断5次，而历史上总共仅11次！游戏股在连续崩盘中持续承压，但基本面未发生任何负面变化。",
-      "source": "동아일보/한국경제/KRX",
-      "date": "06.26",
-      "url": "https://finance.eastmoney.com/a/202606273785487558.html"
     },
     {
       "company": "六大游戏公司",
@@ -1611,14 +1439,6 @@
       "source": "GameLook/韩国投资证券/Shift Up IR",
       "date": "07.01~03",
       "url": ""
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
-      "title": "<strong>高盛发布下半年韩股展望：目标KOSPI 12,000点，涨幅空间+20%+</strong>——7月初高盛维持对韩国股市的超配立场，12个月目标价12,000点(当前点位意味着+48%空间)。核心逻辑：①2026全年盈利增长预计+320%，2027年进一步+35%；②即使剔除三星和SK海力士，其余公司盈利增长仍达+74%；③KOSPI远期PER仅6.65x，较历史均值大幅折让。但同时警告「下半年波动性将显著放大」，杠杆率处于历史高位是主要风险。对游戏板块而言，若盈利兑现有望迎来估值修复行情。",
-      "source": "Goldman Sachs/百度百家号/财联社/雪球",
-      "date": "07.05",
-      "url": "https://baijiahao.baidu.com/s?id=1869933907840489618&wfr=spider&for=pc"
     },
     {
       "company": "Netmarble",
@@ -1699,6 +1519,14 @@
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[K游戏大飞跃座谈会]恢复成长阶梯·培育超级IP...K游戏升为国家战略产业</strong>",
+      "source": "전자신문",
+      "date": "08.17",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5yVWR6eFZ4OXhBclZ2d0hIZGc5cFlpZmM4c09vUEZ0d1ctb19WQkRJamFEczF4OEdwOVVhRU5DcFNzREdSOWhTLWwzNkVFdw?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
@@ -1860,14 +1688,6 @@
       "url": "https://www.nspna.com/report/?mode=view&newsid=816193"
     },
     {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>Nintendo Direct 2026：《Stellar Blade》确认登陆Switch 2</strong>——6/9 Nintendo Direct公布《Stellar Blade》将于2026年内发售Nintendo Switch 2版本，这是继PS5和Steam之后的第3平台扩展。针对Switch 2进行了动作与视觉优化，代表金亨泰表示将确保完整体验。6/9暴涨+10.26%后6/10因大盘暴跌-6.31%回调。",
-      "source": "GameMeca/닌텐도 다이렉트",
-      "date": "06.09~10",
-      "url": "https://www.gamemeca.com/view.php?gid=1776288"
-    },
-    {
       "company": "六大游戏公司",
       "color": "#6b7185",
       "title": "<strong>5月韩国游戏股走势：震荡整固→温和反弹</strong>——5月初受全球科技股回调影响小幅承压，中旬随基本面催化剂(Aion 2预约破120万/Stellar Blade PC版破150万/Crimson Desert破500万)逐步回暖。资金面：外资从4月净卖出转为小幅净流入。",
@@ -1982,34 +1802,10 @@
     {
       "company": "六大游戏公司",
       "color": "#6b7185",
-      "title": "<strong>KOSPI创历史新高但游戏股逆势下跌</strong>——资金极度集中涌入半导体/二次电池等核心板块产生虹吸效应。NC(-2.80%)领跌，Krafton(-2.49%)、Netmarble(-1.75%)跟随调整。",
-      "source": "조선일보/Naver증권",
-      "date": "04.21",
-      "url": "https://www.chosun.com/economy/money/2026/04/21/DL35XCG2UFDCLPZ3TBFFWEUWPE/"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>Aion 2 6月全球发布临近+Showcase预热</strong>——6月线下Showcase预告持续发酵，韩国预约突破120万。6/2 NC暴涨创52周新高，Aion 2催化持续推动估值重估。6/4定期维护后用户活跃度维持高位。",
-      "source": "NC Soft/AION2 공식",
-      "date": "06.01~04",
-      "url": "https://aion2.plaync.com/ko-kr/board/notice/list"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
       "title": "<strong>6月第一周：SGF催化兑现+外资调仓震荡</strong>——6/5 Summer Game Fest 2026上SHIFT UP正式公布《Stellar Blade: Blood Rain》（新主角Evie+拳套武器，2027年发售，自主发行），预告片全球关注度飙升。同日韩股暴跌（KOSPI熔断），外资杠杆调仓导致游戏股无差别抛售，SGF利好被压制。6/9 SGF延迟效应集中释放，Shift Up暴涨10%+：自主发行=利润结构永久性重塑，外资+机构同步净买入。NC因Aion 2全球发布临近相对抗跌（-4.74%），PA回调较多（-7.11%）。",
       "source": "GameTalk/Summer Game Fest/KeenGamer",
       "date": "06.01~05",
       "url": ""
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>Aion 2 全球发布进入最后倒计时</strong>——韩国预约突破120万，6/4 定期维护后用户活跃度维持高位。Q1 营业利润 YoY +1700% 持续作为估值锚，6月全球发布将是关键催化剂兑现节点。",
-      "source": "NC Soft IR/AION2 공식",
-      "date": "06.01~05",
-      "url": "https://aion2.plaync.com/ko-kr/board/notice/list"
     },
     {
       "company": "Krafton",
@@ -2042,14 +1838,6 @@
       "source": "Naver증권/조선비즈",
       "date": "06.09",
       "url": ""
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7185",
-      "title": "<strong>6月中旬：KOSPI六连涨突破9300点，市场两极分化加剧</strong>——6/11至6/18 KOSPI连续六个交易日上涨（累计+8.5%），6/19盘中首次突破9,380点创历史新高。但上涨动力高度集中于三星电子和SK海力士等半导体权重股（合计占比超40%）。韩国交易所数据显示，KOSPI创新高当日上涨股票仅115只、下跌达787只，'指数虚涨、多数个股不赚钱'现象严重。李在明总统连续发声警告'两极分化令人担忧'。游戏股作为高Beta非主线板块在此期间持续承压。",
-      "source": "纽斯频通讯社/한국거래소/조선일보",
-      "date": "06.11~19",
-      "url": "https://baijiahao.baidu.com/s?id=1868651320730964189&wfr=spider&for=pc"
     },
     {
       "company": "六大游戏公司",

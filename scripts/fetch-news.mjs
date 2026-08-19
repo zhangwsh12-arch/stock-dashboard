@@ -625,18 +625,10 @@ async function main() {
     return;
   }
 
-  // ===== Step 5: AI 批量翻译 =====
-  console.log('\n[处理] AI 翻译中...');
-  const titlesToTranslate = uniqueEntries.map(e => e.rawTitle);
-  const translatedTitles = await translateToChinese(titlesToTranslate);
-
-  for (let i = 0; i < uniqueEntries.length; i++) {
-    uniqueEntries[i].translatedTitle = translatedTitles[i];
-  }
-
-  // ===== Step 5: 智能合并到 content.json（关键！不覆盖人工数据）=====
-  console.log('\n[处理] 合并到 content.json...');
-
+  // ===== Step 4c: 读取现有 content.json（提前到翻译之前）=====
+  // 目的：先用 URL 剔除"已入库"的新闻，再翻译剩下的。
+  // Google News 每次返回近14天新闻，其中绝大多数昨天已经入过库——若放在翻译之后
+  // 判重，等于每天都为同一批旧新闻重复付费翻译（约 80% 的调用是浪费的）。
   let contentData = { events: [], industryNews: [], meta: {}, compareChart: { labels: [], datasets: [] } };
 
   if (existsSync(CONTENT_FILE)) {
@@ -690,6 +682,51 @@ async function main() {
     return candidates.some(e => similarity(strippedNew, stripForCompare(e.title)) >= 0.4);
   }
 
+  // ===== URL 去重（第一道防线，最可靠）=====
+  // 根因：原去重只比"译文标题"，而译文会随翻译引擎变化——同一条新闻用免费机翻和
+  // AI 翻译会得到两种措辞，相似度低于阈值就被判为"新新闻"重复入库
+  // （2026-08-19 换用 DeepSeek 后一次产生 37 组重复即此原因）。
+  // 原文 URL 是新闻的天然唯一标识，不受翻译影响，故作为首要判重键。
+  function normalizeUrl(u) {
+    if (!u) return '';
+    return String(u)
+      .split('#')[0]
+      .split('?')[0]          // 去掉 utm 等追踪参数
+      .replace(/\/+$/, '')    // 去掉末尾斜杠
+      .toLowerCase();
+  }
+  const existingUrls = new Set(
+    [...contentData.events, ...contentData.industryNews]
+      .map(e => normalizeUrl(e.url))
+      .filter(Boolean)
+  );
+
+  // 翻译前先剔除已入库条目（省下大量翻译请求）
+  const beforeUrlFilter = uniqueEntries.length;
+  const freshEntries = uniqueEntries.filter(e => {
+    const u = normalizeUrl(e.url);
+    return !(u && existingUrls.has(u));
+  });
+  const skippedByUrl = beforeUrlFilter - freshEntries.length;
+  if (skippedByUrl > 0) {
+    console.log(`   ⏭️ URL 判重：${skippedByUrl} 条已入库，无需翻译`);
+  }
+  uniqueEntries.length = 0;
+  uniqueEntries.push(...freshEntries);
+
+  // ===== Step 5: AI 批量翻译（只翻译新条目）=====
+  if (uniqueEntries.length === 0) {
+    console.log('\n✔️ 本次无新条目（全部已入库），跳过翻译与写入');
+    return contentData;
+  }
+  console.log(`\n[处理] AI 翻译中（${uniqueEntries.length} 条）...`);
+  const translatedTitles = await translateToChinese(uniqueEntries.map(e => e.rawTitle));
+  for (let i = 0; i < uniqueEntries.length; i++) {
+    uniqueEntries[i].translatedTitle = translatedTitles[i];
+  }
+
+  console.log('\n[处理] 合并到 content.json...');
+
   let addedEvents = 0;
   let addedIndustry = 0;
 
@@ -703,6 +740,10 @@ async function main() {
   const fallbackCountByBucket = new Map();
 
   for (const entry of uniqueEntries) {
+    // 同批次内也可能出现同一 URL（不同关键词命中同一篇报道）
+    const normUrl = normalizeUrl(entry.url);
+    if (normUrl && existingUrls.has(normUrl)) continue;
+
     // translateToChinese 对翻译质量不达标的条目返回 null，此时不应展示原始韩文
     // （之前用 [원문]/[KR] 标记强行绕过韩语过滤器是错误做法，违反"韩语内容过滤"规则）
     if (entry.translatedTitle == null) {
@@ -756,6 +797,7 @@ async function main() {
       if (!existingIndustryKeys.has(key) && !isSimilarToExisting(record.title, record.date, record.company)) {
         contentData.industryNews.unshift(record);
         existingIndustryKeys.add(key);
+        if (normUrl) existingUrls.add(normUrl); // 同批内也要防重
         addedIndustry++;
       }
     } else {
@@ -763,6 +805,7 @@ async function main() {
       if (!existingEventKeys.has(key) && !isSimilarToExisting(record.title, record.date, record.company)) {
         contentData.events.unshift(record);
         existingEventKeys.add(key);
+        if (normUrl) existingUrls.add(normUrl);
         addedEvents++;
       }
     }
@@ -784,8 +827,8 @@ async function main() {
   contentData.meta = {
     ...(contentData.meta || {}),
     newsAutoUpdatedAt: new Date().toISOString(),
-    newsAutoCount: { events: addedEvents, industryNews: addedIndustry, skippedUntranslated, fallback: addedFallback },
-    note: '此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。',
+    newsAutoCount: { events: addedEvents, industryNews: addedIndustry, skippedUntranslated, skippedByUrl, fallback: addedFallback },
+    note: '此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。',
   };
 
   // 写回
@@ -795,6 +838,9 @@ async function main() {
   console.log(`   新增 events: ${addedEvents} 条 (总计 ${contentData.events.length})`);
   console.log(`   新增 industryNews: ${addedIndustry} 条 (总计 ${contentData.industryNews.length})`);
   console.log(`   跳过未翻译: ${skippedUntranslated} 条`);
+  if (skippedByUrl > 0) {
+    console.log(`   跳过已入库(URL判重): ${skippedByUrl} 条`);
+  }
   if (addedFallback > 0) {
     console.log(`   ⚠️ 其中 ${addedFallback} 条为英文降级条目（translationStatus=fallback）——OPENAI_API_KEY 可能已失效，请尽快检查`);
   }
@@ -803,7 +849,11 @@ async function main() {
   // 关键防线：若本次一条都没写入，说明抓取/翻译链路存在问题（如 Key 失效 + 全部韩语残留），
   // 必须以非零退出码让 workflow 的 "Warn if news fetcher failed" 步骤亮起告警，
   // 而不是"跑成功但零写入"地静默停更（本次 8/3~8/10 停更 7 天正是因为缺少此检查）。
-  if (addedEvents === 0 && addedIndustry === 0 && uniqueEntries.length > 0) {
+  // 注意：必须排除"因 URL 已存在而跳过"的情况——同一天重复运行（或手动重跑）时
+  // 所有条目本就该被跳过，那是正常的幂等行为，不是故障，不应报错。
+  // 走到这里说明 uniqueEntries 已是"URL 未入库的新条目"，若仍零写入则确属异常
+  const zeroWriteIsAbnormal = addedEvents === 0 && addedIndustry === 0 && uniqueEntries.length > 0;
+  if (zeroWriteIsAbnormal) {
     console.error(`\n❌ 抓取到 ${uniqueEntries.length} 条新闻但零条写入（全部被去重或翻译不达标），资讯未更新！`);
     console.error(`   请检查 OPENAI_API_KEY 是否有效（本次跳过未翻译 ${skippedUntranslated} 条）`);
     process.exitCode = 1;
