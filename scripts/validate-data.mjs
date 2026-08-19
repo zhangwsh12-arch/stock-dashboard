@@ -349,7 +349,18 @@ if (content) {
       const diffDays = (baseDate.getTime() - latestNewsDate.getTime()) / (1000 * 60 * 60 * 24);
       const STALE_THRESHOLD_DAYS = 5; // 超过5天未更新资讯视为异常（正常应每日/隔日更新）
       if (diffDays > STALE_THRESHOLD_DAYS) {
-        fail(`资讯已停更 ${Math.round(diffDays)} 天！最新资讯日期=${allNews.find(n => parseNewsDateToDayOfYear(n.date)?.getTime() === latestNewsDate.getTime())?.date}，股价数据日期=${baseDateStr}。请检查 fetch-news.mjs 是否正常运行（历史上曾因语法错误静默失败超过3周未被发现）`);
+        // 2026-08-19 修复：此前这里用 fail() 抛错，导致「资讯停更」把整条流水线判定为失败，
+        // 而 commit/push 步骤位于 validate 之后 —— 结果是"资讯链路故障"连带"股价数据无法发布"，
+        // 8/14~8/19 期间每天都抓到了新股价却全部被这道闸门挡住，页面停在 8/14。
+        // 资讯抓取在 workflow 中已是 continue-on-error 的非关键路径，校验也必须与之一致：
+        // 只告警、不阻断，保证股价数据始终能发布。
+        const latestNewsLabel = allNews.find(
+          n => parseNewsDateToDayOfYear(n.date)?.getTime() === latestNewsDate.getTime()
+        )?.date;
+        warn(`资讯已停更 ${Math.round(diffDays)} 天（最新资讯 ${latestNewsLabel}，股价数据 ${baseDateStr}）——请检查 fetch-news.mjs / OPENAI_API_KEY，但不阻断股价数据发布`);
+        if (process.env.GITHUB_STEP_SUMMARY) {
+          console.log(`::warning::资讯已停更 ${Math.round(diffDays)} 天（最新资讯 ${latestNewsLabel}），请检查 fetch-news.mjs`);
+        }
       } else {
         pass(`资讯新鲜度正常（最新资讯距股价数据日期 ${Math.round(diffDays)} 天）`);
       }

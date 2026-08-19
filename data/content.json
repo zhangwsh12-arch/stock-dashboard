@@ -2,14 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-14",
+    "updatedAt": "2026-08-18",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-18T02:01:20.171Z",
+    "newsAutoUpdatedAt": "2026-08-19T02:24:58.102Z",
     "newsAutoCount": {
-      "events": 0,
-      "industryNews": 0,
-      "skippedUntranslated": 27,
-      "fallback": 3
+      "events": 17,
+      "industryNews": 14,
+      "skippedUntranslated": 0,
+      "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
     "newsManualBackfillNote": "8/4~8/11 期间因 OPENAI_API_KEY 失效导致自动抓取零写入，此批条目为人工中文翻译补录"
@@ -193,10 +193,12 @@
       "8/5",
       "8/6",
       "8/7",
+      "8/10",
       "8/11",
       "8/12",
       "8/13",
-      "8/14"
+      "8/14",
+      "8/18"
     ],
     "datasets": [
       {
@@ -288,9 +290,11 @@
           4.03,
           5.64,
           5.48,
+          4.35,
           8.37,
           2.25,
           -0.16,
+          2.09,
           2.09
         ],
         "borderColor": "#ff6b9d",
@@ -391,10 +395,12 @@
           0.45,
           1.12,
           1.79,
+          1.12,
           4.35,
           2.46,
           1.79,
-          5.8
+          5.8,
+          0
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -494,10 +500,12 @@
           -0.91,
           1.83,
           6.79,
+          5.09,
           5.87,
           3.79,
           1.44,
-          2.09
+          2.09,
+          -0.91
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -597,10 +605,12 @@
           1.29,
           3.23,
           7.11,
+          4.96,
           10.13,
           6.25,
           4.96,
-          6.68
+          6.68,
+          -0.86
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -700,10 +710,12 @@
           -2.55,
           -2.13,
           2.77,
+          2.98,
           3.83,
           0,
           -0.21,
-          1.28
+          1.28,
+          -3.62
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -803,10 +815,12 @@
           2.36,
           3.99,
           5.17,
+          6.79,
           9.01,
           -6.79,
           -6.94,
-          -7.68
+          -7.68,
+          -9.75
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -820,6 +834,142 @@
     ]
   },
   "events": [
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>尽管《Crimson Desert》销量强劲，《Pearl Abyss》第二季度 OP 仍未达到市场预期</strong>",
+      "source": "네이트",
+      "date": "08.12",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9HSFZTclpnQXF1dDFwUzRSUFNtQ19OS3R2UUwwQ3dWRUJsT1o2LW5JWDV5dWZSc1VYazY5Vzk4bVVRc050LVptUnowMXNER3NaVUowZ3djYkkyTHNzZE00dVE2ak1QR0pKWElQR1NibFJzaVRQa0RFZw?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss 宣布 Crimson Desert 全球视频大赛“Beyond the Abyss”获奖者</strong>",
+      "source": "경향게임스",
+      "date": "08.08",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE8yQ0VFMUlXS2Q4NHVraGZpUy16UFB2U2dKT3pYSVAwUzhZY05TMVU5MDllTUVHMGdzSmNVU0dOOU51T1ItNXVDY2wwdzZZa0NTXzFZZFBob0dBT25EM0hwcGUxdFBmTTJ0dnVHRw?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss 公布《Crimson Desert》全球游戏视频大赛获奖者 - 韩国 IT 时报</strong>",
+      "source": "Korea IT Times",
+      "date": "08.06",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5MWVBlelF0dks3R2FqVTd2ek40bThEbWRNOXBVdGRPUWo5czlvM0wyNUNYTDhmeGtXWHBMWkFPdmZ2RmhWdmZiLTBsQ0JscDFMVmxxdGZPVk12VUJfdDgwOEUyVmp3SjhSQVE3bEQwY1g?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss Crimson Desert(红色沙漠)，发布“迄今为止的更新”信息图 - Pearl Abyss</strong>",
+      "source": "Pearl Abyss",
+      "date": "08.18",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBZdksyY3hWVWZ2ZExnek0tdWtvcEQySkZ2RWFVUHJjQWxjdk5iMS03WXcyQlVuREZKMEFfWUtWZ0RRc2ZDMXJCekF4SEgtV20xV3c3bVlQbGhBNFAxcUVxR2gxOEs?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>地图服务报告 - 更新 42.3 - 新闻 - PUBG：PUBG</strong>",
+      "source": "pubg.com",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE1weTFHanpqWXVHX1dnZnhxRG5HQzltM3J0dlNOSjFmU0NJYXpzbk1URU55bERyZFdCMjZIX0NTQkVvNDJC?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton、NC等参加‘Gamescom 2026’……未公开新作待公布</strong>",
+      "source": "newspost.kr",
+      "date": "08.18",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE80MGZvbXNZc1EzWGxCRnpMSktKU2QwVE1IeldWQllqbDMzYVE3LWl2LVhRWTYzV1FONW4zQ2FuNzU5U3FXODgzN3NMeHNqd245dDk4RkQ5YWVyRkpGNWM0MkIyS2dWeWpkaGc?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Neptune 负责 Krafton 的“BGMI”广告运营</strong>",
+      "source": "주간한국",
+      "date": "08.18",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBZQUFBb2hadUpXZXVrTUZ3Qk1Bc2ZhRmljVlN0Z25MRG1mZ2ZVTEotckxzRmh6cEJFUzdTc0ZvVHp4eUs3LVEwZ0JIY2thZXVnMEdIU0IxekdaZ3o4Wk5hTUdMUGtDSVM1TV82QjlLMDnSAXRBVV95cUxOeU5DamxxX3ZLcmxHOWVBVEM0MGNTdEJ0QkloWHZyMUpoTmNSZ19oZktRSktEZ0FocHVMLXF1cGRoY3BQMTgwdzlNMXd5dzZxTDk2WldoQ2tmY1JhN01oX0F0MGZYUzhJNVJoVXIza3pQZUxHXw?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton，“PGS 8”的数字下一阶段是“PGS 9”</strong>",
+      "source": "gamevu.co.kr",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5RcjJfMWNZZDViSjdxNU5jTktWM09nWW9CbTYzem9ieDRRaUxzLWh5ZkgxRkFuSEt4NkppQjRldkY2Rmg2cmhtZ3BBYlNtcVp5UE80V3gxMWRYV0VuRkRKYm90a0lXMGV6OVE?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PGS 9 滴 - 新闻</strong>",
+      "source": "pubgesports.com",
+      "date": "08.16",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE01S1RTSUNEOXZ2bDlqeFd4c3pTNmc0SUZaTkZma2xpb0pQNXJ2R0NxT2VmbTZlcVlYU0haQVNiRzMzeDZwQmY4aGhvU3BBdw?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton 全面拓展《PUBG》在印度的业务……“Lite”版本瞄准 15 亿韩元市场</strong>",
+      "source": "전자신문",
+      "date": "08.18",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9qU3RqckY4UjEzVnZJTXJuNmVhOXNhbXpxLUwtVzNjVEJXOVpuUmVlYW9JSkhZZzJyS0s2YVFFcU90WkJoV2l2LThrOUxvZw?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>以“一个PUBG”战胜Nexon……Krafton，游戏行业新第一</strong>",
+      "source": "뉴스핌",
+      "date": "08.18",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBINFlSQ01LdzhNQXJhVkxHekdTUzZrTGI1RDVlT01LbmhRQTlkREdlVHRRZ2lrSDNUTjVjY1U5QWxMd3dDbWNZbXhiOC1JVUgzZWMxcVJ3aFQ2V3RR?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>[Concall] NC“《Aion(永恒之塔)2》的爱的召唤从三月开始继续”</strong>",
+      "source": "아이뉴스24",
+      "date": "08.11",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1OUl9fMXpucE9kaVNRWVdUWmxOYnFtNXo4R21vd29aazJmMXZndnRZY0VRV182UU9ydGRHeG9FclRuRllxczhXbkFjWQ?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>《Aion(永恒之塔)2》全球发售后，NC每月都会推出一款新游戏</strong>",
+      "source": "시사저널e",
+      "date": "08.11",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1tV1ljOHNUOW85bWJKV0pwR1l4TzlnM0tDLS1fMGcwQ3lycUlOSmQ2Z1JuSXRrb1lyZm93SUJzRDFIemFoRHV3Qi0wTHo1SUNzeXF0NG9LVGc0bW1ZN1dnUmRyNTZYT2V6cG9xZE5RaDlWQdIBdkFVX3lxTE4zLTlnTjhteTNFSFMybmQyay0yLW9JZHR4LVpsaDdYT2lkOU9lNWFIaUE1bWFrbTdHZWJWSkEtYmplWm0yNlRhMkFlcmY4dEVobFgyZF9pYkx2SUtrVFp1U0ZzWFY0Rm9qZE9TS2wweEswcEN2a2c?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>继Nexon的《Blue Archive(碧蓝档案)》之后，《马比诺吉M》也面临着物品收费的争议，由于应对不周，用户投诉激增。</strong>",
+      "source": "비즈니스포스트",
+      "date": "08.12",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1TZmJic05fTTI0TUdYWk03NG0tN0JNUlp0Smx4MmR0SkhrRGlQN2ZCMkJCQzFJSjdpSm1fbUNrMkhLeW9GQ1FKX01jcERjMmdQcHdyY1dfSjhDcnlULU9yUEJBQnlod2hRLXhuNndFWGFJLUU?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon Games上半年赤字减少...第二季度销售额增长7.5％，得益于《突然的Blue Archive(碧蓝档案)》的良好表现</strong>",
+      "source": "테크M",
+      "date": "08.13",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE51UFViLThXMlozT0s5VEgxM1JzZUlmLWlSbjdEc09TRmhJYmR2bk5GblExeWNQa0haOGJnTDhyVjB4VGlwTU5LdEpwMUUycWJaR1NXTTYyWnpqMThRTGJVTFF3TXlpZ9IBakFVX3lxTE5Cd3ZhOFFiRzEzUnhyd2JLRnZad2dETlpfSUloU2xEempPbHpHTXJudGY2aWowM095LW5TUWw5VTdKbkJEUU1yVnVRUmJEVEg4ZjMteUItTUc1VnlRaVY4akpzX3I1ZlNvTFE?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon“Blue Archive(碧蓝档案)”新主线剧情介绍</strong>",
+      "source": "더게임스",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1ncVNRWElhSEFScWl3QUtJU0NUWVRFeUJwYW9SMlR1ejJpVjlTcmpLZElKcDY2VGpoQmw5S1dWN0R3ZmpodWVmb09RZ2Y1UWs0THRvOGxkNDdGQU1EZ1BKYlA3bVlYQkVUblpHcQ?oc=5"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up Studios 将独立扩展《Stellar Blade(剑星)》续作《血雨》的宇宙。</strong>",
+      "source": "GameGPU",
+      "date": "08.11",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOOFBHbEFJeGk2RVg1T1l2bnhicVlaX3VaVzZESGtCa3R6QjhqekJVSm9mYm42WkJSbEtDV240ZlFWQm56bUdid0l2V1hPekRkOWxZM3k1emtaZ093RVd3OS1HWXhEZ0JRVkY4WEFGdWx4T1ZjdGR4cHd2N3E1Q191TndqTm1sT1l4Y2VVRXNJVkxfdzFyQVJoeTk4aGZjRUxpM1ZDd2RaM002WmIyTnAweHk0dmZZSFdJWGxVSlk3aFlqUWc3WFE?oc=5"
+    },
     {
       "company": "Pearl Abyss",
       "color": "#a855f7",
@@ -1543,6 +1693,118 @@
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[KOSPI指数期货期权]资金涌入人工智能和电力基础设施......三星电子和SK海力士期货“浮动”</strong>",
+      "source": "핀포인트뉴스",
+      "date": "08.12",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE85RDN3THlLam1WNzQ0WUNlQnAtVmtoLWc2TldLMjdFbjdrM0xGUFRsaTdrX0haUkFBd1Y5Ylpjdnk5SGJLWTFqa2hWaUs4d2hQcFB6Tm1aaWJDMW9tTTBIQlRNYXM4WTVtTy15akpodHlkc3PSAXdBVV95cUxOZ0F5cW50NTZENFhnOVZHTjdhakpXdllhZWZJOUlGYzBxRUtXdWxaNUs0ZDdwUEVHRDJKWksxVWFMeDQwUVdUT3JvMndNTzhiQ2hiRnNjdTVDOXRSQXNSelpGblR6ZEtLSG5FZ0FCMy1na092cEtBcw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>游戏组织表示，“游戏制作成本和电竞赛事税收需要减免”</strong>",
+      "source": "연합뉴스",
+      "date": "08.14",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBsdXdnODhXTWE2WFNFRG5USEc0c3dncll0S2JEUUVHbHhDTm81VHRZemtydnc4YU1ldDNBY2UwY2ROdXlXa29LejBZRUFYTjhGQUcyTlZiY2drTUHSAWBBVV95cUxORy1zaHczVkJzR3V1QUQyWW1VVHJoLUdwNXd5WmtQamRSSzR5ZlZhcW03ZEVONjIwcTQ0WFJmOFRtcjg3MDZYMzNvT09TUHd4aDZvczd1M1RJSnViNG95ZmM?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Krafton 击败游戏行业的“3N”，在销售额和营业利润方面排名第一……海外扩张奏效</strong>",
+      "source": "동아일보",
+      "date": "08.17",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBucGhfMjVMcnZwMFVxLVBsV01wdWU5bzN5TGwzN1phSk9NY0tVV3Y4aFFTY2FMWHNrWVdjb090cFp1S3NmdkJGWmc3ZWVULXY5U1BwTkpwc1VvemNaZDNjT1BXMXhJeWZKdFdIYnlldFFKV0Y3UkHSAWZBVV95cUxObm1kSlVFNzR0Nk5yekd5MXVUM1FIQnVQZ0RINDZ5SHNGSlBETEdkQTR4NzA4RE5pLVBDdzRpdUQ5cmMzckZGMFd4VFdGZ095Ym5pb1laU0ltVEVjUTM4NjVNUFdQMlE?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>中国支撑了30%的游戏制作成本，但韩国呢？博彩业“税收抵免不能再拖了”</strong>",
+      "source": "인포스탁데일리",
+      "date": "08.14",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1UYnQxSXZISGdaVnVESk0zSkg5cm9RTUVCcXBySjlMVFVaM2ZHV2R3Z2UxQzRvdjVwMTJmRUowVldldjdVQk8wNVZodjhDT2RXWW9ITTdjbVd6WG9BLVZiZDBIMm5RcnRDTVhRNDBMTTZvSWpzc3c?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>游戏行业：“必须引入游戏制作成本税收抵免，必须扩大电子竞技税收支持”</strong>",
+      "source": "zdnet.co.kr",
+      "date": "08.14",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBGeHFvVmcwSmdSM2ZaRnprMnJjU0xkSm51VUpJQzc4ZkRkZTRZR0tzQW12eHdybUlSNzkwLTlxUlpNNV91dzBYZVJOTHFmcHpIak1XMFp3?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz</strong>",
+      "source": "Chosunbiz",
+      "date": "08.18",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOOUpvTWJYbVh4RV9vdmZIeDVyOFE2ajNxWE9KRHI1b2t5MnU4dm1Yb2ZfM0U1eWRWZE9nS3VFMGhvQkE5N3dKQ0J1Z3hfc1FhS0JZNnRxNHpkRnVjTURWS09XbnM2TE44cEd5d2tZS0hHRjVOemdvSnVsV01JNFEzZVBn0gGWAUFVX3lxTE42cnVLYUM0MDZNaEVZaTJnSVBGcVZpYlJMaEl6UVVaZnZjRDNWVE1zdWhSZ1VzVWFtMDlJeGlnM3pTZURBMnQ4M3pLdUctb0dzZEJUSm91OHM5QUhYLVhPWldWZjRZTlVyalBvZHJhSXozdG8xYWlZeGxRUG9hWU5Lb2h2OEVNOGRXeTE0cDVIZkZubF9BUQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>17家K-game公司参加历史上最大的活动科隆游戏展</strong>",
+      "source": "중소기업신문",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1vZnBvckdWWG1FTXg4cUUyX3pyd3QweFZPRm56S1BWRGM3d2RDN0NCNklKZWllY253Sm5TR1VJOWk0R0dTWnUySGJsS0tEUWxYdkV5dW8yakdZaWR5WnQ4WjRLeW5raGI5QXNieA?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>“有反弹迹象吗？”……NC，下半年打造“增长动力”的试验台</strong>",
+      "source": "이코노미톡뉴스",
+      "date": "08.13",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5xYTU1aG81anJ3aXVZamRlMTFwTzdXaUpBaC1SbDdNLXROVDVGQ2pPclhQVXE4MWx4bkpNMW9seHRMTndSQV9rd0c3UWJsek5uRlQwNF85eUhrR2ZTTDNsMmNhb2dhQWJNRFllZg?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>金泽镇的制胜策略奏效∙∙∙NC业绩两年后大幅回升</strong>",
+      "source": "매일경제",
+      "date": "08.13",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBVUGNBUHRwZXBvRFktbUstNFNDM1ZvczdFa3BTOEFtc2VRQjNrSUd2bkw0WklhWkxvWHdIM1BzN2xORmVPUHU0bGJZNnFrQQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC预计今年销售额将超过2.5万亿韩元...明年将发布10款新游戏</strong>",
+      "source": "디일렉",
+      "date": "08.11",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5HUHZFMHRZc2R4OWVCM2wtM0ZUN1dOLWN3LVhUeExhbk02azFVT1B0cVc0b3R0T3hYMF9VWExEekJ0b2dYNWw5OUh2LVZOSldJUEZ0Yk5EeVZvbjVlQmc1OWQzOGdndw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC上半年销售额突破1万亿韩元...2030年销售额达5万亿韩元，预计尽早实现</strong>",
+      "source": "신아일보",
+      "date": "08.16",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9Mb051d0ZUT1VqQjB2NHJjalp3VWdySTE5SG1uU3RJZEl6OWpJcFI0SnVtOUJNSDVmSkdMNWNyUXFYdkZJb2FKOGVKbHpSU1RaME5TQU4za29UclZfLWdiWE1BTlN4bWJJSDVGOERBY0E?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[现场] NC对不将“Youngraegi投诉”移交警方提出异议……法律诉讼仍在继续</strong>",
+      "source": "인포스탁데일리",
+      "date": "08.14",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE05UTdHRHFHdUhXWHdGbjhza3VvNlVOYUpsVzBoaExfUDE5QURmM0VlRi1SaUwtME1JQUNyZ3ZyVWpuUGtJWFNJcGJMMGNLa1dULTE5Q3dzY3Y5WHB1T1Q2V1hRY1ZmRFQxNXE0S21ESS1sak1Odmc?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>“还没发售就卖光了”……NC的《阿斯特拉·奥拉蒂奥》在日本漫画市场上受到关注</strong>",
+      "source": "청년일보",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE4taTVzcHFqNFh3VnR2eUFoYkRVdThwaElqMGZBOTJvV0VkcGtTZEF0SVd3R3dPbkpOQ3RhUzNYd2ZIcC0zdlQ3UEJkQW92OXFvaFBpRUxoU3h0ZW5scndaQmFIVUtkNUhSVWc?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>《怪物弹珠》“爱神扭蛋”将于 8 月 10 日起举办，最多可重复 200 次 - haveagood</strong>",
+      "source": "haveagood-holiday.com",
+      "date": "08.06",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPa2lqTWp1bGM5Wmd3bEdJdGdrME9nQXl6eTk2Y0FTcW1iVHlrOG9pbnNkanhNRTFMZHpEbDctQk1LUFZzNi1raUdVY1Z3aWIyWU9USkw1eGJ2NHhuVkhjN3pGencyVEtUTTBUR2hkT0dFLUtpa2l6RUZ6ZTZfR0JZYUpuUHFfU2FDNnRITnM4OXBBSUx6cnl6U0Rn?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",

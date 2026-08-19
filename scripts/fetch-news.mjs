@@ -157,9 +157,11 @@ async function translateToChinese(texts) {
   /* texts: string[] — 待翻译的韩语/英语标题数组
      返回: string[] — 翻译后的中文标题数组
      翻译策略（三级降级）：
-       1. OPENAI_API_KEY 存在 → AI 翻译（质量最好）
-       2. 无 Key → 本地关键词映射替换（免费，基本可读）
-  */
+       1. OPENAI_API_KEY 存在且有效 → AI 翻译（质量最好）
+       2. 免费机器翻译端点（无需任何 Key）→ 质量足够，2026-08-19 新增
+       3. 本地关键词映射替换（离线兜底，仅能覆盖常见词）
+     新增 Level 2 的原因：OPENAI_API_KEY 失效后，仅靠本地词典无法把韩语标题译成
+     合格中文，条目全被"韩语残留"规则丢弃 → 零写入 → 资讯连续停更多日。 */
   const apiKey = process.env.OPENAI_API_KEY;
 
   // ===== Level 1: AI 翻译 =====
@@ -197,8 +199,8 @@ async function translateToChinese(texts) {
     });
 
     if (!resp.ok) {
-      console.log(`  ⚠️ OpenAI API 错误: ${resp.status}`);
-      return fallbackLocalTranslate(texts);
+      console.log(`  ⚠️ OpenAI API 错误: ${resp.status}（Key 可能失效/超额），降级到免费翻译`);
+      return await translateViaFreeApi(texts);
     }
 
     const data = await resp.json();
@@ -209,15 +211,105 @@ async function translateToChinese(texts) {
     while (lines.length < texts.length) lines.push(texts[lines.length]);
     return lines.slice(0, texts.length);
   } catch (err) {
-    console.log(`  ⚠️ AI 翻译失败: ${err.message}, 降级到本地翻译`);
-    return fallbackLocalTranslate(texts);
+    console.log(`  ⚠️ AI 翻译失败: ${err.message}, 降级到免费翻译`);
+    return await translateViaFreeApi(texts);
   }
 
-  // ===== Level 2: 本地关键词映射翻译（免费，无需 API Key）======
+  // ===== Level 2: 免费机器翻译（无需 API Key）======
   } else {
-    console.log('  ℹ️ OPENAI_API_KEY 未设置，使用本地关键词映射翻译');
-    return fallbackLocalTranslate(texts);
+    console.log('  ℹ️ OPENAI_API_KEY 未设置，使用免费机器翻译');
+    return await translateViaFreeApi(texts);
   }
+}
+
+/**
+ * Level 2：免费机器翻译（Google translate gtx 端点，无需 API Key）
+ * - 逐条串行请求并小幅延时，避免触发限流
+ * - 单条失败 / 译文仍含韩语 → 交给 Level 3 本地词典处理该条
+ * - 译文中的公司/游戏名会被机翻成中文别名，统一用 BRAND_NORMALIZE 还原为项目通用写法
+ */
+// 注意：只保留"歧义极低"的映射。诸如「移位/换档/上移」这类词在普通句子里
+// 也会自然出现（如"股价上移"），一旦纳入映射会把正常句子改坏，故一律不收。
+const BRAND_NORMALIZE = [
+  [/网石游戏|网石/g, 'Netmarble'],
+  [/珍珠深渊|珍珠阿比斯|珀尔阿比斯/g, 'Pearl Abyss'],
+  [/奈克森|耐克森/g, 'Nexon'],
+  [/恩西软件|NC ?soft/gi, 'NCSoft'],
+  [/克拉夫顿|克拉夫特顿/g, 'Krafton'],
+  [/绝地求生|战地求生/g, 'PUBG'],
+  [/胜利女神：?妮姬|妮姬/g, 'NIKKE'],
+  [/星刃/g, 'Stellar Blade(剑星)'],
+  [/赤红沙漠|红色沙漠|绯红沙漠/g, 'Crimson Desert(红色沙漠)'],
+  [/永恒之塔/g, 'Aion(永恒之塔)'],
+  [/碧蓝档案|蓝色档案/g, 'Blue Archive(碧蓝档案)'],
+  // 机翻常把 게임업계(游戏行业) 误译为"博彩业/赌博业"，需纠正
+  [/博彩业|赌博业|赌博行业/g, '游戏行业'],
+];
+
+// SEO 垃圾标题特征
+const SPAM_PATTERNS = [
+  /[（(][A-Za-z0-9]{8,16}[)）]\s*$/,      // 结尾随机短串，如 (vk70INBzcv)
+  /공무원|채용시험|작사|작곡|다시보기|토렌트/, // 公务员考试/作词作曲/盗版资源等蹭词页面
+  /무료\s*다운로드|성인/,                   // 免费下载 / 成人内容
+];
+
+function isSpamTitle(title) {
+  const t = String(title || '');
+  return SPAM_PATTERNS.some(p => p.test(t));
+}
+
+function normalizeBrandNames(text) {
+  let out = text;
+  for (const [pattern, replacement] of BRAND_NORMALIZE) out = out.replace(pattern, replacement);
+  return out;
+}
+
+async function translateViaFreeApi(texts) {
+  const results = new Array(texts.length).fill(null);
+  let ok = 0;
+  let failed = 0;
+
+  for (let i = 0; i < texts.length; i++) {
+    const raw = texts[i];
+    try {
+      const url = 'https://translate.googleapis.com/translate_a/single'
+        + `?client=gtx&sl=auto&tl=zh-CN&dt=t&q=${encodeURIComponent(raw)}`;
+      const resp = await fetch(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36' },
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const json = await resp.json();
+      const zh = (Array.isArray(json?.[0]) ? json[0] : [])
+        .map(seg => (Array.isArray(seg) ? seg[0] : '') || '')
+        .join('')
+        .trim();
+      if (!zh) throw new Error('空译文');
+
+      const normalized = normalizeBrandNames(zh);
+      // 译文仍含韩语 → 视为失败，交给本地词典兜底（禁止展示韩语残留）
+      if (/[가-힣]/.test(normalized)) throw new Error('译文仍含韩语');
+      results[i] = normalized;
+      ok++;
+    } catch (err) {
+      failed++;
+      if (failed <= 3) console.log(`  ⚠️ 免费翻译失败(${i + 1}/${texts.length}): ${err.message}`);
+    }
+    // 轻微节流，避免免费端点限流
+    await new Promise(r => setTimeout(r, 250));
+  }
+
+  console.log(`  ✅ 免费翻译完成: 成功 ${ok} 条，失败 ${failed} 条（失败条目走本地词典兜底）`);
+
+  // ===== Level 3: 失败条目用本地词典兜底 =====
+  if (failed > 0) {
+    const localResults = fallbackLocalTranslate(texts);
+    for (let i = 0; i < results.length; i++) {
+      if (results[i] == null) results[i] = localResults[i];
+    }
+  }
+
+  return results;
 }
 
 /**
@@ -507,6 +599,22 @@ async function main() {
   console.log('\n[处理] 标题清洗...');
   for (const entry of uniqueEntries) {
     entry.rawTitle = cleanTitleStrip(entry.rawTitle);
+  }
+
+  // ===== Step 4b: SEO 垃圾标题过滤 =====
+  // Google News 关键词检索会混入蹭热度的垃圾页面（标题里塞公司名 + 随机短串，
+  // 或把游戏名和公务员考试/歌词等无关内容拼在一起），这类条目翻译后语义混乱，
+  // 直接在翻译前剔除，既省翻译请求也避免污染资讯列表。
+  const spamCount = uniqueEntries.length;
+  const filteredEntries = uniqueEntries.filter(e => !isSpamTitle(e.rawTitle));
+  if (filteredEntries.length !== spamCount) {
+    console.log(`   🗑️ 过滤 SEO 垃圾标题 ${spamCount - filteredEntries.length} 条`);
+  }
+  uniqueEntries.length = 0;
+  uniqueEntries.push(...filteredEntries);
+  if (uniqueEntries.length === 0) {
+    console.log('\n⚠️ 过滤后无有效新闻，退出');
+    return;
   }
 
   // ===== Step 5: AI 批量翻译 =====

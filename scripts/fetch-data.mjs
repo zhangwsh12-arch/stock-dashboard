@@ -612,8 +612,9 @@ async function main() {
   if (existsSync(latestFile)) {
     try {
       const latest = JSON.parse(readFileSync(latestFile, 'utf-8'));
-      if (latest.meta?.date === dateStr) {
-        console.log(`\n⏭️ 今日 (${dateStr}) 数据已更新过，跳过重复执行`);
+      // FORCE_REFETCH=1 可绕过每日一次保护（用于人工补数据/回补漏跑日）
+      if (latest.meta?.date === dateStr && process.env.FORCE_REFETCH !== '1') {
+        console.log(`\n⏭️ 今日 (${dateStr}) 数据已更新过，跳过重复执行（如需强制重跑请设置 FORCE_REFETCH=1）`);
         process.exit(0);
       }
     } catch (_) { /* 解析失败则继续执行 */ }
@@ -788,6 +789,14 @@ async function main() {
   // 这里用上个月的完整历史数据重新生成上个月的JSON文件
   // ============================================================
   await fixHistoricalMonthData(realShiftUp?._allHistory || [], targetDate);
+
+  // ============================================================
+  // 补齐"漏跑日"的历史快照
+  // 只要某天的 workflow 没触发/失败（如 8/11 那次），该交易日的日快照就永久缺失，
+  // 历史下拉会出现空洞（8/7 → 8/11 之间少了 8/10）。fixHistoricalMonthData 只修
+  // 已存在文件的 chartData，不会新建文件，所以这里补上"新建缺失日文件"的能力。
+  // ============================================================
+  await backfillMissingDailyFiles(stockResults, targetDate);
   
   console.log(`\n🎉 完成! 共更新 ${successCount}/${COMPANIES.length} 家公司`);
   if (dashboardData.shiftUp) {
@@ -885,6 +894,200 @@ async function fixHistoricalMonthData(allHistory, targetDate) {
       console.log(`  📊 共修复 ${fixedCount} 个文件`);
     }
   }
+}
+
+/**
+ * 补齐"漏跑日"的日快照文件（自愈）
+ * 场景：某天 workflow 未触发或中途失败 → 该交易日的 data/YYYYMMDD.json 永久缺失，
+ *       前端历史下拉出现空洞（例：8/11 那次漏跑，8/10 快照至今缺失）。
+ * 原理：Naver K线接口一次返回 80 个交易日，各公司 _allHistory 里已有历史收盘价，
+ *       用它重建缺失日的快照；PER/PBR/市值按"收盘价比例"折算（月内 EPS/BVPS/股本视为不变），
+ *       并在 meta 中标记 backfilled，便于区分实时抓取与事后补齐。
+ */
+async function backfillMissingDailyFiles(stockResults, targetDate) {
+  const shiftUp = stockResults.find(r => r?.code === '462870');
+  const suHistory = shiftUp?._allHistory || [];
+  if (suHistory.length === 0) {
+    console.log('\n📅 无历史数据，跳过漏跑日补齐');
+    return;
+  }
+
+  const dateStr = formatDate(targetDate);
+  const curPrefix = dateStr.slice(0, 6);
+  const prevPrefix = formatDate(
+    new Date(Date.UTC(targetDate.getUTCFullYear(), targetDate.getUTCMonth() - 1, 1))
+  ).slice(0, 6);
+  const monthPrefixes = [prevPrefix, curPrefix];
+
+  // Naver 返回的历史日期本身就是"真实交易日"，无需再依赖手工休市日表
+  const tradingDays = suHistory
+    .map(h => h.date)
+    .filter(d => monthPrefixes.includes(d.slice(0, 6)) && d < dateStr)
+    .sort();
+
+  const missing = tradingDays.filter(
+    d => !KRX_HOLIDAYS_2026.has(d) && !existsSync(join(DATA_DIR, `${d}.json`))
+  );
+
+  if (missing.length === 0) {
+    console.log('\n📅 近两月无漏跑日，历史快照完整');
+    return;
+  }
+
+  console.log(`\n🩹 检测到 ${missing.length} 个漏跑日缺少快照: ${missing.join(', ')}`);
+
+  // 指数历史（仅在确有缺口时才多发这两个请求）
+  const indexHistories = {};
+  for (const idx of INDICES) {
+    const chart = await fetchNaverChart(idx.code, dateStr);
+    if (chart?._allHistory?.length) {
+      indexHistories[idx.code] = { name: idx.name, history: chart._allHistory };
+    }
+  }
+
+  let created = 0;
+  for (const d of missing) {
+    const snapshot = buildHistoricalSnapshot(d, stockResults, indexHistories, monthPrefixes);
+    if (!snapshot) {
+      console.warn(`  ⚠️ ${d}: 历史数据不足，无法补齐`);
+      continue;
+    }
+    writeFileSync(join(DATA_DIR, `${d}.json`), JSON.stringify(snapshot, null, 2), 'utf-8');
+    updateDatesList(d);
+    console.log(`  ✅ 已补齐 ${d}.json（Shift Up ₩${snapshot.shiftUp.price}, ${snapshot.shiftUp.changePercent}）`);
+    created++;
+  }
+
+  if (created > 0) console.log(`  🩹 共补齐 ${created} 个漏跑日快照`);
+}
+
+/**
+ * 用各公司历史收盘价重建某个历史交易日的快照
+ * 返回 null 表示历史数据不足（例如 Shift Up 当日无数据）
+ */
+function buildHistoricalSnapshot(dateStr, stockResults, indexHistories, monthPrefixes) {
+  const rebuilt = [];
+
+  for (const r of stockResults) {
+    const hist = r?._allHistory;
+    if (!hist || hist.length === 0) continue;
+    const idx = hist.findIndex(h => h.date === dateStr);
+    if (idx < 0) continue;
+
+    const cur = hist[idx];
+    const prev = idx > 0 ? hist[idx - 1] : null;
+    const change = prev ? cur.close - prev.close : 0;
+    const changePercent = prev && prev.close > 0 ? ((change / prev.close) * 100).toFixed(2) : null;
+
+    // 估值指标折算比例：当日收盘 / 最新收盘
+    const ratio = r.price > 0 ? cur.close / r.price : 1;
+    const perNum = parseFloat(r.per);
+    const pbrNum = parseFloat(r.pbr);
+
+    rebuilt.push({
+      code: r.code,
+      name: r.name,
+      color: r.color,
+      close: cur.close,
+      high: cur.high || cur.close,
+      low: cur.low || cur.close,
+      prevClose: prev ? prev.close : cur.close,
+      change,
+      changePercent,
+      per: perNum > 0 ? (perNum * ratio).toFixed(2) : null,
+      pbr: pbrNum > 0 ? (pbrNum * ratio).toFixed(2) : null,
+      marketCap: r.marketCap ? r.marketCap * ratio : null,
+    });
+  }
+
+  const su = rebuilt.find(s => s.code === '462870');
+  if (!su) return null;
+
+  const day = parseInt(dateStr.slice(6, 8), 10);
+  const month = parseInt(dateStr.slice(4, 6), 10);
+
+  const suHistory = stockResults.find(r => r?.code === '462870')._allHistory;
+  // 关键：历史快照内不得出现"该日之后"的数据，否则查看历史日期时会泄漏未来行情
+  const historyUpToDate = suHistory.filter(h => h.date <= dateStr);
+  const chartData = historyUpToDate
+    .filter(h => monthPrefixes.includes(h.date.slice(0, 6)))
+    .map(h => ({
+      date: h.date,
+      label: `${parseInt(h.date.slice(4, 6))}/${parseInt(h.date.slice(6, 8))}`,
+      price: h.close,
+    }));
+
+  const indices = [];
+  for (const [code, info] of Object.entries(indexHistories)) {
+    const i = info.history.findIndex(h => h.date === dateStr);
+    if (i < 0) continue;
+    const cur = info.history[i];
+    const prev = i > 0 ? info.history[i - 1] : null;
+    const change = prev ? cur.close - prev.close : 0;
+    indices.push({
+      code,
+      name: info.name,
+      price: Number(cur.close).toFixed(2),
+      change: Number(change).toFixed(2),
+      changePercent: prev && prev.close > 0 ? ((change / prev.close) * 100).toFixed(2) : '0.00',
+      changeClass: changeClass(change),
+    });
+  }
+
+  const others = rebuilt.filter(s => s.code !== '462870');
+
+  return {
+    meta: {
+      date: dateStr,
+      dateDisplay: `${month}月（截至${day}日）`,
+      fetchedAt: new Date().toISOString(),
+      source: 'Naver Finance / 漏跑日回补（估值指标按收盘价比例折算）',
+      updateCount: rebuilt.length,
+      backfilled: true,
+    },
+    shiftUp: {
+      code: '462870',
+      name: 'Shift Up',
+      color: '#ff6b9d',
+      price: formatPrice(su.close),
+      previousClose: formatPrice(su.prevClose),
+      high: formatPrice(su.high),
+      low: formatPrice(su.low),
+      change: Number(su.change).toLocaleString(),
+      changePercent: su.changePercent
+        ? (parseFloat(su.changePercent) > 0 ? '+' : '') + su.changePercent + '%'
+        : '-',
+      changeClass: changeClass(su.change),
+      per: su.per || 'N/A',
+      pbr: su.pbr || '-',
+      marketCap: formatWon(su.marketCap),
+      _allHistory: historyUpToDate,
+    },
+    companies: others
+      .map(s => ({
+        code: s.code,
+        name: s.name,
+        color: s.color,
+        price: formatPrice(s.close),
+        change: s.changePercent ? `${changeClass(s.change) === 'up' ? '+' : ''}${s.changePercent}%` : '-',
+        changeClass: changeClass(s.change),
+        per: s.per || 'N/A',
+      }))
+      .sort((a, b) => (parseFloat(a.per) || 999) - (parseFloat(b.per) || 999)),
+    perComparison: rebuilt
+      .filter(s => s.per && parseFloat(s.per) > 0)
+      .map(s => ({
+        code: s.code,
+        name: s.name,
+        color: s.color,
+        price: formatPrice(s.close),
+        per: parseFloat(s.per),
+        perRaw: s.per,
+      }))
+      .sort((a, b) => a.per - b.per),
+    chartData,
+    indices,
+  };
 }
 
 function updateDatesList(newDate) {
@@ -1082,6 +1285,9 @@ function updateCompareChart(stockResults, targetDate) {
     }
   }
 
+  // 漏跑日补齐：把当月缺失的交易日按时间顺序插回（与日快照补齐同理）
+  const backfilled = backfillCompareChartGaps(chart, stockResults, targetDate, compareBaseDate);
+
   // 更新 meta.updatedAt
   const yyyy = targetDate.getUTCFullYear();
   const mm = String(targetDate.getUTCMonth() + 1).padStart(2, '0');
@@ -1090,6 +1296,70 @@ function updateCompareChart(stockResults, targetDate) {
 
   writeFileSync(contentFile, JSON.stringify(content, null, 2), 'utf-8');
   console.log(`✅ compareChart 已更新: 新增 ${label}，${updatedCount} 家公司使用精确计算`);
+  if (backfilled.length > 0) {
+    console.log(`🩹 compareChart 已回补漏跑日: ${backfilled.join(', ')}`);
+  }
+}
+
+/**
+ * 回补 compareChart 中当月缺失的交易日
+ * 漏跑一天不仅少一个日快照，对比图也会缺一个数据点（8/7 直接连到 8/11）。
+ * 这里用各公司 _allHistory 精确计算并按日期顺序插入，保证折线连续。
+ */
+function backfillCompareChartGaps(chart, stockResults, targetDate, compareBaseDate) {
+  const shiftUp = stockResults.find(r => r?.code === '462870');
+  const suHistory = shiftUp?._allHistory || [];
+  if (suHistory.length === 0 || !compareBaseDate) return [];
+
+  const dateStr = formatDate(targetDate);
+  const monthPrefix = dateStr.slice(0, 6);
+  const curMonth = targetDate.getUTCMonth() + 1;
+  const inserted = [];
+
+  const monthTradingDays = suHistory
+    .map(h => h.date)
+    .filter(d => d.startsWith(monthPrefix) && d >= compareBaseDate && d <= dateStr)
+    .sort();
+
+  for (const d of monthTradingDays) {
+    const day = parseInt(d.slice(6, 8), 10);
+    const label = `${curMonth}/${day}`;
+    if (chart.labels.includes(label)) continue;
+
+    // 插入位置：当月已有标签中第一个"日期更大"的位置；找不到则追加到末尾
+    let insertAt = chart.labels.length;
+    for (let i = 0; i < chart.labels.length; i++) {
+      const m = String(chart.labels[i]).match(/^(\d{1,2})\/(\d{1,2})$/);
+      if (!m) continue;
+      if (parseInt(m[1], 10) === curMonth && parseInt(m[2], 10) > day) {
+        insertAt = i;
+        break;
+      }
+    }
+
+    chart.labels.splice(insertAt, 0, label);
+
+    for (const dataset of chart.datasets) {
+      const stockName = CHART_NAME_MAP[dataset.label] || dataset.label;
+      const stockResult = stockResults.find(r => r?.name === stockName);
+      const hist = stockResult?._allHistory || [];
+      const baseEntry = hist.find(h => h.date === compareBaseDate);
+      const targetEntry = hist.find(h => h.date === d);
+
+      let value;
+      if (baseEntry && targetEntry && baseEntry.close > 0) {
+        value = Math.round(((targetEntry.close - baseEntry.close) / baseEntry.close) * 100 * 100) / 100;
+      } else {
+        // 无历史可算时沿用相邻值，避免折线断裂
+        value = insertAt > 0 ? dataset.data[insertAt - 1] : (dataset.data[0] ?? 0);
+      }
+      dataset.data.splice(insertAt, 0, value);
+    }
+
+    inserted.push(label);
+  }
+
+  return inserted;
 }
 
 main().catch(err => {
