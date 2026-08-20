@@ -2,13 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-18",
-    "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；OpenAI Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-19T02:48:43.476Z",
+    "updatedAt": "2026-08-19",
+    "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
+    "newsAutoUpdatedAt": "2026-08-20T02:01:28.360Z",
     "newsAutoCount": {
-      "events": 14,
-      "industryNews": 13,
+      "events": 11,
+      "industryNews": 6,
       "skippedUntranslated": 0,
+      "skippedByUrl": 12,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -30,7 +31,8 @@
       "20260812": "Shift Up8月累计上涨+2.25%，<strong>大盘异动：KOSPI +3.69%</strong>中，Shift Up当日下跌-5.65%，跌幅超过大盘整体水平，波动被进一步放大。",
       "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Shift Up当日下跌-2.36%，跌幅与大盘基本同步。",
       "20260814": "Shift Up8月累计上涨+2.09%，当日上涨+2.26%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
-      "20260818": "Shift Up8月累计上涨+2.09%，<strong>大盘异动：KOSDAQ -3.47%</strong>中，Shift Up当日平盘+0.00%，跟随大盘走势。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。"
+      "20260818": "Shift Up8月累计上涨+2.09%，<strong>大盘异动：KOSDAQ -3.47%</strong>中，Shift Up当日平盘+0.00%，跟随大盘走势。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
+      "20260819": "Shift Up 8月累计上涨+2.58%，在<strong>大盘异动：KOSPI -5.79%</strong>的背景下，该股当日上涨+0.47%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。"
     },
     "company": {
       "225570": {
@@ -46,7 +48,8 @@
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Nexon Games当日下跌-1.82%，跌幅与大盘基本同步。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Nexon Games当日下跌-0.65%，跌幅与大盘基本同步。",
         "20260814": "当日上涨+3.95%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
-        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Nexon Games当日下跌-5.49%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。"
+        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Nexon Games当日下跌-5.49%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Nexon Games当日逆势上涨+1.90%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供支撑。"
       },
       "251270": {
         "20260722": "7月系统性危机中高分红(2,800韩元/股~7-8%收益率)提供防御属性，但Coway治理争议+MS常态化运营不确定性在崩盘中放大。Wemade收购事件催化阶段性反弹。",
@@ -61,7 +64,8 @@
         "20260807": "当日上涨+4.87%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Netmarble当日下跌-1.97%，跌幅与大盘基本同步。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Netmarble当日下跌-2.26%，跌幅与大盘基本同步。",
-        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Netmarble当日下跌-2.94%，跌幅与大盘基本同步。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。"
+        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Netmarble当日下跌-2.94%，跌幅与大盘基本同步。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>中，Netmarble当日下跌-1.58%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，市场情绪或受一定提振，但个股表现仍随大盘波动。"
       },
       "259960": {
         "20260722": "7月KOSPI两次熔断冲击中Krafton作为权重股+外资重仓股遭双重打击。但PUBG Q1在线30万+AI Raon生态+Ascend Zero新作进展+Q1利润+52%基本面提供对冲。",
@@ -76,7 +80,8 @@
         "20260807": "当日上涨+5.00%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Krafton当日下跌-3.69%，跌幅与大盘基本同步。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Krafton当日下跌-0.21%，表现明显抗跌，跌幅远小于大盘。",
-        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Krafton当日下跌-4.83%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Krafton、NC等参加‘Gamescom 2026’……未公开新作待公布」。"
+        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Krafton当日下跌-4.83%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Krafton、NC等参加‘Gamescom 2026’……未公开新作待公布」。",
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Krafton当日下跌-2.21%，跌幅与大盘基本同步。叠加当日消息面「Krafton年内推出《BGMI Lite》…扩大“手游蓝筹”印度市场攻略」，市场情绪或受此提振。"
       },
       "263750": {
         "20260722": "CD 500万套销量+Q1扭亏为盈业绩验证在7月崩盘周期中无法抵御系统性抛压。7/8触底反弹+特别分红+Wemade收购催化阶段性反弹，但PA在4月已大幅回调，本轮属于超跌后再超跌。",
@@ -91,7 +96,8 @@
         "20260811": "当日上涨+2.07%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。",
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Pearl Abyss当日下跌-14.50%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Pearl Abyss Q2 OP misses market estimates despite Crimson Desert sales」。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Pearl Abyss当日下跌-0.16%，表现明显抗跌，跌幅远小于大盘。",
-        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Pearl Abyss当日下跌-2.24%，跌幅与大盘基本同步。叠加当日消息面「Pearl Abyss Crimson Desert(红色沙漠)，发布“迄今为止的更新”信息图 - Pearl Abyss」。"
+        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Pearl Abyss当日下跌-2.24%，跌幅与大盘基本同步。叠加当日消息面「Pearl Abyss Crimson Desert(红色沙漠)，发布“迄今为止的更新”信息图 - Pearl Abyss」。",
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Pearl Abyss当日逆势上涨+0.49%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。"
       },
       "036570": {
         "20260722": "7月史诗级崩盘中NC基本面(Aion 2预约120万+Q1利润YoY+1700%)被系统性风险完全覆盖。但7/2黑色星期四中NC逆势+3.72%领涨资金避风港(硬件→软件轮动)。Aion 2全球发布窗口临近提供差异化催化。",
@@ -107,7 +113,8 @@
         "20260811": "当日上涨+4.93%，叠加当日消息面「8/11 KOSPI下跌1.2%——国际油价急涨推动LPG与海运股异动，风险资产偏好回落，成长股与游戏板块同步承压」。",
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，NC当日下跌-3.52%，跌幅与大盘基本同步。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，NC当日下跌-1.22%，跌幅与大盘基本同步。",
-        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，NC当日下跌-7.07%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。"
+        "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，NC当日下跌-7.07%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，NC当日下跌-4.57%，跌幅与大盘基本同步。此外，当日消息面显示「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，对股价走势形成一定影响。"
       }
     }
   },
@@ -204,7 +211,8 @@
       "8/12",
       "8/13",
       "8/14",
-      "8/18"
+      "8/18",
+      "8/19"
     ],
     "datasets": [
       {
@@ -301,7 +309,8 @@
           2.25,
           -0.16,
           2.09,
-          2.09
+          2.09,
+          2.58
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -406,7 +415,8 @@
           2.46,
           1.79,
           5.8,
-          0
+          0,
+          1.9
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -511,7 +521,8 @@
           3.79,
           1.44,
           2.09,
-          -0.91
+          -0.91,
+          -2.48
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -616,7 +627,8 @@
           6.25,
           4.96,
           6.68,
-          -0.86
+          -0.86,
+          -5.39
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -721,7 +733,8 @@
           0,
           -0.21,
           1.28,
-          -3.62
+          -3.62,
+          -5.74
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -826,7 +839,8 @@
           -6.79,
           -6.94,
           -7.68,
-          -9.75
+          -9.75,
+          -9.31
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -840,6 +854,94 @@
     ]
   },
   "events": [
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton年内推出《BGMI Lite》…扩大“手游蓝筹”印度市场攻略</strong>",
+      "source": "아이뉴스24",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFB0TXlWLTZhUDVRNXg2VG5BcW5Gc0EwdlJqNW1LUUdLVXpVZzl3bk1LWnJidE9KYjdJSGotb1ZRQkc2NFU5QWtwOWFqdw?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>在线游戏_MARBLEX，Krafton(8.20)</strong>",
+      "source": "위클리오늘",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBJU0tJRVZuREdHSVBNektmSFdkS0E2NkNLMlNoempJRl9DZkhtc1VPbWs5Z1YwV3VqVXdYdXJ3XzktamdSTHZwUGNVVkZiNGI1REFtMW9KamtmNjllcGplVng1aTdNLVNWODlnX0JB?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>绝地求生更新，“打破固化战斗”vs“强加新答案”</strong>",
+      "source": "thelec.kr",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1sNU1XOGZHaUwxT3JkWHZOZUtpeC1OVDF1d0dIb2lBRko3YXhnWFRBZGRwT2VKdEotSEdQalExVV9Cejg4RXg1b2hfbzN1ai1vZEZaM0YzVEtSUVZyejc2TFJVUTZzUQ?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton《Subnautica 2》强化合作玩法第二次更新</strong>",
+      "source": "인포스탁데일리",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1CY2wxMy04Q3RpcDVaTzFHVWRERjNmY3BJTndpUFBCTWRHaXhqT1lCNmgtZ3AzSFBoVy02VWlncVJERmxhRHZZUlhmLXhCcE1SOEt2OEU0VzFGTnA3MFBydE5JSzhIaGtXTmNvLVpMTGx2MGtMQmc?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>更新公告 - 更新42.3 - 新闻 - PUBG: 绝地求生</strong>",
+      "source": "PUBG: BATTLEGROUNDS",
+      "date": "08.10",
+      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE5oWFhQV055QzVuLW1xQ2FVWjUtamlmWFdkVm9yTzF1MGhoLWlLRmVncnNEdmgzR2VJMFhpcVpXRjU0LXhH?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>“屡败屡战”NC，《Aion 2》中国挑战能否奏效</strong>",
+      "source": "contents.premium.naver.com",
+      "date": "08.18",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNRFJYRDZqNFN1S0FOVVZNXzZTZWE0RzZQaV9ncFk0X3daVEVtdExVdWp3WGFBelprbmc4TE5OeTZacTZvcWxXbFplQUFuZTFRVHBkR0xaTHNOcXY4OGFEMF9fU1JiUm9xX0RKbEZsdDdDTmg3aW9Za3FSVFZadzUtZA?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>“新增专属剧情”Nexon《Blue Archive》主线故事第2部“学生会篇”公开</strong>",
+      "source": "financialpost.co.kr",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9WUHVsUWZoOHFEYmFLQmdqRjRSZGVBV2UyMkNOb1BmcmJndm5UVFQ1RmlWczNiU1ZTQm5EV2lESG04TTVVQVdSVmQ2M1NzWlJDbEhmanZXMThUbFJUYXlQTm42WHdRSjFKbE1FVnRRNWo4WUlr?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《Blue Archive》新篇章开启···主线故事第2部公开</strong>",
+      "source": "이뉴스투데이",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBhRTZOeU42MVFoc2hzZk5IS1hFbXg4bnJoeHBxN1dtNzNJT3hHTHNQYnNNZWQ5cjZ1dF9yT3pOaWlYQ2tDSHRnUDB0V0dTMTdFTTdmOTBpVzlmN050VTFHTXhWM3Z6SmZ3bUZUQXJHM2hYaFlk0gF0QVVfeXFMUGFFNk55TjYxUWhzaHNmTkhLWEVteDhucmh4cHE3V203M0lPeEdMc1Bic01lZDlyNnV0X3JPek5paVhDa0NIdGdQMHRXR1MxN0VNN2Y5MGlXOWY3TnRVMUdNeFYzdnpKZndtRlRBckczaFhoWWQ?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《Blue Archive》学生会篇…主线故事第2部及3款新角色更新</strong>",
+      "source": "창업일보",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1BNnB3VjlmNUVCR2FPb0tZcGZQaWRPYnhDSm5RVjZSMzFhal9WbGFobmpSakJiUkRQSEJMTlV1dTJMMlFVODdZd0Zvai1CUzVQN1ZGNnk4ZXFnQzhjbXk3cTlIdFFFaHV1?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>NC《Blade & Soul NEO》热血江湖合作·Boost服务器开启…Nexon《Blue Archive》主线故事第2部启动</strong>",
+      "source": "라이센스뉴스",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBLTk5RRXBmdFZlZjdweGdQaVlTYjk3WUxlRzhiZ1k2bE8xU0ZLa3NYQXRseHhPSXowSkxpcE1rV0hZMVYzcEUtdHF4ZXNWeFBrcWxVRWV4TXdWSnBVYkFydVFMVng0R3E5R1BZ?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《Blue Archive》主线故事第2部更新</strong>",
+      "source": "주간한국",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBENGx4Qlk0OGVKSXQ2a1Vob2ZKZm1UekhpbWs1VnhiTTYzTXFuTElaY2lrREpta1pqQlhwemVzMmJOVEYxdmhYcUZpSF9Od1NzUmhZbmtoZG9CbWk5eVVfeXgydDlxQzJLcC0zM3ZMLU04Z0Q30gF0QVVfeXFMUEQ0bHhCWTQ4ZUpJdDZrVWhvZkpmbVR6SGltazVWeGJNNjNNcW5MSVpjaWtESm1rWmpCWHB6ZXMyYk5URjF2aFhxRmlIX053U3NSaFlua2hkb0JtaTl5VV95eDJ0OXFDMktwLTMzdkwtTThnRDc?oc=5"
+    },
     {
       "company": "Nexon",
       "color": "#22c55e",
@@ -1519,6 +1621,54 @@
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Krafton超越游戏界“3N”首次登顶营收·营业利润…海外攻略奏效</strong>",
+      "source": "v.daum.net",
+      "date": "08.17",
+      "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1mM3dTeS1UUVdCWUFpQ0NfaGpkeG5WcnhBdWFiTmVqcjNnQTkxWnljYWg3S1gzaVNmcGxZTzV5SVdJV2tpanc?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化</strong>",
+      "source": "청년일보",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBlSTRXb3RXZ0dtWDRpc0Y3d0d1V2l6MUJCTUxlY25MMmdiMURodFdVOWJlRFdKZDNxczRZSkJ3Mk9LbGFRQzJoNGQ5SlNjWDhYWVRNai12QlY5VUNzNmNOSFJaMzAxTE0?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>“仅靠Lineage不够”…NC通过M&A·IP多元化筹备“10款新作”</strong>",
+      "source": "청년일보",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9PWDZxdGdQUjNaQktJRzUyYXUtRTJfLThsQ2g0eUdNU1phV2FKNVNKaW5xNUM3ZzVuRmlpeHM5UkNPSlhIY0J6Ri1MMWRVN1RMR3FKNi1OXzJqZlhfQjE1TjhEZXg4SG8?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC二次元新作《Astra: Oracio》CBT参与者招募</strong>",
+      "source": "뉴스프리존",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9QeE1Cd3Y0N19qVjVtN3pacFp0UGs5LUFtVG84U1hicXlka2tBM21vNTRLWUM1QjRqVkFEbVMxaTdZQUtKZlNwYkRFNEQ2MlhSaEI4NjJtNWFuVk0yZ05FcnZVcDdnZzFDZkt3T0FSUnBqT3fSAXdBVV95cUxPRm5mT3pkYXRzelBoM1VsZEhkOXRSa294c0swM21pMTFlbV9sdW1sMnVpUVpVWThQRkxDLUJUMmRzNUhocUhENVozZmF0bHVoUU5sc3JqMGlZNS1YdHYxYnlmcGJ2X1oySFBxYWs3dkpISzJOazhlTQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>“明年销售额逼近8000亿”…NC新“增长轴”的移动休闲游戏</strong>",
+      "source": "v.daum.net",
+      "date": "08.19",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9FZTNqd2FHd1RJOVF5WUVfRjZHUDRZMnREbW45VkdWVTl2dnJRb1Jjc2phc3I3cmE5U1o4d0pmLVNtVkt6RzdzcmNqaG9DYlU?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>“Obe”职业重启纪念…NC《Lineage 2M X 决明子》联动</strong>",
+      "source": "청년일보",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE15aUJBMUFHdVYxU0FzUmVXemhZaldmekRkd1BMUmYxVm9PR1J0eTRuWGNjZWRZX1BfU1V0MU02aUhJOFB2ai1OYm1pVlpmSlhHdGVvMG5jeEI2SGktR3JRR2VxcWFjVm1JWlE?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
