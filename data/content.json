@@ -2,14 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-19",
+    "updatedAt": "2026-08-20",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-20T02:01:28.360Z",
+    "newsAutoUpdatedAt": "2026-08-21T02:01:29.269Z",
     "newsAutoCount": {
-      "events": 11,
-      "industryNews": 6,
+      "events": 5,
+      "industryNews": 8,
       "skippedUntranslated": 0,
-      "skippedByUrl": 12,
+      "skippedByUrl": 17,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -32,7 +32,8 @@
       "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Shift Up当日下跌-2.36%，跌幅与大盘基本同步。",
       "20260814": "Shift Up8月累计上涨+2.09%，当日上涨+2.26%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
       "20260818": "Shift Up8月累计上涨+2.09%，<strong>大盘异动：KOSDAQ -3.47%</strong>中，Shift Up当日平盘+0.00%，跟随大盘走势。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
-      "20260819": "Shift Up 8月累计上涨+2.58%，在<strong>大盘异动：KOSPI -5.79%</strong>的背景下，该股当日上涨+0.47%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。"
+      "20260819": "Shift Up 8月累计上涨+2.58%，在<strong>大盘异动：KOSPI -5.79%</strong>的背景下，该股当日上涨+0.47%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。",
+      "20260820": "Shift Up 8月累计上涨+5.80%，<strong>大盘异动：KOSPI +5.89%</strong>背景下，Shift Up当日上涨+3.14%，整体走势与大盘保持一致。此外，当日消息面「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」亦对股价形成一定提振。"
     },
     "company": {
       "225570": {
@@ -49,7 +50,8 @@
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Nexon Games当日下跌-0.65%，跌幅与大盘基本同步。",
         "20260814": "当日上涨+3.95%，未见明确专属事件驱动，波动更多来自板块联动或资金面因素。",
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Nexon Games当日下跌-5.49%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
-        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Nexon Games当日逆势上涨+1.90%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供支撑。"
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Nexon Games当日逆势上涨+1.90%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供支撑。",
+        "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Nexon Games当日上涨+0.88%，整体走势与大盘保持一致。同时，当日消息面「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」亦对市场情绪形成一定支撑。"
       },
       "251270": {
         "20260722": "7月系统性危机中高分红(2,800韩元/股~7-8%收益率)提供防御属性，但Coway治理争议+MS常态化运营不确定性在崩盘中放大。Wemade收购事件催化阶段性反弹。",
@@ -65,7 +67,8 @@
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Netmarble当日下跌-1.97%，跌幅与大盘基本同步。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Netmarble当日下跌-2.26%，跌幅与大盘基本同步。",
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Netmarble当日下跌-2.94%，跌幅与大盘基本同步。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
-        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>中，Netmarble当日下跌-1.58%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，市场情绪或受一定提振，但个股表现仍随大盘波动。"
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>中，Netmarble当日下跌-1.58%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，市场情绪或受一定提振，但个股表现仍随大盘波动。",
+        "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Netmarble当日上涨+0.40%，整体走势与大盘保持一致。同时，当日消息面提及「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」，为市场情绪提供一定支撑。"
       },
       "259960": {
         "20260722": "7月KOSPI两次熔断冲击中Krafton作为权重股+外资重仓股遭双重打击。但PUBG Q1在线30万+AI Raon生态+Ascend Zero新作进展+Q1利润+52%基本面提供对冲。",
@@ -81,7 +84,8 @@
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Krafton当日下跌-3.69%，跌幅与大盘基本同步。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Krafton当日下跌-0.21%，表现明显抗跌，跌幅远小于大盘。",
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Krafton当日下跌-4.83%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Krafton、NC等参加‘Gamescom 2026’……未公开新作待公布」。",
-        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Krafton当日下跌-2.21%，跌幅与大盘基本同步。叠加当日消息面「Krafton年内推出《BGMI Lite》…扩大“手游蓝筹”印度市场攻略」，市场情绪或受此提振。"
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Krafton当日下跌-2.21%，跌幅与大盘基本同步。叠加当日消息面「Krafton年内推出《BGMI Lite》…扩大“手游蓝筹”印度市场攻略」，市场情绪或受此提振。",
+        "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Krafton当日上涨+0.45%，整体走势与大盘保持一致。与此同时，消息面传来利好，报道称「Krafton，‘Subnautica 2’第二次更新…深海生存合作性强化」，进一步提振了市场情绪。"
       },
       "263750": {
         "20260722": "CD 500万套销量+Q1扭亏为盈业绩验证在7月崩盘周期中无法抵御系统性抛压。7/8触底反弹+特别分红+Wemade收购催化阶段性反弹，但PA在4月已大幅回调，本轮属于超跌后再超跌。",
@@ -97,7 +101,8 @@
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，Pearl Abyss当日下跌-14.50%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Pearl Abyss Q2 OP misses market estimates despite Crimson Desert sales」。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，Pearl Abyss当日下跌-0.16%，表现明显抗跌，跌幅远小于大盘。",
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Pearl Abyss当日下跌-2.24%，跌幅与大盘基本同步。叠加当日消息面「Pearl Abyss Crimson Desert(红色沙漠)，发布“迄今为止的更新”信息图 - Pearl Abyss」。",
-        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Pearl Abyss当日逆势上涨+0.49%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。"
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Pearl Abyss当日逆势上涨+0.49%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。",
+        "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Pearl Abyss当日上涨+4.40%，整体跟随大盘走势。同时，当日消息面传出「Crimson Desert地图变更，或暗示海上DLC」，进一步提振市场情绪。"
       },
       "036570": {
         "20260722": "7月史诗级崩盘中NC基本面(Aion 2预约120万+Q1利润YoY+1700%)被系统性风险完全覆盖。但7/2黑色星期四中NC逆势+3.72%领涨资金避风港(硬件→软件轮动)。Aion 2全球发布窗口临近提供差异化催化。",
@@ -114,7 +119,8 @@
         "20260812": "<strong>大盘异动：KOSPI +3.69%</strong>中，NC当日下跌-3.52%，跌幅与大盘基本同步。",
         "20260813": "<strong>大盘异动：KOSPI +3.56%</strong>中，NC当日下跌-1.22%，跌幅与大盘基本同步。",
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，NC当日下跌-7.07%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
-        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，NC当日下跌-4.57%，跌幅与大盘基本同步。此外，当日消息面显示「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，对股价走势形成一定影响。"
+        "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，NC当日下跌-4.57%，跌幅与大盘基本同步。此外，当日消息面显示「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，对股价走势形成一定影响。",
+        "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，NC当日上涨+0.46%，整体走势与大盘保持一致。同时，受当日消息面「NC，Aion 2全球火爆预期…增长轴多元化」提振，市场情绪有所升温。"
       }
     }
   },
@@ -212,7 +218,8 @@
       "8/13",
       "8/14",
       "8/18",
-      "8/19"
+      "8/19",
+      "8/20"
     ],
     "datasets": [
       {
@@ -310,7 +317,8 @@
           -0.16,
           2.09,
           2.09,
-          2.58
+          2.58,
+          5.8
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -416,7 +424,8 @@
           1.79,
           5.8,
           0,
-          1.9
+          1.9,
+          2.79
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -522,7 +531,8 @@
           1.44,
           2.09,
           -0.91,
-          -2.48
+          -2.48,
+          -2.09
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -628,7 +638,8 @@
           4.96,
           6.68,
           -0.86,
-          -5.39
+          -5.39,
+          -4.96
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -734,7 +745,8 @@
           -0.21,
           1.28,
           -3.62,
-          -5.74
+          -5.74,
+          -5.32
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -840,7 +852,8 @@
           -6.94,
           -7.68,
           -9.75,
-          -9.31
+          -9.31,
+          -5.32
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -854,6 +867,46 @@
     ]
   },
   "events": [
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Crimson Desert地图变更，或暗示海上DLC</strong>",
+      "source": "games.gg",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOR0tEdGxYWm4xMFRQcUtFeklaQVVYX01JM3pmamtKRlAxR2d4ODNwVkNSS3RPVkc2ZTRYRVBsUHNWNnc2NFJxQUpSLXZRTXhwVXdGak5xTENlWHpzRnpSUUtRVXlkbms1TjYyaXhkNWxsbmdIclJsRFkxY2YyNmw5Q3dLOG9PSzJ6VXlYcXp0ME1sVFloN2lrTkFBQi1yNXZRcXFEcHlNQXY2S05nUFNaUEFvVHJqUndqZkV5ZUNNRGh1TXJLOWFVUkhub0tXdmt0NjQyS2taWFFya1RjTmRSc2hQX2hNTDV0NWFGdDVIdw?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton，‘Subnautica 2’第二次更新…深海生存合作性强化</strong>",
+      "source": "v.daum.net",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1IZ0p5UnM2TVJWby1Wdkc4aUtQUUEwMEtaOG9zUE9OSTF2dXU0SE5Ea2xvNWgxdHpocEIweXY4OXlXWlNLRUFQaGNLcmdOX1k?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton Subnautica 2，强化合作玩法功能</strong>",
+      "source": "NSP통신",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE12bXJ6dVNTTVNuQ3BRa0NvSXIyLVFSLWtuVWhaaWZfRGM4VUMtcElENjZENlFoeDY3THNZZm5BUllVZHctUjl6dGpxRkdKVW1YZmhDQVc4N3kxSnlMWElUZw?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton‘Subnautica 2’，向非营利组织“The Ocean Cleanup”捐赠10万美元</strong>",
+      "source": "아이뉴스24",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1JdUx5LUlwVWJyTk1ZVlZWOWJ6amhTTjVidXFka3JkWk05aTYyYzR3c0NqRi1sZkl3c2ZzMmROZy1kV3ZkU3FjV1Z6VQ?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC，Aion 2全球火爆预期…增长轴多元化</strong>",
+      "source": "네이트",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBjZzk1Z295Z2E0QTJsR0RKUVhTLVhMYnc4TkZIYzdSZk9GUUhxbUhfdnFacFpEYy1uRnBqZGVjOUJLZVdjbTBjQlRhdUItQjNvZEVv?oc=5"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -1621,6 +1674,70 @@
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味</strong>",
+      "source": "시사위크",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBxR0s1S2hsSjR3QmdFTWJMeGRTMHExNUVkdGd4Zm1fN21uQUVNUGFpaGlqOXZycGowSENVUDRmR2tzT01WNE5xVVlhdnpjcWFOa0tlc3VqcDBXWGdPTUZFZWg2NDgxaWhSc1Uw0gFvQVVfeXFMUElrQ0V2al9PZ0pLUk9ULTVCQUhscmlwWTFQVU5UaXF4Q2JmUW9YYmVtRnE3RmpmWVpHYnFUbzF0c2hjejlrV1ZjR2ZtYnFTQ3pYZkdNYWFLdnFoMmdEN3BjS0Q3WnVPMkRYZXlzLVFZ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[专访] Epic Games CEO“Unreal Engine 6，针对AI开发优化”</strong>",
+      "source": "연합뉴스",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBQUzNMRU1DWkIxd0VvcEZuNWF5Q3JRMnVfZm9TSjNLMGpMR0xMMHZqNllWRlByUXVmdWF1bWpsUEhac2dtUk16OF9CcGVCUG9TYldMVnBRZ1hteTlKTTBxTtIBYEFVX3lxTFBQUzNMRU1DWkIxd0VvcEZuNWF5Q3JRMnVfZm9TSjNLMGpMR0xMMHZqNllWRlByUXVmdWF1bWpsUEhac2dtUk16OF9CcGVCUG9TYldMVnBRZ1hteTlKTTBxTg?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>沙特为何向游戏产业倾注石油资金</strong>",
+      "source": "이코리아",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1Wd0Z0aFA0WGdIRWtyOTJHV0VZVFBjNWtoUHN6eUIxeWs5OEVQZUFoNkxaT0h6d3RDcTZMQm51Q2Q1eGxOZEFJX3l0cnk5SzFnVHFzeURMT1ptYVEwQkpKQjh5RFZmbjFsS0w2NFpfbw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>对抗Roblox独大的Epic Games…“Fortnite，打造开放游戏生态” - 朝鲜Biz</strong>",
+      "source": "Chosunbiz",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPNE1rc2R2NFhqNEpyNGNwWWROSDdrMzR4Uml3Wi1rcEFwOXVsb2N1MW9TSlNNdnhrcFliSlZ4ZHJXOFc2aldVWEhDMGY3Z183UG84MFZ4eFBRWlhNVzRYYXU5bEcyZWh1ZlZzQXl4QUMtN3NuMEgxY2NYWjBKVUhYZ1JB0gGWAUFVX3lxTE9NalpuN2xuYkZaekVPTnZuYU5BSkEtMG1rcUg1VkxTa0JCVWZqMll6TUU2YWNXRGV3Mm5UY0UzemhiRTFUbW5qTm4xZ1MxVTNKU215QXFWU2txLW9weENidHMyc0xWRTBhazRJZnBaRFhVbXc4R1JSNHVneGVKdVVmczZTRDV4OC1ObmFUTDZOVkxuV3dLdw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Kakao Games，新作‘鬼怪的世界’10月上市…以无职业·无PK差异化</strong>",
+      "source": "디일렉",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1JRnF6SWNlcWJnbTFtS0ttTl9DbU1IUGlYaVh5WDRhdDhjNmpmZmR2Zm1Jb3NDdG5oRVFBSjBwTUNpc3hnOGNGVDB5aU5EMk85d1pzQ0JxZGtmS2FGSDhXOVZ2aWgtQQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC‘Limit Zero Breakers’，9月10日前沿测试</strong>",
+      "source": "청년일보",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9jT1RwcE5jcXlaaThkQVJPNkZiWDBwWlBjUllmRl82SkxzREl2cWtuazZSYWVoNWhCX2xPb2JabW1YWktoeWktWm53cGFDZWhHWWJ3UkJfSzgtZ3c3TVh2U2Z4ZFFFYzQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC‘Limit Zero Breakers’，9月10日全球测试</strong>",
+      "source": "중소기업신문",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5UVUF2dUJTZ293c0FVMTFIcmw0dnVEWU5IVkxuNktSUUNtZzR0NndELUNCSENfWS0yek5id0ZIRXNiWXAyY1pFQi1ZWEZYQkpFc3BqN2RibzRYbHg2d0VFdTNZbXpLUTc1LXowNg?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>摆脱“Lineage依赖”的NC…券商目标价最高44万韩元</strong>",
+      "source": "딜사이트",
+      "date": "08.20",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1fQ29VMm1OUUozV0F6UFZBbENhby1xV0t2T2RCWDFQZlE1MXQ2UGVBNHNmdE4xZmFUcG5IdlMwVDJUckFGR2ZNTEs2TjkwSkk?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
