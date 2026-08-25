@@ -119,12 +119,31 @@ function buildRuleBasedText({ companyName, changePercent, kospiPct, kosdaqPct, m
   }
 
   if (isBigIndexMove) {
-    const relative = Math.abs(pct) < Math.min(Math.abs(kospiPct), Math.abs(kosdaqPct))
-      ? '表现明显抗跌，跌幅远小于大盘'
-      : Math.abs(pct) > Math.max(Math.abs(kospiPct), Math.abs(kosdaqPct))
-        ? '跌幅超过大盘整体水平，波动被进一步放大'
-        : '跌幅与大盘基本同步';
-    text += `${indexHeadline}中，${companyName}当日${direction}${fmtPct(changePercent)}，${pct < 0 ? relative : '跟随大盘走势'}。`;
+    // 修复：原逻辑只在个股下跌(pct<0)时才做"强于/弱于大盘"的相对比较，
+    // 个股上涨时无条件写"跟随大盘走势"——但若此时大盘（更大异动的那个指数）
+    // 恰好是下跌的，"个股上涨+跟随大盘下跌走势"自相矛盾（逆势上涨被误写成跟随）。
+    // 这里改为先比较个股涨跌方向与大盘（取较大异动的指数）方向是否一致，
+    // 一致时才谈"强于/弱于/同步大盘"，不一致时明确写"逆势"。
+    const biggerIndexPct = Math.abs(kospiPct) >= Math.abs(kosdaqPct) ? kospiPct : kosdaqPct;
+    const sameDirection = (pct >= 0 && biggerIndexPct >= 0) || (pct <= 0 && biggerIndexPct <= 0);
+    let relative;
+    if (pct === 0) {
+      relative = '在大盘剧烈波动中保持相对平稳';
+    } else if (!sameDirection && biggerIndexPct !== 0) {
+      relative = pct > 0 ? '逆势上涨，走势与大盘方向相反' : '逆势下跌，走势与大盘方向相反';
+    } else {
+      const absPct = Math.abs(pct);
+      const absIndexMin = Math.min(Math.abs(kospiPct), Math.abs(kosdaqPct));
+      const absIndexMax = Math.max(Math.abs(kospiPct), Math.abs(kosdaqPct));
+      if (absPct < absIndexMin) {
+        relative = pct < 0 ? '表现明显抗跌，跌幅远小于大盘' : '涨幅不及大盘整体水平';
+      } else if (absPct > absIndexMax) {
+        relative = pct < 0 ? '跌幅超过大盘整体水平，波动被进一步放大' : '涨幅超过大盘整体水平，跟随大盘走势并进一步放大';
+      } else {
+        relative = pct < 0 ? '跌幅与大盘基本同步' : '涨幅与大盘基本同步，跟随大盘走势';
+      }
+    }
+    text += `${indexHeadline}中，${companyName}当日${direction}${fmtPct(changePercent)}，${relative}。`;
   } else {
     text += `当日${direction}${fmtPct(changePercent)}，`;
   }

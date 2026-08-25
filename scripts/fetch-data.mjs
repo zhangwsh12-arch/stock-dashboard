@@ -166,6 +166,14 @@ async function fetchIndexData(index, targetDateStr) {
     const change = currentPrice - prevPrice;
     const changePercent = prevPrice > 0 ? ((change / prevPrice) * 100).toFixed(2) : '0.00';
 
+    // 可信度校验：2026-08-24 曾出现 Naver 指数接口同时失效兜底到 Yahoo 的情况，
+    // Yahoo 对 KOSPI/KOSDAQ 也返回过明显失真的涨跌幅（如两指数几乎相同的-2%），
+    // 大盘指数历史上单日波动极少超过±10%，超过即判定为不可信兜底数据并丢弃。
+    if (Math.abs(parseFloat(changePercent)) > 10) {
+      console.error(`  ❌ [Sanity] ${index.name}: Yahoo兜底涨跌幅 ${changePercent}% 超过可信阈值(±10%)，判定为脏数据并丢弃`);
+      return null;
+    }
+
     console.log(`  ✅ [Index-Yahoo-fallback] ${index.name}: ${currentPrice.toFixed(2)} (${change >= 0 ? '+' : ''}${changePercent}%)`);
 
     return {
@@ -584,6 +592,32 @@ async function fetchStockData(comp, targetDateStr) {
     merged = { ...yahooData };
   }
 
+  // ====== 数据可信度校验（Sanity Check）======
+  // 起因：2026-08-24 抓取时 Naver Chart API + Naver HTML 两个数据源同时对全部6家
+  // 公司失效（疑似 Promise.all 并发12个请求触发 Naver 反爬/限流），只能全部
+  // 兜底到 Yahoo Finance；但 Yahoo 对这些 KRX 中小盘个股返回的 regularMarketPrice
+  // 严重失真（如 Shift Up 真实收盘¥31,800 被报成¥63,900，涨幅误报+101.58%），
+  // 而 validate-data.mjs 当时未做涨跌幅异常校验，导致错误数据被直接发布上线。
+  // 这里做两层防御：
+  //   1) Yahoo 兜底数据一旦涨跌幅超过 ±15%（远低于韩国法定±30%涨跌停，因为这些
+  //      公司历史上从未出现过如此级别的单日波动，Yahoo兜底数据已被证实不可信），
+  //      直接判定为脏数据丢弃，让该公司当天数据缺失（前端展示"暂无"）好于错误数据。
+  //   2) 任何来源的最终结果涨跌幅超过 KRX 法定涨跌停 ±30% 时，同样属于不可能事件，
+  //      硬性丢弃（防御未来其它未知数据源问题）。
+  if (merged.price && merged.changePercent != null) {
+    const pct = parseFloat(merged.changePercent);
+    if (!isNaN(pct)) {
+      if (merged._source === 'yahoo_finance' && Math.abs(pct) > 15) {
+        console.error(`  ❌ [Sanity] ${code}: Yahoo兜底数据涨跌幅 ${pct}% 超过可信阈值(±15%)，判定为脏数据并丢弃`);
+        return null;
+      }
+      if (Math.abs(pct) > 30) {
+        console.error(`  ❌ [Sanity] ${code}: 涨跌幅 ${pct}% 超过KRX涨跌停上限(±30%)，判定为脏数据并丢弃`);
+        return null;
+      }
+    }
+  }
+
   if (merged.price) {
     return merged;
   }
@@ -624,9 +658,14 @@ async function main() {
   if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
   // 并行抓取所有公司数据
+  // 注意：6家公司 × (Chart+HTML) = 最多12个并发请求同时打向 Naver，2026-08-24 曾
+  // 因此触发 Naver 反爬/限流导致全部6家公司的 Chart+HTML 同时失效（只能兜底到不
+  // 可靠的 Yahoo Finance，进而发布了错误股价）。这里给每个公司的请求错开一个小的
+  // 启动延迟（stagger），避免瞬间并发峰值触发反爬，同时仍保持整体并行以控制耗时。
   console.log('\n📡 正在抓取股价数据...\n');
   const stockResults = await Promise.all(
-    COMPANIES.map(async (comp) => {
+    COMPANIES.map(async (comp, idx) => {
+      if (idx > 0) await new Promise(r => setTimeout(r, idx * 400));
       console.log(`\n  ┌─ ${comp.name} (${comp.code})`);
       const data = await fetchStockData(comp, dateStr);
       if (data) {

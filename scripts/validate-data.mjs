@@ -131,6 +131,15 @@ if (!su) {
   } else {
     pass('Shift Up changeClass 与 changePercent 一致');
   }
+
+  // 涨跌幅硬性上限检查（KRX 涨跌停制度为 ±30%，超过即为不可能的脏数据）
+  // 起因：2026-08-24 Naver 数据源全部失效后兜底到 Yahoo Finance，Yahoo 返回的
+  // 价格严重失真（涨幅误报 +101.58%），但当时本文件没有此项校验，脏数据被直接
+  // 发布上线。fetch-data.mjs 已在源头加了同类校验兜底丢弃，这里作为发布前的
+  // 最后一道防线，双重保险。
+  if (!isNaN(pctNum) && Math.abs(pctNum) > 30) {
+    fail(`Shift Up changePercent=${pctStr} 超过 KRX 涨跌停上限(±30%)，判定为脏数据`);
+  }
 }
 
 // ====== 4. 其他公司数据检查 ======
@@ -157,6 +166,10 @@ if (companies.length === 0) {
     const cp = parseFloat(String(c.change));
     if (cp > 0 && c.changeClass !== 'up') fail(`${c.name} change=${c.change} 但 changeClass=${c.changeClass}`);
     if (cp < 0 && c.changeClass !== 'down') fail(`${c.name} change=${c.change} 但 changeClass=${c.changeClass}`);
+    // 涨跌幅硬性上限检查（KRX 涨跌停制度为 ±30%），同 Shift Up 检查同理
+    if (!isNaN(cp) && Math.abs(cp) > 30) {
+      fail(`${c.name} change=${c.change} 超过 KRX 涨跌停上限(±30%)，判定为脏数据`);
+    }
   }
   pass('所有公司价格和涨跌方向检查完成');
 }
