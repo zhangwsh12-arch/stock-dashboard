@@ -2,14 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-21",
+    "updatedAt": "2026-08-24",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-24T02:01:37.563Z",
+    "newsAutoUpdatedAt": "2026-08-25T02:03:16.148Z",
     "newsAutoCount": {
-      "events": 8,
-      "industryNews": 7,
+      "events": 14,
+      "industryNews": 14,
       "skippedUntranslated": 0,
-      "skippedByUrl": 8,
+      "skippedByUrl": 6,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -34,7 +34,8 @@
       "20260818": "Shift Up8月累计上涨+2.09%，<strong>大盘异动：KOSDAQ -3.47%</strong>中，Shift Up当日平盘+0.00%，跟随大盘走势。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
       "20260819": "Shift Up 8月累计上涨+2.58%，在<strong>大盘异动：KOSPI -5.79%</strong>的背景下，该股当日上涨+0.47%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。",
       "20260820": "Shift Up 8月累计上涨+5.80%，<strong>大盘异动：KOSPI +5.89%</strong>背景下，Shift Up当日上涨+3.14%，整体走势与大盘保持一致。此外，当日消息面「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」亦对股价形成一定提振。",
-      "20260821": "Shift Up 8月累计上涨+2.42%，在<strong>大盘异动：KOSDAQ -4.64%</strong>的背景下，该股当日下跌-3.20%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」，市场情绪或受一定影响。"
+      "20260821": "Shift Up 8月累计上涨+2.42%，在<strong>大盘异动：KOSDAQ -4.64%</strong>的背景下，该股当日下跌-3.20%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」，市场情绪或受一定影响。",
+      "20260824": "当日股价上涨+101.58%，同时消息面上，IZE娱乐南宫勋代表表示，韩国游戏产业将再次迎来增长。"
     },
     "company": {
       "225570": {
@@ -53,7 +54,8 @@
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Nexon Games当日下跌-5.49%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Nexon Games当日逆势上涨+1.90%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供支撑。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Nexon Games当日上涨+0.88%，整体走势与大盘保持一致。同时，当日消息面「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」亦对市场情绪形成一定支撑。",
-        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，Nexon Games当日下跌-1.41%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」，市场情绪整体承压。"
+        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，Nexon Games当日下跌-1.41%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」，市场情绪整体承压。",
+        "20260824": "当日股价上涨130.47%，叠加当日消息面利好，即「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」，共同推动市场情绪走高。"
       },
       "251270": {
         "20260722": "7月系统性危机中高分红(2,800韩元/股~7-8%收益率)提供防御属性，但Coway治理争议+MS常态化运营不确定性在崩盘中放大。Wemade收购事件催化阶段性反弹。",
@@ -71,7 +73,8 @@
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Netmarble当日下跌-2.94%，跌幅与大盘基本同步。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>中，Netmarble当日下跌-1.58%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，市场情绪或受一定提振，但个股表现仍随大盘波动。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Netmarble当日上涨+0.40%，整体走势与大盘保持一致。同时，当日消息面提及「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」，为市场情绪提供一定支撑。",
-        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>中，Netmarble当日下跌-1.20%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」。"
+        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>中，Netmarble当日下跌-1.20%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」。",
+        "20260824": "当日股价下跌2.77%，与此同时，消息面上出现了「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」的相关报道。"
       },
       "259960": {
         "20260722": "7月KOSPI两次熔断冲击中Krafton作为权重股+外资重仓股遭双重打击。但PUBG Q1在线30万+AI Raon生态+Ascend Zero新作进展+Q1利润+52%基本面提供对冲。",
@@ -89,7 +92,8 @@
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Krafton当日下跌-4.83%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Krafton、NC等参加‘Gamescom 2026’……未公开新作待公布」。",
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Krafton当日下跌-2.21%，跌幅与大盘基本同步。叠加当日消息面「Krafton年内推出《BGMI Lite》…扩大“手游蓝筹”印度市场攻略」，市场情绪或受此提振。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Krafton当日上涨+0.45%，整体走势与大盘保持一致。与此同时，消息面传来利好，报道称「Krafton，‘Subnautica 2’第二次更新…深海生存合作性强化」，进一步提振了市场情绪。",
-        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>中，Krafton当日下跌-0.22%，表现明显抗跌，跌幅远小于大盘。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」。"
+        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>中，Krafton当日下跌-0.22%，表现明显抗跌，跌幅远小于大盘。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」。",
+        "20260824": "当日股价上涨+23.84%，同时消息面上，Krafton旗下作品《Age Twister》入围“gamescom 2026”大奖候选名单，进一步提振了市场情绪。"
       },
       "263750": {
         "20260722": "CD 500万套销量+Q1扭亏为盈业绩验证在7月崩盘周期中无法抵御系统性抛压。7/8触底反弹+特别分红+Wemade收购催化阶段性反弹，但PA在4月已大幅回调，本轮属于超跌后再超跌。",
@@ -107,7 +111,8 @@
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，Pearl Abyss当日下跌-2.24%，跌幅与大盘基本同步。叠加当日消息面「Pearl Abyss Crimson Desert(红色沙漠)，发布“迄今为止的更新”信息图 - Pearl Abyss」。",
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Pearl Abyss当日逆势上涨+0.49%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Pearl Abyss当日上涨+4.40%，整体跟随大盘走势。同时，当日消息面传出「Crimson Desert地图变更，或暗示海上DLC」，进一步提振市场情绪。",
-        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，Pearl Abyss当日逆势上涨+0.47%，整体走势与大盘保持一致。结合当日消息面，「韩国游戏产业协会与全北游戏业界举行现场座谈会，就地区企业成长方案展开讨论」，为股价提供一定支撑。"
+        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，Pearl Abyss当日逆势上涨+0.47%，整体走势与大盘保持一致。结合当日消息面，「韩国游戏产业协会与全北游戏业界举行现场座谈会，就地区企业成长方案展开讨论」，为股价提供一定支撑。",
+        "20260824": "当日股价上涨+50.74%，叠加当日消息面利好，即「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」，进一步提振市场情绪。"
       },
       "036570": {
         "20260722": "7月史诗级崩盘中NC基本面(Aion 2预约120万+Q1利润YoY+1700%)被系统性风险完全覆盖。但7/2黑色星期四中NC逆势+3.72%领涨资金避风港(硬件→软件轮动)。Aion 2全球发布窗口临近提供差异化催化。",
@@ -126,7 +131,8 @@
         "20260818": "<strong>大盘异动：KOSDAQ -3.47%</strong>中，NC当日下跌-7.07%，跌幅超过大盘整体水平，波动被进一步放大。叠加当日消息面「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」。",
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，NC当日下跌-4.57%，跌幅与大盘基本同步。此外，当日消息面显示「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，对股价走势形成一定影响。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，NC当日上涨+0.46%，整体走势与大盘保持一致。同时，受当日消息面「NC，Aion 2全球火爆预期…增长轴多元化」提振，市场情绪有所升温。",
-        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，NC当日逆势上涨+1.81%，整体走势与大盘保持同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」，进一步提振市场情绪。"
+        "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，NC当日逆势上涨+1.81%，整体走势与大盘保持同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」，进一步提振市场情绪。",
+        "20260824": "当日股价下跌4.57%，叠加当日消息面「gamescom亮相Aion 2...NC持续进军全球MMORPG市场」的影响，市场反应呈现分化态势。"
       }
     }
   },
@@ -226,7 +232,8 @@
       "8/18",
       "8/19",
       "8/20",
-      "8/21"
+      "8/21",
+      "8/24"
     ],
     "datasets": [
       {
@@ -326,7 +333,8 @@
           2.09,
           2.58,
           5.8,
-          2.42
+          2.42,
+          106.46
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -434,7 +442,8 @@
           0,
           1.9,
           2.79,
-          1.34
+          1.34,
+          133.56
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -542,7 +551,8 @@
           -0.91,
           -2.48,
           -2.09,
-          -3.26
+          -3.26,
+          -5.94
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -650,7 +660,8 @@
           -0.86,
           -5.39,
           -4.96,
-          -3.23
+          -3.23,
+          -7.65
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -758,7 +769,8 @@
           -3.62,
           -5.74,
           -5.32,
-          -5.53
+          -5.53,
+          16.99
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -866,7 +878,8 @@
           -9.75,
           -9.31,
           -5.32,
-          -4.87
+          -4.87,
+          43.4
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -880,6 +893,118 @@
     ]
   },
   "events": [
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>gamescom闪耀的K游戏公司...Pearl Abyss与Krafton挑战获奖</strong>",
+      "source": "블로터",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFB2NUw4VTh4M1BqcDFzQXN2Z3JzdGtoeWF2M0FlVEp4YUtkVG9HejVzMWJGWWRZNUVtVjZmSEtETGlBN0gyaE52V2ZjN0xyWTFnNm01MFppU0FLSnRyMVZFM0tYYkFILTFZ0gFsQVVfeXFMTllaS1JzV2o3RzZLaEhaUGVBcnNzSmJuRWNzdm5oamJGOXVjZ0FSYWdubGtUWEFYcnZKbkNGeUlHUlBEck1zVDFSV1ZkcnV4bE8wakJtWkVoYy1ZWWQ4ZWFuUm1YaFVWbUtWN0t3?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton Age Twister获gamescom 2026大奖提名</strong>",
+      "source": "지디넷코리아",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1PMkxMUGZjSUpxdTVMVzZWS0dtX1UyMEN2dnpKMmZ5MWpGNmlKS0FmdGlLMW10ckJ3QTJvRDI4eUNWVE5BQ0N6a2ZmZ01hVllQMUJkekxn?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>gamescom 2026 Pearl Abyss与Krafton候选作品...K游戏能否打破三年无奖</strong>",
+      "source": "아이뉴스24",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9hS2ZOQjRwbVloRTZnNU05ZWkybEdfbGktek02OXFfZzJJTHlGbE9KMTgwSEJNM1p1dE82aHNVZEpmSFFSVmprb1VPVQ?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>gamescom 2026 Krafton Age Twister入围大奖候选</strong>",
+      "source": "신아일보",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lTWJBMU5MVjZPbVl5VUpMSEFySHpDWkVkUV81TU1PWEljYWRSWHcyOVdSYUhZXzIxMmtyV0FueWhCRUNmYzRZX2FnTURrTHlPbFhjSWp1MjREZjZwZ0dmajlmWkVURktSNlJhVk9KYUc?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton新作Age Twister获gamescom大奖提名</strong>",
+      "source": "IT조선",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lSGh5ZGtIVmd0alhaOG5BZmJ6d3dmcDBESUlPbXJzWjhjdk5JRzQ0cXduaFdDbEt1LTlwaWFIVWZ2Y0UtQ1NBZ2pkS0RRQW5aZ1R5TGw2T0x1UkpjMlNQR2FPb0N4WUxmNzY4NDNJRGPSAXRBVV95cUxQZVUxOUswdGZ0WGZJbjRTaWFWejhnb3JCb0xCUzFKcWpSOXI4SjZyYzFCUldWSTBkd3hwR2tmeERZdmdTRU9Bb0U2NURXLW1udXd3TmJEbWFST0pTM2RTQThwNzl0QnZ0UURFbHd2SFV3RkNPeg?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton Age Twister入围gamescom大奖候选</strong>",
+      "source": "뉴스핌",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE16Zm1XbXRpSnZwS0xTZnBlaURWdkwycktQY2djRjBCWllDYWJIb1NOUkF3MWlJSDdyY2RjMC1mcWlZTEJOb1hWdEl1WE90NTJMaGJkX3ZpYUxRa0tt?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Pearl Abyss与Krafton能否拿下gamescom奖项</strong>",
+      "source": "비즈워치",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9GN3JDSldNU1oyODlqRnVocF9acjJtbHVtSmdRWkFlRHBOZ1ZWQXFlVk9YUTlYeXg2N1FjTkd5UDBZbmVfVDR5aUNvRjhGVHpoVW5BbG8tMWtmNFBXVXRIV3QxbzYzdDRJT3c?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>gamescom亮相Aion 2...NC持续进军全球MMORPG市场</strong>",
+      "source": "시사위크",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBpTkFXZklmaVIzcy1uRTRiaEZFYUdVR1dHek9mQkw0R1NxRkFkdjRjamhLSWJuN29mQlp1N0V0TXNTc09NbjMxUVVpVWtEcDlWV0RabWdwdk10Z2hNVUFiZGZ4MF9FTkdnM1Bn0gFvQVVfeXFMUFk3QUUwTGhHNUp0REpzTW93Q3IyNXo3RWJPU1FMLTRHR0R3eHY5VEFqcHc5UFVDOTZjN2NlU1RLM2I4cVlVOVpiNkViNnlMc1Y4ZGVuTlllZC1WamEtRG9ORmV2Z3hWekVMQ0R2cHJ3?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon Games延续Blue Archive成功神话...Pareidolia标题确定</strong>",
+      "source": "한국정경신문",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1YYWU5NUx6eDlXUUNrZi1iMmJDYkl1cE5DSFVBRlpFb2RkZF8yYjQzeWtvY2h0bGdVa3dVd05ycEJsUFZQZXNld296S0dGa0tkYnc?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon Games异世界幻想Project RX定名Pareidolia</strong>",
+      "source": "라이센스뉴스",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5hZmxVenl2dVNMMGxDYzYyNWlZOHB1WGVsVW5UMzUxQ01meXY2VDdFTENEekt5M3U5ejZkdmVlTXM1SkMybldDTnBVOTIyZVcwMlg3QkNpR1E0OWR2Q1p1NXdlLUFJWjQtM25v?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon Games Project RX正式定名Pareidolia...TGS 2026首次试玩</strong>",
+      "source": "청년일보",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9reG5KYXVvR0ZrSFRocnNYNHlsdENDc1EtTVZJNzQxVmNXRlpQckxZdXh3eUY2a0NpWlB0ZDBoRWZXQ3lJdWJHSTF0QkRlRFZaRWpuOW93MktpVVFxMWYtbU05blByWm8?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>接棒Blue Archive的Nexon Games期待作...Pareidolia揭面纱</strong>",
+      "source": "테크M",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFA0dkpCS3V5ZTlkTjVoa1JJUEVib3RLa3FUNm44alpFeTVEeDRxTi1BdUFOdTUwNEpQYm1Obi14MnlkemIzVnJRU2pWQ1JjNjBUenpIeEVQSE5kYWRKdU5zbjNDemI1dU5jRVHSAWpBVV95cUxQNHZKQkt1eWU5ZE41aGtSSVBFYm90S2txVDZuOGpaRXk1RHg0cU4tQXVBTnU1MDRKUGJtTm4teDJ5ZHpiM1ZyUVNqVkNSYzYwVHp6SHhFUEhOZGFkSnVOc24zQ3piNXVOY0VR?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>延续Blue Archive美少女游戏谱系...Nexon Games Pareidolia日本亮相</strong>",
+      "source": "데일리안",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxOMktLd20wV0tBT3BTdk5ZY3lqUGlleWxoSzk1akwzTGRTMUdpWW5zeXRXc2ViTmdhMlhFcmhaMjF0VEZRTERGTkFWS1l3Z0tlalF6ZTBlOG4tX01QdUJXRVlGWTh2NDd6bHJ2QUhqaWs3NUh5dmVCc2JwTkdpd1NQcVZRdUVJMHRfTTJVYmN6RkUyRl8tNEw4T2daM2Y2aWNHTmN0S25sMThub0xNOVVLSkxzbGdYX3hwWXJ4SWRXYzFqVVJvT3h0bWloSkZHMkRSUmU0OTlNcE1mY2syUGQtMG8yZVJxWGUwWk04MVFuRWFKalBzUUZocDBfZTRqTjlLVTM0RUtXSVpJc2ozZkhpcnk4LUhxYlVi?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>延续Blue Archive神话...Nexon Games新作Pareidolia首秀</strong>",
+      "source": "뉴시스",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBiWlFPUDk3OEZmV1lDbHdsNl9PNC1oTEFfbTNSejRGWDE5SDlZMlJHWVRmWnpPUlJ0Ym5SOEdrUUFZU3IxeDFSUm11bkEybUJRNV9qa3U3UFNPaFpGQWZ2QVhWTGtPNTRXWjZrS3NFNHJwWF91MUVUS9IBeEFVX3lxTFBiWlFPUDk3OEZmV1lDbHdsNl9PNC1oTEFfbTNSejRGWDE5SDlZMlJHWVRmWnpPUlJ0Ym5SOEdrUUFZU3IxeDFSUm11bkEybUJRNV9qa3U3UFNPaFpGQWZ2QVhWTGtPNTRXWjZrS3NFNHJwWF91MUVUSw?oc=5"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -1751,6 +1876,118 @@
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>IZE娱乐南宫勋代表：韩国游戏产业将再次增长</strong>",
+      "source": "게임뷰",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5rNFBSQUIxd1JhRTJ2NVc4VEdxMmFQWGpBbTZuUWJubG1CVVJQa0ZETkIzdnA0SXFuTUlaZWZ4TlkxTFNZSWJDTldaSnNhU19IY25vRTc3ZS1BcmVzRWtWUzBYTE9MU2VOOUE?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>这样下去可能只能玩中国游戏...K游戏发出警告</strong>",
+      "source": "한국경제",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1lOVZwZXY1TC1IVzdBTEUtc0FXZTNtdUxvSlBFeG9GNEZ2RkRXdklvNExIS2lNanE4d2R6X1hFOWZZNjJKbTBHdzFkWVN2MTZNNmpwZTMtT2k0QQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>游戏业界海外公开新作...G-Star 2026动摇</strong>",
+      "source": "v.daum.net",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5oeDJWN3ZBQ3NBWXNWYjMyaVUzT1VoYjhRZzhEbUxxUTg3anlaTEdzV3RxTFR1ZXB3SVA4TTV0aElBNmlwRVE2bFBYZVZ0V1k?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC Time Takers全球测试...金泽辰介绍的射击新作</strong>",
+      "source": "포쓰저널",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE84V1JYN1ltNkR6cWd1VVkxa0xxcmc5Z3lzR05Xdk1EamtBSEY1dkhrSU1ZdWJFakJRRzdDSDlQcllJd1FZMTdhVkUyM2VDdldRc0wtSjN5aU1naDZrQ3dHVWZVN2o?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC Time Takers 9月5日起72小时Steam全球试玩</strong>",
+      "source": "창업일보",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBWNjdpNzRXVFNFQkxNLWt0VEdkN3FTX1lSUU9hNDBPbWdUdkl2cnVYeWQtNmpmQkVmMWQwNnUzUlR3Z013RHA2amsycTFUSU92TGRrRkJSeWUzOWZFUlJiZTZLUE1qekE0?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC瞄准下半年全球市场...新作与休闲游戏扩大动力</strong>",
+      "source": "v.daum.net",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1fdHA3NUxxdVp6S0YzMUpOdW43WUc0QlVEeUd3Qk4yRko0U2ZLUTJ5N2tBQkI5MmRvRWdOdVdrVjFKbnJicnAyMjZVREpHbTA?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>强化游戏性版本...NC Time Takers预告Steam全球试玩</strong>",
+      "source": "청년일보",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE0tSXRER3Bral9BXzk1QUN6TkdQYTRvWExxX2dGd2R6Mm53cDNkaEFwV1BOSms0c1MzTG44bHpDXzhaTWNIOTUyUHFieThnODdvbWVPUnROTDFITnZLcG1Qclhxd01GV2c?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>海外收入超国内...NC以全球新作扩大版图</strong>",
+      "source": "네이트",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5mQzhQa3loSjZnUlZKWmRxOEM4Qy1oTkJfNmc0dHhhVm9VUTBYR00yblhqTTlmUGhfZEZSSVh6eVg1M3E3ZUw5bzJqcnFQMFZRXy11WmFlWmxlOXRnN3doMA?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Blue Archive开发团队新作Pareidolia...TGS首次试玩</strong>",
+      "source": "디지털데일리",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5fLVVEekpOdnBTRENzTDdmQWY3b2VlZXRUN01FdklSU3paVk5sNHFxRnc1dkFkREEybGZ3LWhrOU9Cd2Vib05JeUY1N05ZbTJqNmt5Nml5YkFfR25XMTRsNzkyMmM?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Stellar Blade Switch 2含全部DLC完整版2026年发售确定</strong>",
+      "source": "Observatório do Cinema",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1ocWpJcUxwQWxhYm53Z3hJRzFnUXRMOWpNQmg0bmZsRGFNd2JLMkczZnY4U2VuekYtRXAxUkVUWmthYzg5RkstMzZyYzIyQUtESmhESE1JeVgyRDhoV1pGTnp1ak1XZE0zaFNZdXJEZVB5bkpLbXN1ZGpR0gF_QVVfeXFMTzVTODd3cVZBb3RmdnVFWUg4UDJzZFFSb0lQMmtxRnVTMjdJVERaeTlRVG9fZWFYWjQ1NGpZNjdmSXhGd1NsVHhMdEpOMjZYV2syUTVGa19BTklKQ1dmZXRqT0FMZXZjX2RwVlN3cUNReEdMTk9GVTRyQkp1SS1vYw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Shift Up Stellar Blade Switch2版预告片公开，期待感上升</strong>",
+      "source": "게임동아",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE1od3BJaHBIQVZYT2pZWjlvQW41NkE5RTRMT2VPVnJsSHl6S29EbTJLb0E0WEoxeHNyUlFmOUEtTDYzT0RO?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>年内发售，Stellar Blade Switch 2版Key Art公开</strong>",
+      "source": "게임메카",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBDOGptazNxU1ZKZ2RwNk51N2VpQ1RIUWFQV1V5SUpVMkp1UV9yTUplcHdhT3Q4YmttLWlxNVBNclQxMGhrYjFEbldBMUxUNmdqeUZ5Vm5mSTfSAVtBVV95cUxPUTJLd1Y1ZFEwM2lnWVVIUGg3Rml3dEFFNms0WkhVNUJ3SjdleVY5MU5TelgteDhtMkttQnAzM0l2cU50clVPSkdObHBjVkdWMmlGQ2ZWTnYtbzVR?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Shift Up：Stellar Blade任天堂Switch2版年内推出</strong>",
+      "source": "워크투데이",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE8ycnZ2SExrVkVOX3B0RE1xUVhpZlNLUkZVa01hemVmc0Y4dHdFWTA0UUtoeHF2LUJsRlF0ZndSMzVyX3Q3RXFNY3JkMTBxZWs3OXl0ZVVvMFpGY0l4SnhQU3VrVlpOWDdWLUZOUQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Stellar Blade将登陆Switch2...Shift Up预告年内发售</strong>",
+      "source": "한국경제",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8tU1BxVW5meWh1MVJrZmtDSDJLZG1rVzlDU1VCYm5LdmxNNUs5aGs1clV1bjNzMW5lRHM0TnhFalJxc3ZUZzdwekdfN0QyZDdJY2ozTlEwY1pCdw?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
