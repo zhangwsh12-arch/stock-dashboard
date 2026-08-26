@@ -156,14 +156,51 @@ jobs:
         if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v4
 
-  # ====== 企业微信推送（update 完成后自动执行，每日仅1次）======
+  # ====== final 阶段专属：重新部署网页（不重新抓取）======
+  # 次日10点推A前，把 main 上"用户17点后手动修正的数据/面板"重新部署上线，
+  # 保证 A 收到的网页链接与微信消息一致（均为修正后版本）。
+  # preview/无phase 阶段已由 update job 部署过，此 job 跳过，避免重复部署。
+  deploy-final:
+    if: |
+      github.event.client_payload.phase == 'final' &&
+      (github.event.action == 'trigger-update' ||
+       github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Checkout latest (含用户修正)
+        uses: actions/checkout@v4
+        with:
+          ref: main  # 获取用户17点后手动推送的修正 commit
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deploy
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Deploy to GitHub Pages (retry)
+        if: steps.deploy.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+
+  # ====== 企业微信推送（update / deploy-final 完成后自动执行，每日仅1次）======
   # skip_notify=true 时整个 job 不执行——用于"只想更新数据/验证抓取链路，
   # 不想惊动企微群"的手动调试场景（每日去重缓存也不会被写入，不影响当天正常推送）。
   notify:
-    needs: update
+    needs: [update, deploy-final]
     if: |
       always() &&
       needs.update.result != 'failure' &&
+      needs.deploy-final.result != 'failure' &&
       github.event.inputs.skip_notify != 'true' &&
       github.event.client_payload.skip_notify != true &&
       (github.event.action == 'trigger-update' ||
