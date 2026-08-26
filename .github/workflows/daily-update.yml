@@ -190,7 +190,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/notify-sent
-          key: notify-sent-${{ steps.get-date.outputs.date }}
+          # key 必须带 phase：preview(17点) 与 final(次日10点) 在同一 KST 日历日会共用同一日期，
+          # 若不区分 phase，先跑的 final 会写缓存、导致后跑的 preview 被去重跳过（B 永远收不到预览）。
+          key: notify-sent-${{ github.event.client_payload.phase || 'default' }}-${{ steps.get-date.outputs.date }}
 
       - name: Skip — already notified today
         if: >-
