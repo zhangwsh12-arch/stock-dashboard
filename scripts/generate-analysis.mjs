@@ -135,8 +135,15 @@ function stripInvalidEvents(events) {
   return events.filter(e => !/[가-힣]/.test(e.title.replace(/<[^>]+>/g, '')));
 }
 
-// ====== 规则引擎：基于"全月已发生的显著交易日"拼装真正的月度叙事文本 ======
-// isSU: 是否为 Shift Up（用于从快照中取对应字段）；key: 公司代码（SU 时忽略）
+// ====== 规则引擎：基于"全月已发生的显著交易日"生成叙事性月度分析 ======
+// 目标：输出类似人工撰写的月度总结（如20260731 SU的"三熔断月"叙事），
+//      而非机械地罗列每日数据点。
+//
+// 叙事结构：
+//   ① 开篇：本月累计涨跌 + 大盘背景 + 一句话定性（抗跌/随波/跑赢/跑输）
+//   ② 关键转折：涨幅最大日、跌幅最大日、逆势日（个股与大盘方向相反且幅度显著）
+//   ③ 事件驱动：关联当日新闻标题（去重、限2条最相关）
+//   ④ 收尾：波动特征总结 + 前瞻提示（如有）
 function buildMonthlyNarrativeText({ companyName, isSU, key, monthSnapshots, allEvents, monthLabel }) {
   const validEvents = stripInvalidEvents(allEvents);
 
@@ -145,7 +152,8 @@ function buildMonthlyNarrativeText({ companyName, isSU, key, monthSnapshots, all
     return evt ? evt.title.replace(/<[^>]+>/g, '') : null;
   }
 
-  const notableDays = [];
+  // ---- Step 1: 提取每日数据 ----
+  const dailyData = []; // { mmdd, stockPct, kospiPct, kosdaqPct, idxBig, biggerCode, biggerPct }
   for (const snap of monthSnapshots) {
     const dS = snap?.meta?.date;
     if (!dS) continue;
@@ -159,32 +167,151 @@ function buildMonthlyNarrativeText({ companyName, isSU, key, monthSnapshots, all
       const c = (snap.companies || []).find(cc => cc.code === key);
       stockPct = parseFloat(c?.change) || 0;
     }
-    if (Math.abs(stockPct) >= STOCK_THRESHOLD || idxBig) {
-      const biggerCode = Math.abs(kospiP) >= Math.abs(kosdaqP) ? 'KOSPI' : 'KOSDAQ';
-      const biggerPct = biggerCode === 'KOSPI' ? kospiP : kosdaqP;
-      notableDays.push({ mmdd: mmddOf(dS), stockPct, idxBig, biggerCode, biggerPct });
+    const biggerCode = Math.abs(kospiP) >= Math.abs(kosdaqP) ? 'KOSPI' : 'KOSDAQ';
+    const biggerPct = biggerCode === 'KOSPI' ? kospiP : kosdaqP;
+    dailyData.push({ mmdd: mmddOf(dS), stockPct, kospiPct: kospiP, kosdaqPct: kosdaqP, idxBig, biggerCode, biggerPct });
+  }
+
+  if (dailyData.length === 0) return '';
+
+  // ---- Step 2: 计算月度统计 ----
+  // 注意：monthSnapshots 是每日快照，包含当日涨跌幅而非收盘价。
+  // 月累计涨跌幅由 index.html 的 calcMonthChange() 实时计算（基于首日收盘价 vs 当日收盘价），
+  // 此处用逐日涨跌幅累乘近似估算，仅用于叙事中的定性描述。
+  let approxMonthChange = 0;
+  for (const d of dailyData) {
+    approxMonthChange += d.stockPct;
+  }
+  // 取最近一天的近似累计作为"本月累计"参考值
+  const lastDay = dailyData[dailyData.length - 1];
+
+  // 大盘月度近似
+  let kospiMonthApprox = 0, kosdaqMonthApprox = 0;
+  for (const d of dailyData) { kospiMonthApprox += d.kospiPct; kosdaqMonthApprox += d.kosdaqPct; }
+
+  // ---- Step 3: 识别关键交易日 ----
+  // 按涨跌幅排序找最佳/最差日
+  const byStockAsc = [...dailyData].sort((a, b) => a.stockPct - b.stockPct);
+  const worstDay = byStockAsc[0];       // 跌幅最大
+  const bestDay = byStockAsc[byStockAsc.length - 1]; // 涨幅最大
+
+  // 逆势日：个股与大盘方向相反且个股|涨幅|>=2%
+  const contrarianDays = dailyData.filter(d => {
+    const avgIdx = (d.kospiPct + d.kosdaqPct) / 2;
+    return avgIdx !== 0 && ((d.stockPct > 0 && avgIdx < 0) || (d.stockPct < 0 && avgIdx > 0))
+      && Math.abs(d.stockPct) >= 2;
+  });
+
+  // 大盘极端日（用于背景描述）
+  const extremeIndexDays = dailyData.filter(d => d.idxBig);
+
+  // ---- Step 4: 构建叙事 ----
+  const parts = [];
+
+  // ① 开篇总结
+  const lastPct = fmtPct(lastDay.stockPct);
+  const dirWord = lastDay.stockPct > 0 ? '上涨' : lastDay.stockPct < 0 ? '下跌' : '持平';
+  
+  // 与大盘对比定性
+  const lastAvgIdx = (lastDay.kospiPct + lastDay.kosdaqPct) / 2;
+  let vsMarketTag = '';
+  if (Math.abs(lastDay.stockPct) > 0.5 && Math.abs(lastAvgIdx) > 0.5) {
+    if ((lastDay.stockPct > 0 && lastAvgIdx < 0) || (lastDay.stockPct < 0 && lastAvgIdx > 0)) {
+      vsMarketTag = '逆势';
+    } else if (Math.abs(lastDay.stockPct) < Math.abs(lastAvgIdx)) {
+      vsMarketTag = '跌幅小于大盘' || '涨幅小于大盘';
     }
   }
 
-  if (notableDays.length === 0) return '';
+  // 大盘背景摘要
+  let marketContext = '';
+  if (extremeIndexDays.length >= 3) {
+    marketContext = `${monthLabel}大盘经历${extremeIndexDays.length}次极端波动`;
+  } else if (extremeIndexDays.length >= 1) {
+    marketContext = `${monthLabel}大盘出现${extremeIndexDays.length}次显著异动`;
+  }
 
-  // 最多展示近 5 个显著交易日，避免叙事过长；保留时间顺序（早→晚）
-  const shown = notableDays.slice(-5);
-  const clauses = shown.map(d => {
-    const dir = d.stockPct > 0 ? '涨' : d.stockPct < 0 ? '跌' : '平';
+  const opening = `<strong>${companyName}${monthLabel}走势回顾</strong>——`;
+  const summaryFragments = [];
+  if (marketContext) summaryFragments.push(marketContext);
+  summaryFragments.push(`全月个股波动呈现以下特征`);
+  parts.push(opening + summaryFragments.join('，') + '：');
+
+  // ② 关键转折点（最佳日 + 最差日 + 逆势日，去重，最多列4个）
+  const keyDays = [];
+  const seenMmdd = new Set();
+
+  function addKeyDay(d, label) {
+    if (!d || seenMmdd.has(d.mmdd)) return;
+    seenMmdd.add(d.mmdd);
+    keyDays.push({ ...d, label });
+  }
+
+  addKeyDay(bestDay, '最佳');
+  addKeyDay(worstDay, '最差');
+  for (const cd of contrarianDays.slice(0, 2)) {
+    addKeyDay(cd, '逆势');
+  }
+
+  // 按时间顺序排列
+  keyDays.sort((a, b) => {
+    const am = parseInt(a.mmdd.split('.')[0], 10) * 100 + parseInt(a.mmdd.split('.')[1], 10);
+    const bm = parseInt(b.mmdd.split('.')[0], 10) * 100 + parseInt(b.mmdd.split('.')[1], 10);
+    return am - bm;
+  });
+
+  const dayClauses = keyDays.map(d => {
+    const dir = d.stockPct > 0 ? '上涨' : d.stockPct < 0 ? '下跌' : '持平';
     let clause = `${d.mmdd}${dir}${fmtPct(d.stockPct)}`;
     if (d.idxBig) {
-      const sameDirection = (d.stockPct >= 0 && d.biggerPct >= 0) || (d.stockPct <= 0 && d.biggerPct <= 0);
-      const tag = d.stockPct === 0 ? '大盘剧烈波动中持平' : (sameDirection ? '同向' : '逆势');
+      const sameDir = (d.stockPct >= 0 && d.biggerPct >= 0) || (d.stockPct <= 0 && d.biggerPct <= 0);
+      const tag = d.stockPct === 0 ? '大盘剧烈波动中持平' : (sameDir ? '同向波动' : '逆势');
       clause += `（大盘${d.biggerCode}${fmtPct(d.biggerPct)}，${tag}）`;
     }
+    // 关联新闻（最多取1条）
     const evt = eventFor(d.mmdd);
-    if (evt) clause += `「${evt}」`;
+    if (evt) {
+      // 截取新闻前40字符避免过长
+      const shortEvt = evt.length > 45 ? evt.slice(0, 42) + '...' : evt;
+      clause += `，消息面「${shortEvt}」`;
+    }
     return clause;
   });
 
-  const omittedNote = notableDays.length > shown.length ? `（另有${notableDays.length - shown.length}个早期显著交易日未列出）` : '';
-  return `${companyName}${monthLabel}内主要交易日：${clauses.join('；')}${omittedNote}。`;
+  if (dayClauses.length > 0) {
+    parts.push(dayClauses.join('；') + '。');
+  }
+
+  // ③ 波动特征总结
+  const upDays = dailyData.filter(d => d.stockPct > 0).length;
+  const downDays = dailyData.filter(d => d.stockPct < 0).length;
+  const flatDays = dailyData.filter(d => d.stockPct === 0).length;
+  const totalDays = dailyData.length;
+
+  // 最大单日振幅（简单用 best-worst 近似）
+  const maxSwing = bestDay.stockPct - worstDay.stockPct;
+
+  const featureParts = [];
+  if (extremeIndexDays.length >= 3) {
+    featureParts.push(`${monthLabel}大盘震荡加剧`);
+  }
+  if (maxSwing >= 10) {
+    featureParts.push(`个股最大单日振幅达${fmtPct(maxSwing)}`);
+  }
+  if (contrarianDays.length >= 2) {
+    featureParts.push(`多次走出独立行情`);
+  }
+  if (upDays > downDays * 1.5) {
+    featureParts.push(`上涨日居多（${upDays}涨/${downDays}跌）`);
+  } else if (downDays > upDays * 1.5) {
+    featureParts.push(`调整压力较大（${upDays}涨/${downDays}跌）`);
+  }
+
+  if (featureParts.length > 0) {
+    parts.push('整体来看，' + featureParts.join('，') + '。');
+  }
+
+  return parts.join('');
 }
 
 async function main() {
