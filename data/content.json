@@ -2,14 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-24",
+    "updatedAt": "2026-08-25",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-08-25T02:03:16.148Z",
+    "newsAutoUpdatedAt": "2026-08-26T02:01:37.470Z",
     "newsAutoCount": {
-      "events": 14,
-      "industryNews": 14,
+      "events": 18,
+      "industryNews": 4,
       "skippedUntranslated": 0,
-      "skippedByUrl": 6,
+      "skippedByUrl": 13,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -55,7 +55,8 @@
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Nexon Games当日逆势上涨+1.90%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供支撑。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Nexon Games当日上涨+0.88%，整体走势与大盘保持一致。同时，当日消息面「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」亦对市场情绪形成一定支撑。",
         "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，Nexon Games当日下跌-1.41%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」，市场情绪整体承压。",
-        "20260824": "Nexon Games8月内主要交易日：08.18跌-5.49%（大盘KOSDAQ-3.47%，同向）「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」；08.19涨+1.90%（大盘KOSPI-5.79%，逆势）「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」；08.20涨+0.88%（大盘KOSPI+5.89%，同向）「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」；08.21跌-1.41%（大盘KOSDAQ-4.64%，同向）「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」；08.24涨+2.31%（大盘KOSPI-3.13%，逆势）「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」（另有9个早期显著交易日未列出）。"
+        "20260824": "Nexon Games8月内主要交易日：08.18跌-5.49%（大盘KOSDAQ-3.47%，同向）「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」；08.19涨+1.90%（大盘KOSPI-5.79%，逆势）「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」；08.20涨+0.88%（大盘KOSPI+5.89%，同向）「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」；08.21跌-1.41%（大盘KOSDAQ-4.64%，同向）「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」；08.24涨+2.31%（大盘KOSPI-3.13%，逆势）「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」（另有9个早期显著交易日未列出）。",
+        "20260825": "Nexon Games 8月主要交易日表现如下：08.19上涨+1.90%（大盘KOSPI下跌-5.79%，呈逆势上扬）「韩国游戏产业协会与京畿内容振兴院携手推广健康游戏文化」；08.20上涨+0.88%（大盘KOSPI上涨+5.89%，走势一致）「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」；08.21下跌-1.41%（大盘KOSDAQ下跌-4.64%，走势一致）「韩国游戏产业协会，与全北游戏业界举行现场座谈会···探讨地区企业成长方案」；08.24上涨+2.31%（大盘KOSPI下跌-3.13%，呈逆势上扬）「'Blue Archive'开发团队新作名为'Pareidolia'」；08.25上涨+15.39%「[K游戏吸引中国资本①]市场验证的IP具吸引力...\"加价购买\"」（另有10个早期显著交易日未列出）。"
       },
       "251270": {
         "20260722": "7月系统性危机中高分红(2,800韩元/股~7-8%收益率)提供防御属性，但Coway治理争议+MS常态化运营不确定性在崩盘中放大。Wemade收购事件催化阶段性反弹。",
@@ -74,7 +75,8 @@
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>中，Netmarble当日下跌-1.58%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」，市场情绪或受一定提振，但个股表现仍随大盘波动。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Netmarble当日上涨+0.40%，整体走势与大盘保持一致。同时，当日消息面提及「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」，为市场情绪提供一定支撑。",
         "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>中，Netmarble当日下跌-1.20%，跌幅与大盘基本同步。叠加当日消息面「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」。",
-        "20260824": "Netmarble8月内主要交易日：08.18跌-2.94%（大盘KOSDAQ-3.47%，同向）「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」；08.19跌-1.58%（大盘KOSPI-5.79%，同向）「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」；08.20涨+0.40%（大盘KOSPI+5.89%，同向）「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」；08.21跌-1.20%（大盘KOSDAQ-4.64%，同向）「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」；08.24涨+2.29%（大盘KOSPI-3.13%，逆势）「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」（另有8个早期显著交易日未列出）。"
+        "20260824": "Netmarble8月内主要交易日：08.18跌-2.94%（大盘KOSDAQ-3.47%，同向）「Nexon“3万亿韩元股息”在日本已上限……韩国Nexon Games因业绩不佳股价回落 - Chosun Biz」；08.19跌-1.58%（大盘KOSPI-5.79%，同向）「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」；08.20涨+0.40%（大盘KOSPI+5.89%，同向）「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」；08.21跌-1.20%（大盘KOSDAQ-4.64%，同向）「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」；08.24涨+2.29%（大盘KOSPI-3.13%，逆势）「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」（另有8个早期显著交易日未列出）。",
+        "20260825": "Netmarble 8月主要交易日表现如下：08.19下跌-1.58%（大盘KOSPI下跌-5.79%，走势同向），当日相关新闻为「韩国游戏产业协会与京畿内容振兴院携手推广健康游戏文化」；08.20上涨+0.40%（大盘KOSPI上涨+5.89%，走势同向），相关新闻为「[鬼怪的世界] Kakao Games，东方幻想融入韩国韵味」；08.21下跌-1.20%（大盘KOSDAQ下跌-4.64%，走势同向），相关新闻为「韩国游戏产业协会与全北游戏业界举行现场座谈会，讨论地区企业成长方案」；08.24上涨+2.29%（大盘KOSPI下跌-3.13%，逆势上扬），相关新闻为「'Blue Archive'开发团队新作名为'Pareidolia'」；08.25下跌-2.11%，相关新闻为「[K游戏吸引中国资本①]市场验证的IP具吸引力，'加价购买'」（另有9个早期显著交易日未列出）。"
       },
       "259960": {
         "20260722": "7月KOSPI两次熔断冲击中Krafton作为权重股+外资重仓股遭双重打击。但PUBG Q1在线30万+AI Raon生态+Ascend Zero新作进展+Q1利润+52%基本面提供对冲。",
@@ -112,7 +114,8 @@
         "20260819": "<strong>大盘异动：KOSPI -5.79%</strong>背景下，Pearl Abyss当日逆势上涨+0.49%，整体走势与大盘保持一致。同时，当日消息面利好，韩国游戏产业协会与京畿内容振兴院宣布携手推广健康游戏文化，为股价提供一定支撑。",
         "20260820": "<strong>大盘异动：KOSPI +5.89%</strong>背景下，Pearl Abyss当日上涨+4.40%，整体跟随大盘走势。同时，当日消息面传出「Crimson Desert地图变更，或暗示海上DLC」，进一步提振市场情绪。",
         "20260821": "<strong>大盘异动：KOSDAQ -4.64%</strong>背景下，Pearl Abyss当日逆势上涨+0.47%，整体走势与大盘保持一致。结合当日消息面，「韩国游戏产业协会与全北游戏业界举行现场座谈会，就地区企业成长方案展开讨论」，为股价提供一定支撑。",
-        "20260824": "Pearl Abyss8月内主要交易日：08.18跌-2.24%（大盘KOSDAQ-3.47%，同向）「Pearl Abyss Crimson Desert(红色沙漠)，发布“迄今为止的更新”信息图 - Pearl Abyss」；08.19涨+0.49%（大盘KOSPI-5.79%，逆势）「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」；08.20涨+4.40%（大盘KOSPI+5.89%，同向）「Crimson Desert地图变更，或暗示海上DLC」；08.21涨+0.47%（大盘KOSDAQ-4.64%，逆势）「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」；08.24平+0.00%（大盘KOSPI-3.13%，大盘剧烈波动中持平）「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」（另有8个早期显著交易日未列出）。"
+        "20260824": "Pearl Abyss8月内主要交易日：08.18跌-2.24%（大盘KOSDAQ-3.47%，同向）「Pearl Abyss Crimson Desert(红色沙漠)，发布“迄今为止的更新”信息图 - Pearl Abyss」；08.19涨+0.49%（大盘KOSPI-5.79%，逆势）「韩国游戏产业协会-京畿内容振兴院携手推广健康游戏文化」；08.20涨+4.40%（大盘KOSPI+5.89%，同向）「Crimson Desert地图变更，或暗示海上DLC」；08.21涨+0.47%（大盘KOSDAQ-4.64%，逆势）「韩国游戏产业协会，与全北游戏业界现场座谈会···讨论地区企业成长方案」；08.24平+0.00%（大盘KOSPI-3.13%，大盘剧烈波动中持平）「IZE娱乐南宫勋代表：韩国游戏产业将再次增长」（另有8个早期显著交易日未列出）。",
+        "20260825": "Pearl Abyss 8月主要交易日表现如下：08.19上涨+0.49%（大盘KOSPI下跌5.79%，逆势上扬），相关消息为「韩国游戏产业协会与京畿内容振兴院携手推广健康游戏文化」；08.20上涨+4.40%（大盘KOSPI上涨5.89%，同向走强），相关消息为「Crimson Desert地图变更，或暗示海上DLC」；08.21上涨+0.47%（大盘KOSDAQ下跌4.64%，逆势上涨），相关消息为「韩国游戏产业协会与全北游戏业界举行现场座谈会，讨论地区企业成长方案」；08.24持平+0.00%（大盘KOSPI下跌3.13%，在大盘剧烈波动中保持平稳），相关消息为「'Blue Archive'开发团队新作名为'Pareidolia'」；08.25上涨+2.95%，相关消息为「Crimson Desert Enhanced：面向所有玩家的免费更新」（另有9个早期显著交易日未列出）。"
       },
       "036570": {
         "20260722": "7月史诗级崩盘中NC基本面(Aion 2预约120万+Q1利润YoY+1700%)被系统性风险完全覆盖。但7/2黑色星期四中NC逆势+3.72%领涨资金避风港(硬件→软件轮动)。Aion 2全球发布窗口临近提供差异化催化。",
@@ -233,7 +236,8 @@
       "8/19",
       "8/20",
       "8/21",
-      "8/24"
+      "8/24",
+      "8/25"
     ],
     "datasets": [
       {
@@ -334,7 +338,8 @@
           2.58,
           5.8,
           2.42,
-          2.42
+          2.42,
+          3.22
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -443,7 +448,8 @@
           1.9,
           2.79,
           1.34,
-          3.68
+          3.68,
+          19.64
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -552,7 +558,8 @@
           -2.48,
           -2.09,
           -3.26,
-          -1.04
+          -1.04,
+          -3.13
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -661,7 +668,8 @@
           -5.39,
           -4.96,
           -3.23,
-          -2.59
+          -2.59,
+          -3.02
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -770,7 +778,8 @@
           -5.74,
           -5.32,
           -5.53,
-          -4.68
+          -4.68,
+          -5.11
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -879,7 +888,8 @@
           -9.31,
           -5.32,
           -4.87,
-          -4.87
+          -4.87,
+          -2.07
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -893,6 +903,150 @@
     ]
   },
   "events": [
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Crimson Desert|开放世界动作冒险-Pearl Abyss</strong>",
+      "source": "Pearl Abyss",
+      "date": "08.13",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9GYTU5SzdScGxkdklZVjl2eGV3SDN6aC1CcFZ0SEM1YjU2NzNOWW5FRHRwekZmclhjZHBkTDVOQWFoYXZjTWtQeHNoUHNleGx4dTFNS0t5TFFIYTQ?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Crimson Desert Enhanced:面向所有玩家的免费更新</strong>",
+      "source": "games.gg",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxNTE9yYlJTUUlOa1dHQ0F2OGIwUE1maUtaVFRVMDRQdlZtSC1kUlpLODlmTlNaTTNiUjU0MVNiV0xwSGRkRzh4ckNsQjYwdFRZSEdlN0pSbHY2YTlCLTZNZXl2ZFNpLV9UTGhkdWZHUlFhbXR2Yzg0a0xKTDEzU0NPMmdiSFhEbU84ajZaN3R0OF9FS1RNMVFRM24zTFRYR0x3ODNnRGVPd0s2b09taDc2REFnUjRoYjVMLWRzZWRwQ2xadjZZRGQ2WS1SODU5MldxZVBMX2hJZkZrcXlnUVpQampqYlBQd2tmT1BsV29MT0V2TFE4LUNKenBhRFJ0U09MTW4za2tFQ3dSNFNRcllKV0tYTjg3bHJM?oc=5"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss的Crimson Desert入围'gamescom Award 2026'--'Epic'与'最佳PC游戏'两个奖项</strong>",
+      "source": "Pearl Abyss",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5mSG14ZENKZ1dHZW1DYU8zWWJiVTFFcHNZZkhGdHRjczQ4ZGtkbnZoZzRzay1vUWpDMG9abXU0LUJNNWNlcTIySVA0RTd6cmdjTjBPNnJfLUppbkx5dVRJMW1lcFI?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton在gamescom公开新作5款...'Deadnet'首次亮相</strong>",
+      "source": "더트래커",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE8tbWZTS2tuSTI4WlpnVU9rb2gyZGN3RU0yXzk5azA0TnF4YS1lYUFabUs5LV96eWM4Qjc3S1h4bEp1YklWc0htQ09IZ1hLV2hZYkl6dDRhT2g?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton与NC新作在gamescom揭开面纱</strong>",
+      "source": "v.daum.net",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFB5a3A3aE1ydmVvWU1zREVKMmo0X0FIS2c1Rmc0dDUxZnVPQXNxMWlPaTZMSk5qb1hNMl91MWxTQW5ZVm9yanE1b1VYVGc4Sk0?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>绝地求生新作'PUBG: Deadnet'揭开面纱</strong>",
+      "source": "스포츠경향",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9ZdzNNZDlVZFhfWU8xZ3NoQzMzTU5EWUhiY0xJNVM1cVgyTFJNOHVaa0J3dEZpTl9xNzRoamRiaUFCdXVvQ1gtajh1Wjd3bmFRN2RNRlJrY0ltUlk3S2fSAWNBVV95cUxNMHlvMnJTVUN4NXBEMzZxeXNQMTg1M2JWVTBudkdXTkEzUFBJUmdORGVUdUZoNm81ZWpsZjI4UEtMUDRXbzM2SWVwQnNFVnp6bkJ5NXVhVXA3YVozWmhrUm9XOEU?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton在gamescom公开新作5款...全球IP扩张加速</strong>",
+      "source": "팍스경제TV",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBPb0QtU2JPX0xZRVNlWElSMUxjUTFybUlyVHlsY0JUYVlCRHFjYWQ3Ym9ieEtLQUFPaW5CZER1NXozM0NnWVhjSW1LMktORjFCRnowNTVnZkdQdEl5ZFd3X3QzclVtVFFy?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>暗黑幻想'Taere'以韩语预告片ONL出道...Krafton新作5款公开</strong>",
+      "source": "전자신문",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9lMUJRdHlIVF8zbFctd19XMVQyeDBKbjhkanFMQjF0WDdWLU1FTk43V2ZDdE1YOGdUcDlxbHRvTU94c2ZJVVhkM3dKTFZUQQ?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>'gamescom 2026'Krafton在'ONL'公开新作5款</strong>",
+      "source": "신아일보",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE92ejllUkxBcC1xLXRhc3VtWTE0Y1BGWGFHQjJ1cldIME1XRjVXTXlmOTdvRGFmU2hnWWp4SkxJaUFQeE15ZGd5dXVUU3JqeHdvOE43c0I4MGd2SElGalg5dFRfQW9odUtLaXN1MW1WLUo?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton在gamescom公开新作5款视频...PUBG IP新作'PUBG: Deadnet'首秀</strong>",
+      "source": "Chosunbiz",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNX1pSZXgtLU5UUUpBQnlPUk1FNUpOMzBvU2JJVUx5VWJlSUZRM2p3b2w5S1M5ei1ndkRXYS15NGdjWEEydW1MMFpJSHM4SGJ2UWJNQmtXVHk3aW51Nm1BYTlJaFQ3SHBfZHQwX0VfNWM3QUhPNU5HQUt5c3B2ZVpHWTVn0gGWAUFVX3lxTFBSSTJRMGMzd1hHOXlDOFlRNHBOTlpWaUREeEt1dTBLTTN0RU9QUVZPNEhQcHI5ZmNvTjdqM3dYM1l5T3dlTFEyaVFXQjVndU1FZktPSDYtMnZOQ0gya2tFSkJ0ekZpQ042V2dFRkg4allPX0NvTzZUZ2d2VnNhMzVxT0FnM2JLN2xjb1NsY1hCbVVlblJFUQ?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>[gamescom] Krafton与NC新作总攻势...从'PUBG: Deadnet'到'Like or Die'</strong>",
+      "source": "ebn.co.kr",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9mZnFFaHJxQWtuMXlwaE9hUjhTLWhMY1l3TkNJUFV1aTZlTXllaGRvYjhlNmpBMnRWQVFvbk1DeUJJRFhWR3ppZG05NlJKUXN5dk8zcGRvbV9JSXpjRG5UOXlCOV92N2xa?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>[gamescom 2026] NC以'Aion 2'-'Sinder City'-'Like or Die'开启全球大门</strong>",
+      "source": "게임동아",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE16d0Z1SnI4NG12UDZuVl9IVHdmZEpaRndDZWZVM2NvRUEtZm9VczkxX3FCc0J5MVppUHZ6Y2dhWGxjTTZS?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC在gamescom公开新作3款...'Aion 2'10月全球上市</strong>",
+      "source": "파이낸셜뉴스",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5VRWd4TS1TZnJtUWw1cHlWZ3dQV3V0WVdiTGV1em42ZjFiYnF1dktTTWpUOEp4eU1MQWVQOVFQVmhGRlI2OTRpeGR2VkdxWGxYNTI4cXZwYmhkZw?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC在'gamescom ONL'公开新作3款...10月以'Aion 2'开启全球大门</strong>",
+      "source": "포인트경제",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE00SnZFaGlKeEVnXy1ISUU5ZU5Pdnk4bEVlR1Bfa1dDVTFrWEl5dFRzU3IyZ1VNNzU3S2JDVkE0bDg1YjZPb0kxUlpMTVFpRTRqb2k5NkNEM1daRWp1MDZnblF2WVlOZVM0Mnc?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC在gamescom公开新作3款...Aion 2发售日确定</strong>",
+      "source": "뉴스1",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBab2pucmFYVHNteXp5bFg1aXI2SVRjRlpwaldnTGRmbHJZWHZLR0lQYXVudUhWMmE2c2FWb1JidmJGdzRGc2tNdmlKMVp6bExQZDVpbFVxYS1idnprLXIzS9IBZkFVX3lxTFBZUFQxUVJuOGdkZXlKLWxMdXh6ZDdMcmkwaWNPRWRPVTJSRGxseGJTZ1czM200Y256dmNQVUY5ZXZmbDkzeFgweEdjbldkRHAwcmRiZ2M5VEd4S0lpdUtFUGs5TDczUQ?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC以Aion 2瞄准全球、以Sinder City瞄准主机市场</strong>",
+      "source": "중소기업신문",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1Wa1Y2andXMjFrckJzamFseHgzNFRjRFNuNUZjTFoydlkzVTBxMW04WEpaT2NOS3pKNnVvM1NhTXZoX3kwTVlYZC13Z05nenl5VmRYNjd1UHBRbVg1MkJNSHJhbmNCNTZ2dXAzSg?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>gamescom ONL舞台上的NC新作3款...'Aion 2'10月全球出击</strong>",
+      "source": "전자신문",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1BaGllWGdDRjZTaVdMZVZrelJOaDlzQkZaSWtZcEhoZEpRdnBzWWxMWkFoWG5pVEpWWHpwZmh6cGxXNHdsck1wLUVoaTlhdw?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>NC与Nexon新作日本对决，'Blue Archive'成功谱系谁将继承引关注</strong>",
+      "source": "비즈니스포스트",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBGdVdaMHI0OVFXTmZxU0F0Y0lYMU5oZjlpNWhWendrZ3VzMWJISDhQX3NLaWtxaXU5eEtsM0xGVnFyLUFJN3M2VmI5YmlKUXRnNWljUnB1WnhONjlhNGZQT1VicUo2Mi02V2xKWXZ2bDV5dHc?oc=5"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -1876,6 +2030,38 @@
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[K游戏吸引中国资本①]市场验证的IP具吸引力...\"加价购买\"</strong>",
+      "source": "인사이트코리아",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE95dmJTcktyTFpWY0UxZWFLcE5iel9LVVk3amFOdV9pcU9wZWxGTlZNbGNMV1l6VDhjSDBxd1RvNHg1YUZZclBvdUlUUHdSeDN4SFBrR21hcm9sdU9tV2R5WlNRdXJkZVpKcjZSQjlyOFRzOE3SAXdBVV95cUxNS3doUlkzNWU2b0ktQWJqV3dOWEUxX1VIc2tyaXJERHE0WHZkak9FVElQQ1ZWcTNRMEpob1RVek9PZGVJbXpUbWxqOVhqeVZFRllsbUNqYkhLWmluYTYwVi1vZ0cwdVVfZnBqVEx5NjBLSC1HWjZWNA?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[探访]新作信息引发欢呼...gamescom前夜祭成全球玩家庆典</strong>",
+      "source": "연합뉴스",
+      "date": "08.25",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE12alh2WnVoNktoSmp0bnkzTUU3cW5BeWpRWXFrUF94ODJqVW40cFh4bUl0bFdlZVFoLWFabXdQX0JXN3Bwb0VVNThhcG5ubDBoRjVFMXlhNUdTaGPSAWBBVV95cUxOa01HSHZOeHZZbDRZRjJOMUNmYXBoWVp6UGhqMUlWVUdxWFBsamdNb2FHWTZ4MDJTd3k4X2dxTFUySDdBRmE4VE5mSkxTTUVHYkI0MV8xMXRmTWM3dmZqalY?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>NC在gamescom ONL公开新作FPS'Like or Die'等3款</strong>",
+      "source": "청년일보",
+      "date": "08.26",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9PSHN3Rm9DTjBCSzJGeWhXUHVTRGdKNjd6SUxpaDlVY3l4eDVfcTFwNmtBRHhTOGZ0RTc0NnlEVUFlU3Qzc0lTRTBoUk1OeTMzU21aV0IzY0JpOUNUWnphbUtDUUF4V3NCdGc?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>'Blue Archive'开发团队新作名为'Pareidolia'</strong>",
+      "source": "IT조선",
+      "date": "08.24",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5jcUx3Qlc5TGR2bDEyVEtVNVRHUlUyYk1aSXNkTy1CNDNPTFEtdHRRNk5xTW1CYXpEMmNvTDcwWkdPQzRwU0tnMWpWa3VDbThpZXNJejM2TS05NExPTjRjYUVMZ0VHb3gyM25Cb0NUaV_SAXRBVV95cUxQQVBURjJRejV5OU4xYmJXMkZZVjd6cXNlUXlzenBjcC1hV2ZZNVFJZjF4OGhXX0J3SVQ3OENleFQ0LURIdVlzemVoM2ZVdmYxQUFzVU54ZF9rZXAtRnhCaVRTYjRILXEwMTZDanYwMld6dE4zNA?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
