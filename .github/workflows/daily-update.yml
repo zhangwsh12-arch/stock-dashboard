@@ -2,10 +2,15 @@ name: Daily Stock Data Update
 
 on:
   # ====== 外部定时触发（cron-job.org 精准触发，无延迟）======
-  # 可通过 client_payload.force_notify=true 强制推送
-  # 例: gh api repos/.../dispatches -f event_type=trigger-update -f '{"force_notify":true}'
-  # 建议配置: 工作日 UTC 02:00 (北京时间 10:00 / 韩国时间 11:00)
-  # 韩国股市收盘时间为 KST 15:30，11:00 推送可确保数据已完整录入
+  # 两阶段推送（详见 phase 参数）：
+  #   preview 阶段：工作日 北京时间 17:00 (UTC 09:00 / KST 18:00) — 收盘后抓取+部署，推给 B 预览群
+  #   final   阶段：次日 工作日 北京时间 10:00 (UTC 02:00 / KST 11:00) — 不重新抓取，仅把同份数据推给 A 正式群
+  # 韩国股市收盘时间为 KST 15:30，17:00 北京(=18:00 KST) 抓取可确保数据已完整录入。
+  # 可通过 client_payload 控制：
+  #   phase='preview'  → update 照常 + 推 B
+  #   phase='final'    → update 跳过 + 仅推 A
+  #   无 phase         → 兼容旧行为（update + 推 A）
+  #   force_notify=true → 忽略每日去重强制推送
   repository_dispatch:
     types: [trigger-update]
 
@@ -35,9 +40,12 @@ concurrency:
 jobs:
   # ====== 数据更新+验证+部署 ======
   update:
+    # final 阶段（次日10点推A）不需要重新抓取/部署，由 17点 preview 阶段已完成；
+    # preview / 无 phase / workflow_dispatch 均正常运行抓取。
     if: |
-      github.event.action == 'trigger-update' ||
-      github.event_name == 'workflow_dispatch'
+      github.event.client_payload.phase != 'final' &&
+      (github.event.action == 'trigger-update' ||
+       github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -155,7 +163,7 @@ jobs:
     needs: update
     if: |
       always() &&
-      needs.update.result == 'success' &&
+      needs.update.result != 'failure' &&
       github.event.inputs.skip_notify != 'true' &&
       github.event.client_payload.skip_notify != true &&
       (github.event.action == 'trigger-update' ||
@@ -215,11 +223,26 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Send WeCom notification
+      # ====== 两阶段分流：preview(17点)→B 预览群；final/无phase(次日10点/手动)→A 正式群 ======
+      # 两个 send 步骤按 client_payload.phase 选择 Webhook，B/A 文案完全一致（仅接收群不同）。
+      - name: Send WeCom notification to B (preview phase)
+        id: send-notify-b
+        if: >-
+          (steps.notify-guard.outputs.cache-hit != 'true' ||
+           steps.resolve-force.outputs.force_notify == 'true') &&
+          github.event.client_payload.phase == 'preview'
+        env:
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL_B }}
+          DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
+        run: node scripts/notify-wecom.mjs
+        continue-on-error: true
+
+      - name: Send WeCom notification to A (final / dispatch phase)
         id: send-notify
         if: >-
-          steps.notify-guard.outputs.cache-hit != 'true' ||
-          steps.resolve-force.outputs.force_notify == 'true'
+          (steps.notify-guard.outputs.cache-hit != 'true' ||
+           steps.resolve-force.outputs.force_notify == 'true') &&
+          github.event.client_payload.phase != 'preview'
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
@@ -228,9 +251,16 @@ jobs:
 
       # continue-on-error 会让此步骤失败时 job 整体仍显示绿色✅，容易被忽略。
       # 显式写入告警，避免"推送失败但看起来一切正常"（2026-08-06 曾因 fetch failed 静默漏推）。
-      - name: Warn if notification failed
+      - name: Warn if B notification failed
+        if: steps.send-notify-b.outcome == 'failure'
+        run: |
+          echo "### 企业微信推送失败（B 预览群）" >> "$GITHUB_STEP_SUMMARY"
+          echo "notify-wecom.mjs 本次运行失败（多次重试后仍无法送达），B 预览群消息未推送。请检查 WECOM_WEBHOOK_URL_B 是否有效或网络问题。" >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::notify-wecom.mjs failed (B) — 企业微信通知未推送成功，请检查日志"
+
+      - name: Warn if A notification failed
         if: steps.send-notify.outcome == 'failure'
         run: |
-          echo "### 企业微信推送失败" >> "$GITHUB_STEP_SUMMARY"
-          echo "notify-wecom.mjs 本次运行失败（多次重试后仍无法送达），今日消息未推送。请检查 Webhook 是否有效或网络问题。" >> "$GITHUB_STEP_SUMMARY"
-          echo "::warning::notify-wecom.mjs failed — 企业微信通知未推送成功，请检查日志"
+          echo "### 企业微信推送失败（A 正式群）" >> "$GITHUB_STEP_SUMMARY"
+          echo "notify-wecom.mjs 本次运行失败（多次重试后仍无法送达），A 正式群消息未推送。请检查 WECOM_WEBHOOK_URL 是否有效或网络问题。" >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::notify-wecom.mjs failed (A) — 企业微信通知未推送成功，请检查日志"
