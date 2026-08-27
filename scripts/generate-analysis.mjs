@@ -553,6 +553,7 @@ ${sheet}
 
 【写作要求】
 - 为 ${fact.name} 在 ${fact.asOfDate} 这一天写一句【单日驱动因素】，只解释"为什么这一天涨/跌"，形成因果链条。
+- 【方向一致性硬约束】因果必须与当日涨跌方向严格一致：当日下跌时，所列事件必须是下跌的合理解释（利空事件 / 利好兑现后的获利了结 / 大盘或板块系统性拖累）；严禁用纯利好事件直接当作下跌原因，除非明确表述为"利好不敌系统性抛压 / 获利了结"。当日上涨同理，不得用利空事件直接解释上涨。如当日仅有利好新闻却仍下跌，应表述为"利好未能抵挡板块/大盘回调"，而非"受利好影响下跌"。
 - 必须以"当日及近3日相关新闻/事件"为主素材构建因果；若该公司有专属新闻，就以这些真实事件为主因，不要写与其他公司雷同的通用行业套话。若确无专属新闻，才可基于行业/大盘通用动向与行情方向说明，但仍不得编造具体事件。
 - 严禁写：公司间排名、PER/估值、最佳↔最差交易日对比、"上涨X天下跌X天"等趋势性数据罗列；不要写"本月累计"等字眼，不要复述界面已展示的当日涨跌幅。
 - 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
@@ -561,17 +562,39 @@ ${sheet}
 - 仅输出分析正文（不要标题），可直接嵌入看板。`;
 }
 
+// 轻量情感分类：用于规则兜底时判断新闻偏多/偏空，避免“利好被当成下跌原因”的逻辑矛盾
+function classifySentiment(title) {
+  const neg = ['下跌','抛售','减持','下调','延迟','推迟','取消','承压','下滑','亏损','诉讼','调查','处罚','警告','降级','做空','崩盘','暴跌','回落','利空','不及预期','裁员','终止','失败','暂停','流出','赎回','缩水','腰斩','破发','套牢','踩雷','推迟','推迟上映'];
+  const pos = ['公开','上线','亮相','首发','提名','获奖','入围','利好','提振','增长','创新高','突破','合作','签约','加码','加价','关注','支持','预期','订单','扭亏','超预期','扩张','发布','定名','试玩','预告','续作','新版','更新','免费','上调','回购','中标','获批','放量','大涨','走强','反弹','加码','看好','红利'];
+  let p = 0, n = 0;
+  for (const w of pos) if (title.includes(w)) p++;
+  for (const w of neg) if (title.includes(w)) n++;
+  if (n > p) return -1;
+  if (p > n) return 1;
+  return 0;
+}
+function trimNews(t, max = 34) {
+  return t.length > max ? t.slice(0, max) + '…' : t;
+}
+
 function dailyRuleFallback(fact, news, isSU, dailyPct) {
   const dir = Number.isNaN(dailyPct) ? '震荡' : (dailyPct > 0 ? '上行' : dailyPct < 0 ? '下行' : '盘整');
   const hasCJK = (t) => /[가-힣一-鿿]/.test(t);
-  const cNews = (news.company || []).map((n) => n.title).filter(hasCJK);
-  const sNews = (news.sector || []).map((n) => n.title).filter(hasCJK);
-  const all = [...cNews, ...sNews];
-  if (all.length) {
-    const top = all.slice(0, 2).join('；');
-    return `受${top}等动向影响，当日${dir}。`;
+  const cNews = (news.company || []).map((n) => n.title).filter(hasCJK).map((t) => ({ t, s: classifySentiment(t) }));
+  const sNews = (news.sector || []).map((n) => n.title).filter(hasCJK).map((t) => ({ t, s: classifySentiment(t) }));
+  const posNews = [...cNews, ...sNews].filter((x) => x.s > 0).map((x) => x.t);
+  const negNews = [...cNews, ...sNews].filter((x) => x.s < 0).map((x) => x.t);
+  if (dir === '下行') {
+    if (negNews.length) return `受${trimNews(negNews[0])}等利空拖累，当日下行。`;
+    if (posNews.length) return `当日下行，虽有${trimNews(posNews[0])}等利好，但未能抵挡板块/大盘回调压力。`;
+    return `当日下行，与板块及大盘氛围相关，未见明确独立催化。`;
   }
-  return `当日${dir}，与板块及大盘氛围相关，未见明确独立催化。`;
+  if (dir === '上行') {
+    if (posNews.length) return `受${trimNews(posNews[0])}等利好提振，当日上行。`;
+    if (negNews.length) return `当日逆势上行，虽有${trimNews(negNews[0])}等利空，但已被市场消化。`;
+    return `当日上行，板块情绪回暖带动，未见明确独立催化。`;
+  }
+  return `当日盘整，多空均衡，方向性催化有限。`;
 }
 
 async function generateDailyEntityText(fact, news, isSU, dailyPct) {
