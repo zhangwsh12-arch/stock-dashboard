@@ -1,434 +1,777 @@
-#!/usr/bin/env node
-// ============================================================
-// 涨跌分析自动生成 - 韩国游戏股价看板
-// 用途：每日数据更新后，基于当日股价涨跌幅 + 大盘指数异动 + 当日事件，
-//       自动生成/追加一条"涨跌原因"分析文本，写入 data/content.json 的
-//       analysis.su / analysis.company[code] 结构（index.html 的
-//       generateSUAnalysis()/findCompanyReason() 会按日期优先读取这里）。
+// generate-analysis.mjs
+// 韩国游戏股价看板 —— 月度分析文字生成器（量化 + LLM 混合架构）
 //
-// 触发条件：默认只在"大盘或个股出现>=2%异动"时生成，避免每天都写入
-//          意义不大的"正常波动"文案，保持 content.json 干净。
+// 设计原则：
+//   1) 本地量化层：从 data/2026MMDD.json 历史快照中精确计算月内累计涨跌幅、6 家排名、
+//      最佳/最差交易日、与大盘(KOSPI/KOSDAQ)同向/逆势统计、当前价与估值等"100% 准确事实"。
+//   2) LLM 叙事层：将上述事实作为"不可更改事实清单"注入 Prompt，由模型只做基于事实的中文
+//      叙事（不做任何算术），杜绝数字幻觉。模型默认 DeepSeek-V3（OpenAI 兼容端点，可配置）。
+//   3) 护栏：生成后校验输出中的百分比是否均来自事实清单（带容差），含韩文则降级；
+//      失败/超时/无密钥时回退到基于事实的规则模板（同样是叙事式，而非逐日罗列）。
+//   4) 人工数据保护：仅当目标日期键不存在（或 --force）时才写入；--force 还会迁移同月内
+//      仍是"逐日罗列"旧格式的条目。
 //
-// 幂等性：同一 dateStr 已存在对应分析文本时跳过，不会覆盖已有内容
-//        （人工修正过的文本不会被自动脚本覆盖）。
+// 触发：仅当当日个股波动 >= STOCK_THRESHOLD 或大盘出现极端波动时才生成，避免无谓写入；
+//      渲染端 index.html 会取 <= 当日的最新一条，故平日展示最近一次显著波动日的月度回顾。
 //
-// 环境变量（可选，未配置时使用规则引擎兜底，不影响主流程）：
-//   OPENAI_API_KEY / ANTHROPIC_API_KEY - 用于润色规则引擎生成的事实文本
-//   OPENAI_BASE_URL - OpenAI 兼容网关地址（默认 https://api.openai.com/v1）
-//                     可指向 DeepSeek / 通义千问 / 智谱 / 月之暗面 / 混元等兼容服务
-//   OPENAI_MODEL    - 模型名（默认 gpt-4o-mini；换厂商时必须一并指定）
+// 用法：
+//   node scripts/generate-analysis.mjs            # 常规：仅当日、按需生成
+//   node scripts/generate-analysis.mjs --force    # 强制重算当日并迁移同月旧条目
 //
-// 用法: node scripts/generate-analysis.mjs
-// ============================================================
+// 数据源：data/latest.json（当日快照）+ data/2026MMDD.json（历史）+ data/content.json（写入 analysis）
 
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { callLLM, llmConfig } from './llm-client.mjs';
 
-const DATA_DIR = join(import.meta.dirname || '.', '..', 'data');
-const LATEST_PATH = join(DATA_DIR, 'latest.json');
-const CONTENT_PATH = join(DATA_DIR, 'content.json');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, '..');
+const DATA_DIR = path.join(ROOT, 'data');
+const LATEST_PATH = path.join(DATA_DIR, 'latest.json');
+const CONTENT_PATH = path.join(DATA_DIR, 'content.json');
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-// OpenAI 官方 API 在部分地区注册/支付门槛较高，因此把网关与模型抽成环境变量，
-// 使其可直接复用任何"OpenAI 兼容"服务（DeepSeek、通义千问、智谱、Kimi、混元等），
-// 无需改代码。未配置时行为与之前完全一致。
-const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-
-// 跟踪公司：code -> name（与 validate-data.mjs 保持一致）
+const STOCK_THRESHOLD = 2.0;       // 个股单日波动阈值(%)，达到才生成
+const INDEX_EXTREME = 3.0;         // 大盘单日极端波动阈值(%)
+const SU_CODE = '462870';
+const SU_NAME = 'Shift Up';
 const TRACKED_COMPANY = {
   '225570': 'Nexon Games',
   '251270': 'Netmarble',
-  '036570': 'NC',
+  '036570': 'NCsoft',
   '259960': 'Krafton',
   '263750': 'Pearl Abyss',
 };
-const SU_CODE = '462870';
-const SU_NAME = 'Shift Up';
 
-// 触发阈值：个股涨跌幅超过此值才生成分析
-const STOCK_THRESHOLD = 2;
-// 大盘异动阈值：KOSPI/KOSDAQ 涨跌幅超过此值视为"极端波动"
-const INDEX_EXTREME_THRESHOLD = 3;
+// ---------- 工具函数 ----------
 
-function fmtPct(v) {
-  const n = parseFloat(v);
-  if (isNaN(n)) return '0.00%';
-  return `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
+// 把 "32,900" / "+2.65%" / "-3.86%" / "3.05" 转成数字；非法返回 NaN
+function parseNum(v) {
+  if (v === undefined || v === null) return NaN;
+  const s = String(v).replace(/,/g, '').replace(/%/g, '').replace(/\+/g, '').trim();
+  if (s === '' || s === '-' || s === '--') return NaN;
+  return parseFloat(s);
 }
 
+// 把数字格式化为带符号百分比文本，如 +2.65% / -3.86% / 0.00%
+function fmtPct(n, digits = 2) {
+  if (Number.isNaN(n)) return '0.00%';
+  const sign = n > 0 ? '+' : '';
+  return `${sign}${n.toFixed(digits)}%`;
+}
+
+// 日期字符串(YYYYMMDD) -> "MM.DD"
 function mmddOf(dateStr) {
-  // dateStr: YYYYMMDD -> MM.DD（与 content.json 中 events.date 格式一致）
-  if (!dateStr || dateStr.length < 8) return '';
   return `${dateStr.slice(4, 6)}.${dateStr.slice(6, 8)}`;
 }
 
-// ====== 可选：调用 LLM 对规则引擎生成的事实文本进行润色（不改变事实，只优化表达）======
-async function polishWithLLM(factsText, companyName) {
-  const apiKey = OPENAI_API_KEY || ANTHROPIC_API_KEY;
-  if (!apiKey) return null;
-  const systemPrompt = '你是韩国游戏行业股票分析师。你会收到一段已核实的事实性文本，只能在不改变任何数字、事件、公司名的前提下，让语言更流畅、专业。禁止编造、禁止删减关键事实。若无需改动，原样返回。';
-  const userPrompt = `请润色以下关于 ${companyName} 的涨跌分析文本（保留所有<strong>标签和数字）：\n\n${factsText}`;
-  try {
-    if (OPENAI_API_KEY) {
-      const resp = await fetch(`${OPENAI_BASE_URL}/chat/completions`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: OPENAI_MODEL,
-          messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userPrompt }],
-          temperature: 0.2,
-          max_tokens: 500,
-        }),
-      });
-      const data = await resp.json();
-      return data.choices?.[0]?.message?.content?.trim() || null;
-    }
-    if (ANTHROPIC_API_KEY) {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 500,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userPrompt }],
-        }),
-      });
-      const data = await resp.json();
-      return data.content?.[0]?.text?.trim() || null;
-    }
-  } catch (err) {
-    console.warn(`  ⚠️ LLM 润色失败 (${companyName}): ${err.message}，使用规则引擎原文`);
+// 读取某日快照（优先 data/YYYYMMDD.json，否则回退 latest）
+function readSnapshot(dateStr) {
+  const p = path.join(DATA_DIR, `${dateStr}.json`);
+  if (fs.existsSync(p)) {
+    try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { /* ignore */ }
   }
   return null;
 }
 
-// ====== 读取本月内（截至 dateStr 当天）所有交易日的历史快照文件 ======
-// 用途：让"本月变动原因分析"真正基于全月已发生的显著交易日拼装叙事，
-//      而不是每次只重复"当日"这一天的数据（那样套在"本月"标题下会显得
-//      前后矛盾：标题说月累计X%，正文却只解释今天一天的0%涨跌）。
-function loadMonthSnapshots(dateStr) {
-  const month = dateStr.slice(0, 6);
-  let files = [];
-  try {
-    files = readdirSync(DATA_DIR).filter(f => /^\d{8}\.json$/.test(f) && f.slice(0, 6) === month && f.slice(0, 8) <= dateStr);
-  } catch {
-    return [];
+// 收集某月（截至 asOfDate，含）内的所有交易日快照，按日期升序
+function loadMonthSnapshots(asOfDate) {
+  const ym = asOfDate.slice(0, 6);
+  const snaps = [];
+  if (fs.existsSync(DATA_DIR)) {
+    for (const f of fs.readdirSync(DATA_DIR)) {
+      const m = f.match(/^(\d{8})\.json$/);
+      if (!m) continue;
+      const d = m[1];
+      if (d.slice(0, 6) === ym && d <= asOfDate) snaps.push(d);
+    }
   }
-  files.sort();
-  const snapshots = [];
-  for (const f of files) {
+  snaps.sort();
+  const list = snaps.map(readSnapshot).filter(Boolean);
+  // 确保当日（asOfDate）快照存在：若文件缺失，用 latest 顶替
+  const hasToday = snaps.includes(asOfDate);
+  if (!hasToday && fs.existsSync(LATEST_PATH)) {
     try {
-      snapshots.push(JSON.parse(readFileSync(join(DATA_DIR, f), 'utf-8')));
-    } catch {
-      // 忽略读取失败的单个快照，不影响其余月度叙事
+      const latest = JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8'));
+      if (latest?.meta?.date === asOfDate) list.push(latest);
+    } catch { /* ignore */ }
+  }
+  return list;
+}
+
+// 从单日快照取某实体的当日涨跌幅(%)
+function getStockPct(entity, snap) {
+  if (entity.isSU) return parseNum(snap?.shiftUp?.changePercent);
+  const c = (snap?.companies || []).find((x) => x.code === entity.code);
+  return parseNum(c?.change);
+}
+
+// 从单日快照取大盘涨跌幅(%)
+function getIndexPct(snap, key) {
+  const idx = (snap?.indices || []).find((x) => x.name === key);
+  return parseNum(idx?.changePercent);
+}
+
+// 连乘每日涨跌幅得到区间累计收益率(%)
+function chainReturn(pcts) {
+  let prod = 1;
+  for (const p of pcts) {
+    const n = parseNum(p);
+    if (!Number.isNaN(n)) prod *= 1 + n / 100;
+  }
+  return (prod - 1) * 100;
+}
+
+// ---------- 量化层 ----------
+
+function buildEntities() {
+  const entities = [{ code: SU_CODE, name: SU_NAME, isSU: true }];
+  for (const [code, name] of Object.entries(TRACKED_COMPANY)) {
+    entities.push({ code, name, isSU: false });
+  }
+  return entities;
+}
+
+// 为某个"截至日期"构建全部实体的量化事实
+function buildQuantContext(asOfDate, monthSnapshots, latest, content) {
+  const entities = buildEntities();
+
+  // 大盘月度序列
+  const kospiSeries = monthSnapshots.map((s) => ({ date: s.meta.date, pct: getIndexPct(s, 'KOSPI') }));
+  const kosdaqSeries = monthSnapshots.map((s) => ({ date: s.meta.date, pct: getIndexPct(s, 'KOSDAQ') }));
+  const kospiMtd = chainReturn(kospiSeries.map((x) => x.pct));
+  const kosdaqMtd = chainReturn(kosdaqSeries.map((x) => x.pct));
+  let extremeDays = 0;
+  for (let i = 0; i < kospiSeries.length; i++) {
+    const a = kospiSeries[i].pct;
+    const b = kosdaqSeries[i].pct;
+    if (Math.max(Math.abs(a), Math.abs(b)) >= INDEX_EXTREME) extremeDays++;
+  }
+
+  // 各实体月内序列
+  const seriesByEntity = {};
+  for (const e of entities) {
+    seriesByEntity[e.code] = monthSnapshots.map((s) => ({
+      date: s.meta.date,
+      pct: getStockPct(e, s),
+      kospi: getIndexPct(s, 'KOSPI'),
+      kosdaq: getIndexPct(s, 'KOSDAQ'),
+    })).filter((x) => !Number.isNaN(x.pct));
+  }
+
+  // 排名（按月内累计）
+  const mtdByCode = {};
+  for (const e of entities) mtdByCode[e.code] = chainReturn(seriesByEntity[e.code].map((x) => x.pct));
+  const ranked = [...entities].sort((a, b) => mtdByCode[b.code] - mtdByCode[a.code]);
+
+  const facts = {};
+  for (const e of entities) {
+    const series = seriesByEntity[e.code];
+    const mtd = mtdByCode[e.code];
+    const rank = ranked.findIndex((x) => x.code === e.code) + 1;
+
+    let best = null;
+    let worst = null;
+    let up = 0;
+    let down = 0;
+    let flat = 0;
+    let contrarian = 0;
+    for (const x of series) {
+      if (x.pct > 0) up++;
+      else if (x.pct < 0) down++;
+      else flat++;
+      const idxAvg = (x.kospi + x.kosdaq) / 2;
+      if (Math.abs(x.pct) >= STOCK_THRESHOLD && Math.sign(x.pct) !== Math.sign(idxAvg) && idxAvg !== 0) {
+        contrarian++;
+      }
+      if (best === null || x.pct > best.pct) best = { date: x.date, pct: x.pct };
+      if (worst === null || x.pct < worst.pct) worst = { date: x.date, pct: x.pct };
     }
-  }
-  return snapshots;
-}
 
-// 韩语残留二次校验：过滤掉 title 中仍含韩语字符的事件
-// （fetch-news.mjs 的本地词典翻译偶尔产出中韩混杂病句，此处作为最终防线）
-function stripInvalidEvents(events) {
-  return events.filter(e => !/[가-힣]/.test(e.title.replace(/<[^>]+>/g, '')));
-}
-
-// ====== 规则引擎：基于"全月已发生的显著交易日"生成叙事性月度分析 ======
-// 目标：输出类似人工撰写的月度总结（如20260731 SU的"三熔断月"叙事），
-//      而非机械地罗列每日数据点。
-//
-// 叙事结构：
-//   ① 开篇：本月累计涨跌 + 大盘背景 + 一句话定性（抗跌/随波/跑赢/跑输）
-//   ② 关键转折：涨幅最大日、跌幅最大日、逆势日（个股与大盘方向相反且幅度显著）
-//   ③ 事件驱动：关联当日新闻标题（去重、限2条最相关）
-//   ④ 收尾：波动特征总结 + 前瞻提示（如有）
-function buildMonthlyNarrativeText({ companyName, isSU, key, monthSnapshots, allEvents, monthLabel }) {
-  const validEvents = stripInvalidEvents(allEvents);
-
-  function eventFor(mmdd) {
-    const evt = validEvents.find(e => e.date === mmdd && (e.company === companyName || e.company === '六大游戏公司'));
-    return evt ? evt.title.replace(/<[^>]+>/g, '') : null;
-  }
-
-  // ---- Step 1: 提取每日数据 ----
-  const dailyData = []; // { mmdd, stockPct, kospiPct, kosdaqPct, idxBig, biggerCode, biggerPct }
-  for (const snap of monthSnapshots) {
-    const dS = snap?.meta?.date;
-    if (!dS) continue;
-    const kospiP = parseFloat(snap.indices?.find(i => i.code === 'KOSPI')?.changePercent) || 0;
-    const kosdaqP = parseFloat(snap.indices?.find(i => i.code === 'KOSDAQ')?.changePercent) || 0;
-    const idxBig = Math.abs(kospiP) >= INDEX_EXTREME_THRESHOLD || Math.abs(kosdaqP) >= INDEX_EXTREME_THRESHOLD;
-    let stockPct = 0;
-    if (isSU) {
-      stockPct = parseFloat(snap.shiftUp?.changePercent) || 0;
+    // 当前价 / 估值
+    let price = '';
+    let per = '';
+    if (e.isSU) {
+      price = latest?.shiftUp?.price || '';
+      per = latest?.shiftUp?.per || '';
     } else {
-      const c = (snap.companies || []).find(cc => cc.code === key);
-      stockPct = parseFloat(c?.change) || 0;
+      const c = (latest?.companies || []).find((x) => x.code === e.code);
+      price = c?.price || '';
+      per = c?.per || '';
     }
-    const biggerCode = Math.abs(kospiP) >= Math.abs(kosdaqP) ? 'KOSPI' : 'KOSDAQ';
-    const biggerPct = biggerCode === 'KOSPI' ? kospiP : kosdaqP;
-    dailyData.push({ mmdd: mmddOf(dS), stockPct, kospiPct: kospiP, kosdaqPct: kosdaqP, idxBig, biggerCode, biggerPct });
+
+    facts[e.code] = {
+      code: e.code,
+      name: e.name,
+      isSU: e.isSU,
+      mtd,
+      rank,
+      total: entities.length,
+      kospiMtd,
+      kosdaqMtd,
+      best,
+      worst,
+      up,
+      down,
+      flat,
+      contrarian,
+      price,
+      per,
+      extremeDays,
+    };
   }
+  return { asOfDate, facts, entities };
+}
 
-  if (dailyData.length === 0) return '';
+// ---------- 新闻上下文（按公司聚合整月） ----------
 
-  // ---- Step 2: 计算月度统计 ----
-  // 注意：monthSnapshots 是每日快照，包含当日涨跌幅而非收盘价。
-  // 月累计涨跌幅由 index.html 的 calcMonthChange() 实时计算（基于首日收盘价 vs 当日收盘价），
-  // 此处用逐日涨跌幅累乘近似估算，仅用于叙事中的定性描述。
-  let approxMonthChange = 0;
-  for (const d of dailyData) {
-    approxMonthChange += d.stockPct;
+// 新闻条目 company 字段用简称，脚本用全称；做别名归一
+const COMPANY_NAME_MAP = {
+  'Nexon': 'Nexon Games',
+  'Nexon Games': 'Nexon Games',
+  'NC': 'NCsoft',
+  'NCsoft': 'NCsoft',
+  'Netmarble': 'Netmarble',
+  'Krafton': 'Krafton',
+  'Pearl Abyss': 'Pearl Abyss',
+  'Shift Up': 'Shift Up',
+};
+// 行业/大盘通用标签（无明确公司归属）
+const SECTOR_TAGS = new Set(['', '六大游戏公司', '六大', '업계', '전체', '산업', 'Industry', '전체 게임사']);
+const EARNINGS_KW = /(财报|실적|분기|Q[1-4]|OP|영업이익|销售额|营收|收益|业绩|赤[字字]|亏[损损]|营利|扭亏)/;
+
+function titleIncludesAlias(title, aliases) {
+  return aliases.some((a) => a && title.includes(a));
+}
+
+// 聚合某公司在"截至日所在月份、月初→截至日"的全部相关新闻
+// 返回 { company:[{date,title}], sector:[{date,title}] }
+function getMonthNews(content, canonicalName, asOfMmdd) {
+  const asOfMM = asOfMmdd.slice(0, 2);
+  const asOfDD = asOfMmdd.slice(3, 5);
+  const aliases = [canonicalName, ...Object.keys(COMPANY_NAME_MAP).filter((k) => COMPANY_NAME_MAP[k] === canonicalName)];
+  const companyNews = [];
+  const sectorNews = [];
+  const pools = [content?.events || [], content?.industryNews || []];
+  for (const pool of pools) {
+    for (const e of pool) {
+      const date = String(e?.date || '').trim();
+      const m = date.match(/^(\d{2})\.(\d{2})$/);
+      if (!m) continue;
+      if (m[1] !== asOfMM) continue;      // 仅同月（催化剂时效性）
+      if (m[2] > asOfDD) continue;        // 仅截至日及之前
+      const rawCompany = e?.company || e?.target || '';
+      const title = String(e.title || '').replace(/<[^>]+>/g, '').trim();
+      if (!title) continue;
+      const resolved = COMPANY_NAME_MAP[rawCompany] || rawCompany;
+      // 明确归属其他公司 -> 跳过（避免串味）
+      if (rawCompany && COMPANY_NAME_MAP[rawCompany] && COMPANY_NAME_MAP[rawCompany] !== canonicalName) continue;
+      if (resolved === canonicalName || titleIncludesAlias(title, [canonicalName])) {
+        if (companyNews.length < 6) companyNews.push({ date, title });
+      } else if (!rawCompany || SECTOR_TAGS.has(rawCompany)) {
+        if (sectorNews.length < 3) sectorNews.push({ date, title });
+      } else {
+        // 未知公司标签且无专属命中 -> 视为行业/宏观通用
+        if (sectorNews.length < 3) sectorNews.push({ date, title });
+      }
+    }
   }
-  // 取最近一天的近似累计作为"本月累计"参考值
-  const lastDay = dailyData[dailyData.length - 1];
+  companyNews.sort((a, b) => a.date.localeCompare(b.date));
+  sectorNews.sort((a, b) => a.date.localeCompare(b.date));
+  return { company: companyNews, sector: sectorNews };
+}
 
-  // 大盘月度近似
-  let kospiMonthApprox = 0, kosdaqMonthApprox = 0;
-  for (const d of dailyData) { kospiMonthApprox += d.kospiPct; kosdaqMonthApprox += d.kosdaqPct; }
+function hasEarningsNews(news) {
+  return [...(news.company || []), ...(news.sector || [])].some((n) => EARNINGS_KW.test(n.title));
+}
 
-  // ---- Step 3: 识别关键交易日 ----
-  // 按涨跌幅排序找最佳/最差日
-  const byStockAsc = [...dailyData].sort((a, b) => a.stockPct - b.stockPct);
-  const worstDay = byStockAsc[0];       // 跌幅最大
-  const bestDay = byStockAsc[byStockAsc.length - 1]; // 涨幅最大
+// ---------- 事实清单文本（供 Prompt 与护栏使用） ----------
 
-  // 逆势日：个股与大盘方向相反且个股|涨幅|>=2%
-  const contrarianDays = dailyData.filter(d => {
-    const avgIdx = (d.kospiPct + d.kosdaqPct) / 2;
-    return avgIdx !== 0 && ((d.stockPct > 0 && avgIdx < 0) || (d.stockPct < 0 && avgIdx > 0))
-      && Math.abs(d.stockPct) >= 2;
+function buildFactsSheet(fact, news) {
+  const lines = [];
+  lines.push(`公司/标的：${fact.name}`);
+  lines.push(`截至日期：${fact.asOfDate ? fact.asOfDate : ''}`);
+  lines.push(`大盘月内表现（背景）：KOSPI ${fmtPct(fact.kospiMtd)}，KOSDAQ ${fmtPct(fact.kosdaqMtd)}`);
+  const dir = fact.mtd > 0 ? '上涨' : fact.mtd < 0 ? '下跌' : '持平';
+  lines.push(`月内整体方向：${dir}（具体幅度界面已展示，请勿复述数字）`);
+  const cNews = news.company || [];
+  const sNews = news.sector || [];
+  if (cNews.length) {
+    lines.push(`本月该公司相关新闻/事件（按时间，仅可引用这些，不得自创）：`);
+    for (const n of cNews) lines.push(`- [${n.date}] ${n.title}`);
+  } else {
+    lines.push(`（本月无该公司专属新闻，仅可基于行情背景分析，不得编造具体事件）`);
+  }
+  if (sNews.length) {
+    lines.push(`本月行业/大盘通用动向（背景，可酌情引用）：`);
+    for (const n of sNews) lines.push(`- [${n.date}] ${n.title}`);
+  }
+  if (hasEarningsNews(news)) lines.push(`（注：本月含财报相关动向，是重要主线，请纳入因果链）`);
+  lines.push(`（严禁引入上述白名单外的任何事实或数字）`);
+  return lines.join('\n');
+}
+
+function rankWordOf(rank, total) {
+  if (rank === 1) return '领先';
+  if (rank <= 2) return '靠前';
+  if (rank === total) return '垫底';
+  if (rank >= total - 1) return '靠后';
+  return '居中';
+}
+
+function marketContrastText(fact) {
+  const diff = fact.mtd - fact.kospiMtd;
+  if (diff >= 3) return `显著跑赢大盘(KOSPI ${fmtPct(fact.kospiMtd)})`;
+  if (diff <= -3) return `明显跑输大盘(KOSPI ${fmtPct(fact.kospiMtd)})`;
+  return `与大盘基本同步(KOSPI ${fmtPct(fact.kospiMtd)})`;
+}
+
+// 提取事实中所有百分比数值（供护栏容差比对）
+function factsPctValues(sheet) {
+  const nums = [...sheet.matchAll(/[+-]?\d+(?:\.\d+)?%/g)].map((m) => parseNum(m[0]));
+  return nums.filter((n) => !Number.isNaN(n));
+}
+
+// ---------- LLM 叙事 ----------
+
+const SYSTEM_PROMPT = `你是一名严谨的韩国游戏股二级市场分析师。你的任务：基于用户提供的"已核实事实清单"（含该公司整月的相关新闻/事件白名单），为某只韩国游戏股撰写一段中文【原因分析】，用于展示在股价看板上。
+
+硬性规则：
+1. 只做原因分析：解释"为什么涨/跌"，围绕事件、催化剂、新闻驱动展开因果链条。禁止写：公司间排名、PER/估值、最佳日↔最差日对比、"上涨X天下跌X天"等趋势性数据罗列。
+2. 必须基于"本月该公司相关新闻/事件"白名单展开；若该公司有专属新闻，应以这些真实事件为主因，严禁套用与其他公司雷同的通用行业套话（例如不要把"议长访 Gamescom""某同业海外营收破50%"这类通用议程，当成每一家公司的主因）。
+3. 所有事实（数字与事件）只能来自"已核实事实清单"与白名单。严禁引入清单外知识或自行编造，清单外的任何断言一律不得出现。
+4. 不要复述"本月累计X%"等已在界面单独展示的数字，聚焦驱动逻辑本身。
+5. 用 <strong> 标签标注关键数字（如 <strong>+2.65%</strong>）。
+6. 语言：简体中文，80~150 字，专业、克制、有洞察，不要口号式抒情。
+7. 不要出现韩文。`;
+
+// 单日驱动因素系统提示（用于 analysis.daily 生成）
+const DAILY_SYSTEM_PROMPT = `你是一名严谨的韩国游戏股二级市场分析师。你的任务：基于用户提供的"已核实事实清单"（含该公司当日及近3日相关新闻/事件白名单），为某只韩国游戏股撰写一句中文【单日驱动因素】，用于股价看板"今日总结"板块的单行展示。
+
+硬性规则：
+1. 只解释"为什么这一天涨/跌"，围绕当日/近三日新闻、催化剂展开因果链条。禁止写：公司间排名、PER/估值、最佳日↔最差日对比、"上涨X天下跌X天"等趋势性数据罗列。
+2. 必须基于"当日及近3日相关新闻/事件"白名单展开；若该公司有专属新闻，应以这些真实事件为主因，严禁套用与其他公司雷同的通用行业套话。
+3. 所有事实（数字与事件）只能来自"已核实事实清单"与白名单。严禁引入清单外知识或自行编造。
+4. 不要写"本月累计"等字眼；不要复述已在界面单独展示的当日涨跌幅数字，聚焦驱动逻辑本身。
+5. 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
+6. 用 <strong> 标签标注关键数字（如 <strong>+2.65%</strong>）。
+7. 语言：简体中文，40~80 字，专业、克制、有洞察，一句到位，不要标题，不要口号式抒情。
+8. 不要出现韩文。`;
+
+function buildUserPrompt(fact, news, isSU) {
+  const sheet = buildFactsSheet(fact, news);
+  return `【已核实事实清单】
+${sheet}
+
+【写作要求】
+- 为 ${fact.name} 写一段本月（截至 ${fact.asOfDate}）的【原因分析】，只解释"为什么涨/跌"，形成因果链条。
+- 必须以"本月该公司相关新闻/事件"为主素材构建因果；若该公司有专属新闻，就以这些真实事件为主因，不要写与其他公司雷同的通用行业套话。若该公司确无专属新闻，才可基于行业/大盘通用动向与行情方向说明，但仍不得编造具体事件。
+- 严禁写：公司间排名、PER/估值、最佳↔最差交易日对比、"上涨X天下跌X天"等趋势性数据罗列；不要复述"本月累计X%"等界面已展示的数字。
+- 所有事实断言必须来自上面的白名单，不得自行编造或引入外部知识。
+- 用 <strong> 标签标注关键数字。
+- 仅输出分析正文（不要标题），可直接嵌入看板。`;
+}
+
+// 允许提及的事实来源：相关新闻/事件标题 + 公司/市场专名 + 同月所有已知日期（MM.DD 与 中文月日 双形态）
+function buildAllowedFacts(fact, news) {
+  const names = [SU_NAME, ...Object.values(TRACKED_COMPANY)];
+  const items = [...(news.company || []), ...(news.sector || [])];
+  const titles = items.map((n) => n.title);
+  const dates = items.map((n) => n.date);                     // "08.24"
+  const datesZh = items.map((n) => {                          // "8月24日"
+    const [mm, dd] = n.date.split('.');
+    return `${parseInt(mm, 10)}月${parseInt(dd, 10)}日`;
   });
+  const extra = ['KOSPI', 'KOSDAQ', 'Gamescom', 'TGS', 'Q2', '财报', '第二季度', '二季度', 'Stellar Blade', '剑星', 'Blue Archive', 'Pareidolia', 'Crimson Desert', 'Aion', 'Wemade', '金泽辰', 'NC'];
+  const flat = [...new Set([...titles, ...names, ...dates, ...datesZh, ...extra])]
+    .filter(Boolean).map((s) => String(s).replace(/<[^>]+>/g, ''));
+  return { flat, dates: [...new Set([...dates, ...datesZh])], names };
+}
 
-  // 大盘极端日（用于背景描述）
-  const extremeIndexDays = dailyData.filter(d => d.idxBig);
+// 事件动词：带这些动词的句子视为"具体事实断言"
+const CLAIM_VERBS = /(突破|创[新历史]?|首次|官宣|宣布|获[批得]?|签[约署]?|上线|发布|上市|合作|达成|增至|降至|提升至|超越|被[收并购])/;
 
-  // ---- Step 4: 构建叙事 ----
-  const parts = [];
+// 护栏：① 百分比须源自事实清单；② 含韩文降级；③ 具体事实断言须有"已知日期+公司名"或白名单片段锚定
+function hasHallucination(text, sheet, facts) {
+  const factsPcts = factsPctValues(sheet);
+  const used = [...text.matchAll(/[+-]?\d+(?:\.\d+)?%/g)].map((m) => parseNum(m[0]));
+  for (const u of used) {
+    if (Number.isNaN(u)) continue;
+    const ok = factsPcts.some((f) => Math.abs(f - u) <= 0.3);
+    if (!ok) return true; // 出现清单外百分比 -> 疑似幻觉
+  }
+  if (/[가-힣]/u.test(text)) return true; // 含韩文 -> 降级
 
-  // ① 开篇总结
-  const lastPct = fmtPct(lastDay.stockPct);
-  const dirWord = lastDay.stockPct > 0 ? '上涨' : lastDay.stockPct < 0 ? '下跌' : '持平';
-  
-  // 与大盘对比定性
-  const lastAvgIdx = (lastDay.kospiPct + lastDay.kosdaqPct) / 2;
-  let vsMarketTag = '';
-  if (Math.abs(lastDay.stockPct) > 0.5 && Math.abs(lastAvgIdx) > 0.5) {
-    if ((lastDay.stockPct > 0 && lastAvgIdx < 0) || (lastDay.stockPct < 0 && lastAvgIdx > 0)) {
-      vsMarketTag = '逆势';
-    } else if (Math.abs(lastDay.stockPct) < Math.abs(lastAvgIdx)) {
-      vsMarketTag = '跌幅小于大盘' || '涨幅小于大盘';
+  // 事件断言校验：要求"白名单片段" 或 "已知日期 + 公司名"双锚定，避免误杀真实改写，也拦截凭空捏造
+  if (facts && facts.flat && facts.flat.length) {
+    const dateRe = /\d{1,2}月\d{1,2}日|\d{2}\.\d{2}/;
+    const sentences = text.split(/[。；;]/).map((s) => s.trim()).filter(Boolean);
+    for (const s of sentences) {
+      if (!CLAIM_VERBS.test(s)) continue; // 仅检查具体事实断言句
+      if (facts.flat.some((a) => a && s.includes(a))) continue; // 命中白名单片段 -> 放行
+      const dMatch = s.match(dateRe);
+      const dOk = dMatch && facts.dates.includes(dMatch[0]);
+      const nOk = facts.names.some((n) => n && s.includes(n));
+      if (dOk && nOk) continue; // 含已知日期且锚定公司 -> 视为真实改写，放行
+      return true; // 既无白名单片段、又缺日期/公司锚定 -> 疑似凭空捏造
     }
   }
+  return false;
+}
 
-  // 大盘背景摘要
-  let marketContext = '';
-  if (extremeIndexDays.length >= 3) {
-    marketContext = `${monthLabel}大盘经历${extremeIndexDays.length}次极端波动`;
-  } else if (extremeIndexDays.length >= 1) {
-    marketContext = `${monthLabel}大盘出现${extremeIndexDays.length}次显著异动`;
+// 规则模板兜底（纯因果，不写排名/PER/趋势罗列）
+function ruleFallback(fact, news, isSU) {
+  const dir = fact.mtd > 0 ? '上行' : fact.mtd < 0 ? '下行' : '盘整';
+  // 仅保留含中文字符的标题，避免把英文新闻原文直接拼进文案
+  const hasCJK = (t) => /[가-힣一-鿿]/.test(t);
+  const cNews = (news.company || []).map((n) => n.title).filter(hasCJK);
+  const sNews = (news.sector || []).map((n) => n.title).filter(hasCJK);
+  const all = [...cNews, ...sNews];
+  if (all.length) {
+    const top = all.slice(0, 2).join('；');
+    return `<strong>${fact.name}</strong>本月整体${dir}，相关动向：${top}。`;
   }
+  return `<strong>${fact.name}</strong>本月整体${dir}，与板块及大盘氛围相关，未见明确独立催化。`;
+}
 
-  const opening = `<strong>${companyName}${monthLabel}走势回顾</strong>——`;
-  const summaryFragments = [];
-  if (marketContext) summaryFragments.push(marketContext);
-  summaryFragments.push(`全月个股波动呈现以下特征`);
-  parts.push(opening + summaryFragments.join('，') + '：');
-
-  // ② 关键转折点（最佳日 + 最差日 + 逆势日，去重，最多列4个）
-  const keyDays = [];
-  const seenMmdd = new Set();
-
-  function addKeyDay(d, label) {
-    if (!d || seenMmdd.has(d.mmdd)) return;
-    seenMmdd.add(d.mmdd);
-    keyDays.push({ ...d, label });
-  }
-
-  addKeyDay(bestDay, '最佳');
-  addKeyDay(worstDay, '最差');
-  for (const cd of contrarianDays.slice(0, 2)) {
-    addKeyDay(cd, '逆势');
-  }
-
-  // 按时间顺序排列
-  keyDays.sort((a, b) => {
-    const am = parseInt(a.mmdd.split('.')[0], 10) * 100 + parseInt(a.mmdd.split('.')[1], 10);
-    const bm = parseInt(b.mmdd.split('.')[0], 10) * 100 + parseInt(b.mmdd.split('.')[1], 10);
-    return am - bm;
-  });
-
-  const dayClauses = keyDays.map(d => {
-    const dir = d.stockPct > 0 ? '上涨' : d.stockPct < 0 ? '下跌' : '持平';
-    let clause = `${d.mmdd}${dir}${fmtPct(d.stockPct)}`;
-    if (d.idxBig) {
-      const sameDir = (d.stockPct >= 0 && d.biggerPct >= 0) || (d.stockPct <= 0 && d.biggerPct <= 0);
-      const tag = d.stockPct === 0 ? '大盘剧烈波动中持平' : (sameDir ? '同向波动' : '逆势');
-      clause += `（大盘${d.biggerCode}${fmtPct(d.biggerPct)}，${tag}）`;
+// 为单个实体生成分析文本（LLM 优先，含白名单校验与一次重试，失败回退规则）
+async function generateEntityText(fact, news, isSU) {
+  const sheet = buildFactsSheet(fact, news);
+  const allowedFacts = buildAllowedFacts(fact, news);
+  const userPrompt = buildUserPrompt(fact, news, isSU);
+  try {
+    let raw = await callLLM({
+      systemPrompt: SYSTEM_PROMPT,
+      userPrompt,
+      temperature: 0.35,
+      maxTokens: 400,
+    });
+    let text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+    if (!text) throw new Error('空回复');
+    if (hasHallucination(text, sheet, allowedFacts)) {
+      console.warn(`  ↳ ${fact.name} 首次输出疑似含白名单外事实，重试一次`);
+      raw = await callLLM({
+        systemPrompt: SYSTEM_PROMPT + '\n【警告】上次回答含有白名单外的事实断言。必须严格只使用"允许提及的事实白名单"中的内容，不得添加任何清单外信息。',
+        userPrompt,
+        temperature: 0.3,
+        maxTokens: 400,
+      });
+      text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+      if (hasHallucination(text, sheet, allowedFacts)) {
+        console.warn(`  ↳ ${fact.name} 重试后仍疑似含白名单外事实，回退规则模板`);
+        return ruleFallback(fact, news, isSU);
+      }
     }
-    // 关联新闻（最多取1条）
-    const evt = eventFor(d.mmdd);
-    if (evt) {
-      // 截取新闻前40字符避免过长
-      const shortEvt = evt.length > 45 ? evt.slice(0, 42) + '...' : evt;
-      clause += `，消息面「${shortEvt}」`;
+    return text;
+  } catch (err) {
+    console.warn(`  ↳ ${fact.name} LLM 调用失败(${err.message})，使用规则模板`);
+    return ruleFallback(fact, news, isSU);
+  }
+}
+
+// 为某个截至日期生成全部实体文本
+async function generateAll(asOfDate, content) {
+  const monthSnapshots = loadMonthSnapshots(asOfDate);
+  const latest = readSnapshot(asOfDate) || (fs.existsSync(LATEST_PATH) ? JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8')) : null);
+  const { facts, entities } = buildQuantContext(asOfDate, monthSnapshots, latest, content);
+  const result = { su: null, companies: {} };
+  for (const e of entities) {
+    const fact = { ...facts[e.code], asOfDate };
+    const news = getMonthNews(content, e.name, mmddOf(asOfDate));
+    const text = await generateEntityText(fact, news, e.isSU);
+    if (e.isSU) result.su = text;
+    else result.companies[e.code] = text;
+  }
+  return result;
+}
+
+// ---------- 单日生成分支（写入 analysis.daily[code][date]，与月度并行） ----------
+
+// 单日新闻窗口：当日及前 3 日（保证时效性，避免把整月事件混入当日解释）
+function getDayNews(content, canonicalName, asOfMmdd) {
+  const asOfMM = asOfMmdd.slice(0, 2);
+  const asOfDD = parseInt(asOfMmdd.slice(3, 5), 10);
+  const companyNews = [];
+  const sectorNews = [];
+  const pools = [content?.events || [], content?.industryNews || []];
+  for (const pool of pools) {
+    for (const e of pool) {
+      const date = String(e?.date || '').trim();
+      const m = date.match(/^(\d{2})\.(\d{2})$/);
+      if (!m) continue;
+      if (m[1] !== asOfMM) continue;
+      const dd = parseInt(m[2], 10);
+      if (dd > asOfDD) continue;
+      if (asOfDD - dd > 3) continue; // 仅当日及前3日
+      const rawCompany = e?.company || e?.target || '';
+      const title = String(e.title || '').replace(/<[^>]+>/g, '').trim();
+      if (!title) continue;
+      const resolved = COMPANY_NAME_MAP[rawCompany] || rawCompany;
+      if (rawCompany && COMPANY_NAME_MAP[rawCompany] && COMPANY_NAME_MAP[rawCompany] !== canonicalName) continue;
+      if (resolved === canonicalName || titleIncludesAlias(title, [canonicalName])) {
+        if (companyNews.length < 6) companyNews.push({ date, title });
+      } else if (!rawCompany || SECTOR_TAGS.has(rawCompany)) {
+        if (sectorNews.length < 3) sectorNews.push({ date, title });
+      } else {
+        if (sectorNews.length < 3) sectorNews.push({ date, title });
+      }
     }
-    return clause;
-  });
-
-  if (dayClauses.length > 0) {
-    parts.push(dayClauses.join('；') + '。');
   }
+  companyNews.sort((a, b) => a.date.localeCompare(b.date));
+  sectorNews.sort((a, b) => a.date.localeCompare(b.date));
+  return { company: companyNews, sector: sectorNews };
+}
 
-  // ③ 波动特征总结
-  const upDays = dailyData.filter(d => d.stockPct > 0).length;
-  const downDays = dailyData.filter(d => d.stockPct < 0).length;
-  const flatDays = dailyData.filter(d => d.stockPct === 0).length;
-  const totalDays = dailyData.length;
+function buildDailyFactsSheet(fact, news, dailyPct) {
+  const lines = [];
+  lines.push(`公司/标的：${fact.name}`);
+  lines.push(`日期：${fact.asOfDate}`);
+  const dir = Number.isNaN(dailyPct) ? '（数据缺失）' : (dailyPct > 0 ? '上涨' : dailyPct < 0 ? '下跌' : '持平');
+  lines.push(`当日涨跌幅：${Number.isNaN(dailyPct) ? '数据缺失' : fmtPct(dailyPct)}（${dir}）`);
+  lines.push(`（严禁引入白名单外的任何事实或数字；不要复述已在界面展示的当日涨跌幅）`);
+  const cNews = news.company || [];
+  const sNews = news.sector || [];
+  if (cNews.length) {
+    lines.push(`该公司当日及近3日相关新闻/事件（按时间，仅可引用这些，不得自创）：`);
+    for (const n of cNews) lines.push(`- [${n.date}] ${n.title}`);
+  } else {
+    lines.push(`（当日及近3日无该公司专属新闻，仅可基于行情背景与行业通用动向分析，不得编造具体事件）`);
+  }
+  if (sNews.length) {
+    lines.push(`行业/大盘通用动向（背景，可酌情引用）：`);
+    for (const n of sNews) lines.push(`- [${n.date}] ${n.title}`);
+  }
+  if (hasEarningsNews(news)) lines.push(`（注：含财报相关动向，是重要主线，请纳入因果链）`);
+  lines.push(`（严禁引入上述白名单外的任何事实或数字）`);
+  return lines.join('\n');
+}
 
-  // 最大单日振幅（简单用 best-worst 近似）
-  const maxSwing = bestDay.stockPct - worstDay.stockPct;
+function buildDailyUserPrompt(fact, news, dailyPct) {
+  const sheet = buildDailyFactsSheet(fact, news, dailyPct);
+  return `【已核实事实清单】
+${sheet}
 
-  const featureParts = [];
-  if (extremeIndexDays.length >= 3) {
-    featureParts.push(`${monthLabel}大盘震荡加剧`);
-  }
-  if (maxSwing >= 10) {
-    featureParts.push(`个股最大单日振幅达${fmtPct(maxSwing)}`);
-  }
-  if (contrarianDays.length >= 2) {
-    featureParts.push(`多次走出独立行情`);
-  }
-  if (upDays > downDays * 1.5) {
-    featureParts.push(`上涨日居多（${upDays}涨/${downDays}跌）`);
-  } else if (downDays > upDays * 1.5) {
-    featureParts.push(`调整压力较大（${upDays}涨/${downDays}跌）`);
-  }
+【写作要求】
+- 为 ${fact.name} 在 ${fact.asOfDate} 这一天写一句【单日驱动因素】，只解释"为什么这一天涨/跌"，形成因果链条。
+- 必须以"当日及近3日相关新闻/事件"为主素材构建因果；若该公司有专属新闻，就以这些真实事件为主因，不要写与其他公司雷同的通用行业套话。若确无专属新闻，才可基于行业/大盘通用动向与行情方向说明，但仍不得编造具体事件。
+- 严禁写：公司间排名、PER/估值、最佳↔最差交易日对比、"上涨X天下跌X天"等趋势性数据罗列；不要写"本月累计"等字眼，不要复述界面已展示的当日涨跌幅。
+- 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
+- 所有事实断言必须来自上面的白名单，不得自行编造或引入外部知识。
+- 用 <strong> 标签标注关键数字。
+- 仅输出分析正文（不要标题），可直接嵌入看板。`;
+}
 
-  if (featureParts.length > 0) {
-    parts.push('整体来看，' + featureParts.join('，') + '。');
+function dailyRuleFallback(fact, news, isSU, dailyPct) {
+  const dir = Number.isNaN(dailyPct) ? '震荡' : (dailyPct > 0 ? '上行' : dailyPct < 0 ? '下行' : '盘整');
+  const hasCJK = (t) => /[가-힣一-鿿]/.test(t);
+  const cNews = (news.company || []).map((n) => n.title).filter(hasCJK);
+  const sNews = (news.sector || []).map((n) => n.title).filter(hasCJK);
+  const all = [...cNews, ...sNews];
+  if (all.length) {
+    const top = all.slice(0, 2).join('；');
+    return `受${top}等动向影响，当日${dir}。`;
   }
+  return `当日${dir}，与板块及大盘氛围相关，未见明确独立催化。`;
+}
 
-  return parts.join('');
+async function generateDailyEntityText(fact, news, isSU, dailyPct) {
+  const sheet = buildDailyFactsSheet(fact, news, dailyPct);
+  const allowedFacts = buildAllowedFacts(fact, news);
+  const userPrompt = buildDailyUserPrompt(fact, news, dailyPct);
+  try {
+    let raw = await callLLM({
+      systemPrompt: DAILY_SYSTEM_PROMPT,
+      userPrompt,
+      temperature: 0.35,
+      maxTokens: 300,
+    });
+    let text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+    if (!text) throw new Error('空回复');
+    if (hasHallucination(text, sheet, allowedFacts)) {
+      console.warn(`  ↳ ${fact.name} 首次输出疑似含白名单外事实，重试一次`);
+      raw = await callLLM({
+        systemPrompt: DAILY_SYSTEM_PROMPT + '\n【警告】上次回答含有白名单外的事实断言。必须严格只使用"允许提及的事实白名单"中的内容，不得添加任何清单外信息。',
+        userPrompt,
+        temperature: 0.3,
+        maxTokens: 300,
+      });
+      text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+      if (hasHallucination(text, sheet, allowedFacts)) {
+        console.warn(`  ↳ ${fact.name} 重试后仍疑似含白名单外事实，回退规则模板`);
+        return dailyRuleFallback(fact, news, isSU, dailyPct);
+      }
+    }
+    return text;
+  } catch (err) {
+    console.warn(`  ↳ ${fact.name} LLM 调用失败(${err.message})，使用规则模板`);
+    return dailyRuleFallback(fact, news, isSU, dailyPct);
+  }
+}
+
+async function generateDailyAll(asOfDate, content) {
+  const monthSnapshots = loadMonthSnapshots(asOfDate);
+  const snap = readSnapshot(asOfDate) || (fs.existsSync(LATEST_PATH) ? JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8')) : null);
+  const { facts, entities } = buildQuantContext(asOfDate, monthSnapshots, snap, content);
+  const result = { su: null, companies: {} };
+  for (const e of entities) {
+    const dailyPct = getStockPct(e, snap);
+    // 当日波动 <1% 的股票不会在「今日总结」个股驱动中展示，跳过 LLM 调用以节省额度
+    if (Number.isNaN(dailyPct) || Math.abs(dailyPct) < 1) continue;
+    const fact = { ...facts[e.code], asOfDate };
+    const news = getDayNews(content, e.name, mmddOf(asOfDate));
+    const text = await generateDailyEntityText(fact, news, e.isSU, dailyPct);
+    if (e.isSU) result.su = text;
+    else result.companies[e.code] = text;
+  }
+  return result;
+}
+
+// 枚举某月全部快照日期（data/YYYYMMDD.json）
+function collectMonthDates(monthPrefix) {
+  const dates = [];
+  if (fs.existsSync(DATA_DIR)) {
+    for (const f of fs.readdirSync(DATA_DIR)) {
+      const m = f.match(/^(\d{8})\.json$/);
+      if (!m) continue;
+      if (m[1].startsWith(monthPrefix)) dates.push(m[1]);
+    }
+  }
+  return dates.sort();
+}
+
+// ---------- 主流程 ----------
+
+function isOldListing(text) {
+  // 旧"逐日罗列"签名：含"走势回顾"或大量 "MM.DD涨/跌+..%；" 结构
+  if (/走势回顾/.test(text)) return true;
+  const dayEntries = (text.match(/\d{2}\.\d{2}(?:涨|跌|平)\s*[+-]?\d+\.?\d*%/g) || []).length;
+  return dayEntries >= 3;
 }
 
 async function main() {
-  console.log('='.repeat(50));
-  console.log('📊 涨跌分析自动生成');
-  console.log(`🤖 LLM 润色: ${OPENAI_API_KEY ? 'OpenAI 已配置' : ANTHROPIC_API_KEY ? 'Anthropic 已配置' : '未配置（仅规则引擎）'}`);
-  console.log('='.repeat(50));
+  const force = process.argv.includes('--force');
+  const dailyMode = process.argv.includes('--daily');
+  const cfg = llmConfig();
+  console.log(`[generate-analysis] LLM: model=${cfg.model} base=${cfg.baseUrl} key=${cfg.hasKey ? '已配置' : '缺失(将用规则兜底)'}`);
 
-  if (!existsSync(LATEST_PATH)) {
-    console.warn('⚠️ latest.json 不存在，跳过');
-    return;
-  }
-  if (!existsSync(CONTENT_PATH)) {
-    console.warn('⚠️ content.json 不存在，跳过');
-    return;
-  }
-
-  const latest = JSON.parse(readFileSync(LATEST_PATH, 'utf-8'));
-  const content = JSON.parse(readFileSync(CONTENT_PATH, 'utf-8'));
-
-  const dateStr = latest.meta?.date;
-  if (!dateStr) {
-    console.warn('⚠️ latest.json 缺少 meta.date，跳过');
-    return;
-  }
-  const indices = latest.indices || [];
-  const kospiPct = parseFloat(indices.find(i => i.code === 'KOSPI')?.changePercent) || 0;
-  const kosdaqPct = parseFloat(indices.find(i => i.code === 'KOSDAQ')?.changePercent) || 0;
-  const isBigIndexMove = Math.abs(kospiPct) >= INDEX_EXTREME_THRESHOLD || Math.abs(kosdaqPct) >= INDEX_EXTREME_THRESHOLD;
-
-  const allEvents = [...(content.events || []), ...(content.industryNews || [])];
-
-  // 当月标签（如 "7月"）
-  const monthLabel = dateStr ? `${parseInt(dateStr.slice(4, 6), 10)}月` : '本月';
-
-  // 本月内（截至今天）所有交易日快照，用于拼装真正的"月度"叙事，
-  // 而非只重复"当日"这一天的数据（详见 buildMonthlyNarrativeText 注释）。
-  const monthSnapshots = loadMonthSnapshots(dateStr);
-  // 兜底：若当日快照文件因时序原因尚未写入磁盘，仍用内存中的 latest.json 补上，
-  // 确保"月度叙事"一定覆盖到今天（否则会出现触发了生成、却因今天不在
-  // notableDays 里而返回空文本的边界情况）。
-  if (!monthSnapshots.some(s => s?.meta?.date === dateStr)) {
-    monthSnapshots.push(latest);
-  }
-
-  if (!content.analysis) content.analysis = { version: '1.0', su: {}, company: {} };
+  const latest = JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8'));
+  const dateStr = latest.meta.date;
+  const content = JSON.parse(fs.readFileSync(CONTENT_PATH, 'utf8'));
+  if (!content.analysis) content.analysis = {};
   if (!content.analysis.su) content.analysis.su = {};
   if (!content.analysis.company) content.analysis.company = {};
+  if (dailyMode && !content.analysis.daily) content.analysis.daily = {};
 
-  // 注：曾有"月末保护"逻辑（当月已有analysis key时跳过后续写入），用于规避
-  // index.html 旧版"按月兜底"bug（取当月最大key，不管是否晚于当前查看日期）。
-  // 该bug已在 index.html 的 generateSUAnalysis()/getItemText() 中修复
-  // （兜底过滤条件改为 k.startsWith(monthKey) && k <= exactKey，只取"不晚于
-  // 当前查看日期"的最新分析）。因此"月末保护"已无必要，且会错误阻止
-  // 每月20号之后的新增大幅波动（如7/29、7/31）被记录，导致月末汇总不完整。
-  // 已移除该保护逻辑，改为每个交易日独立写入各自日期key，互不覆盖。
-
-  let generatedCount = 0;
-  let skippedCount = 0;
-
-  // ====== Shift Up ======
-  const su = latest.shiftUp;
-  if (su) {
-    const pct = Math.abs(parseFloat(su.changePercent) || 0);
-    if ((pct >= STOCK_THRESHOLD || isBigIndexMove) && !content.analysis.su[dateStr]) {
-      let text = buildMonthlyNarrativeText({
-        companyName: SU_NAME, isSU: true, key: null,
-        monthSnapshots, allEvents, monthLabel,
-      });
-      const polished = text ? await polishWithLLM(text, SU_NAME) : null;
-      if (polished) text = polished;
-      content.analysis.su[dateStr] = text;
-      console.log(`  ✅ [SU] 已生成 ${dateStr} 分析: ${text.slice(0, 40)}...`);
-      generatedCount++;
-    } else if (content.analysis.su[dateStr]) {
-      console.log(`  ⏭️ [SU] ${dateStr} 已有分析，跳过`);
-      skippedCount++;
-    } else {
-      console.log(`  ⏭️ [SU] 波动 ${su.changePercent} 未达阈值，跳过`);
+  // ===== 单日模式：生成 analysis.daily[code][date]，跳过月度逻辑 =====
+  if (dailyMode) {
+    const targetMonths = force ? new Set(['202607', '202608']) : new Set([dateStr.slice(0, 6)]);
+    const targetDates = new Set();
+    for (const m of targetMonths) for (const d of collectMonthDates(m)) targetDates.add(d);
+    targetDates.add(dateStr);
+    const dateArgIdx = process.argv.indexOf('--date');
+    if (dateArgIdx >= 0 && process.argv[dateArgIdx + 1]) {
+      targetDates.clear();
+      targetDates.add(process.argv[dateArgIdx + 1]);
     }
+    const allCodes = ['su', ...Object.keys(TRACKED_COMPANY)];
+    let wrote = 0;
+    for (const td of [...targetDates].sort()) {
+      const hasAll = allCodes.every((c) => content.analysis.daily[c] && content.analysis.daily[c][td]);
+      if (!force && hasAll) continue;
+      console.log(`[generate-analysis] 生成单日 ${td} ...`);
+      const gen = await generateDailyAll(td, content);
+      if (!content.analysis.daily.su) content.analysis.daily.su = {};
+      content.analysis.daily.su[td] = gen.su;
+      if (gen.su) wrote++;
+      console.log(`  ✓ SU: ${gen.su ? gen.su.slice(0, 60) : '(波动<1%，跳过)'}`);
+      for (const [code, text] of Object.entries(gen.companies)) {
+        if (!content.analysis.daily[code]) content.analysis.daily[code] = {};
+        content.analysis.daily[code][td] = text;
+        wrote++;
+        console.log(`  ✓ ${TRACKED_COMPANY[code]}: ${text.slice(0, 50)}...`);
+      }
+      fs.writeFileSync(CONTENT_PATH, JSON.stringify(content, null, 2));
+      console.log(`  → 已落盘（累计 ${wrote} 条）`);
+    }
+    console.log(`[generate-analysis] 单日分析完成，共写入 ${wrote} 条到 content.json`);
+    return;
   }
 
-  // ====== 其他 5 家公司 ======
-  for (const c of (latest.companies || [])) {
-    const code = c.code;
-    const name = TRACKED_COMPANY[code] || c.name;
-    if (!code || !TRACKED_COMPANY[code]) continue;
-    const pct = Math.abs(parseFloat(c.change) || 0);
-    if (!content.analysis.company[code]) content.analysis.company[code] = {};
-
-    if ((pct >= STOCK_THRESHOLD || isBigIndexMove) && !content.analysis.company[code][dateStr]) {
-      let text = buildMonthlyNarrativeText({
-        companyName: name, isSU: false, key: code,
-        monthSnapshots, allEvents, monthLabel,
-      });
-      const polished = text ? await polishWithLLM(text, name) : null;
-      if (polished) text = polished;
-      content.analysis.company[code][dateStr] = text;
-      console.log(`  ✅ [${name}] 已生成 ${dateStr} 分析: ${text.slice(0, 40)}...`);
-      generatedCount++;
-    } else if (content.analysis.company[code][dateStr]) {
-      console.log(`  ⏭️ [${name}] ${dateStr} 已有分析，跳过`);
-      skippedCount++;
-    } else {
-      console.log(`  ⏭️ [${name}] 波动 ${c.change} 未达阈值，跳过`);
+  // 决定要生成的日期集合
+  const targetMonths = force ? new Set(['202607', '202608']) : new Set([dateStr.slice(0, 6)]);
+  const targetDates = new Set();
+  if (force) {
+    // 重刷目标月份内所有已有条目 + 当日
+    for (const k of Object.keys(content.analysis.su)) {
+      if (targetMonths.has(k.slice(0, 6))) targetDates.add(k);
     }
-  }
-
-  if (generatedCount > 0) {
-    writeFileSync(CONTENT_PATH, JSON.stringify(content, null, 2) + '\n', 'utf-8');
-    console.log(`\n✅ content.json 已更新: 新增 ${generatedCount} 条分析（${dateStr}），跳过 ${skippedCount} 条已存在`);
+    for (const code of Object.keys(content.analysis.company)) {
+      for (const k of Object.keys(content.analysis.company[code] || {})) {
+        if (targetMonths.has(k.slice(0, 6))) targetDates.add(k);
+      }
+    }
+    targetDates.add(dateStr);
   } else {
-    console.log(`\nℹ️ 无新增分析（无公司/大盘达到 ${STOCK_THRESHOLD}% 阈值，或当日分析已存在），content.json 未改动`);
+    targetDates.add(dateStr);
+  }
+  // 调试/单日验证：--date YYYYMMDD 仅处理该日
+  const dateArgIdx = process.argv.indexOf('--date');
+  if (dateArgIdx >= 0 && process.argv[dateArgIdx + 1]) {
+    targetDates.clear();
+    targetDates.add(process.argv[dateArgIdx + 1]);
+  }
+
+  let wrote = 0;
+  for (const td of [...targetDates].sort()) {
+    // 触发判断（非 force 时）：当日波动达标或大盘极端才生成
+    if (!force) {
+      const snap = readSnapshot(td) || latest;
+      const suPct = parseNum(snap?.shiftUp?.changePercent);
+      let bigIndex = false;
+      for (const idx of snap?.indices || []) {
+        if (Math.abs(parseNum(idx.changePercent)) >= INDEX_EXTREME) bigIndex = true;
+      }
+      const anyStock = buildEntities().some((e) => {
+        const p = getStockPct(e, snap);
+        return !Number.isNaN(p) && Math.abs(p) >= STOCK_THRESHOLD;
+      });
+      const suExists = !!content.analysis.su[td];
+      const allCompanyExists = buildEntities().filter((e) => !e.isSU).every((e) => content.analysis.company[e.code]?.[td]);
+      if (!((!Number.isNaN(suPct) && Math.abs(suPct) >= STOCK_THRESHOLD) || bigIndex || anyStock) && suExists && allCompanyExists) {
+        continue; // 无显著波动且已存在 -> 跳过
+      }
+    }
+
+    console.log(`[generate-analysis] 生成 ${td} ...`);
+    const gen = await generateAll(td, content);
+
+    // 写回（--force 全量覆盖；否则仅当不存在或为旧"逐日罗列"格式时覆盖，保留人工精修）
+    const suExisting = content.analysis.su[td];
+    if (force || !suExisting || isOldListing(suExisting || '')) {
+      content.analysis.su[td] = gen.su;
+      wrote++;
+      console.log(`  ✓ SU: ${gen.su.slice(0, 60)}...`);
+    }
+    for (const [code, text] of Object.entries(gen.companies)) {
+      if (!content.analysis.company[code]) content.analysis.company[code] = {};
+      const existing = content.analysis.company[code][td];
+      if (force || !existing || isOldListing(existing || '')) {
+        content.analysis.company[code][td] = text;
+        wrote++;
+        console.log(`  ✓ ${TRACKED_COMPANY[code]}: ${text.slice(0, 50)}...`);
+      }
+    }
+  }
+
+  if (wrote > 0) {
+    fs.writeFileSync(CONTENT_PATH, JSON.stringify(content, null, 2));
+    console.log(`[generate-analysis] 已写入 ${wrote} 条分析到 content.json`);
+  } else {
+    console.log('[generate-analysis] 无新增/待迁移条目，content.json 未改动');
   }
 }
 
-main().catch(err => {
-  console.error('❌ 涨跌分析生成失败:', err.message);
-  process.exit(0); // 非致命错误，不阻断主流程
+main().catch((err) => {
+  console.error('[generate-analysis] 致命错误：', err);
+  process.exit(1);
 });

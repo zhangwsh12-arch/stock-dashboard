@@ -24,6 +24,8 @@
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+// 复用可配置 LLM 客户端（OpenAI 兼容端点，默认 DeepSeek；本脚本通过 OpenAI 兼容接口做翻译）
+import { callLLM } from './llm-client.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, '..');
@@ -172,22 +174,14 @@ async function translateToChinese(texts) {
      合格中文，条目全被"韩语残留"规则丢弃 → 零写入 → 资讯连续停更多日。 */
   const apiKey = process.env.OPENAI_API_KEY;
 
-  // ===== Level 1: AI 翻译 =====
+  // ===== Level 1: AI 翻译（复用可配置 LLM 客户端）======
   if (apiKey) {
 
   try {
-    const resp = await fetch(`${OPENAI_BASE_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: OPENAI_MODEL,
-        messages: [
-          {
-            role: 'system',
-            content: `你是韩国游戏行业新闻翻译专家。将以下韩语/英语新闻标题翻译为简洁的中文。
+    // baseUrl / model 透传本脚本的默认值（未配置 env 时即 openai.com + gpt-4o-mini），
+    // 一旦 daily-update.yml 通过 vars.OPENAI_BASE_URL/MODEL 指定 DeepSeek 等兼容端点则自动切换。
+    const translated = await callLLM({
+      systemPrompt: `你是韩国游戏行业新闻翻译专家。将以下韩语/英语新闻标题翻译为简洁的中文。
 规则：
 1. 保留公司名原文（如 Shift Up、NC、Krafton、Pearl Abyss、Netmarble、Nexon）
 2. 保留游戏名原文（如 NIKKE、Stellar Blade、PUBG、Blue Archive、Aion、Crimson Desert）
@@ -195,24 +189,14 @@ async function translateToChinese(texts) {
 4. 翻译要简洁有力，适合作为股票看板的新闻摘要
 5. 输出格式：每行一条翻译结果，严格按顺序对应输入
 6. 不要添加任何前缀、编号或解释`,
-          },
-          {
-            role: 'user',
-            content: texts.map((t, i) => `[${i + 1}] ${t}`).join('\n'),
-          },
-        ],
-        temperature: 0.3,
-        max_tokens: 2000,
-      }),
+      userPrompt: texts.map((t, i) => `[${i + 1}] ${t}`).join('\n'),
+      temperature: 0.3,
+      maxTokens: 2000,
+      timeoutMs: 60000,
+      baseUrl: OPENAI_BASE_URL,
+      model: OPENAI_MODEL,
     });
 
-    if (!resp.ok) {
-      console.log(`  ⚠️ OpenAI API 错误: ${resp.status}（Key 可能失效/超额），降级到免费翻译`);
-      return await translateViaFreeApi(texts);
-    }
-
-    const data = await resp.json();
-    const translated = data.choices?.[0]?.message?.content || '';
     const lines = translated.split('\n').filter(l => l.trim()).map(l => l.replace(/^\[\d+\]\s*/, '').trim());
 
     // 确保返回数量一致

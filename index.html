@@ -1361,8 +1361,38 @@ function renderDailySummary() {
     return korean > chinese && korean > 5;
   }
 
+  // 公司显示名 → 股票代码（用于从 content.json.analysis.company 读取 LLM 重刷分析）
+  const COMPANY_NAME_TO_CODE = {
+    'Nexon Games': '225570',
+    'Netmarble': '251270',
+    'NC': '036570',
+    'Krafton': '259960',
+    'Pearl Abyss': '263750',
+  };
+
+  // 从单日驱动因素（analysis.daily）中取当日分析；月度分析（analysis.su/company）留给月度卡片
+  function getDailyAnalysisText(stock) {
+    if (!cachedContent || !cachedContent.analysis || !cachedContent.analysis.daily) return null;
+    const d = currentData?.meta?.date || '';
+    if (!d) return null;
+    const daily = cachedContent.analysis.daily;
+    // Shift Up 走 analysis.daily.su
+    if (stock.name === 'Shift Up') {
+      return (daily.su && daily.su[d]) ? daily.su[d] : null;
+    }
+    // 其余 5 家走 analysis.daily[code]
+    const code = COMPANY_NAME_TO_CODE[stock.name];
+    if (!code) return null;
+    return (daily[code] && daily[code][d]) ? daily[code][d] : null;
+  }
+
   function findStockReason(stock, events) {
-    // 1. 优先从当日事件数据中精确匹配（跳过韩语/英语标题）
+    // 1. 优先使用单日驱动因素（analysis.daily），这是 LLM 为当天生成的因果分析
+    const analysisText = getDailyAnalysisText(stock);
+    if (analysisText) {
+      return { source: 'daily', text: analysisText, color: stock.color, url: null };
+    }
+    // 2. 其次从当日事件数据中精确匹配（跳过韩语/英语标题）
     const matched = events.find(e => {
       const ms = matchEventToStock(e);
       return ms && ms.name === stock.name && !isNonChineseText(e.title);
@@ -1370,7 +1400,7 @@ function renderDailySummary() {
     if (matched) {
       return { source: 'event', text: matched.title, color: matched.color, url: matched.url };
     }
-    // 2. fallback 到静态表（需每日更新，不可长期依赖）
+    // 3. fallback 到静态表（4-6月及无 daily 数据的日期仍需）
     const staticReason = findCompanyReason(stock.name, stock.changeClass);
     if (staticReason) {
       return { source: 'static', text: staticReason, color: stock.color, url: null };
