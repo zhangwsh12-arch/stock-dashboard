@@ -1523,7 +1523,13 @@ function renderDailySummary() {
       }
     }
 
-    let output = '<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>';
+    // 单日主线（宏观共性事件，全板块共享，只说一遍放在最前）
+    const _dMacro = cachedContent?.analysis?.dailyMacro?.[currentData?.meta?.date];
+    let output = '';
+    if (_dMacro) {
+      output += `<br><br><span style="font-size:13px;color:#9aa0b3">🌐 今日主线：</span>${_dMacro}`;
+    }
+    output += '<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>';
     if (macroReasons.length > 0 && individualReasons.length > 0) {
       // 有宏观因素时，先显示宏观背景，再显示个股因素
       output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroReasons.join('；')}。`;
