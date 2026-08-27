@@ -897,10 +897,10 @@ function findCompanyReason(stockName, changeClass) {
     // 6月通用原因，避免命中上月过期分支
     const isJuneFirstDays = currentDate >= '20260601' && currentDate < '20260603'; // 6/1-6/2
     const isJune10Crash = currentDate >= '20260610' && currentDate < '20260611'; // 6/10 KOSPI暴跌-4.52%拖累全板块
-    const isJuneCrashWeek = currentDate >= '20260623'; // 6/23起：黑色星期二-9.99%→第5次熔断-5.81%→V型反转+史上最大外资抛售
+    const isJuneCrashWeek = currentDate >= '20260623' && currentDate < '20260701'; // 6/23-6/30：黑色星期二-9.99%→第5次熔断-5.81%→V型反转+史上最大外资抛售（加<7/1上界防止泄漏到后续月份）
     const isJuneBlackTue = currentDate === '20260623'; // 6/23 黑色星期二 KOSPI -9.99%
     const isJuneCircuit5 = currentDate === '20260626'; // 6/26 年内第5次熔断 KOSPI -5.81%
-    const isJuneVReverse = currentDate >= '20260629'; // 6/29 V型反转 + 外资抛售7.7万亿韩元(史上最大)
+    const isJuneVReverse = currentDate >= '20260629' && currentDate < '20260701'; // 6/29-6/30 V型反转 + 外资抛售7.7万亿韩元(史上最大)（加<7/1上界）
     const isJuneLater = currentDate >= '20260603'; // 6/3起（6/3休市，实际6/4+）
     if (isJuneFirstDays || isJuneLater) {
       const juneMap = {
@@ -1093,7 +1093,7 @@ function generateSUAnalysis() {
   const _isJune9Surge = d >= '20260609' && d < '20260610'; // 6/9 SGF延迟效应+外资涌入暴涨10%+
   const _isJune10Crash = d >= '20260610' && d < '20260611'; // 6/9暴涨后获利了结+KOSPI暴跌-4.52%双杀
   const _isJunePost10 = d >= '20260610'; // 6/10起（含6/10回调及之后）
-  const _isJuneCrashWeek = d >= '20260623'; // 6/23起：黑色星期二-9.99%→第5次熔断-5.81%→V型反转+史上最大外资抛售
+  const _isJuneCrashWeek = d >= '20260623' && d < '20260701'; // 6/23-6/30：黑色星期二-9.99%→第5次熔断-5.81%→V型反转+史上最大外资抛售（加<7/1上界）
   const _isJuneBlackTue = d === '20260623'; // 6/23 黑色星期二 KOSPI -9.99%
   const _isJuneCircuit5 = d === '20260626'; // 6/26 年内第5次熔断 KOSPI -5.81%
   const _isJuneVReverse = d >= '20260629' && d < '20260701'; // 6/29 V型反转 + 外资抛售7.7万亿韩元(史上最大)
