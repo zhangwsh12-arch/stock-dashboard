@@ -2,7 +2,7 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-08-27",
+    "updatedAt": "2026-08-28",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
     "newsAutoUpdatedAt": "2026-08-26T09:13:03.393Z",
     "newsAutoCount": {
@@ -454,7 +454,8 @@
       "8/24",
       "8/25",
       "8/26",
-      "8/27"
+      "8/27",
+      "8/28"
     ],
     "datasets": [
       {
@@ -558,7 +559,8 @@
           2.42,
           3.22,
           5.96,
-          5.31
+          5.31,
+          5.96
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -670,7 +672,8 @@
           3.68,
           19.64,
           21.54,
-          22.77
+          22.77,
+          23.88
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -782,7 +785,8 @@
           -1.04,
           -3.13,
           -1.83,
-          -5.22
+          -5.22,
+          -2.22
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -894,7 +898,8 @@
           -2.59,
           -3.02,
           -2.37,
-          -3.88
+          -3.88,
+          -3.02
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -1006,7 +1011,8 @@
           -4.68,
           -5.11,
           -2.98,
-          -6.6
+          -6.6,
+          -5.32
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -1118,7 +1124,8 @@
           -4.87,
           -2.07,
           -4.14,
-          -6.79
+          -6.79,
+          -3.99
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
