@@ -901,7 +901,7 @@ function findCompanyReason(stockName, changeClass) {
     const isJuneBlackTue = currentDate === '20260623'; // 6/23 黑色星期二 KOSPI -9.99%
     const isJuneCircuit5 = currentDate === '20260626'; // 6/26 年内第5次熔断 KOSPI -5.81%
     const isJuneVReverse = currentDate >= '20260629' && currentDate < '20260701'; // 6/29-6/30 V型反转 + 外资抛售7.7万亿韩元(史上最大)（加<7/1上界）
-    const isJuneLater = currentDate >= '20260603'; // 6/3起（6/3休市，实际6/4+）
+    const isJuneLater = currentDate >= '20260603' && currentDate < '20260701'; // 6/3起（6/3休市，实际6/4+，限定到6月底防泄漏到后续月份）
     if (isJuneFirstDays || isJuneLater) {
       const juneMap = {
         'NC': changeClass === 'down' && isJune10Crash
