@@ -634,7 +634,7 @@ async function main() {
   // 注意：existingKeys 精确匹配前40字符只能防止逐字相同的重复，
   // 无法防止"同一事件被措辞略有不同的方式重复写入"（历史上这是导致
   // events/industryNews 出现大量近似重复内容的根因）。
-  // 因此额外用 isSimilarToExisting() 做同日期+同公司的相似度校验作为第二道防线。
+  // 因此额外用 isSimilarToExisting() 做"同公司+日期窗口内"的相似度校验作为第二道防线。
   const existingEventKeys = new Set(
     contentData.events.map(e => `${e.date}:${cleanHTML(e.title).slice(0, 40)}`)
   );
@@ -659,9 +659,26 @@ async function main() {
     sa.forEach(x => { if (sb.has(x)) inter++; });
     return inter / (sa.size + sb.size - inter);
   }
+  // 日期窗口容差（天）：同一事件常被 Google News 在不同日期重新收录，或不同来源
+  // 标注的日期略有出入。2026-09-01 由"精确同日期"放宽为窗口匹配，修复了 Pearl Abyss/
+  // NC/Krafton 等多起"同一事件相隔1~4天被重复写入"的漏判（见 dedup-news.mjs 同步修复）。
+  const SIMILAR_DATE_WINDOW_DAYS = 4;
+  function toDayIndex(dateStr) {
+    const s = String(dateStr || '').split('~')[0].trim();
+    const m = s.match(/^(\d{1,2})\.(\d{1,2})/);
+    if (!m) return null;
+    const mm = parseInt(m[1], 10), dd = parseInt(m[2], 10);
+    if (!mm || !dd) return null;
+    return Math.floor(Date.UTC(2026, mm - 1, dd) / 86400000);
+  }
+  function dateDiffDays(a, b) {
+    const da = toDayIndex(a), db = toDayIndex(b);
+    if (da === null || db === null) return Infinity;
+    return Math.abs(da - db);
+  }
   function isSimilarToExisting(newTitle, newDate, newCompany) {
     const allExisting = [...contentData.events, ...contentData.industryNews];
-    const candidates = allExisting.filter(e => e.date === newDate && e.company === newCompany);
+    const candidates = allExisting.filter(e => e.company === newCompany && dateDiffDays(e.date, newDate) <= SIMILAR_DATE_WINDOW_DAYS);
     const strippedNew = stripForCompare(newTitle);
     return candidates.some(e => similarity(strippedNew, stripForCompare(e.title)) >= 0.4);
   }

@@ -469,13 +469,16 @@ async function generateEntityText(fact, news, isSU) {
   }
 }
 
-// 为某个截至日期生成全部实体文本
-async function generateAll(asOfDate, content) {
+// 为某个截至日期生成全部实体文本（entityFilter 可选：仅重算指定 code，如 'su' 或 '036570'，
+// 用于单独修复某一家的异常分析而不触动其余已生成好的实体，如 2026-08-31 NC 曾因幻觉护栏
+// 连续两次拒绝 LLM 输出、回退到规则模板拼接原始新闻标题的degraded case）
+async function generateAll(asOfDate, content, entityFilter) {
   const monthSnapshots = loadMonthSnapshots(asOfDate);
   const latest = readSnapshot(asOfDate) || (fs.existsSync(LATEST_PATH) ? JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8')) : null);
   const { facts, entities } = buildQuantContext(asOfDate, monthSnapshots, latest, content);
   const result = { su: null, companies: {} };
   for (const e of entities) {
+    if (entityFilter && (e.isSU ? 'su' : e.code) !== entityFilter) continue;
     const fact = { ...facts[e.code], asOfDate };
     const news = getMonthNews(content, e.name, mmddOf(asOfDate));
     const text = await generateEntityText(fact, news, e.isSU);
@@ -675,7 +678,7 @@ async function main() {
   const force = process.argv.includes('--force');
   const dailyMode = process.argv.includes('--daily');
   const cfg = llmConfig();
-  console.log(`[generate-analysis] LLM: model=${cfg.model} base=${cfg.baseUrl} key=${cfg.hasKey ? '已配置' : '缺失(将用规则兜底)'}`);
+  console.log(`[generate-analysis] LLM: model=${cfg.model} base=${cfg.baseUrl} key=${cfg.apiKey ? '已配置' : '缺失(将用规则兜底)'}`);
 
   const latest = JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8'));
   const dateStr = latest.meta.date;
@@ -743,6 +746,9 @@ async function main() {
     targetDates.clear();
     targetDates.add(process.argv[dateArgIdx + 1]);
   }
+  // 调试/单点修复：--code <su|股票代码> 仅重算该实体，不触动同日其余已生成好的实体
+  const codeArgIdx = process.argv.indexOf('--code');
+  const entityFilter = codeArgIdx >= 0 && process.argv[codeArgIdx + 1] ? process.argv[codeArgIdx + 1] : undefined;
 
   let wrote = 0;
   for (const td of [...targetDates].sort()) {
@@ -766,11 +772,12 @@ async function main() {
     }
 
     console.log(`[generate-analysis] 生成 ${td} ...`);
-    const gen = await generateAll(td, content);
+    const gen = await generateAll(td, content, entityFilter);
 
     // 写回（--force 全量覆盖；否则仅当不存在或为旧"逐日罗列"格式时覆盖，保留人工精修）
+    // gen.su 在指定 --code 过滤且非 su 时为 null，须排除，否则会误将已有 su 分析清空
     const suExisting = content.analysis.su[td];
-    if (force || !suExisting || isOldListing(suExisting || '')) {
+    if (gen.su != null && (force || !suExisting || isOldListing(suExisting || ''))) {
       content.analysis.su[td] = gen.su;
       wrote++;
       console.log(`  ✓ SU: ${gen.su.slice(0, 60)}...`);

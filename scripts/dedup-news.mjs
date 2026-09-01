@@ -11,9 +11,13 @@
  *      2026-08-19 新增：换用不同翻译引擎（免费机翻 → DeepSeek）后，同一条新闻
  *      产生两种措辞的译文，相似度低于 0.4 阈值而被判为"新新闻"，一次性造成
  *      37 组重复。URL 是新闻的天然唯一标识，不受翻译影响。
- *   以下规则在"同日期+同公司"分组内生效（用于无 URL 的人工条目）：
+ *   以下规则在"同公司 + 日期相差 <= DATE_WINDOW_DAYS 天"的分组内生效（用于无 URL 的人工条目，
+ *   2026-09-01 由"同日期"放宽为"日期窗口"——同一事件常被 Google News 在不同日期重新收录，
+ *   或人工从不同来源摘录时标注了略有差异的日期，原"同日期"判重完全放过了这类跨日重复）：
  *   1. 去除数字/标点后的中文字符 bigram 相似度 >= 0.4
  *   2. 提取的关键数字（百分比/点位等，≥2位）重叠比例 >= 0.5（如果双方都有数字特征）
+ *   窗口限定"同公司"是关键防呆：不同公司即使模板化标题相似（如"在线游戏_A,B(M.DD)"这类
+ *   同源报告条目）也不会被误判为重复。
  *
  * 聚类方式：并查集（Union-Find），避免同组内既有重复对、又有不同事件时的误判
  * （如 06.09 Shift Up 组：3条中2条重复+1条完全不同的 Nintendo Direct 新闻）
@@ -62,11 +66,37 @@ function numOverlap(a, b) {
   na.forEach(x => { if (nb.has(x)) inter++; });
   return inter / Math.min(na.size, nb.size);
 }
-function isDuplicate(a, b) {
+
+// 日期窗口容差（天）：同事件不同来源常出现 1~3 天的日期差异
+const DATE_WINDOW_DAYS = 4;
+
+// 将 "MM.DD" 或跨日期 "MM.DD~DD" / "MM.DD~MM.DD" 解析为起始日的绝对天数序号（非闰年基准 2026）
+function toDayIndex(dateStr) {
+  const s = String(dateStr || '').split('~')[0].trim();
+  const m = s.match(/^(\d{1,2})\.(\d{1,2})/);
+  if (!m) return null;
+  const mm = parseInt(m[1], 10), dd = parseInt(m[2], 10);
+  if (!mm || !dd) return null;
+  return Math.floor(Date.UTC(2026, mm - 1, dd) / 86400000);
+}
+function dateDiffDays(a, b) {
+  const da = toDayIndex(a), db = toDayIndex(b);
+  if (da === null || db === null) return Infinity;
+  return Math.abs(da - db);
+}
+// diff: 两条新闻的日期相差天数。
+// 数字重叠规则(numOverlap)门槛很松（如两条标题都出现"2026"这类泛化数字即可判重），
+// 这在"同日期+同公司"场景下候选池很小、风险可控；但放宽到日期窗口后同公司候选池显著
+// 变大（一周内同公司可能有多条完全不同主题的新闻），若继续对跨日期的两条新闻套用该
+// 松规则，会把"办公楼建设"和"游戏更新公告"这类毫不相关的新闻误判为重复。
+// 因此：跨日期(diff>0)比较只信标题相似度，数字重叠规则仅在同日期(diff===0)时生效。
+function isDuplicate(a, b, diff = 0) {
   const sim = similarity(stripForCompare(a.title), stripForCompare(b.title));
   if (sim >= 0.4) return true;
-  const numOv = numOverlap(a.title, b.title);
-  if (numOv !== null && numOv >= 0.5) return true;
+  if (diff === 0) {
+    const numOv = numOverlap(a.title, b.title);
+    if (numOv !== null && numOv >= 0.5) return true;
+  }
   return false;
 }
 
@@ -105,14 +135,13 @@ function dedupeArrayPair(events, industryNews) {
   events.forEach((e, i) => tagged.push({ ...e, _src: 'events', _idx: i }));
   industryNews.forEach((e, i) => tagged.push({ ...e, _src: 'industryNews', _idx: i }));
 
-  const byDateCompany = {};
+  // 按公司分组（日期窗口判重在组内两两比较时再做，见下方规则1循环）
+  const byCompany = {};
   tagged.forEach((e, globalIdx) => {
     if (!e.date) return;
-    // 注意：跨日期范围（如"07.09~10"）字符串完全相同时也应参与判重——
-    // 实测发现同一跨日期事件也会被同时写入 events 和 industryNews 两个数组
-    const key = e.date + '|' + e.company;
-    if (!byDateCompany[key]) byDateCompany[key] = [];
-    byDateCompany[key].push(globalIdx);
+    const key = e.company || '';
+    if (!byCompany[key]) byCompany[key] = [];
+    byCompany[key].push(globalIdx);
   });
 
   const uf = new UnionFind(tagged.length);
@@ -136,11 +165,14 @@ function dedupeArrayPair(events, industryNews) {
     }
   });
 
-  Object.values(byDateCompany).forEach(indices => {
+  Object.values(byCompany).forEach(indices => {
     if (indices.length < 2) return;
     for (let i = 0; i < indices.length; i++) {
       for (let j = i + 1; j < indices.length; j++) {
-        if (isDuplicate(tagged[indices[i]], tagged[indices[j]])) {
+        const a = tagged[indices[i]], b = tagged[indices[j]];
+        const diff = dateDiffDays(a.date, b.date);
+        if (diff > DATE_WINDOW_DAYS) continue;
+        if (isDuplicate(a, b, diff)) {
           uf.union(indices[i], indices[j]);
           dupPairCount++;
         }

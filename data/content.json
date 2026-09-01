@@ -154,7 +154,7 @@
         "20260821": "NCsoft本月逆势走弱，主要受制于市场对《Aion 2》等新作兑现节奏的疑虑。尽管8月6日Gamescom上三款新作亮相并启动欧美攻势，且公司明确“<strong>每月推出一款新游戏</strong>”的全球发行节奏，但8月18日媒体对“屡败屡战”中国挑战的质疑，叠加8月11日Concall中“爱的召唤从三月开始”所暗示的长期预热周期，令投资者担忧短期业绩支撑不足。新作催化集中于未来，而当前缺乏即时盈利驱动，导致股价在大盘强势下仍承压。",
         "20260825": "NCsoft本月下跌主要受制于gamescom亮相的新作矩阵未能扭转市场对短期业绩的担忧。尽管<strong>Aion 2</strong>发售日确定于<strong>10月</strong>全球出击，且<strong>3款新作</strong>（含主机向的<strong>Sinder City</strong>）展示了多元化布局，但市场对MMORPG赛道竞争加剧及新作上线前的空窗期反应谨慎，利好兑现后缺乏持续买盘支撑，股价随大盘分化走弱。",
         "20260826": "NCsoft本月下跌主因在于Gamescom集中释放的新作信息未能扭转市场对业绩兑现节奏的担忧。尽管《Aion 2》确认<strong>10月5日</strong>全球上线，并首度公开《Sinder City》《Like or Die》两款新作，但财报主线显示其海外营收突破<strong>50%</strong>的同时，市场更关注新作上线前的空窗期成本压力。金泽辰领导下的全球化战略虽获认可，但短期缺乏实际流水贡献，叠加KOSDAQ大涨背景下资金转向高弹性标的，导致股价逆势承压。",
-        "20260831": "<strong>NCsoft</strong>本月整体下行，相关动向：NC首次公开〈Like or Die〉···公开2款游戏预告片；NC Gamescom公开《Aion 2》等3款新作…全球攻略启动。"
+        "20260831": "NCsoft本月下跌主因在于Gamescom发布节奏与市场预期的错位：尽管公司于8月25-26日集中公开《Aion 2》等<strong>3款新作</strong>并确定《Aion 2》10月5日海外上线，但新品多为预告片形式，缺乏可验证的商业化细节，叠加8月27日“上半年PC销售额史上最大”的利好已被前期消化，未能形成持续买盘。同时，财报主线中市场对现有IP（如Lineage系列）的依赖度担忧未获新作实质数据对冲，导致事件驱动型资金在发布后选择获利了结，股价随大盘（KOSPI +3.42%）反弹乏力而逆势走弱。"
       }
     },
     "dailyMacro": {
@@ -1192,14 +1192,6 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>Kakao Games 2026 PUBG综合Clan Cup…以'Phoenix'夺冠收官</strong>",
-      "source": "데일리한국",
-      "date": "08.31",
-      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9FMzVBcTRhUHUwOWtvNzZJWlZaZlpVY0IydGFtelZWakJOT1EyTXp6bFc0cXVTUzNYLUJtNHdHdzVSRlU3ZUFIVzFna0J6YTNtVnZqUGVPZjhwQ2VjdldIak9JRjRCdi0ydUxaSE9oWdIBc0FVX3lxTE51MS1SSVFJVlVRUE1UeC01QkpaTm5ranVJTUVXTlVMaTVheW8xMnpkbHdWTzNUMFY1RGJDQW13Z3ZWQ0E3SVpSNW9rVHdwdTItV3dpZmpsMWVDdWhReTBJc3l1aW1HMUppYy1jZE13dkNwOEU?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
       "title": "<strong>Kakao Games PUBG Clan Cup人气\"扩大用户基础奏效\" - ER经济评论</strong>",
       "source": "ER 이코노믹리뷰",
       "date": "08.31",
@@ -1208,26 +1200,10 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>Kakao Games 2026 PUBG综合Clan Cup Phoenix Clan夺冠</strong>",
-      "source": "베타뉴스",
-      "date": "08.31",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBoV1U0c0F6WWx3V0NZTGFEWFd4bWdxSXlnUFFiVThOc0c4Vm1WTWxrWFZ0SnB5U1dhV2pjYkQzYnRnYnJpVWxxYTNMY1hBZVJ5Nkg4cEUtcGxtcXRNWTRpbzVpUmk?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
       "title": "<strong>\"Krafton上半年AI·IP投入4200亿韩元\"…游戏业R&D竞争升温 - 朝鲜商业</strong>",
       "source": "Chosunbiz",
       "date": "08.31",
       "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNNmVSd3c5OTVaWE5kRTdZNl9zTF9qakZOenpqOVZsal9uQ1dINjNmemJWQVBaVlFfS0tqUGlXMUl2Nm9KbDVpRXF5Q3BwTFpFX3hoQ3ZPT2lVVWU5VDVqeVlUcjE0T2owTmpYVE5lWllaNGNoMzI0amc0MnlfWTBReVF30gGWAUFVX3lxTE5RcFNVTTI1MjdOeVVCNWFBd1MwM0xNSXppbHVOOFBsaDVyUzNNbXZuVnpUc3RzOTd1dUxZMk9CeVkzQkoydUZIWHlSN1Byckhyb2E5bkxQcGRhUkMxZ3h4X3BfR0RISFdMMXM3a0c2bDRkUFlhTFhzYlRLRWdrcmVMb2l1eGhGLW5kODhpSnZfRlN2RUVxZw?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Kakao Games'2026 PUBG综合Clan Cup'落幕…Phoenix夺冠</strong>",
-      "source": "서울경제TV",
-      "date": "08.31",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9PenRtc1JaV00xR2t1Z1hfXzdOR2ZMSmx4UFd5UmMyQUxVSWJoSzVSZnJPNU1VaWxfb2xuYlJHM1lNN1ZEalI1bjlwdXBiREhDTU9sOU55ZGczMHJxaWpzSzVpQnU?oc=5"
     },
     {
       "company": "Krafton",
@@ -1286,12 +1262,12 @@
       "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFB3MFNVT1YwY0J5cDd3SFNmVGNreTRxakpJR0VnbUlTSlg4c2pEeTg5cU5IVnJxbUNWUDQ3SzE4YjgzV2pFdzBxMWxEdEQwdzRjaHJoMWYxc1Vhd2N3WEFCMTFrVDdOd9IBakFVX3lxTE81MGZsNGs0cWRLZ1JhM09nSURHdGl1WTQyZzFURTFtdWxRTVVDWkFGdEZwOTFtc2VJUkU0dVF5TkVxU3BzR1JNVkNFSk4xT2UwcklRN2xZX3c2eFA4N0wtTjRFWEFhR0E5VWc?oc=5"
     },
     {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss《Crimson Desert Enhanced》上线，全平台首次20%折扣</strong>",
-      "source": "Pearl Abyss",
-      "date": "08.26",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5ka1dQVW0tMnE2QWVVT0hlOHp6Ul94OUhxb0VrUmdacXh3aVZlU2F3cEh0TElhdzRpTkl6WFRYVWFxd203eEVpakdhQndLOVNrbjZTVlJwV1lkVklGcE1vU0NPNlA?oc=5"
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>Shift Up金亨泰代表将现身东京电玩展(TGS)，《剑星》Switch2版本全球首次公开试玩</strong>",
+      "source": "데일리게임",
+      "date": "08.28",
+      "url": "https://www.dailygame.co.kr/view.php?ud=20260828114059685443da15d9d2_26"
     },
     {
       "company": "Krafton",
@@ -1340,14 +1316,6 @@
       "source": "MTN 머니투데이방송",
       "date": "08.26",
       "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9ra3B2WGp2U00wSGFPV3RaNHJDV3R3TnFINUl0TEtIamtpUFhaTHFUZkRVaE5yUFZYd25wZmZZODNiOWI2ZFBZWWc1YVJIeGU0M2tpZldwa0pxTVJDOFlZbkdfRzU?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>[Gamescom 2026] NC《Aion 2》10月5日全球上线…ONL公开3款新作</strong>",
-      "source": "디지털데일리",
-      "date": "08.26",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFA2dEM4TDlGWlpYS0M5M3hObzM1WkFUMHhKSElWZFRIZ1RBWmtYNGtGemZxeGRORmdEc1RZa0pvUHBDbG9EbkVLRnlyaXNrRlN5RXpGNWRBdkZKQ3FSOGVBdHZmazg?oc=5"
     },
     {
       "company": "NC",
@@ -1424,14 +1392,6 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>'gamescom 2026'Krafton在'ONL'公开新作5款</strong>",
-      "source": "신아일보",
-      "date": "08.26",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE92ejllUkxBcC1xLXRhc3VtWTE0Y1BGWGFHQjJ1cldIME1XRjVXTXlmOTdvRGFmU2hnWWp4SkxJaUFQeE15ZGd5dXVUU3JqeHdvOE43c0I4MGd2SElGalg5dFRfQW9odUtLaXN1MW1WLUo?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
       "title": "<strong>Krafton在gamescom公开新作5款视频...PUBG IP新作'PUBG: Deadnet'首秀</strong>",
       "source": "Chosunbiz",
       "date": "08.26",
@@ -1444,30 +1404,6 @@
       "source": "ebn.co.kr",
       "date": "08.26",
       "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9mZnFFaHJxQWtuMXlwaE9hUjhTLWhMY1l3TkNJUFV1aTZlTXllaGRvYjhlNmpBMnRWQVFvbk1DeUJJRFhWR3ppZG05NlJKUXN5dk8zcGRvbV9JSXpjRG5UOXlCOV92N2xa?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>[gamescom 2026] NC以'Aion 2'-'Sinder City'-'Like or Die'开启全球大门</strong>",
-      "source": "게임동아",
-      "date": "08.25",
-      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE16d0Z1SnI4NG12UDZuVl9IVHdmZEpaRndDZWZVM2NvRUEtZm9VczkxX3FCc0J5MVppUHZ6Y2dhWGxjTTZS?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC在gamescom公开新作3款...'Aion 2'10月全球上市</strong>",
-      "source": "파이낸셜뉴스",
-      "date": "08.26",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5VRWd4TS1TZnJtUWw1cHlWZ3dQV3V0WVdiTGV1em42ZjFiYnF1dktTTWpUOEp4eU1MQWVQOVFQVmhGRlI2OTRpeGR2VkdxWGxYNTI4cXZwYmhkZw?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC在'gamescom ONL'公开新作3款...10月以'Aion 2'开启全球大门</strong>",
-      "source": "포인트경제",
-      "date": "08.26",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE00SnZFaGlKeEVnXy1ISUU5ZU5Pdnk4bEVlR1Bfa1dDVTFrWEl5dFRzU3IyZ1VNNzU3S2JDVkE0bDg1YjZPb0kxUlpMTVFpRTRqb2k5NkNEM1daRWp1MDZnblF2WVlOZVM0Mnc?oc=5"
     },
     {
       "company": "NC",
@@ -1512,14 +1448,6 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>Krafton Age Twister获gamescom 2026大奖提名</strong>",
-      "source": "지디넷코리아",
-      "date": "08.25",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1PMkxMUGZjSUpxdTVMVzZWS0dtX1UyMEN2dnpKMmZ5MWpGNmlKS0FmdGlLMW10ckJ3QTJvRDI4eUNWVE5BQ0N6a2ZmZ01hVllQMUJkekxn?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
       "title": "<strong>gamescom 2026 Pearl Abyss与Krafton候选作品...K游戏能否打破三年无奖</strong>",
       "source": "아이뉴스24",
       "date": "08.25",
@@ -1532,22 +1460,6 @@
       "source": "신아일보",
       "date": "08.24",
       "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lTWJBMU5MVjZPbVl5VUpMSEFySHpDWkVkUV81TU1PWEljYWRSWHcyOVdSYUhZXzIxMmtyV0FueWhCRUNmYzRZX2FnTURrTHlPbFhjSWp1MjREZjZwZ0dmajlmWkVURktSNlJhVk9KYUc?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton新作Age Twister获gamescom大奖提名</strong>",
-      "source": "IT조선",
-      "date": "08.24",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1lSGh5ZGtIVmd0alhaOG5BZmJ6d3dmcDBESUlPbXJzWjhjdk5JRzQ0cXduaFdDbEt1LTlwaWFIVWZ2Y0UtQ1NBZ2pkS0RRQW5aZ1R5TGw2T0x1UkpjMlNQR2FPb0N4WUxmNzY4NDNJRGPSAXRBVV95cUxQZVUxOUswdGZ0WGZJbjRTaWFWejhnb3JCb0xCUzFKcWpSOXI4SjZyYzFCUldWSTBkd3hwR2tmeERZdmdTRU9Bb0U2NURXLW1udXd3TmJEbWFST0pTM2RTQThwNzl0QnZ0UURFbHd2SFV3RkNPeg?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton Age Twister入围gamescom大奖候选</strong>",
-      "source": "뉴스핌",
-      "date": "08.25",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE16Zm1XbXRpSnZwS0xTZnBlaURWdkwycktQY2djRjBCWllDYWJIb1NOUkF3MWlJSDdyY2RjMC1mcWlZTEJOb1hWdEl1WE90NTJMaGJkX3ZpYUxRa0tt?oc=5"
     },
     {
       "company": "Krafton",
@@ -1628,14 +1540,6 @@
       "source": "중부일보",
       "date": "08.23",
       "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9jXzBqcHA5YUllNmZETU9ZSUo4MUp1TVBBSUhOZ1ZodjBwR3pFRy1fa3pPbGhKTXRsSXZRSUlPdzBCV2xSc1lzWmZVUFVXQjFJRWNBZHVSUkE2YlFhclNaSGlUektsRGlLWEQ0eVAyUQ?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>圣水洞17层Krafton办公设施···地面部分打造“城市森林”</strong>",
-      "source": "머니투데이",
-      "date": "08.23",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5ERnZUOHV1NE1OcXpJSko3dTEwY3ZQcWpXUHBzOHdKRi0xM3BueUhxRlBzNlN4RVBVVFpJcjl1amhyWkRvV19Pc29zazAwaDhMZDRWVGthZ2RiNl90djNPRnZCUU5weUgzMVHSAW9BVV95cUxPTW5YVndOeGdobzJiX2gwWHlYN3ZqX2RKcVVwRzZWVUJKOS1NTmdSc3AxSk56Uk1mbkVEMldqdnNiellRS25BelNNSVZuZ05VSTl0WHdtOE9pN0o3N3QwT19yVXRSQTB5MmRzc09rVms?oc=5"
     },
     {
       "company": "Krafton",
@@ -1844,14 +1748,6 @@
       "source": "Pearl Abyss",
       "date": "08.18",
       "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBZdksyY3hWVWZ2ZExnek0tdWtvcEQySkZ2RWFVUHJjQWxjdk5iMS03WXcyQlVuREZKMEFfWUtWZ0RRc2ZDMXJCekF4SEgtV20xV3c3bVlQbGhBNFAxcUVxR2gxOEs?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>地图服务报告 - 更新 42.3 - 新闻 - PUBG：PUBG</strong>",
-      "source": "pubg.com",
-      "date": "08.10",
-      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE1weTFHanpqWXVHX1dnZnhxRG5HQzltM3J0dlNOSjFmU0NJYXpzbk1URU55bERyZFdCMjZIX0NTQkVvNDJC?oc=5"
     },
     {
       "company": "Krafton",
@@ -2815,30 +2711,6 @@
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
-      "title": "<strong>NC‘Limit Zero Breakers’，9月10日前沿测试</strong>",
-      "source": "청년일보",
-      "date": "08.20",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9jT1RwcE5jcXlaaThkQVJPNkZiWDBwWlBjUllmRl82SkxzREl2cWtuazZSYWVoNWhCX2xPb2JabW1YWktoeWktWm53cGFDZWhHWWJ3UkJfSzgtZ3c3TVh2U2Z4ZFFFYzQ?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
-      "title": "<strong>NC‘Limit Zero Breakers’，9月10日全球测试</strong>",
-      "source": "중소기업신문",
-      "date": "08.20",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5UVUF2dUJTZ293c0FVMTFIcmw0dnVEWU5IVkxuNktSUUNtZzR0NndELUNCSENfWS0yek5id0ZIRXNiWXAyY1pFQi1ZWEZYQkpFc3BqN2RibzRYbHg2d0VFdTNZbXpLUTc1LXowNg?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
-      "title": "<strong>摆脱“Lineage依赖”的NC…券商目标价最高44万韩元</strong>",
-      "source": "딜사이트",
-      "date": "08.20",
-      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1fQ29VMm1OUUozV0F6UFZBbENhby1xV0t2T2RCWDFQZlE1MXQ2UGVBNHNmdE4xZmFUcG5IdlMwVDJUckFGR2ZNTEs2TjkwSkk?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
       "title": "<strong>Krafton超越游戏界“3N”首次登顶营收·营业利润…海外攻略奏效</strong>",
       "source": "v.daum.net",
       "date": "08.17",
@@ -3061,34 +2933,10 @@
       "url": ""
     },
     {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>Stellar Blade PC版+NIKKE双轮驱动</strong>：PC版发售首月销量破150万套，Steam好评率92%。NIKKE累计营收突破$10亿，Anis: Star实装后首周营收环比+35%。IP矩阵运营能力持续验证。",
-      "source": "Inven/Shift Up IR",
-      "date": "05.06~11",
-      "url": ""
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>Aion 2预约破120万+Q1财报超预期</strong>：韩国预约从94万增至120万，6月全球发布临近。Q1营业利润YoY +1700%超预期，Lineage Classic BM防御收入下滑趋势缓解。",
-      "source": "NC Soft IR/FnGuide",
-      "date": "05.07~11",
-      "url": ""
-    },
-    {
       "company": "Krafton",
       "color": "#f59e0b",
       "title": "<strong>PUBG印度回归+AI Raon生态扩张</strong>：印度市场谈判进入最后阶段，潜在2亿用户回归预期。AI模型'Raon'开源后开发者社区活跃度持续上升，Ascend Zero新作开发进展顺利。",
       "source": "Krafton 공시",
-      "date": "05.08~11",
-      "url": ""
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Crimson Desert 500万套+DLC即将上线</strong>：发售不到两个月破500万套，创韩国主机最快纪录。首波DLC'Boss重战模式'5月中旬上线，Q1扭亏为盈至₩1,250亿已验证。",
-      "source": "Pearl Abyss IR/SteamDB",
       "date": "05.08~11",
       "url": ""
     },

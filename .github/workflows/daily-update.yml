@@ -104,6 +104,27 @@ jobs:
           echo "generate-analysis.mjs 本次运行失败，analysis 字段未更新。请检查日志。" >> "$GITHUB_STEP_SUMMARY"
           echo "::warning::generate-analysis.mjs failed — 涨跌分析未成功生成，请检查日志"
 
+      # ====== 个股驱动因素（--daily）自动生成 ======
+      # 此前该模式只被人工在本地手动跑过，CI 从未调用，导致"今日总结"里的个股驱动
+      # 因素长期依赖人工每天手动输入。现改为每次数据更新后自动补齐当日 analysis.daily，
+      # 非关键路径：失败不阻断后续 commit/deploy，未配置 LLM Key 时自动使用规则引擎兜底。
+      - name: Run daily driver-factor analysis generator
+        id: daily-analysis-generator
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+        run: node scripts/generate-analysis.mjs --daily
+
+      - name: Warn if daily analysis generator failed
+        if: steps.daily-analysis-generator.outcome == 'failure'
+        run: |
+          echo "### ⚠️ 个股驱动因素分析生成失败" >> "$GITHUB_STEP_SUMMARY"
+          echo "generate-analysis.mjs --daily 本次运行失败，analysis.daily 字段未更新。请检查日志。" >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::generate-analysis.mjs --daily failed — 个股驱动因素未成功生成，请检查日志"
+
       - name: Validate data
         run: node scripts/validate-data.mjs
 
