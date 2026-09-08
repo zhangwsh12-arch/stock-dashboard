@@ -2,14 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-09-07",
+    "updatedAt": "2026-09-08",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-09-07T09:01:48.431Z",
+    "newsAutoUpdatedAt": "2026-09-08T09:01:50.605Z",
     "newsAutoCount": {
-      "events": 9,
-      "industryNews": 5,
+      "events": 7,
+      "industryNews": 3,
       "skippedUntranslated": 0,
-      "skippedByUrl": 13,
+      "skippedByUrl": 16,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -43,7 +43,8 @@
       "20260902": "本月Shift Up股价逆势上行，主要受大盘系统性压力下的相对韧性驱动。在KOSPI与KOSDAQ分别下跌<strong>-3.78%</strong>与<strong>-3.72%</strong>的背景下，市场对高盈利游戏公司的价值重估情绪升温，行业报道聚焦“国内主要游戏公司赚钱能力强劲，股价为何被低估”，引导资金流向具备稳定现金流的头部标的。Shift Up作为无专属利空事件、且盈利质量受认可的标的，成为该逻辑下的受益方，从而获得避险与估值修复双重买盘支撑。",
       "20260903": "本月Shift Up随大盘走弱，KOSPI与KOSDAQ分别下跌<strong>-3.53%</strong>与<strong>-5.28%</strong>，市场风险偏好收缩压制游戏板块估值。行业层面，9月初新作营销与大型更新虽带来短期热度，但未能形成持续催化；同时游戏业界就谷歌应用内支付损失及手续费退还问题持续施压，政策不确定性升温，削弱板块情绪。Shift Up无专属事件驱动，股价缺乏独立支撑，故跟随行业及大盘系统性回调。",
       "20260904": "本月Shift Up缺乏专属事件催化，股价随行业与大盘情绪走弱。尽管<strong>09.04</strong>游戏股盘中普遍反弹，但市场焦点集中于Pearl Abyss等个股的强势表现，资金分流效应明显。同时，<strong>09.02</strong>起关于RPG新作表现分化及全球游戏展地位动摇的讨论，削弱了市场对单一游戏厂商的题材热情。在KOSPI与KOSDAQ双双下跌的背景下，Shift Up因缺少独立利好支撑，未能获得资金青睐，整体承压下行。",
-      "20260907": "本月Shift Up股价承压，主因缺乏自身专属催化剂，在行业性利空氛围中被动回调。市场对韩国游戏IP换代迟缓的担忧发酵，<strong>09.04</strong>相关报道直指新招牌IP青黄不接的行业痛点，作为以单一核心IP驱动的厂商，该情绪对其估值压制尤为直接。同时，<strong>09.03</strong>《LoL》卡牌新游上线分流市场关注，<strong>09.07</strong>同业新作服务上线亦抢占用户时长，在无自身体量级新品对冲的窗口期，资金偏好明显向有新品节奏的标的倾斜，导致其跑输大盘。"
+      "20260907": "本月Shift Up股价承压，主因缺乏自身专属催化剂，在行业性利空氛围中被动回调。市场对韩国游戏IP换代迟缓的担忧发酵，<strong>09.04</strong>相关报道直指新招牌IP青黄不接的行业痛点，作为以单一核心IP驱动的厂商，该情绪对其估值压制尤为直接。同时，<strong>09.03</strong>《LoL》卡牌新游上线分流市场关注，<strong>09.07</strong>同业新作服务上线亦抢占用户时长，在无自身体量级新品对冲的窗口期，资金偏好明显向有新品节奏的标的倾斜，导致其跑输大盘。",
+      "20260908": "本月Shift Up股价承压，主要受大盘风格切换拖累：KOSPI走强而KOSDAQ走弱，资金明显流向主板，作为KOSDAQ权重游戏股首当其冲。行业层面，<strong>9月NCsoft新作密集上线</strong>，二次元与MMORPG赛道竞争骤然加剧，市场对同类产品线前景趋于谨慎。同时，<strong>K内容共同宣言</strong>虽彰显产业协同，但缺乏针对公司的直接催化，难以对冲板块资金分流压力。在无专属事件支撑下，股价随KOSDAQ弱势震荡。"
     },
     "company": {
       "225570": {
@@ -72,7 +73,8 @@
         "20260902": "本月Nexon Games在无专属利好的背景下逆势上行，主要受行业估值修复情绪驱动。同期大盘走弱，而媒体聚焦国内游戏公司盈利强劲但股价低估，引发资金对低估值游戏股的关注。在KOSPI与KOSDAQ分别下挫<strong>-3.78%</strong>与<strong>-3.72%</strong>的弱势环境中，该股凭借行业性价值重估预期获得相对收益，走势与大盘形成明显背离。",
         "20260903": "本月Nexon Games在无专属事件催化下，股价逆势上行主要受行业性情绪提振。9月初游戏业界进入新作营销与大型更新密集期，市场对产品线活跃度预期升温，带动板块内个股风险偏好改善。同时，业界就谷歌应用内支付赔偿与手续费退还问题的集体施压，强化了平台政策调整的博弈预期，对以内容研发为核心的游戏公司构成潜在利好。在KOSPI与KOSDAQ分别下跌<strong>-3.53%</strong>与<strong>-5.28%</strong>的背景下，该股走出独立行情，反映资金在弱势大盘中向具备事件驱动弹性的游戏标的集中。",
         "20260904": "本月Nexon Games股价上行，主要受行业性风险偏好回暖驱动。9月4日游戏股盘中普遍走强，Pearl Abyss大涨<strong>13%</strong>，带动板块情绪整体升温，Nexon Games作为主要游戏厂商同步获得资金流入。同时，9月2日RPG新作表现分化，市场对头部厂商的存量产品与后续管线关注度提升，叠加韩国游戏厂商对G-Star等本土展会依赖度下降、转向全球市场的结构性叙事，为股价提供了中长期逻辑支撑。整体看，本轮上涨更多源于板块联动与情绪修复，缺乏公司专属事件催化。",
-        "20260907": "本月Nexon Games股价上行，主要受行业情绪与大盘共振驱动。KOSPI月内走强（<strong>+2.57%</strong>）为游戏板块提供顺风，而Riot《Riftbound》于<strong>18日</strong>上线带来的品类热度外溢，提振了市场对游戏股的关注。同时，媒体对韩内容IP空白的讨论，凸显存量旗舰IP价值，间接利好具备成熟产品线的Nexon Games。此外，OP.GG上线NC新作《Time Takers》查询服务，显示第三方生态活跃，亦对板块交易情绪形成边际支撑。"
+        "20260907": "本月Nexon Games股价上行，主要受行业情绪与大盘共振驱动。KOSPI月内走强（<strong>+2.57%</strong>）为游戏板块提供顺风，而Riot《Riftbound》于<strong>18日</strong>上线带来的品类热度外溢，提振了市场对游戏股的关注。同时，媒体对韩内容IP空白的讨论，凸显存量旗舰IP价值，间接利好具备成熟产品线的Nexon Games。此外，OP.GG上线NC新作《Time Takers》查询服务，显示第三方生态活跃，亦对板块交易情绪形成边际支撑。",
+        "20260908": "本月Nexon Games无专属事件，其上行主要受行业与大盘共振驱动。KOSPI月内走强，叠加游戏、电影、网漫等<strong>11个团体</strong>联合发布K内容共同宣言，提振了市场对韩国内容产业整体信心，资金外溢至游戏板块。同时，9月NC新作密集上线引发对二次元与MMORPG品类关注度升温，带动板块情绪回暖，Nexon Games作为主要游戏股随势获得配置需求支撑。"
       },
       "251270": {
         "20260722": "Netmarble本月承压主因系<strong>7月6日以₩3,000亿收购Wemade 19.5%股权</strong>落地，市场对整合风险与ROI周期持谨慎态度，当日股价即承压。随后<strong>7月8日游戏股集体触底</strong>，Netmarble单日下跌<strong>-4.5%</strong>，跌幅居前，主因仍是Wemade收购整合担忧叠加高Beta属性在KOSPI单日-3.2%中的放大效应。尽管7月7日大盘反弹时游戏股全线收红，Netmarble仅微涨<strong>+0.6%</strong>，显示该收购事件持续压制估值修复动能，成为月内拖累股价的核心负面催化剂。",
@@ -100,7 +102,8 @@
         "20260902": "Netmarble本月下跌主要受大盘系统性压力拖累，KOSPI与KOSDAQ分别下挫<strong>-3.78%</strong>与<strong>-3.72%</strong>，市场风险偏好收缩压制游戏板块整体估值。公司层面缺乏专属催化剂，未能形成独立于行业的防御性支撑。同期行业焦点集中于NCsoft“脱Lineage”战略转型的考验，资金对大型游戏公司增长路径的疑虑升温，间接削弱了市场对Netmarble的持有信心。在无个股利好对冲的背景下，股价随板块情绪走弱。",
         "20260903": "Netmarble本月走弱，主因在于<strong>09.02</strong>曝出的NCsoft股权结构变动消息：方俊赫巩固主导权后，市场对Netmarble所持NCsoft股份的“友好联盟”价值预期降温，削弱了其资产层面的题材支撑。叠加同期游戏业整体面临谷歌应用内支付赔偿争议的行业性压力，投资者情绪趋于谨慎，股价缺乏独立催化剂而下行。",
         "20260904": "Netmarble本月走弱，主因在于围绕NCsoft的股权攻防出现变数。9月2日，市场传出方俊赫巩固主导权后，NC友好股份或不再需要，削弱了Netmarble通过持股影响NCsoft的预期；同日其RPG新作表现分化，Netmarble逆势下跌。9月4日，NCsoft更以RSU卡牌方式应对Netmarble的<strong>10%</strong>持股意图，进一步压制了市场对双方协同或并购的想象空间，资金转而流向Pearl Abyss等当日走强标的，形成明确利空催化。",
-        "20260907": "Netmarble本月承压，主因在于围绕<strong>NCsoft</strong>股权攻防的预期生变。9月2日市场传出方俊赫巩固主导权后，NC友好股份或不再需要，削弱了Netmarble通过股权合作获取战略协同的想象空间；随后NC以RSU卡牌应对其10%持股意图，进一步加剧了博弈不确定性。同时，其RPG新作表现分化，市场对其产品竞争力信心不足，叠加财报季对业绩兑现的审视，共同压制了股价表现。"
+        "20260907": "Netmarble本月承压，主因在于围绕<strong>NCsoft</strong>股权攻防的预期生变。9月2日市场传出方俊赫巩固主导权后，NC友好股份或不再需要，削弱了Netmarble通过股权合作获取战略协同的想象空间；随后NC以RSU卡牌应对其10%持股意图，进一步加剧了博弈不确定性。同时，其RPG新作表现分化，市场对其产品竞争力信心不足，叠加财报季对业绩兑现的审视，共同压制了股价表现。",
+        "20260908": "围绕Netmarble与NCsoft的股权攻防成为本月压制股价的核心变量。月初市场传出方俊赫巩固主导权后，NC友好股份必要性下降，随后NC以RSU卡牌应对Netmarble持股，双方博弈升温，<strong>09.07</strong>媒体以“裂11年血盟”形容关系恶化，不确定性持续打击投资者信心。同期RPG新作表现分化，Netmarble明显跑输同业，叠加市场担忧股权纠纷消耗经营精力，股价承压下行。"
       },
       "259960": {
         "20260722": "本月Krafton持续走弱，核心矛盾在于市场风险偏好切换与自身催化剂真空共振。7/3大盘史诗级V型反转日，资金100%涌入半导体硬件，Krafton逆势大跌<strong>-3.68%</strong>成为最差权重股，显示其被明确轮出主线；叠加PUBG印度回归谈判无进展、Ascend Zero催化真空，Q1超预期财报利好已充分定价，短期缺乏新驱动。7/7大盘反弹时仅微涨<strong>+0.9%</strong>，7/8大盘再跌即重挫<strong>-3.8%</strong>，高Beta属性在下跌中放大跌幅，弱势格局贯穿全月。",
@@ -128,7 +131,8 @@
         "20260902": "Krafton本月承压，主因市场对G-Star 2026参与前景存疑。尽管公司表态\"正在考虑参与\"，但国内主要游戏公司缺席背景下，其能否独扛大旗的不确定性压制了情绪，<strong>09.02单日股价下跌10,000韩元</strong>即为该担忧的直接映射。同时，德国总统演讲带来的行业地位提升及与印度IIT Madras的合作等利好，未能有效对冲大盘<strong>KOSPI -3.78%</strong>的系统性拖累，资金在弱势环境中选择规避高波动标的。",
         "20260903": "本月Krafton股价承压，主要受大盘系统性走弱拖累，KOSPI月内下跌<strong>-3.53%</strong>，游戏板块整体情绪低迷。公司层面，尽管于<strong>09.03</strong>宣布连续<strong>10年</strong>参展G-Star 2026，但官方仅表示\"具体作品后续公开\"，缺乏重磅新作或实质性业绩催化剂落地，未能对冲市场悲观预期。同时，行业端游戏业界就谷歌应用内支付赔偿问题持续施压，亦对板块风险偏好形成扰动。整体看，本月缺乏足以扭转趋势的个股专属利好，股价随大盘弱势震荡下行。",
         "20260904": "Krafton本月走弱，主因在于新品催化集中于远期，短期缺乏业绩兑现点。5minlab新作《WPCA》虽公开预告，但发售窗口定于<strong>2028年Q3</strong>，对当下基本面支撑有限；《Project Zeta》开启第二次全球测试亦处于早期验证阶段。尽管PUBG Mobile亚运会选拔赛启动，但赛事热度尚未转化为可见的商业回报。叠加大盘KOSPI月内下挫<strong>-1.95%</strong>，板块内资金更偏好即时业绩弹性标的，公司因此承压。",
-        "20260907": "Krafton本月承压，核心拖累在于市场对其新IP青黄不接的担忧被财报季放大。尽管公司于<strong>09.04</strong>公开5minlab新作《WPCA》预告，但发售窗口远至<strong>2028年Q3</strong>，无法对冲现有产品线老化带来的业绩焦虑。同期<strong>09.07</strong>虽宣布对印直接投资扩至<strong>5亿美元</strong>并会见莫迪总理，但该长期战略短期难贡献利润，反而加重投入预期。叠加《PUBG》与《咒术回战》联动仅为存量运营，缺乏增量催化，股价在行业“新招牌IP换代迟缓”的悲观氛围中持续走弱。"
+        "20260907": "Krafton本月承压，核心拖累在于市场对其新IP青黄不接的担忧被财报季放大。尽管公司于<strong>09.04</strong>公开5minlab新作《WPCA》预告，但发售窗口远至<strong>2028年Q3</strong>，无法对冲现有产品线老化带来的业绩焦虑。同期<strong>09.07</strong>虽宣布对印直接投资扩至<strong>5亿美元</strong>并会见莫迪总理，但该长期战略短期难贡献利润，反而加重投入预期。叠加《PUBG》与《咒术回战》联动仅为存量运营，缺乏增量催化，股价在行业“新招牌IP换代迟缓”的悲观氛围中持续走弱。",
+        "20260908": "<strong>Krafton</strong>本月整体下行，相关动向：Krafton会见莫迪总理推进“印度长期战略”…直接投资扩至5亿美元；全球超级IP联手…Krafton《PUBG》与日漫《咒术回战》携手。"
       },
       "263750": {
         "20260722": "本月Pearl Abyss股价承压，主因《Crimson Desert》DLC利好消化完毕，<strong>7/8</strong>在无新催化剂下随大盘重挫<strong>-6.0%</strong>，高Beta属性放大系统性抛压。尽管同日宣布特别分红、年配当率提升至<strong>2.5%</strong>，且<strong>7/18</strong>获Develop:Star技术创新奖、<strong>7/20</strong>新增云存档功能，但防御性利好未能抵消KOSPI深度调整与外资流出压力，股价整体维持弱势。",
@@ -156,7 +160,8 @@
         "20260902": "本月Pearl Abyss缺乏专属事件催化，股价随大盘弱势下行，KOSPI与KOSDAQ分别录得<strong>-3.78%</strong>与<strong>-3.72%</strong>的跌幅，市场风险偏好收缩压制成长股表现。同期行业层面，主要游戏公司虽盈利强劲但估值遭低估的讨论升温，未能扭转资金离场趋势，公司作为高贝塔标的在无个股利好对冲下，被动承压。",
         "20260903": "本月Pearl Abyss无专属事件驱动，股价随KOSPI与KOSDAQ分别录得<strong>-3.53%</strong>与<strong>-5.28%</strong>的弱势环境承压。行业层面，9月初新作营销与大型更新虽带来短期关注，但未能形成对公司基本面的实质催化；同时，游戏业界就谷歌应用内支付赔偿及手续费退还的集体施压，凸显平台分成矛盾持续，压制板块风险偏好。在缺乏个股利好对冲的背景下，大盘系统性回调与行业政策博弈情绪主导了月内下行方向。",
         "20260904": "Pearl Abyss本月上涨主要受其核心IP《Crimson Desert》内容扩张节奏驱动：<strong>09.03</strong>官方宣布《Charting the Unknown》DLC将于<strong>10月15日</strong>发售，Enhanced版首个DLC紧随其后于<strong>10月16日</strong>上线，密集的内容排期强化了市场对产品生命周期延续的预期。次日<strong>09.04</strong>游戏股盘中普遍走强，公司股价大涨<strong>13%</strong>，成为板块领涨标的，显示资金对其专属催化剂的定价反应积极。",
-        "20260907": "Pearl Abyss本月上涨的核心驱动来自《Crimson Desert Enhanced》商业化节奏的明确落地：<strong>9月3日</strong>官宣首个DLC《未知之旅》于<strong>10月16日</strong>发售并开启预购，同日另一则公告将发售日锁定为<strong>10月15日</strong>，多源信息强化了市场对内容上线确定性的预期。次日（<strong>9月4日</strong>）游戏股盘中普遍走强，Pearl Abyss大涨<strong>13%</strong>，显示资金将其视为板块内具备近期产品催化的标的。DLC作为首发后首个付费内容节点，直接支撑了市场对后续流水与用户活跃度的想象，构成本月上行的主要事件链。"
+        "20260907": "Pearl Abyss本月上涨的核心驱动来自《Crimson Desert Enhanced》商业化节奏的明确落地：<strong>9月3日</strong>官宣首个DLC《未知之旅》于<strong>10月16日</strong>发售并开启预购，同日另一则公告将发售日锁定为<strong>10月15日</strong>，多源信息强化了市场对内容上线确定性的预期。次日（<strong>9月4日</strong>）游戏股盘中普遍走强，Pearl Abyss大涨<strong>13%</strong>，显示资金将其视为板块内具备近期产品催化的标的。DLC作为首发后首个付费内容节点，直接支撑了市场对后续流水与用户活跃度的想象，构成本月上行的主要事件链。",
+        "20260908": "Pearl Abyss本月上行动能主要源于《Crimson Desert Enhanced》首个DLC《Charting the Unknown》定档<strong>10月16日</strong>发售并开启预购的专属催化。该消息于<strong>9月3日</strong>集中释放，次日即带动股价盘中大涨<strong>13%</strong>，显示市场对核心IP后续商业化节奏给予积极定价。DLC发售日期明确，为产品线提供了可见的业绩兑现窗口，构成月内股价走强的核心驱动。"
       },
       "036570": {
         "20260722": "本月NCsoft走势的核心矛盾在于资金轮动方向反复切换。7月2日大盘熔断、半导体股集体崩塌之际，资金从硬件大规模轮动至软件/内容板块，NCsoft作为唯一收红的游戏股逆势大涨<strong>+3.72%</strong>，成为极端市场中的避风港，叠加6月超跌后的技术性反弹及Aion 2全球发布临近的估值支撑，形成强劲买盘。然而次日大盘史诗级V型反转，资金偏好迅速切回半导体等硬件主线，游戏板块再度被抛弃，NCsoft随板块跑输大盘。整体看，本月NCsoft涨跌完全由市场极端波动下的资金轮动方向主导，自身缺乏独立催化剂，呈现典型的被动跟随特征。",
@@ -184,7 +189,8 @@
         "20260902": "本月NCsoft股价承压，核心压力来自市场对其转型战略的审视。9月1日媒体焦点指出，公司进入“全球大考”阶段，<strong>Aion 2</strong>与<strong>Time Takers</strong>接连测试，但同期行业报道亦点明其“脱Lineage”增长战略正面临考验。在缺乏确定性业绩兑现的背景下，新游测试的短期催化未能对冲市场对转型阵痛期的担忧，叠加KOSPI整体走弱（<strong>-3.78%</strong>），股价随大盘下行。",
         "20260903": "NCsoft本月承压，核心压力来自9月全球大考临近的不确定性：<strong>Aion 2</strong>与<strong>Time Takers</strong>接连进入测试期，市场对测试结果及后续商业化前景持观望态度，前期预期兑现前缺乏新增买入催化。同时，行业层面谷歌应用内支付赔偿争议发酵，游戏业集体施压退费，引发对渠道成本与平台博弈风险的担忧，进一步压制板块情绪。在KOSPI与KOSDAQ双双走弱背景下，NCsoft作为高关注度标的，其专属事件带来的预期波动被放大，形成下跌驱动。",
         "20260904": "9月开局NCsoft即进入密集测试窗口，<strong>Aion 2</strong>与<strong>Time Takers</strong>接连开启测试，市场对两款重磅新作能否在年内兑现商业化预期持观望态度，叠加测试期存在版本风险与用户反馈不确定性，资金倾向先行离场。同期大盘走弱，KOSPI与KOSDAQ双双下挫，游戏板块虽在9月4日出现普涨，但NCsoft因缺乏当日专属催化剂，未能跟上Pearl Abyss等个股的反弹节奏，股价承压更多反映市场对其新作测试结果落地前的谨慎定价。",
-        "20260907": "NCsoft本月承压主因在于9月全球大考临近，<strong>Aion 2</strong>与<strong>Time Takers</strong>接连测试带来的预期兑现压力，叠加《创世纪战外传：西风狂诗曲 重制版》仅登陆Purple平台，缺乏爆款声量。尽管公司力推“双轨并行”加码射击新作，但新IP换代迟缓的行业阴影下，市场对测试结果观望情绪浓厚，<strong>OP.GG</strong>上线战绩查询虽添热度，却未扭转对核心产品竞争力的疑虑，股价随财报季业绩验证期走弱。"
+        "20260907": "NCsoft本月承压主因在于9月全球大考临近，<strong>Aion 2</strong>与<strong>Time Takers</strong>接连测试带来的预期兑现压力，叠加《创世纪战外传：西风狂诗曲 重制版》仅登陆Purple平台，缺乏爆款声量。尽管公司力推“双轨并行”加码射击新作，但新IP换代迟缓的行业阴影下，市场对测试结果观望情绪浓厚，<strong>OP.GG</strong>上线战绩查询虽添热度，却未扭转对核心产品竞争力的疑虑，股价随财报季业绩验证期走弱。",
+        "20260908": "NCsoft本月承压，主因在于其全球攻略“双轨并行”战略进入密集验证期，<strong>Aion 2</strong>与射击新作接连测试，叠加<strong>《创世纪战外传：西风狂诗曲 重制版》</strong>上线，市场对多线作战的资源分配与产品兑现力存疑。尤其<strong>Aion 2</strong>战场转向海外，韩国本土受理后新战场不确定性抬升，引发获利了结。尽管大盘KOSPI走强，但公司专属事件驱动的预期消化压力盖过板块情绪，导致股价逆势走弱。"
       }
     },
     "dailyMacro": {
@@ -218,9 +224,10 @@
         "20260825": "受Nexon Games异世界幻想Project RX定名Pareid…等利好提振，当日上行。",
         "20260826": "受Nexon Games异世界幻想Project RX定名Pareid…等利好提振，当日上行。",
         "20260827": "受异世界幻想Project RX正式定名并确认TGS 2026首秀试玩等独立利好提振逆势上行，成为当日少数上涨的游戏股。",
-        "20260901": "受OpenAI在韩国首办“Game Builders”活动、AI与游戏开发者齐聚的行业利好提振，市场对游戏股AI应用预期升温，带动股价走强。",
-        "20260903": "受Riot《Riftbound》<strong>18日</strong>上线分流卡牌玩家关注，叠加RPG新作表现分化引发板块资金观望，<strong>Nexon Games</strong>随行业回调承压，缺乏专属催化剂下遭获利了结。",
-        "20260904": "受9月4日韩国游戏股盘中普遍走强带动，叠加《Riftbound》上线在即提振板块情绪，<strong>Pearl Abyss大涨13%</strong>等同行强势表现形成联动效应，推动股价随板块整体上行。"
+        "20260901": "受[创刊特辑] NC降低对Lineage依赖…朴炳武时代'脱Linea…等利好提振，当日上行。",
+        "20260903": "受RPG新作表现分化游戏股…Com2uS上涨Netmarble下跌等利空拖累，当日下行。",
+        "20260904": "受板块整体走强带动，<strong>Pearl Abyss大涨13%</strong>等同行普涨提振市场情绪，叠加Riot新卡牌游戏上线预期升温，资金流入游戏股，推动股价随板块同步上行。",
+        "20260908": "受9月NC新作密集上线、二次元与MMORPG集中接受检验的行业竞争加剧拖累，市场对同类产品线短期承压的担忧升温，叠加K内容共同宣言等板块性事件未形成个股催化，<strong>股价随板块情绪走弱</strong>。"
       },
       "251270": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI获利了结与外资流出的大盘调整中获资金避险青睐，Netmarble逆势走强，但韩元贬值与地缘风险仍压制反弹空间。",
@@ -255,9 +262,10 @@
         "20260826": "受[K游戏吸引中国资本①]市场验证的IP具吸引力...\"加价购买\"等利好提振，当日上行。",
         "20260827": "虽获\"中国资本关注韩国游戏IP\"等中长期利好，但短期难抵板块流动性折价，当日下行。",
         "20260828": "方俊赫拟收购腾讯所持约13.4%股份，强化了创始人增持、控制权稳定及潜在减持压力下降的预期。由于成交量没有明显放大，8月28日的上涨也包含前一日下跌3.46%后的技术性修复。",
-        "20260901": "受OpenAI在韩国首办“Game Builders”活动、AI与游戏融合预期升温提振，游戏板块情绪回暖，带动股价随行业利好走强。",
-        "20260902": "受NC方面巩固主导权、友好股份或不再需要消息影响，市场担忧合作变数，叠加RPG新作表现分化，股价承压下行。",
-        "20260904": "受NC拟以RSU卡牌阻击其<strong>10%</strong>股份消息扰动，叠加RPG新作表现分化、板块内资金转向Com2uS等强势标的，<strong>Netmarble</strong>遭获利了结与避险抛压，逆势走弱。"
+        "20260901": "受[创刊特辑] NC降低对Lineage依赖…朴炳武时代'脱Linea…等利好提振，当日上行。",
+        "20260902": "受NC方面巩固主导权、友好股份或不再需要，叠加RPG新作表现分化，板块内资金转向竞品，<strong>利空情绪</strong>主导下股价承压走弱。",
+        "20260904": "受NCsoft拟以RSU卡牌阻击其<strong>10%</strong>股份收购的传闻压制，叠加RPG新作表现分化、市场担忧其主导权争夺生变，<strong>-1.09%</strong>的跌幅反映利空情绪主导，未能获板块盘中走强提振。",
+        "20260908": "受网石欲裂NCsoft“11年血盟”消息扰动，市场担忧其并购整合风险与资源分散，叠加9月NC新作密集上线加剧竞争预期，<strong>股价承压走弱</strong>。"
       },
       "259960": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI获利了结与外资流出的大盘调整中展现防御性，资金转向业绩确定性标的，推动其逆势走强。",
@@ -288,8 +296,9 @@
         "20260828": "前一日下跌3.73%后出现技术性反弹，历史最佳半年度业绩及Gamescom五款新作展示提供基本面支撑。由于近20个交易日仍下跌约14%，当天上涨尚不足以确认趋势反转。",
         "20260831": "Gamescom五款新作曝光及部分作品获得积极反馈，可能推动市场重新评估后续产品储备。成交量约为上周五的2.7倍、收于日内高位，显示此次反弹的量能支持有所增强。（+2.02%）",
         "20260901": "受[创刊特辑] NC降低对Lineage依赖…朴炳武时代'脱Linea…等利好提振，当日上行。",
-        "20260902": "受G-Star参展不确定性及国内主要游戏公司缺席引发行业展会前景担忧，叠加板块内RPG新作表现分化拖累，<strong>利好未能抵挡系统性回调压力</strong>，股价承压下行。",
-        "20260903": "G-Star参展消息虽确认连续<strong>10年</strong>出席，但具体作品阵容\"后续公开\"，缺乏实质新品催化，叠加板块内RPG新作表现分化、大盘游戏股情绪偏弱，利好未能抵挡回调压力。"
+        "20260902": "受G-Star参展不确定性及国内主要游戏公司缺席消息拖累，<strong>Krafton</strong>作为唯一被寄予厚望的厂商承压，叠加板块内RPG新作表现分化引发的系统性回调，股价单日重挫<strong>10,000韩元</strong>。",
+        "20260903": "G-Star 2026参展消息虽确认连续<strong>10年</strong>出席，但具体作品阵容\"后续公开\"缺乏实质催化，叠加RPG新作分化及大盘游戏股回调，利好未能形成支撑，股价随板块走弱。",
+        "20260908": "当日下行，虽有咒术回战现身Erangel…《PUBG》10日合作更新等利好，但未能抵挡板块/大盘回调压力。"
       },
       "263750": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI板块获利了结、外资流出的大盘调整中获避险资金青睐，逆势走强。",
@@ -325,9 +334,10 @@
         "20260827": "Crimson Desert Enhanced更新及入围gamescom奖项等利好兑现后短期催化真空，在板块流动性折价中股价回落。",
         "20260828": "Gamescom期间《红色沙漠》入围奖项、开放试玩并与三星合作展示，带动产品预期回暖。考虑到此前业绩低于预期并引发大跌、当天成交量仅为近20日均量的约42%，本次上涨更像超跌反弹而非基本面反转。",
         "20260831": "《红色沙漠》在周末公布的Gamescom两个奖项中均未获奖，可能引发奖项预期落空和展会热度退潮。当天几乎回吐上周五涨幅，更像事件预期降温后的回调，而非已确认的销量或盈利恶化。（-2.77%）",
-        "20260902": "受韩国游戏厂商转向全球游戏展、G-Star地位动摇的行业动向拖累，叠加RPG新作表现分化背景下板块整体承压，<strong>利空情绪</strong>主导当日走势，股价随行业大盘同步回调。",
-        "20260904": "受《Crimson Desert Enhanced》首个DLC《未知之旅》定档<strong>10月16日</strong>发售并开启预购提振，叠加当日游戏股板块普遍走强，市场情绪显著回暖，推动股价大幅上扬。",
-        "20260907": "受<strong>9月4日大涨13%</strong>后利好兑现情绪主导，叠加DLC定档<strong>10月16日</strong>的催化效应提前消化，今日回调属获利了结，而非基本面恶化。"
+        "20260902": "受韩国游戏厂商转向全球游戏展、G-Star地位动摇的行业动向拖累，叠加RPG新作表现分化引发板块整体回调，<strong>游戏股承压</strong>，公司股价随之下行。",
+        "20260904": "受《Crimson Desert Enhanced》首个DLC《未知之旅》定档<strong>10月16日</strong>发售并开启预购提振，叠加当日游戏股盘中普遍走强，市场情绪与新品催化共振，推动股价大幅上扬。",
+        "20260907": "受9月4日大涨<strong>13%</strong>后获利了结情绪主导，叠加DLC《Charting the Unknown》定档10月16日的利好已充分消化，今日股价回吐部分涨幅，未能延续此前强势。",
+        "20260908": "受<strong>10月16日</strong>《Crimson Desert Enhanced》首个DLC《Charting the Unknown》发布日程敲定提振，市场对后续内容商业化预期升温，驱动股价走强。"
       },
       "su": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI板块获利了结、外资流出的大盘调整中获资金避风，逆势走强。",
@@ -370,11 +380,12 @@
         "20260825": null,
         "20260826": "受Shift Up Stellar Blade Switch2版预告片…等利好提振，当日上行。",
         "20260827": "《Stellar Blade》Switch2版等利好兑现后，随游戏板块流动性抽离被动回调。",
-        "20260901": "受OpenAI在韩首办“Game Builders”活动提振，AI与游戏融合预期升温，带动板块情绪回暖，<strong>Shift Up</strong>获资金关注，股价随行业热度小幅上行。",
-        "20260902": "受当日RPG新作表现分化、游戏股整体承压的板块氛围拖累，<strong>Com2uS上涨而Netmarble下跌</strong>的走势映射出资金对同类标的的谨慎态度，叠加行业进入9月新作营销与大型更新的忙碌期，市场观望情绪升温，股价随板块同步回调。",
+        "20260901": "受OpenAI在韩国首办“Game Builders”活动、游戏一代与AI开发者齐聚的行业利好提振，市场对AI赋能游戏研发的预期升温，带动股价小幅走强。",
+        "20260902": "受9月新作营销与大型更新密集开启的行业竞争加剧拖累，<strong>RPG新作表现分化</strong>引发板块情绪走弱，在缺乏专属催化剂下随游戏股整体回调。",
         "20260903": "受RPG新作表现分化游戏股…Com2uS上涨Netmarble下跌等利空拖累，当日下行。",
         "20260904": null,
-        "20260907": null
+        "20260907": null,
+        "20260908": "受9月NC新作密集上线、二次元与MMORPG竞争加剧的板块性分流拖累，市场对同类新品窗口期的观望情绪升温，<strong>获利了结</strong>压力下股价随行业回调。"
       },
       "036570": {
         "20260702": "受7/2“黑色星期四”KOSPI暴跌<strong>-7.89%</strong>、半导体股集体熔断引发的资金从硬件向软件/内容板块轮动提振，叠加6月累计下跌超20%后的技术性反弹及Aion 2全球发布临近的估值支撑，成为资金避风港，逆势收红。",
@@ -409,8 +420,9 @@
         "20260819": "当日下行，与板块及大盘氛围相关，未见明确独立催化。",
         "20260821": "受NC，Aion 2全球火爆预期…增长轴多元化等利好提振，当日上行。",
         "20260827": "Gamescom公开《Aion 2》等3款新作利好兑现后短期缺乏新催化，随板块流动性抽离而回调。",
-        "20260902": "受9月全球大考开启、<strong>Aion 2</strong>与<strong>Time Takers</strong>接连测试的利好预期兑现，叠加当日RPG新作表现分化、板块整体承压，获利了结情绪主导，股价未能延续强势。",
-        "20260904": "受《创世纪战外传：西风狂诗曲 重制版》登陆Purple平台及Aion 2与Time Takers接连开启全球测试等专属事件提振，新品管线预期升温，叠加当日游戏股普遍走强，共同推动股价上行。"
+        "20260902": "受9月全球大考临近、<strong>Aion 2</strong>与<strong>Time Takers</strong>接连测试的利好预期未能兑现，叠加当日RPG新作表现分化、板块整体承压，获利了结情绪主导，股价随行业回调。",
+        "20260904": "受9月全球大考临近、<strong>Aion 2</strong>与<strong>Time Takers</strong>接连测试的预期提振，叠加<strong>《创世纪战外传：西风狂诗曲 重制版》</strong>当日上架Purple平台催化，在游戏股普遍走强氛围下获资金追捧。",
+        "20260908": "《Aion 2》受理后新战场转向海外，市场对国内业绩支撑预期降温，叠加9月新作密集上线面临检验，<strong>获利了结</strong>压力集中释放，拖累股价走弱。"
       }
     }
   },
@@ -521,7 +533,8 @@
       "9/2",
       "9/3",
       "9/4",
-      "9/7"
+      "9/7",
+      "9/8"
     ],
     "datasets": [
       {
@@ -632,7 +645,8 @@
           -1.21,
           -3.18,
           -3.63,
-          -4.54
+          -4.54,
+          -5.6
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -751,7 +765,8 @@
           -0.17,
           -2.78,
           0.87,
-          0.43
+          0.43,
+          -1.3
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -870,7 +885,8 @@
           -4.64,
           -5.41,
           -6.44,
-          -6.44
+          -6.44,
+          -8.89
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -989,7 +1005,8 @@
           -2.23,
           -3.12,
           -0.89,
-          -0.45
+          -0.45,
+          -5.58
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -1108,7 +1125,8 @@
           -4.33,
           -5.63,
           -6.28,
-          -5.63
+          -5.63,
+          -7.58
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -1227,7 +1245,8 @@
           -2.23,
           -1.28,
           10.05,
-          6.86
+          6.86,
+          12.44
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -1241,6 +1260,62 @@
     ]
   },
   "events": [
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>全球超级IP联手…Krafton《PUBG》与日漫《咒术回战》携手</strong>",
+      "source": "industrynews.co.kr",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9VX3ZtSXl1SzloRGR6aWpNZkVVRzJSSXJmZlowalpVZVNyWWpTZXBmelhfa0c4emRhZ1FpY2wyVHVGMmxBV1JJeUFfSmxoR1ZpNnV0anZvNUdKRkdZYkFONDR6VmtVZDhGMnFHU3RFV0dxUQ?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>咒术回战现身Erangel…《PUBG》10日合作更新</strong>",
+      "source": "디지털데일리",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Rb1k2c1Rfbjc4ZndEMUE3Z0EtWXFjYjFTX1VJb0gwaUJENFVEU3VROXE1MkpUVW5pU2ZZMGM3MkNBWUdITTFXTEFVRlR6cW5sSGlIQ3RvaDFCXzNsdVRwQzNVSzY?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>咒术回战登陆Erangel…Krafton《PUBG》推出地图演绎与成长型武器皮肤</strong>",
+      "source": "지디넷코리아",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE14X3Z0TXVKR25GejZLQ0FuRjZaRlFRWDZwRDNmYW1ScERnQnU4QzUxcW5GQnV6QmYyM3JhZFpHbXFvYzNyeFdPWm5Xb092UnVqdUk2MF9n?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton《PUBG》与人气动画《咒术回战》合作</strong>",
+      "source": "연합뉴스",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9aRVdqMEtOY3oyUUt6S09UWWtEb1BlOUxTTlViQ2trdkR0ZDhmM3luZnIzSHFTQWtBY2FNWkhWWEFUcGlTY21vOURBTGxDeWZGYmEtTW5mYkNVSWPSAWBBVV95cUxONVRNVUF3YzVQcWQ1MWtTUUVGSEM3eGZ5RkoyajN2SjhadV9ZbU9fMTZOR2pidjhzbnJuZG9aTlAzc2p2R2xlTmFsRGdlcGNoU0paS0pzM0kxeFBBUFg2MF8?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>[独家] Krafton与韩华航空航天防务合资公司成立事实上告吹</strong>",
+      "source": "chosun.com",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQWm5EOFhGcl9pbkE1cVJfTi1Oa29wd0Zta1FnR1U0VExRN29sS0NMeVg0X3NTdkVRNFpOZVpFN0wtcWNHVld6UlBFQm1Jd3dKRUJWLUVERU9RakRNZXFkcUdIQXE4S2FuNVB6ajVzcTd6UHNHT0l1c3JlZUNMODRiQTVfbw?oc=5"
+    },
+    {
+      "company": "Netmarble",
+      "color": "#ef4444",
+      "title": "<strong>[NC-网石] 手握好牌的网石，欲裂NC'11年血盟'</strong>",
+      "source": "네이트",
+      "date": "09.07",
+      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5uRDI1X2d4Vnp6NDR1dlM5OGhqTWpwYnpuZUlIN0FuLW10bk9pWE9zNnFMUXZvU3FhTF9HRTJSd1ROYmRtQ0pmU1dvR3ZWRGpQYUdN?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>韩国受理的Aion 2，新战场在海外</strong>",
+      "source": "비즈워치",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBLekllckRWcXBPQUJrbUs5S0FwNjkzU0ZtakkzdkhETGNPZEo5ZlRaMlZ2b21uWWF4cG5JTEtON1QtcDFzeG9OWE5KdkhSQl9kd2JKNExOSFFyX0xpVFVrcHZuOTVTMEttWFE?oc=5"
+    },
     {
       "company": "Pearl Abyss",
       "color": "#a855f7",
@@ -2782,64 +2857,33 @@
       "title": "<strong>7/8 游戏股集体触底——KOSPI再跌-3.2%，Pearl Abyss领跌-6%</strong>——KOSPI从7/7反弹高点回落，单日下跌约3.2%至7,800点附近。外资恢复净卖出节奏。游戏板块成为重灾区：Pearl Abyss -6.0%（Crimson Desert DLC利好消化完毕+无新催化剂）、Netmarble -4.5%（Wemade收购整合担忧）、Krafton -3.8%（持续弱势）、NC -2.5%、Shift Up -2.0%、Nexon -1.8%。6家公司全部收绿，且跌幅大于KOSPI均值，显示高Beta属性在下跌行情中的放大效应。KOSPI距6/19历史高点(9,385)已累计回落约-17%。散户融资余额维持高位，杠杆风险持续累积。",
       "source": "Naver증권/DailyAlpha/KRX",
       "date": "07.08"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss 7/8宣布特别分红方案——年配当率提升至2.5%</strong>——PA董事会决议2026财年中期特别分红每股₩800（含常规分红合计年化约₩2,400/股），对应当前股价(~₩56,000)配当率约2.5%。《Crimson Desert》全球500万套销量带来的现金流改善开始回馈股东。PA是六家游戏公司中分红政策最积极的一家，高配当率在熊市环境中提供一定防御价值。但当日股价仍跌-6%（受大盘拖累），分红利好未能完全抵消系统性抛压。",
-      "source": "Pearl Abyss IR/한국투자증권",
-      "date": "07.08",
-      "url": ""
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#dc2626",
-      "title": "<strong>7/9-7/10 杠杆踩踏！券商强平2,238亿韩元——KOSPI两日暴跌超12%</strong>——7月9日强平816亿韩元、10日激增至1,422亿韩元，散户杠杆连环爆仓。KOSPI从7,476点连续暴跌至约6,600点附近，两日累计跌幅超12%。核心驱动：①SK海力士美国上市后股价波动加剧+KIS下调Q2盈利预测引发半导体见顶恐慌；②单一股票杠杆ETF（挂钩三星/SK海力士）成为踩踏主因——规模最大杠杆ETF较6月高点回撤超60%，熔断期间占双雄成交额14.7%；③外资持续净卖出+机构同步抛压。游戏股跟随大盘暴跌，但跌幅小于半导体权重股。",
-      "source": "上海证券报/新浪财经/韩联社/KRX数据",
-      "date": "07.09~10"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#b91c1c",
-      "title": "<strong>7/13「黑色星期一」——KOSPI暴跌-8.95%至6,807点，年内第7次熔断！</strong>——韩国股市遭遇2026年最惨烈单日下跌：①美军打击伊朗目标→霍尔木兹海峡航运风险飙升→原油上涨→通胀反弹担忧；②SK海力士跌-15.37%（较历史高点回撤近40%）、三星电子跌-10.70%，半导体双雄合计占KOSPI权重54%→集中抛售拖垮大盘；③盘中两次触发保护机制（10:34卖出侧车+13:28全市场熔断20分钟）；④外资卖出1.72万亿+机构卖出2.19万亿 vs 散户买入3.88万亿抄底无效；⑤KOSPI正式跌破7,000点心理关口，距6/19历史高点(9,385)已回落-27.5%，进入技术性熊市。KOSDAQ -4.55%失守800点。",
-      "source": "조선일보 English/한국거래소/개미투자연구소/뉴시스",
-      "date": "07.13",
-      "url": "https://www.chosun.com/english/market-money-en/2026/07/13/MCVKFUK53FDLHLW3TS5FNRPCOU/"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#f59e0b",
-      "title": "<strong>7/14 过山车行情：KOSPI盘中-5%→收涨+0.73%</strong>——早盘SK海力士一度跌超9%（Q2业绩预期下修+DRAM定价担忧），KOSPI触及6,630点新低。午后韩国金融监管层召开紧急会议稳定市场情绪→触发技术性反弹。SemiAnalysis发布看多报告+巴克莱上调SK海力士目标价117%至330美元，SK海力士ADR隔夜暴涨27.29%提振情绪。最终KOSPI收复部分失地报6,861点(+0.73%)，但成交量放大显示多空分歧剧烈。交易所启动SIDECAR机制暂停程序化卖盘。",
-      "source": "雪球/SemiAnalysis/Barclays/首尔经济日报",
-      "date": "07.14",
-      "url": "https://xueqiu.com/8871682425/400040117"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#22c55e",
-      "title": "<strong>7/15 史诗级反弹！KOSPI暴涨+6.24%，年内最大单日涨幅</strong>——在前一日(-8.95%)暴跌后仅一个交易日，KOSPI暴力反弹至7,284点(+6.24%)，创6月以来最大单日涨幅。SK海力士涨近9%、三星电子涨超6%。开盘即直线拉升超7%触发KOSDAQ临时停牌（买方侧车5分钟）。核心催化：①SemiAnalysis+巴克莱看多报告发酵，SK海力士ADR前日暴涨27%的滞后效应；②超跌后空头回补动力极强；③监管会议后政策托底预期升温。但分析师警告：散户融资余额仍高达28万亿韩元(历史高位)，杠杆风险未根本解除，「ICU与KTV反复横跳」格局延续。",
-      "source": "东方财富/新浪财经/CNBC/上海证券报",
-      "date": "07.15",
-      "url": "https://finance.eastmoney.com/a/202607153807446315.html"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#ef4444",
-      "title": "<strong>7/16 韩国央行加息25bp至2.75% + 美股存储崩盘传导——KOSPI再跌-6.3%</strong>——韩国央行三年多来首次加息（基准利率从2.50%上调至2.75%），6月CPI 3.2%为两年半新高。叠加美股存储板块隔夜暴跌情绪传导，亚太市场全线承压。截至发稿KOSPI跌幅扩大至6%-7%，再次触发临时停牌机制。KOSPI距6/19高点(9,385)已累计回落约27-28%。对游戏等高Beta成长股而言，加息→资金成本上升→估值进一步承压。下半年Gamescom(8/26)、G-Star等展会催化能否对抗宏观逆风成为关键变量。",
-      "source": "每经快讯/每日经济新闻/新浪财经/财联社",
-      "date": "07.16",
-      "url": "https://finance.sina.cn/2026-07-16/detail-inihyiyh4447159.d.html"
-    },
-    {
-      "company": "Shift Up",
-      "color": "#ff6b9d",
-      "title": "<strong>Shift Up 7/9 股价分析：PER 10.68倍(TTM)但增长隐忧浮现</strong>——7/9收盘价₩34,850(-3.19%)，较52周高点(₩45,850)低24%。市值2.44万亿韩元。核心矛盾：TTM PER 10.68倍(行业平均14.50x)看似低估，但2026E PER反升至16.85倍(预计营业利润-40.2%)。PBR 2.11倍远高于同行(~1x)。收入依赖度极高(NIKE 56.1%+Stellar Blade 39.9%=96%)。券商目标价分化：保守派教保₩42,000 vs 进取派Kiwoom ₩65,000(行业首选)。关键催化剂：Stellar Blade: Blood Rain续作+Project Spirits(腾讯发行)年内信息公布+200亿韩元回购注销进行中。",
-      "source": "Bloter(블로터)/Kiwoom Securities/교보증권",
-      "date": "07.09~10",
-      "url": "https://www.bloter.net/news/articleView.html?idxno=667750"
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>网石培养游戏业实战人才…'Marvel Challenger'第26期启动 - Korea IT Times</strong>",
+      "source": "Korea IT Times",
+      "date": "09.07",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1BSUtnUzFVTl95X2k5RGRfVjhGUnFrQ1VSR1hKdmZ4YV9hcXUxdTdHWm93MXZyS3hVbXBwdmNzUzFiQmlvaVBlVVhaWXFpcGQ5TXU5OUlWdlk3Yk1uU0VFMEVKWU4weWNBdWVlQ2JvZ2Q?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>游戏、电影、网漫等11个团体联合…K内容共同宣言</strong>",
+      "source": "조세금융신문",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1mOTUyUXNfVXV3RERRVFBYeHVnOFF0cEJOdnEzeGN3eDVXbmdocHl3N290b3JSQ21RSldFWUEtdWZwQnJlYUF2NEV3NWhUcEZRWXhscFJUamlGUWswVnJlbERIUQ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>9月NC新作密集上线…二次元与MMORPG接连接受检验</strong>",
+      "source": "플레이포럼",
+      "date": "09.08",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5kV3Jqd0VtNVFvanFLSEFzZzF5Y3hwbHBUUmZRVEJERk1SSmQxZUk5OHNHclFQV1dtR0dVRm44TVFkR3NnYWZfYXVoQWpzLUlVczdWYXNGamxNcXNNOVF1bVRvbldOLXlEd3ZIMg?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
