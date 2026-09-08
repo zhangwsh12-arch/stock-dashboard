@@ -20,8 +20,11 @@ import { join } from 'node:path';
 
 const DATA_PATH = join(import.meta.dirname || '.', '..', 'data', 'latest.json');
 const DATA_DIR = join(import.meta.dirname || '.', '..', 'data');
+const CONTENT_PATH = join(DATA_DIR, 'content.json');
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://nebula.kr.stock-dashboard.com';
 const FORCE_NOTIFY = String(process.env.FORCE_NOTIFY || '').toLowerCase() === 'true';
+// 单股当日波动达到此阈值(%)才在"市场小结"中附加原因说明，避免琐碎波动也罗列原因刷屏
+const REASON_THRESHOLD = 5;
 
 // ====== 每日去重：基于 KST 日期的标记文件 ======
 function getTodayKSTStr() {
@@ -122,10 +125,25 @@ const meta = data.meta;
 const su = data.shiftUp;
 const companies = data.companies || [];
 
+// ====== 读取 content.json 中的当日归因说明（generate-analysis.mjs --daily 生成）======
+// 非致命：content.json 缺失/解析失败时不影响主推送，仅跳过原因说明
+let dailyAnalysis = {};
+try {
+  const content = JSON.parse(readFileSync(CONTENT_PATH, 'utf8'));
+  dailyAnalysis = content?.analysis?.daily || {};
+} catch (e) {
+  console.warn('[notify] 读取 content.json 失败，跳过归因说明（非致命）:', e.message);
+}
+
+function stripTags(text) {
+  return String(text || '').replace(/<\/?strong>/gi, '').trim();
+}
+
 // 统一股票列表
 const allStocks = [];
 if (su) {
   allStocks.push({
+    code: 'su',
     name: su.name,
     price: su.price,
     changePercent: su.changePercent,
@@ -134,6 +152,7 @@ if (su) {
 }
 companies.forEach(c => {
   allStocks.push({
+    code: c.code,
     name: c.name,
     price: c.price,
     changePercent: c.change || '0%',
@@ -170,6 +189,18 @@ function formatChange(cp, cc) {
 const stockLines = sorted.map(s => {
   const arrowIcon = s.changeClass === 'up' ? '' : s.changeClass === 'down' ? '' : '\u25CB';
   return `${arrowIcon} **${s.name}**  \u20A9${s.price}  ${formatChange(s.changePercent, s.changeClass)}`;
+});
+
+// 构建"重要变动原因"行：当日波动幅度达到 REASON_THRESHOLD 的个股，
+// 附加 generate-analysis.mjs --daily 已生成好的归因说明（避免仅显示涨跌方向而无具体原因）
+const reasonLines = [];
+sorted.forEach(s => {
+  const val = parsePct(s.changePercent);
+  if (Math.abs(val) < REASON_THRESHOLD) return;
+  const text = stripTags(dailyAnalysis?.[s.code]?.[meta.date]);
+  if (!text) return;
+  const sign = val >= 0 ? '+' : '';
+  reasonLines.push(`\u26A1 **${s.name}**（${sign}${val.toFixed(2)}%）：${text}`);
 });
 
 // 市场情绪判断
@@ -209,7 +240,7 @@ ${stockLines.join('\n')}
 ---
 
 ${sentimentEmoji} **市场小结**: ${sentiment}
-
+${reasonLines.length ? '\n' + reasonLines.join('\n') + '\n' : ''}
 [\u{1F517} 查看完整看板\u2192](${DASHBOARD_URL})`,
   },
 };
