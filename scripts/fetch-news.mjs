@@ -566,7 +566,15 @@ async function main() {
   for (const [name, cfg] of Object.entries(COMPANIES)) {
     const entries = await fetchGoogleNewsForCompany(name, cfg.keywords);
     for (const e of entries) {
-      e.detectedCompany = detectCompany(e.rawTitle, e.description);
+      // 根因记录（2026-09-09）：detectCompany() 只按标题/摘要里的关键词字面匹配，
+      // 若韩语原文只提及子项目名（如"마블챌린저"人才计划）而未直接出现公司名，
+      // 会返回 null 从而被归入通用"六大游戏公司"。但这条新闻本就是通过该公司的
+      // 专属关键词搜索（fetchGoogleNewsForCompany(name, ...)）拿到的，已知与 name
+      // 强相关——只有在关键词检测彻底失败时才兜底用搜索来源公司，避免把公司专属
+      // 新闻误判为无归属的行业通用新闻（曾导致 Nexon Games 的分析文案错误引用了
+      // Netmarble 的专属新闻当作"相关动向"）。若检测到其它公司（真实交叉提及），
+      // 仍以检测结果为准，不覆盖。
+      e.detectedCompany = detectCompany(e.rawTitle, e.description) || name;
     }
     allRawEntries.push(...entries);
     await new Promise(r => setTimeout(r, 800)); // 礼貌延迟

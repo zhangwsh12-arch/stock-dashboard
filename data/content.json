@@ -76,7 +76,7 @@
         "20260904": "本月Nexon Games股价上行，主要受行业性风险偏好回暖驱动。9月4日游戏股盘中普遍走强，Pearl Abyss大涨<strong>13%</strong>，带动板块情绪整体升温，Nexon Games作为主要游戏厂商同步获得资金流入。同时，9月2日RPG新作表现分化，市场对头部厂商的存量产品与后续管线关注度提升，叠加韩国游戏厂商对G-Star等本土展会依赖度下降、转向全球市场的结构性叙事，为股价提供了中长期逻辑支撑。整体看，本轮上涨更多源于板块联动与情绪修复，缺乏公司专属事件催化。",
         "20260907": "本月Nexon Games股价上行，主要受行业情绪与大盘共振驱动。KOSPI月内走强（<strong>+2.57%</strong>）为游戏板块提供顺风，而Riot《Riftbound》于<strong>18日</strong>上线带来的品类热度外溢，提振了市场对游戏股的关注。同时，媒体对韩内容IP空白的讨论，凸显存量旗舰IP价值，间接利好具备成熟产品线的Nexon Games。此外，OP.GG上线NC新作《Time Takers》查询服务，显示第三方生态活跃，亦对板块交易情绪形成边际支撑。",
         "20260908": "本月Nexon Games无专属事件，其上行主要受行业与大盘共振驱动。KOSPI月内走强，叠加游戏、电影、网漫等<strong>11个团体</strong>联合发布K内容共同宣言，提振了市场对韩国内容产业整体信心，资金外溢至游戏板块。同时，9月NC新作密集上线引发对二次元与MMORPG品类关注度升温，带动板块情绪回暖，Nexon Games作为主要游戏股随势获得配置需求支撑。",
-        "20260909": "<strong>Nexon Games</strong>本月整体上行，相关动向：\"打造第一游戏\"输入AI竟成现实...在职医生'大热' [许镇的Techtonic]；网石培养游戏业实战人才…'Marvel Challenger'第26期启动 - Korea IT Times。"
+        "20260909": "<strong>Nexon Games</strong>本月整体上行，因缺乏专属重大事件驱动，涨势主要延续行业与大盘的共振效应——KOSPI月内走强叠加游戏、影视、网漫等内容产业协同利好带动板块估值修复，Nexon Games作为核心游戏股随势获得配置需求支撑。"
       },
       "251270": {
         "20260722": "Netmarble本月承压主因系<strong>7月6日以₩3,000亿收购Wemade 19.5%股权</strong>落地，市场对整合风险与ROI周期持谨慎态度，当日股价即承压。随后<strong>7月8日游戏股集体触底</strong>，Netmarble单日下跌<strong>-4.5%</strong>，跌幅居前，主因仍是Wemade收购整合担忧叠加高Beta属性在KOSPI单日-3.2%中的放大效应。尽管7月7日大盘反弹时游戏股全线收红，Netmarble仅微涨<strong>+0.6%</strong>，显示该收购事件持续压制估值修复动能，成为月内拖累股价的核心负面催化剂。",
@@ -1398,50 +1398,10 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
-      "title": "<strong>绝地求生联动咒术回战，战场各处焕然一新</strong>",
-      "source": "sportsq.co.kr",
-      "date": "09.08",
-      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1ITTlPbml0RVdIdmI3NUVJNENLTjVEWlQwaVBlcG9kRkRqVVBMUjQxYTZrM01PcDdISkpUOS16RElxS3F5XzhQajdnczNQNV9tdTAyQlpJemUtMkNySTlHWFo0Q0FoTnN3SzV3?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton《绝地求生》推进与动画《咒术回战》合作</strong>",
-      "source": "inews24.com",
-      "date": "09.08",
-      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE04MG5LVDNJNmJIa1VBalNBMTJFOGdEVXBWV0wtamd0VmlyaXFPMzJ2cHd3cFhDTWs3N09tXzF4TnlpdVhwQkh6UEZ0UQ?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>全球超级IP联手…Krafton《PUBG》与日漫《咒术回战》携手</strong>",
-      "source": "industrynews.co.kr",
-      "date": "09.08",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9VX3ZtSXl1SzloRGR6aWpNZkVVRzJSSXJmZlowalpVZVNyWWpTZXBmelhfa0c4emRhZ1FpY2wyVHVGMmxBV1JJeUFfSmxoR1ZpNnV0anZvNUdKRkdZYkFONDR6VmtVZDhGMnFHU3RFV0dxUQ?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>咒术回战现身Erangel…《PUBG》10日合作更新</strong>",
-      "source": "디지털데일리",
-      "date": "09.08",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5Rb1k2c1Rfbjc4ZndEMUE3Z0EtWXFjYjFTX1VJb0gwaUJENFVEU3VROXE1MkpUVW5pU2ZZMGM3MkNBWUdITTFXTEFVRlR6cW5sSGlIQ3RvaDFCXzNsdVRwQzNVSzY?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
       "title": "<strong>咒术回战登陆Erangel…Krafton《PUBG》推出地图演绎与成长型武器皮肤</strong>",
       "source": "지디넷코리아",
       "date": "09.08",
       "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE14X3Z0TXVKR25GejZLQ0FuRjZaRlFRWDZwRDNmYW1ScERnQnU4QzUxcW5GQnV6QmYyM3JhZFpHbXFvYzNyeFdPWm5Xb092UnVqdUk2MF9n?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton《PUBG》与人气动画《咒术回战》合作</strong>",
-      "source": "연합뉴스",
-      "date": "09.08",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9aRVdqMEtOY3oyUUt6S09UWWtEb1BlOUxTTlViQ2trdkR0ZDhmM3luZnIzSHFTQWtBY2FNWkhWWEFUcGlTY21vOURBTGxDeWZGYmEtTW5mYkNVSWPSAWBBVV95cUxONVRNVUF3YzVQcWQ1MWtTUUVGSEM3eGZ5RkoyajN2SjhadV9ZbU9fMTZOR2pidjhzbnJuZG9aTlAzc2p2R2xlTmFsRGdlcGNoU0paS0pzM0kxeFBBUFg2MF8?oc=5"
     },
     {
       "company": "Krafton",
@@ -2894,8 +2854,8 @@
       "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBTRUNPdmhzb2hPQmN3RGNRRnZWTzRsTFYwNk12eHpPTFB2RFpzZndiOVFVRkREbnoyVzBsVzNrUUhUbzBuRXIzTjBheDdpZHB1cXIyYTJIUk8wQQ?oc=5"
     },
     {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
+      "company": "Netmarble",
+      "color": "#ef4444",
       "title": "<strong>网石培养游戏业实战人才…'Marvel Challenger'第26期启动 - Korea IT Times</strong>",
       "source": "Korea IT Times",
       "date": "09.07",

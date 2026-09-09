@@ -420,16 +420,28 @@ function hasHallucination(text, sheet, facts) {
 }
 
 // 规则模板兜底（纯因果，不写排名/PER/趋势罗列）
+//
+// 根因记录（2026-09-09）：原版本把 news.company（该公司专属新闻）与 news.sector
+// （行业/大盘通用新闻，可能来自其它公司或与任何公司都无关的通用报道）无差别拼在
+// 一起，统一贴上"相关动向："标签。这会导致"该公司本月本无专属新闻"时，误把毫不
+// 相关的行业新闻（甚至是另一家被追踪公司的专属新闻，例如 Netmarble 的人才培养计划
+// 被错误地当成 Nexon Games 的"相关动向"）当作该公司自身的事件描述，产生张冠李戴的
+// 分析文案。修复：company/sector 分开处理，sector-only 时改用不做归因的行业背景表述，
+// 不再用"相关动向"暗示这是该公司自身的新闻。
 function ruleFallback(fact, news, isSU) {
   const dir = fact.mtd > 0 ? '上行' : fact.mtd < 0 ? '下行' : '盘整';
   // 仅保留含中文字符的标题，避免把英文新闻原文直接拼进文案
   const hasCJK = (t) => /[가-힣一-鿿]/.test(t);
   const cNews = (news.company || []).map((n) => n.title).filter(hasCJK);
   const sNews = (news.sector || []).map((n) => n.title).filter(hasCJK);
-  const all = [...cNews, ...sNews];
-  if (all.length) {
-    const top = all.slice(0, 2).join('；');
+
+  if (cNews.length) {
+    const top = cNews.slice(0, 2).join('；');
     return `<strong>${fact.name}</strong>本月整体${dir}，相关动向：${top}。`;
+  }
+  if (sNews.length) {
+    const top = sNews.slice(0, 1).join('；');
+    return `<strong>${fact.name}</strong>本月无专属事件，${dir}主要受行业与大盘氛围驱动（行业背景：${top}）。`;
   }
   return `<strong>${fact.name}</strong>本月整体${dir}，与板块及大盘氛围相关，未见明确独立催化。`;
 }
