@@ -244,9 +244,41 @@ function titleIncludesAlias(title, aliases) {
   return aliases.some((a) => a && title.includes(a));
 }
 
+// ---------- 过期信息护栏 ----------
+//
+// 根因记录（2026-09-11）：Google News 会把旧稿重新分发（或机翻稿沿用旧发售日），
+// 抓取脚本按"入库日"打日期，于是 09.08 入库了一条《红色沙漠》"2026年3月19日发售"的旧闻
+// （该作 3 月已上市），LLM 便把半年前的档期当成当日催化剂写进驱动因素。
+// 规则：标题含档期类动词（发售/定档/上线…）且其中的明确日期比分析日早 30 天以上 -> 判定过期，
+// 不进入白名单（既不给 LLM 当素材，也不给规则兜底拼接）。未来日期与近 30 天内日期不受影响。
+const SCHEDULE_KW = /(发售|上市|上线|定档|公测|首发|开服|推出|登陆|发布|开业|开启)/;
+const STALE_DAYS = 30;
+
+function toUTCDay(y, m, d) {
+  return Date.UTC(y, m - 1, d) / 86400000;
+}
+
+function isStaleNews(title, asOfDate) {
+  if (!asOfDate || !/^\d{8}$/.test(String(asOfDate))) return false;
+  const t = String(title || '');
+  if (!SCHEDULE_KW.test(t)) return false;
+  const asOfY = parseInt(asOfDate.slice(0, 4), 10);
+  const asOfDay = toUTCDay(asOfY, parseInt(asOfDate.slice(4, 6), 10), parseInt(asOfDate.slice(6, 8), 10));
+  const dates = [];
+  for (const m of t.matchAll(/(20\d{2})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/g)) {
+    dates.push(toUTCDay(+m[1], +m[2], +m[3]));
+  }
+  for (const m of t.matchAll(/(?:^|[^\d年])(\d{1,2})\s*月\s*(\d{1,2})\s*日/g)) {
+    dates.push(toUTCDay(asOfY, +m[1], +m[2]));   // 无年份 -> 按分析日所在年推断
+  }
+  if (!dates.length) return false;
+  // 只要存在"未来或近 30 天内"的档期，就认为标题仍有时效性；全部都是远期过往才判过期
+  return dates.every((d) => asOfDay - d > STALE_DAYS);
+}
+
 // 聚合某公司在"截至日所在月份、月初→截至日"的全部相关新闻
 // 返回 { company:[{date,title}], sector:[{date,title}] }
-function getMonthNews(content, canonicalName, asOfMmdd) {
+function getMonthNews(content, canonicalName, asOfMmdd, asOfDate) {
   const asOfMM = asOfMmdd.slice(0, 2);
   const asOfDD = asOfMmdd.slice(3, 5);
   const aliases = [canonicalName, ...Object.keys(COMPANY_NAME_MAP).filter((k) => COMPANY_NAME_MAP[k] === canonicalName)];
@@ -263,6 +295,7 @@ function getMonthNews(content, canonicalName, asOfMmdd) {
       const rawCompany = e?.company || e?.target || '';
       const title = String(e.title || '').replace(/<[^>]+>/g, '').trim();
       if (!title) continue;
+      if (isStaleNews(title, asOfDate)) continue;  // 过期档期旧稿 -> 不做素材
       const resolved = COMPANY_NAME_MAP[rawCompany] || rawCompany;
       // 明确归属其他公司 -> 跳过（避免串味）
       if (rawCompany && COMPANY_NAME_MAP[rawCompany] && COMPANY_NAME_MAP[rawCompany] !== canonicalName) continue;
@@ -385,13 +418,33 @@ function buildAllowedFacts(fact, news) {
   const extra = ['KOSPI', 'KOSDAQ', 'Gamescom', 'TGS', 'Q2', '财报', '第二季度', '二季度', 'Stellar Blade', '剑星', 'Blue Archive', 'Pareidolia', 'Crimson Desert', 'Aion', 'Wemade', '金泽辰', 'NC'];
   const flat = [...new Set([...titles, ...names, ...dates, ...datesZh, ...extra])]
     .filter(Boolean).map((s) => String(s).replace(/<[^>]+>/g, ''));
-  return { flat, dates: [...new Set([...dates, ...datesZh])], names };
+  return { flat, tokens: extractTokens(titles), dates: [...new Set([...dates, ...datesZh])], names };
+}
+
+// 从白名单标题中抽取"专名级"片段（作品名、引号内短语、拉丁词、较长中文词组），
+// 用于护栏锚定：LLM 改写后不会逐字复述整条标题，但通常会保留这些专名。
+function extractTokens(titles) {
+  const tokens = new Set();
+  for (const raw of titles) {
+    const t = cleanNewsTitle(raw);
+    for (const m of t.matchAll(/《([^》]{2,})》/g)) tokens.add(m[1]);
+    for (const m of t.matchAll(/[“"'‘]([^”"'’]{2,})[”"'’]/g)) tokens.add(m[1]);
+    for (const m of t.matchAll(/[A-Za-z][A-Za-z0-9]{2,}(?:\s+[A-Za-z0-9]{2,})?/g)) tokens.add(m[0]);
+    for (const seg of t.split(/[^\u4e00-\u9fffA-Za-z0-9]+/)) {
+      const cjk = seg.replace(/[^\u4e00-\u9fff]/g, '');
+      if (cjk.length >= 4) tokens.add(cjk);
+    }
+  }
+  return [...tokens].filter((x) => x && x.length >= 3);
 }
 
 // 事件动词：带这些动词的句子视为"具体事实断言"
-const CLAIM_VERBS = /(突破|创[新历史]?|首次|官宣|宣布|获[批得]?|签[约署]?|上线|发布|上市|合作|达成|增至|降至|提升至|超越|被[收并购])/;
+// 注意：不要用 `获[批得]?` 这类会退化成单字 "获" 的写法——"获利了结" 是行情描述而非事实断言，
+// 之前因此被误判为断言句，进而把合格的 LLM 输出打回规则兜底（2026-09-11 Krafton 残句即源于此）。
+const CLAIM_VERBS = /(突破|创[新历]高|首次|官宣|宣布|获批|获得|获评|获奖|获颁|签约|签署|上线|发布|上市|合作|达成|增至|降至|提升至|超越|被[收并购])/;
 
-// 护栏：① 百分比须源自事实清单；② 含韩文降级；③ 具体事实断言须有"已知日期+公司名"或白名单片段锚定
+// 护栏：① 百分比须源自事实清单；② 含韩文降级；③ 具体事实断言须被白名单锚定
+//    （命中标题片段 / 标题中的专名 token / "已知日期+公司名" 任一即可放行）
 function hasHallucination(text, sheet, facts) {
   const factsPcts = factsPctValues(sheet);
   const used = [...text.matchAll(/[+-]?\d+(?:\.\d+)?%/g)].map((m) => parseNum(m[0]));
@@ -402,18 +455,19 @@ function hasHallucination(text, sheet, facts) {
   }
   if (/[가-힣]/u.test(text)) return true; // 含韩文 -> 降级
 
-  // 事件断言校验：要求"白名单片段" 或 "已知日期 + 公司名"双锚定，避免误杀真实改写，也拦截凭空捏造
+  // 事件断言校验：要求"白名单片段/专名" 或 "已知日期 + 公司名" 锚定，避免误杀真实改写，也拦截凭空捏造
   if (facts && facts.flat && facts.flat.length) {
     const dateRe = /\d{1,2}月\d{1,2}日|\d{2}\.\d{2}/;
     const sentences = text.split(/[。；;]/).map((s) => s.trim()).filter(Boolean);
     for (const s of sentences) {
       if (!CLAIM_VERBS.test(s)) continue; // 仅检查具体事实断言句
       if (facts.flat.some((a) => a && s.includes(a))) continue; // 命中白名单片段 -> 放行
+      if ((facts.tokens || []).some((a) => a && s.includes(a))) continue; // 命中标题专名 -> 放行
       const dMatch = s.match(dateRe);
       const dOk = dMatch && facts.dates.includes(dMatch[0]);
       const nOk = facts.names.some((n) => n && s.includes(n));
       if (dOk && nOk) continue; // 含已知日期且锚定公司 -> 视为真实改写，放行
-      return true; // 既无白名单片段、又缺日期/公司锚定 -> 疑似凭空捏造
+      return true; // 既无白名单锚点、又缺日期/公司锚定 -> 疑似凭空捏造
     }
   }
   return false;
@@ -492,7 +546,7 @@ async function generateAll(asOfDate, content, entityFilter) {
   for (const e of entities) {
     if (entityFilter && (e.isSU ? 'su' : e.code) !== entityFilter) continue;
     const fact = { ...facts[e.code], asOfDate };
-    const news = getMonthNews(content, e.name, mmddOf(asOfDate));
+    const news = getMonthNews(content, e.name, mmddOf(asOfDate), asOfDate);
     const text = await generateEntityText(fact, news, e.isSU);
     if (e.isSU) result.su = text;
     else result.companies[e.code] = text;
@@ -503,7 +557,7 @@ async function generateAll(asOfDate, content, entityFilter) {
 // ---------- 单日生成分支（写入 analysis.daily[code][date]，与月度并行） ----------
 
 // 单日新闻窗口：当日及前 3 日（保证时效性，避免把整月事件混入当日解释）
-function getDayNews(content, canonicalName, asOfMmdd) {
+function getDayNews(content, canonicalName, asOfMmdd, asOfDate) {
   const asOfMM = asOfMmdd.slice(0, 2);
   const asOfDD = parseInt(asOfMmdd.slice(3, 5), 10);
   const companyNews = [];
@@ -521,6 +575,7 @@ function getDayNews(content, canonicalName, asOfMmdd) {
       const rawCompany = e?.company || e?.target || '';
       const title = String(e.title || '').replace(/<[^>]+>/g, '').trim();
       if (!title) continue;
+      if (isStaleNews(title, asOfDate)) continue;  // 过期档期旧稿 -> 不做素材
       const resolved = COMPANY_NAME_MAP[rawCompany] || rawCompany;
       if (rawCompany && COMPANY_NAME_MAP[rawCompany] && COMPANY_NAME_MAP[rawCompany] !== canonicalName) continue;
       if (resolved === canonicalName || titleIncludesAlias(title, [canonicalName])) {
@@ -588,8 +643,58 @@ function classifySentiment(title) {
   if (p > n) return 1;
   return 0;
 }
-function trimNews(t, max = 34) {
-  return t.length > max ? t.slice(0, max) + '…' : t;
+// 韩媒标题清洗：去掉 [栏目]/【独家】 前缀与 <strong> 等标签
+function cleanNewsTitle(t) {
+  return String(t || '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/^\s*[[【(（][^\]】)）]{0,14}[\]】)）]\s*/, '')
+    .trim();
+}
+
+// 收尾清理：去掉悬空标点，并截掉未闭合的书名号/引号/括号片段，避免 "《红色沙漠" 之类残句
+function tidyTail(s) {
+  let out = String(s || '').replace(/[\s，,、·:：;；\-–—…‥(（[【《“‘]+$/g, '');
+  const pairs = [['《', '》'], ['（', '）'], ['(', ')'], ['“', '”'], ['‘', '’'], ['[', ']'], ['【', '】']];
+  for (const [open, close] of pairs) {
+    const o = out.lastIndexOf(open);
+    if (o >= 0 && out.indexOf(close, o) < 0) {
+      out = out.slice(0, o).replace(/[\s，,、·:：;；\-–—…‥]+$/g, '');
+    }
+  }
+  return out;
+}
+
+// 超长片段的安全截断：只在中文标点或"成对括号结束处"断开；
+// 绝不按空格断（拉丁作品名如《RF Online Next》会被切成半个词，再经 tidyTail 只剩 "Netmarble"）
+function safeCut(s, max) {
+  if (s.length <= max) return s;
+  const head = s.slice(0, max);
+  const punct = ['，', ',', '、', '·', '：', ':', '；', ';'].map((ch) => head.lastIndexOf(ch));
+  const p = Math.max(...punct);
+  if (p >= 8) return head.slice(0, p);
+  const closeIdx = Math.max(
+    head.lastIndexOf('》'), head.lastIndexOf('”'), head.lastIndexOf('’'),
+    head.lastIndexOf('）'), head.lastIndexOf(')'), head.lastIndexOf('】'),
+  );
+  if (closeIdx >= 8) return head.slice(0, closeIdx + 1);
+  return head;
+}
+
+// 把新闻标题压成可嵌入句子的短语。
+//
+// 根因记录（2026-09-11）：原实现只做 `t.slice(0, 34) + '…'` 的硬截断，而韩媒标题
+// 本身惯用 "…" 连接主句与补充说明（如 "每名子女最高1亿·AI 支持300亿…Krafton 获评最佳就业企业"），
+// 于是兜底文案出现双重省略号 + 断在词中间的残句："受每名子女最高1亿·AI 支持300亿…Krafton 获评最佳就业企…等利好提振"。
+// 现改为：按 "…" 切片 → 优选含主体名且长度合适的片段 → 超长时只在安全边界截断 → 收尾清理。
+function trimNews(t, max = 30, prefer = '') {
+  let s = cleanNewsTitle(t);
+  const segs = s.split(/[…‥]+/).map((x) => x.trim()).filter(Boolean);
+  if (segs.length) {
+    const fit = segs.filter((x) => x.length >= 8 && x.length <= max);
+    const named = prefer ? fit.find((x) => x.includes(prefer)) : null;
+    s = named || fit[0] || [...segs].sort((a, b) => b.length - a.length)[0];
+  }
+  return tidyTail(safeCut(s, max));
 }
 
 function dailyRuleFallback(fact, news, isSU, dailyPct) {
@@ -599,14 +704,15 @@ function dailyRuleFallback(fact, news, isSU, dailyPct) {
   const sNews = (news.sector || []).map((n) => n.title).filter(hasCJK).map((t) => ({ t, s: classifySentiment(t) }));
   const posNews = [...cNews, ...sNews].filter((x) => x.s > 0).map((x) => x.t);
   const negNews = [...cNews, ...sNews].filter((x) => x.s < 0).map((x) => x.t);
+  const brief = (t) => trimNews(t, 30, fact.name);
   if (dir === '下行') {
-    if (negNews.length) return `受${trimNews(negNews[0])}等利空拖累，当日下行。`;
-    if (posNews.length) return `当日下行，虽有${trimNews(posNews[0])}等利好，但未能抵挡板块/大盘回调压力。`;
+    if (negNews.length) return `受${brief(negNews[0])}等利空拖累，当日下行。`;
+    if (posNews.length) return `当日下行，虽有${brief(posNews[0])}等利好，但未能抵挡板块/大盘回调压力。`;
     return `当日下行，与板块及大盘氛围相关，未见明确独立催化。`;
   }
   if (dir === '上行') {
-    if (posNews.length) return `受${trimNews(posNews[0])}等利好提振，当日上行。`;
-    if (negNews.length) return `当日逆势上行，虽有${trimNews(negNews[0])}等利空，但已被市场消化。`;
+    if (posNews.length) return `受${brief(posNews[0])}等利好提振，当日上行。`;
+    if (negNews.length) return `当日逆势上行，虽有${brief(negNews[0])}等利空，但已被市场消化。`;
     return `当日上行，板块情绪回暖带动，未见明确独立催化。`;
   }
   return `当日盘整，多空均衡，方向性催化有限。`;
@@ -646,17 +752,20 @@ async function generateDailyEntityText(fact, news, isSU, dailyPct) {
   }
 }
 
-async function generateDailyAll(asOfDate, content) {
+// entityFilter 可选：仅重算指定 code（'su' 或股票代码），用于单点修复某一家的异常驱动因素，
+// 不触动同日其余已生成好的实体（如 2026-09-11 仅需重算 Krafton/Pearl Abyss）
+async function generateDailyAll(asOfDate, content, entityFilter) {
   const monthSnapshots = loadMonthSnapshots(asOfDate);
   const snap = readSnapshot(asOfDate) || (fs.existsSync(LATEST_PATH) ? JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8')) : null);
   const { facts, entities } = buildQuantContext(asOfDate, monthSnapshots, snap, content);
   const result = { su: null, companies: {} };
   for (const e of entities) {
+    if (entityFilter && (e.isSU ? 'su' : e.code) !== entityFilter) continue;
     const dailyPct = getStockPct(e, snap);
     // 当日波动 <1% 的股票不会在「今日总结」个股驱动中展示，跳过 LLM 调用以节省额度
     if (Number.isNaN(dailyPct) || Math.abs(dailyPct) < 1) continue;
     const fact = { ...facts[e.code], asOfDate };
-    const news = getDayNews(content, e.name, mmddOf(asOfDate));
+    const news = getDayNews(content, e.name, mmddOf(asOfDate), asOfDate);
     const text = await generateDailyEntityText(fact, news, e.isSU, dailyPct);
     if (e.isSU) result.su = text;
     else result.companies[e.code] = text;
@@ -712,16 +821,22 @@ async function main() {
       targetDates.add(process.argv[dateArgIdx + 1]);
     }
     const allCodes = ['su', ...Object.keys(TRACKED_COMPANY)];
+    // 单点修复：--code <su|股票代码> 仅重算该实体，其余实体当日已有文案保持不变
+    const codeArgIdxD = process.argv.indexOf('--code');
+    const entityFilterD = codeArgIdxD >= 0 && process.argv[codeArgIdxD + 1] ? process.argv[codeArgIdxD + 1] : undefined;
     let wrote = 0;
     for (const td of [...targetDates].sort()) {
       const hasAll = allCodes.every((c) => content.analysis.daily[c] && content.analysis.daily[c][td]);
-      if (!force && hasAll) continue;
+      if (!force && !entityFilterD && hasAll) continue;
       console.log(`[generate-analysis] 生成单日 ${td} ...`);
-      const gen = await generateDailyAll(td, content);
+      const gen = await generateDailyAll(td, content, entityFilterD);
       if (!content.analysis.daily.su) content.analysis.daily.su = {};
-      content.analysis.daily.su[td] = gen.su;
-      if (gen.su) wrote++;
-      console.log(`  ✓ SU: ${gen.su ? gen.su.slice(0, 60) : '(波动<1%，跳过)'}`);
+      // gen.su 在 --code 过滤到其它实体时为 null，须排除，否则会误清空已有 SU 文案
+      if (!entityFilterD || entityFilterD === 'su') {
+        content.analysis.daily.su[td] = gen.su;
+        if (gen.su) wrote++;
+        console.log(`  ✓ SU: ${gen.su ? gen.su.slice(0, 60) : '(波动<1%，跳过)'}`);
+      }
       for (const [code, text] of Object.entries(gen.companies)) {
         if (!content.analysis.daily[code]) content.analysis.daily[code] = {};
         content.analysis.daily[code][td] = text;
