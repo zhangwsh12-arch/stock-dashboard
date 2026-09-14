@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260722a'; // 更新：7月史诗级高波动周期分析(开门黑+黑色星期四+V型反转+杠杆踩踏+黑色星期一+过山车+暴涨+央行加息)+ICU与KTV反复横跳叙事
+      var VER = '20260914a'; // 修复：个股驱动因素展示阈值与生成阈值对齐（analysis.daily 存在即展示，补上1%~2%区间）
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -1463,14 +1463,23 @@ function renderDailySummary() {
       }
     }
 
-    // 第二轮：<5% 但有当日EVENT_DATA事件精确匹配的股票也补充显示（仅限当日事件）
+    // 第二轮：未达 THRESHOLD 但有"当日专属依据"的股票也补充显示
+    // 依据有两类（任一即可）：
+    //   a) analysis.daily 中存在当日 LLM 生成的驱动因素（逐日因果分析，已做方向一致性校验）
+    //   b) 当日 EVENT_DATA 精确匹配到该公司事件
+    // 均不使用静态 fallback（避免把月度事件混入当日分析）。
+    //
+    // 根因记录（2026-09-14）：原先只认 (b)。而 generate-analysis.mjs 按 |涨跌| >= 1% 生成
+    // analysis.daily，这里却按 >= 2%（THRESHOLD）展示，中间 1%~2% 区间若当日恰无该公司
+    // EVENT_DATA 条目就会两轮都落空——Pearl Abyss 当日 -1.98%、9/14 events 里只有
+    // Krafton/NC，导致已生成的驱动因素无法展示。现补上 (a)，使展示阈值与生成阈值对齐。
     for (const stock of allStocks) {
       if (addedStocks.has(stock.name)) continue;
       const pct = Math.abs(parsePct(stock.changePercent));
       if (pct < 1) continue; // 跳过波动<1%的股票
-      // 仅使用当日EVENT_DATA匹配，不用静态fallback（避免混入月度事件）
+      const hasDaily = !!getDailyAnalysisText(stock);
       const hasEvent = todayEvents.some(e => matchEventToStock(e)?.name === stock.name);
-      if (hasEvent) {
+      if (hasDaily || hasEvent) {
         addedStocks.add(stock.name);
         const reason = findStockReason(stock, todayEvents);
         const displayReason = reason || { source: 'event', text: '有当日事件记录', color: stock.color, url: null };
