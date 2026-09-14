@@ -327,84 +327,116 @@ async function fetchNaverChart(code, targetDateStr) {
 
 
 // ============================================================
-// 数据源1b: Naver 日别行情表（KRX 제공 일별시세）— 收盘价权威校正源
+// 数据源1b: Naver 시간별 시세 — 15:30 종가단일가（收盘集合竞价）定向抓取
 // ============================================================
-// 起因：2026-09-14 抓取（KST 18:01）得到的 6 家收盘价有 5 家与 KRX 官方值不符
-//       （Shift Up 32,200 vs 32,050 / Netmarble 35,200 vs 35,100 /
-//         NC 205,000 vs 204,000 / Krafton 210,500 vs 210,000 /
-//         Pearl Abyss 34,150 vs 34,250）。
-// 根因：KRX 정규장 15:30 收盘后仍有「장후 시간외종가(15:40-16:00)」与
-//       「시간외단일가(16:00-18:00)」交易，此期间 fchart 的当日 K 线 close
-//       会跟随时间外最新成交价持续漂移，18:00 之后才回落到官方收盘价。
-//       两阶段推送把抓取时间定在 KST 18:00 整，正好卡在漂移窗口尾部。
-// 对策：改用 finance.naver.com/item/sise_day.naver（页面明示「KRX 제공」，
-//       与 Naver 行情页「일별」标签同源，收盘即定稿、不受时间外交易影响）
-//       对 K 线返回的最近若干交易日收盘价做覆盖校正。
-async function fetchNaverOfficialDaily(code) {
+// 【问题】2026-09-14 抓取（KST 18:01）得到的 6 家收盘价全部与官方收盘价不符。
+//
+// 【根因】KRX 一个交易日包含多个时段：
+//   08:30-08:40  장전 시간외종가   （只能按前日收盘价成交）
+//   09:00-15:20  정규장 连续竞价
+//   15:20-15:30  종가 단일가       （15:30 整撮合一次 → 这一笔就是官方收盘价）
+//   15:40-16:00  장후 시간외종가   （只能按当日收盘价成交，价格不动）
+//   16:00 以后   시간외 단일가     （每10分钟撮合，价格可在收盘价±10%内浮动）
+// 最后一段价格会动，而 Naver/Daum 等面向散户的行情源，「今天」那一行在时间外
+// 交易期间显示的是**实时整合价**而非 15:30 官方收盘价。实测同一只票在 20 分钟内
+// 漂移多次（Shift Up 32,050→32,100→32,300→32,250），而历史日期始终稳定。
+// 两阶段推送把抓取定在 KST 18:00，正好扎在漂移窗口内。
+//
+// 【对策】不再"取最后一笔"，改为**按时刻定向**读取 15:30 那一笔集合竞价成交价。
+// 15:30 之后的成交都带自己的时间戳（17:59、17:56 等），永远不会改写 15:30 这一行，
+// 因此从根上绕开漂移。实测：时间外交易进行中反复探测，15:30 行恒定不变；
+// 且对 6 家 × 6 个已定稿交易日交叉比对 fchart 历史收盘，36/36 全中、零误差。
+//
+// 【限制】Naver 逐笔数据仅保留约 7-10 个交易日，更早日期取不到（返回 null），
+// 因此本函数只用于校正"当日"，历史序列仍以 fchart 为准。
+async function fetchRegularSessionClose(code, dateStr) {
   try {
-    const url = `https://finance.naver.com/item/sise_day.naver?code=${code}&page=1`;
+    const url = `https://finance.naver.com/item/sise_time.naver?thistime=${dateStr}153000&code=${code}&page=1`;
     const resp = await fetchWithRetry(url, {
       headers: { 'Referer': `https://finance.naver.com/item/sise.naver?code=${code}` },
     });
     const buf = await resp.arrayBuffer();
     const html = new TextDecoder('euc-kr').decode(buf);
 
-    // 每个数据行：日期 <span class="tah p10 gray03">2026.09.14</span>
-    //             收盘 <span class="tah p11">32,050</span>（该行首个 p11 即 종가）
-    const rows = [];
-    const re = /<span class="tah p10 gray03">\s*(\d{4})\.(\d{2})\.(\d{2})\s*<\/span>[\s\S]*?<span class="tah p11">\s*([\d,]+)\s*<\/span>/g;
-    let m;
-    while ((m = re.exec(html)) !== null) {
-      const close = parseFloat(m[4].replace(/,/g, ''));
-      if (!isNaN(close) && close > 0) {
-        rows.push({ date: `${m[1]}${m[2]}${m[3]}`, close });
-      }
+    // 表格每行：时刻 <span class="tah p10 gray03">15:30</span>
+    //           成交价 <td class="num"><span class="tah p11">32,100</span>
+    // thistime=...153000 时首行即 15:30 的종가단일가成交
+    const m = /<span class="tah p10 gray03">(\d{2}):(\d{2})<\/span><\/td>\s*<td class="num"><span class="tah p11">\s*([\d,]+)/.exec(html);
+    if (!m) throw new Error('未解析到分时成交行');
+
+    const hhmm = `${m[1]}:${m[2]}`;
+    // 必须严格等于 15:30：若该股当日收盘竞价无成交，首行会是更早时刻，
+    // 此时宁可放弃校正（返回 null 走 provisional 标记），也不能拿 15:29 的价当收盘价。
+    if (hhmm !== '15:30') {
+      throw new Error(`首行时刻为 ${hhmm} 而非 15:30（收盘竞价可能无成交）`);
     }
 
-    if (rows.length === 0) throw new Error('No rows parsed');
-    console.log(`  🏛️ [NaverDaily] ${code}: 官方日别行情 ${rows.length} 行，最新 ${rows[0].date}=${rows[0].close.toLocaleString()}`);
-    return rows;
+    const close = parseFloat(m[3].replace(/,/g, ''));
+    if (!isFinite(close) || close <= 0) throw new Error(`成交价异常: ${m[3]}`);
+
+    console.log(`  🏛️ [CloseAuction] ${code}: ${dateStr} 15:30 종가단일가 = ${close.toLocaleString()}`);
+    return close;
   } catch (err) {
-    console.warn(`  ⚠️ [NaverDaily] ${code}: 官方日别行情获取失败(${err.message})，跳过收盘价校正`);
+    console.warn(`  ⚠️ [CloseAuction] ${code}: ${dateStr} 官方收盘价获取失败(${err.message})`);
     return null;
   }
 }
 
 /**
- * 用官方日别行情校正 K 线数据中的收盘价，并同步重算涨跌额/涨跌幅。
- * 只覆盖收盘价（open/high/low/volume 仍以 K 线为准，官方表格中同样字段无需校正）。
+ * 用 15:30 종가단일가成交价校正当日收盘价，并重算涨跌额/涨跌幅。
+ *
+ * 只校正"目标交易日"这一天（历史日期在 fchart 中已定稿，无需也无法校正）。
+ * 校正失败时打上 _provisional 标记，由 validate-data.mjs 告警、并阻止其覆盖已定稿值。
  */
-function applyOfficialCloseCorrection(merged, officialRows) {
-  if (!merged || !officialRows || officialRows.length === 0) return;
+function applyRegularCloseCorrection(merged, officialClose, dateStr) {
+  if (!merged) return;
 
-  const officialMap = new Map(officialRows.map(r => [r.date, r.close]));
+  if (officialClose == null) {
+    // 拿不到官方收盘价：当日数据可能处于时间外交易漂移窗口，标记为临时值
+    merged._provisional = true;
+    console.warn(`  ⚠️ [Correct] ${dateStr}: 无官方收盘价可校正，标记 _provisional=true`);
+    return;
+  }
+
   const hist = Array.isArray(merged._allHistory) ? merged._allHistory : [];
-  let corrected = 0;
+  const idx = hist.findIndex(h => h.date === dateStr);
 
-  for (const h of hist) {
-    const official = officialMap.get(h.date);
-    if (official != null && official !== h.close) {
-      console.log(`  🔧 [Correct] ${h.date}: 收盘 ${h.close.toLocaleString()} → ${official.toLocaleString()}（KRX 官方值）`);
-      h.close = official;
-      corrected++;
+  if (idx < 0) {
+    // K 线里还没有当日行（极少见），直接以官方收盘价为准
+    if (merged.price !== officialClose) {
+      console.log(`  🔧 [Correct] ${dateStr}: 收盘 ${Number(merged.price).toLocaleString()} → ${officialClose.toLocaleString()}（15:30 官方值）`);
+      merged.price = officialClose;
+      merged._source = `${merged._source || 'naver_chart_api_v2'}+close_auction`;
     }
+    return;
   }
 
-  if (corrected === 0) return;
+  const cur = hist[idx];
+  if (cur.close === officialClose) {
+    // 已经是官方值（收市后运行时的正常情况）
+    return;
+  }
 
-  // 收盘价变了，重算基于收盘价的派生字段
-  const idx = hist.findIndex(h => h.date === merged.date);
+  console.log(`  🔧 [Correct] ${dateStr}: 收盘 ${cur.close.toLocaleString()} → ${officialClose.toLocaleString()}（15:30 官方值，原值受时间外交易影响）`);
+  cur.close = officialClose;
+
+  // high/low 也需容纳官方收盘价（时间外价可能曾突破正规场区间）
+  if (cur.high != null && officialClose > cur.high) cur.high = officialClose;
+  if (cur.low != null && officialClose < cur.low) cur.low = officialClose;
+
+  // 重算依赖收盘价的派生字段
+  merged.price = officialClose;
   if (idx > 0) {
-    const cur = hist[idx];
     const prev = hist[idx - 1];
-    merged.price = cur.close;
     merged.yesterdayClose = prev.close;
-    merged.change = cur.close - prev.close;
+    merged.change = officialClose - prev.close;
     merged.changePercent = prev.close > 0
-      ? (((cur.close - prev.close) / prev.close) * 100).toFixed(2)
+      ? (((officialClose - prev.close) / prev.close) * 100).toFixed(2)
       : null;
-    merged._source = `${merged._source || 'naver_chart_api_v2'}+krx_daily_corrected`;
   }
+  if (cur.high != null) merged.high = cur.high;
+  if (cur.low != null) merged.low = cur.low;
+  merged._source = `${merged._source || 'naver_chart_api_v2'}+close_auction`;
 }
 
 
@@ -668,10 +700,12 @@ async function fetchStockData(comp, targetDateStr) {
     }
   }
   
-  // --- 收盘价校正: Naver 官方日别行情（KRX 제공），修正时间外交易导致的 K 线收盘价漂移 ---
-  if (merged.price && merged._allHistory) {
-    const officialRows = await fetchNaverOfficialDaily(code);
-    applyOfficialCloseCorrection(merged, officialRows);
+  // --- 收盘价校正: 15:30 종가단일가（收盘集合竞价）为官方收盘价的唯一权威来源 ---
+  // 放在 Yahoo 兜底之前：仅当 Naver 链路成功（有 price）时才校正；
+  // 走 Yahoo 兜底的场景本身已有 ±15% sanity 拦截，且无 _allHistory 可校正。
+  if (merged.price && targetDateStr) {
+    const officialClose = await fetchRegularSessionClose(code, targetDateStr);
+    applyRegularCloseCorrection(merged, officialClose, targetDateStr);
   }
 
   // 计算市值: 股价 × 流通股数
@@ -791,6 +825,12 @@ async function main() {
   // Shift Up (462870) 必须是真正的 Shift Up 数据，绝不回退到其他公司
   const realShiftUp = stockResults.find(r => r?.code === '462870');
   
+  // 收盘价未能通过 15:30 종가단일가校正的公司（可能仍是时间外交易漂移值）
+  const provisionalCodes = stockResults.filter(r => r?._provisional).map(r => r.code);
+  if (provisionalCodes.length > 0) {
+    console.warn(`\n⚠️ 以下公司未取到 15:30 官方收盘价，标记为临时值: ${provisionalCodes.join(', ')}`);
+  }
+
   const dashboardData = {
     meta: {
       date: dateStr,
@@ -798,6 +838,8 @@ async function main() {
       fetchedAt: new Date().toISOString(),
       source: 'Naver Finance / Multi-source v3',
       updateCount: successCount,
+      // 非空表示这些公司的收盘价未经 15:30 종가단일가确认，validate-data.mjs 会告警
+      ...(provisionalCodes.length > 0 ? { provisional: provisionalCodes } : {}),
     },
 
     // shiftUp 只用真实数据，失败则为 null 让前端展示"暂无"

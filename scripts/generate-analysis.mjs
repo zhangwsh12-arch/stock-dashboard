@@ -599,13 +599,60 @@ function getDayNews(content, canonicalName, asOfMmdd, asOfDate) {
   return { company: companyNews, sector: sectorNews };
 }
 
-function buildDailyFactsSheet(fact, news, dailyPct) {
+// 构造"当日板块行情实况"：把六家同业与大盘的真实涨跌喂给 LLM。
+//
+// 根因记录（2026-09-14）：原事实清单只给出该股自己的涨跌幅与新闻标题，没有任何
+// 同业/大盘的当日行情数据。于是 LLM 想描述"板块方向"时只能从新闻标题里猜，而当天
+// 恰好有一条涨跌榜新闻《[涨跌榜] 游戏股上涨……Wemade Max 涨停·Devsisters 下跌》，
+// 上涨的 Shift Up 挑中了"游戏股上涨"这半句、下跌的 Pearl Abyss 挑中了"Devsisters 下跌"
+// 这半句，导致同一天的两条文案自相矛盾（"板块整体走强" vs "板块整体分化"），
+// 且把与本标的无关、且不在跟踪范围内的 Devsisters 当成了下跌原因。
+// 现改为：直接用快照里的真实行情算出板块涨跌家数与大盘涨跌幅，作为唯一可用依据。
+function buildPeerContext(snap) {
+  if (!snap) return null;
+  const rows = [];
+  const suPct = parseNum(snap?.shiftUp?.changePercent);
+  if (!Number.isNaN(suPct)) rows.push({ name: SU_NAME, pct: suPct });
+  for (const c of snap?.companies || []) {
+    const p = parseNum(c.change);
+    if (!Number.isNaN(p)) rows.push({ name: TRACKED_COMPANY[c.code] || c.name, pct: p });
+  }
+  if (rows.length === 0) return null;
+
+  const up = rows.filter((r) => r.pct > 0).length;
+  const down = rows.filter((r) => r.pct < 0).length;
+  const flat = rows.length - up - down;
+  const indices = (snap?.indices || []).map((i) => ({ name: i.name, pct: parseNum(i.changePercent) }));
+
+  // 板块方向判定：以涨跌家数为准，避免"个别股大涨"被误读成板块普涨
+  let tone;
+  if (up >= rows.length - 1 && up > down) tone = '板块普涨';
+  else if (down >= rows.length - 1 && down > up) tone = '板块普跌';
+  else if (up > down) tone = '板块偏强（多数上涨）';
+  else if (down > up) tone = '板块偏弱（多数下跌）';
+  else tone = '板块涨跌互现';
+
+  return { rows, up, down, flat, indices, tone };
+}
+
+function buildDailyFactsSheet(fact, news, dailyPct, peer) {
   const lines = [];
   lines.push(`公司/标的：${fact.name}`);
   lines.push(`日期：${fact.asOfDate}`);
   const dir = Number.isNaN(dailyPct) ? '（数据缺失）' : (dailyPct > 0 ? '上涨' : dailyPct < 0 ? '下跌' : '持平');
   lines.push(`当日涨跌幅：${Number.isNaN(dailyPct) ? '数据缺失' : fmtPct(dailyPct)}（${dir}）`);
   lines.push(`（严禁引入白名单外的任何事实或数字；不要复述已在界面展示的当日涨跌幅）`);
+
+  // 板块与大盘实况：判断"板块强弱/系统性拖累"时必须以此为唯一依据
+  if (peer) {
+    if (peer.indices.length) {
+      lines.push(`当日大盘：${peer.indices.map((i) => `${i.name} ${Number.isNaN(i.pct) ? '数据缺失' : fmtPct(i.pct)}`).join('，')}`);
+    }
+    lines.push(`当日六家跟踪标的行情：${peer.rows.map((r) => `${r.name} ${fmtPct(r.pct)}`).join('，')}`);
+    lines.push(`板块方向判定（以涨跌家数为准）：${peer.tone}（上涨${peer.up}家／下跌${peer.down}家／持平${peer.flat}家）`);
+    lines.push(`（描述"板块/大盘强弱"时必须严格依据上面这三行行情数据，不得依据新闻标题自行推断板块方向）`);
+  }
+
   const cNews = news.company || [];
   const sNews = news.sector || [];
   if (cNews.length) {
@@ -623,14 +670,16 @@ function buildDailyFactsSheet(fact, news, dailyPct) {
   return lines.join('\n');
 }
 
-function buildDailyUserPrompt(fact, news, dailyPct) {
-  const sheet = buildDailyFactsSheet(fact, news, dailyPct);
+function buildDailyUserPrompt(fact, news, dailyPct, peer) {
+  const sheet = buildDailyFactsSheet(fact, news, dailyPct, peer);
   return `【已核实事实清单】
 ${sheet}
 
 【写作要求】
 - 为 ${fact.name} 在 ${fact.asOfDate} 这一天写一句【单日驱动因素】，只解释"为什么这一天涨/跌"，形成因果链条。
 - 【方向一致性硬约束】因果必须与当日涨跌方向严格一致：当日下跌时，所列事件必须是下跌的合理解释（利空事件 / 利好兑现后的获利了结 / 大盘或板块系统性拖累）；严禁用纯利好事件直接当作下跌原因，除非明确表述为"利好不敌系统性抛压 / 获利了结"。当日上涨同理，不得用利空事件直接解释上涨。如当日仅有利好新闻却仍下跌，应表述为"利好未能抵挡板块/大盘回调"，而非"受利好影响下跌"。
+- 【板块方向硬约束】凡涉及"板块整体强/弱、系统性拖累、随板块回调"等表述，必须与事实清单中的"板块方向判定"一致；若板块方向与本股走势相反（如板块偏强而本股下跌），必须写成个股自身原因（获利了结／缺乏新催化／利好兑现），不得谎称"受板块拖累"。
+- 【标的范围硬约束】只能提及事实清单中列出的六家跟踪标的；严禁把不在跟踪范围内的其他公司（如 Devsisters、Wemade 等）的涨跌当作本股的涨跌原因。涨跌榜类新闻只能用于印证板块方向，且须与"板块方向判定"一致，不得只摘取其中与判定相反的半句。
 - 必须以"当日及近3日相关新闻/事件"为主素材构建因果；若该公司有专属新闻，就以这些真实事件为主因，不要写与其他公司雷同的通用行业套话。若确无专属新闻，才可基于行业/大盘通用动向与行情方向说明，但仍不得编造具体事件。
 - 严禁写：公司间排名、PER/估值、最佳↔最差交易日对比、"上涨X天下跌X天"等趋势性数据罗列；不要写"本月累计"等字眼，不要复述界面已展示的当日涨跌幅。
 - 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
@@ -725,10 +774,10 @@ function dailyRuleFallback(fact, news, isSU, dailyPct) {
   return `当日盘整，多空均衡，方向性催化有限。`;
 }
 
-async function generateDailyEntityText(fact, news, isSU, dailyPct) {
-  const sheet = buildDailyFactsSheet(fact, news, dailyPct);
+async function generateDailyEntityText(fact, news, isSU, dailyPct, peer) {
+  const sheet = buildDailyFactsSheet(fact, news, dailyPct, peer);
   const allowedFacts = buildAllowedFacts(fact, news);
-  const userPrompt = buildDailyUserPrompt(fact, news, dailyPct);
+  const userPrompt = buildDailyUserPrompt(fact, news, dailyPct, peer);
   try {
     let raw = await callLLM({
       systemPrompt: DAILY_SYSTEM_PROMPT,
@@ -765,6 +814,10 @@ async function generateDailyAll(asOfDate, content, entityFilter) {
   const monthSnapshots = loadMonthSnapshots(asOfDate);
   const snap = readSnapshot(asOfDate) || (fs.existsSync(LATEST_PATH) ? JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8')) : null);
   const { facts, entities } = buildQuantContext(asOfDate, monthSnapshots, snap, content);
+  const peer = buildPeerContext(snap);
+  if (peer) {
+    console.log(`[generate-analysis] ${asOfDate} 板块实况：${peer.tone}（上涨${peer.up}／下跌${peer.down}／持平${peer.flat}）`);
+  }
   const result = { su: null, companies: {} };
   for (const e of entities) {
     if (entityFilter && (e.isSU ? 'su' : e.code) !== entityFilter) continue;
@@ -773,7 +826,7 @@ async function generateDailyAll(asOfDate, content, entityFilter) {
     if (Number.isNaN(dailyPct) || Math.abs(dailyPct) < 1) continue;
     const fact = { ...facts[e.code], asOfDate };
     const news = getDayNews(content, e.name, mmddOf(asOfDate), asOfDate);
-    const text = await generateDailyEntityText(fact, news, e.isSU, dailyPct);
+    const text = await generateDailyEntityText(fact, news, e.isSU, dailyPct, peer);
     if (e.isSU) result.su = text;
     else result.companies[e.code] = text;
   }

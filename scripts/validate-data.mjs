@@ -84,6 +84,17 @@ if (meta?.date && KRX_HOLIDAYS_2026.includes(meta.date)) {
   pass('meta.date 不是 KRX 休市日');
 }
 
+// 收盘价权威性检查
+// KRX 在 15:30 之后仍有时间外交易（15:40-16:00 장후종가、16:00 以后 시간외단일가），
+// 期间 Naver/Daum 等行情源「当日」那一行显示的是实时整合价而非官方收盘价。
+// fetch-data.mjs 通过定向读取 15:30 종가단일가成交价来校正；若某家校正失败，
+// 会在 meta.provisional 中列出其代码，此处告警提示需人工复核。
+if (Array.isArray(meta?.provisional) && meta.provisional.length > 0) {
+  warn(`以下公司收盘价未经 15:30 종가단일가确认，可能为时间外交易漂移值，需人工复核: ${meta.provisional.join(', ')}`);
+} else {
+  pass('所有公司收盘价均已通过 15:30 종가단일가校验');
+}
+
 // ====== 3. Shift Up 数据检查 ======
 console.log('\n=== 3. Shift Up 核心数据检查 ===');
 const su = data.shiftUp;
