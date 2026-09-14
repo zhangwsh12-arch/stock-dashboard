@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260914",
     "dateDisplay": "9月（截至14日）",
-    "fetchedAt": "2026-09-14T09:01:38.942Z",
+    "fetchedAt": "2026-09-14T09:23:14.154Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -10,12 +10,12 @@
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "32,200",
+    "price": "32,050",
     "previousClose": "31,400",
     "high": "32,700",
     "low": "31,000",
-    "change": "800",
-    "changePercent": "+2.55%",
+    "change": "650",
+    "changePercent": "+2.07%",
     "changeClass": "up",
     "per": "N/A",
     "pbr": "-",
@@ -737,8 +737,8 @@
         "open": 31100,
         "high": 32700,
         "low": 31000,
-        "close": 32200,
-        "volume": 62358,
+        "close": 32050,
+        "volume": 62527,
         "foreignRate": 36.89
       }
     ]
@@ -757,17 +757,17 @@
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "35,200",
-      "change": "0.00%",
-      "changeClass": "neutral",
+      "price": "35,100",
+      "change": "-0.28%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "205,000",
-      "change": "-0.24%",
+      "price": "204,000",
+      "change": "-0.73%",
       "changeClass": "down",
       "per": "N/A"
     },
@@ -775,8 +775,8 @@
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "210,500",
-      "change": "-0.94%",
+      "price": "210,000",
+      "change": "-1.18%",
       "changeClass": "down",
       "per": "N/A"
     },
@@ -784,8 +784,8 @@
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "34,150",
-      "change": "-3.26%",
+      "price": "34,300",
+      "change": "-2.83%",
       "changeClass": "down",
       "per": "N/A"
     }
@@ -940,24 +940,24 @@
     {
       "date": "20260914",
       "label": "9/14",
-      "price": 32200
+      "price": 32050
     }
   ],
   "indices": [
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "6684.00",
-      "change": "-225.00",
+      "price": "6684.37",
+      "change": "-225.54",
       "changePercent": "-3.26",
       "changeClass": "down"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "806.00",
-      "change": "-14.00",
-      "changePercent": "-1.71",
+      "price": "806.79",
+      "change": "-13.85",
+      "changePercent": "-1.69",
       "changeClass": "down"
     }
   ]

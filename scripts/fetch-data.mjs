@@ -267,12 +267,15 @@ async function fetchNaverChart(code, targetDateStr) {
     const allData = [];
     for (const item of data) {
       if (Array.isArray(item) && item.length >= 5 && /^\d{8}$/.test(String(item[0]))) {
+        // 用 parseFloat 而非 parseInt：个股价格均为整数不受影响，
+        // 但 KOSPI/KOSDAQ 指数带两位小数，parseInt 会截断（6684.37 → 6684），
+        // 导致指数涨跌额/涨跌幅与 KRX 官方值对不上（2026-09-14 KOSDAQ 误报 -16/-1.91%，实际 -13.85/-1.69%）。
         allData.push({
           date: String(item[0]),
-          open: parseInt(item[1]),
-          high: parseInt(item[2]),
-          low: parseInt(item[3]),
-          close: parseInt(item[4]),
+          open: parseFloat(item[1]),
+          high: parseFloat(item[2]),
+          low: parseFloat(item[3]),
+          close: parseFloat(item[4]),
           volume: parseInt(item[5]) || 0,
           foreignRate: parseFloat(item[6]) || 0,
         });
@@ -319,6 +322,88 @@ async function fetchNaverChart(code, targetDateStr) {
   } catch (err) {
     console.error(`  ❌ [NaverChart] Failed for ${code}: ${err.message}`);
     return null;
+  }
+}
+
+
+// ============================================================
+// 数据源1b: Naver 日别行情表（KRX 제공 일별시세）— 收盘价权威校正源
+// ============================================================
+// 起因：2026-09-14 抓取（KST 18:01）得到的 6 家收盘价有 5 家与 KRX 官方值不符
+//       （Shift Up 32,200 vs 32,050 / Netmarble 35,200 vs 35,100 /
+//         NC 205,000 vs 204,000 / Krafton 210,500 vs 210,000 /
+//         Pearl Abyss 34,150 vs 34,250）。
+// 根因：KRX 정규장 15:30 收盘后仍有「장후 시간외종가(15:40-16:00)」与
+//       「시간외단일가(16:00-18:00)」交易，此期间 fchart 的当日 K 线 close
+//       会跟随时间外最新成交价持续漂移，18:00 之后才回落到官方收盘价。
+//       两阶段推送把抓取时间定在 KST 18:00 整，正好卡在漂移窗口尾部。
+// 对策：改用 finance.naver.com/item/sise_day.naver（页面明示「KRX 제공」，
+//       与 Naver 行情页「일별」标签同源，收盘即定稿、不受时间外交易影响）
+//       对 K 线返回的最近若干交易日收盘价做覆盖校正。
+async function fetchNaverOfficialDaily(code) {
+  try {
+    const url = `https://finance.naver.com/item/sise_day.naver?code=${code}&page=1`;
+    const resp = await fetchWithRetry(url, {
+      headers: { 'Referer': `https://finance.naver.com/item/sise.naver?code=${code}` },
+    });
+    const buf = await resp.arrayBuffer();
+    const html = new TextDecoder('euc-kr').decode(buf);
+
+    // 每个数据行：日期 <span class="tah p10 gray03">2026.09.14</span>
+    //             收盘 <span class="tah p11">32,050</span>（该行首个 p11 即 종가）
+    const rows = [];
+    const re = /<span class="tah p10 gray03">\s*(\d{4})\.(\d{2})\.(\d{2})\s*<\/span>[\s\S]*?<span class="tah p11">\s*([\d,]+)\s*<\/span>/g;
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      const close = parseFloat(m[4].replace(/,/g, ''));
+      if (!isNaN(close) && close > 0) {
+        rows.push({ date: `${m[1]}${m[2]}${m[3]}`, close });
+      }
+    }
+
+    if (rows.length === 0) throw new Error('No rows parsed');
+    console.log(`  🏛️ [NaverDaily] ${code}: 官方日别行情 ${rows.length} 行，最新 ${rows[0].date}=${rows[0].close.toLocaleString()}`);
+    return rows;
+  } catch (err) {
+    console.warn(`  ⚠️ [NaverDaily] ${code}: 官方日别行情获取失败(${err.message})，跳过收盘价校正`);
+    return null;
+  }
+}
+
+/**
+ * 用官方日别行情校正 K 线数据中的收盘价，并同步重算涨跌额/涨跌幅。
+ * 只覆盖收盘价（open/high/low/volume 仍以 K 线为准，官方表格中同样字段无需校正）。
+ */
+function applyOfficialCloseCorrection(merged, officialRows) {
+  if (!merged || !officialRows || officialRows.length === 0) return;
+
+  const officialMap = new Map(officialRows.map(r => [r.date, r.close]));
+  const hist = Array.isArray(merged._allHistory) ? merged._allHistory : [];
+  let corrected = 0;
+
+  for (const h of hist) {
+    const official = officialMap.get(h.date);
+    if (official != null && official !== h.close) {
+      console.log(`  🔧 [Correct] ${h.date}: 收盘 ${h.close.toLocaleString()} → ${official.toLocaleString()}（KRX 官方值）`);
+      h.close = official;
+      corrected++;
+    }
+  }
+
+  if (corrected === 0) return;
+
+  // 收盘价变了，重算基于收盘价的派生字段
+  const idx = hist.findIndex(h => h.date === merged.date);
+  if (idx > 0) {
+    const cur = hist[idx];
+    const prev = hist[idx - 1];
+    merged.price = cur.close;
+    merged.yesterdayClose = prev.close;
+    merged.change = cur.close - prev.close;
+    merged.changePercent = prev.close > 0
+      ? (((cur.close - prev.close) / prev.close) * 100).toFixed(2)
+      : null;
+    merged._source = `${merged._source || 'naver_chart_api_v2'}+krx_daily_corrected`;
   }
 }
 
@@ -583,6 +668,12 @@ async function fetchStockData(comp, targetDateStr) {
     }
   }
   
+  // --- 收盘价校正: Naver 官方日别行情（KRX 제공），修正时间外交易导致的 K 线收盘价漂移 ---
+  if (merged.price && merged._allHistory) {
+    const officialRows = await fetchNaverOfficialDaily(code);
+    applyOfficialCloseCorrection(merged, officialRows);
+  }
+
   // 计算市值: 股价 × 流通股数
   if (merged.price && merged.sharesOutstanding && !merged.marketCap) {
     merged.marketCap = merged.price * merged.sharesOutstanding;

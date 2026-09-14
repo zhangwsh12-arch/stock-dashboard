@@ -137,10 +137,15 @@ function buildQuantContext(asOfDate, monthSnapshots, latest, content) {
   const entities = buildEntities();
 
   // 大盘月度序列
+  // 口径说明：monthSnapshots[0] 是当月首个交易日，其 changePercent 是「相对上月末收盘」，
+  // 若把它也连乘进去，得到的是"上月末→今"的涨跌幅，与看板「本月累计%」
+  // （以当月首个交易日收盘为基准）口径不一致，会出现文字与页面数字对不上的情况
+  // （2026-09-14 曾写成 KOSDAQ 月内 -3.36%，而页面口径实际为 -1.76%）。
+  // 因此统一 slice(1)，从当月首个交易日收盘起算。
   const kospiSeries = monthSnapshots.map((s) => ({ date: s.meta.date, pct: getIndexPct(s, 'KOSPI') }));
   const kosdaqSeries = monthSnapshots.map((s) => ({ date: s.meta.date, pct: getIndexPct(s, 'KOSDAQ') }));
-  const kospiMtd = chainReturn(kospiSeries.map((x) => x.pct));
-  const kosdaqMtd = chainReturn(kosdaqSeries.map((x) => x.pct));
+  const kospiMtd = chainReturn(kospiSeries.slice(1).map((x) => x.pct));
+  const kosdaqMtd = chainReturn(kosdaqSeries.slice(1).map((x) => x.pct));
   let extremeDays = 0;
   for (let i = 0; i < kospiSeries.length; i++) {
     const a = kospiSeries[i].pct;
@@ -160,8 +165,10 @@ function buildQuantContext(asOfDate, monthSnapshots, latest, content) {
   }
 
   // 排名（按月内累计）
+  // 同大盘口径：slice(1) 跳过当月首个交易日（其涨跌幅相对上月末），
+  // 使月内累计与看板「本月累计%」（当月首个交易日收盘为基准）一致。
   const mtdByCode = {};
-  for (const e of entities) mtdByCode[e.code] = chainReturn(seriesByEntity[e.code].map((x) => x.pct));
+  for (const e of entities) mtdByCode[e.code] = chainReturn(seriesByEntity[e.code].slice(1).map((x) => x.pct));
   const ranked = [...entities].sort((a, b) => mtdByCode[b.code] - mtdByCode[a.code]);
 
   const facts = {};
