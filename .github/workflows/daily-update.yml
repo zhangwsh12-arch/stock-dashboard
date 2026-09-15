@@ -11,6 +11,10 @@ on:
   #   phase='final'    → update 跳过 + 仅推 A
   #   无 phase         → 兼容旧行为（update + 推 A）
   #   force_notify=true → 忽略每日去重强制推送
+  #   notify_only=true  → 跳过 update（不重新抓取/不重跑 LLM），仅按 phase 推送当前 main 上的数据。
+  #                       用于"数据已人工修正完毕，只想把正确结果重推一遍"的场景——
+  #                       若走普通 preview 重跑，update 会用 fchart 当前值覆盖已校正的收盘价，
+  #                       并重新生成分析文案，冲掉人工精修内容。
   repository_dispatch:
     types: [trigger-update]
 
@@ -27,6 +31,19 @@ on:
         required: false
         type: boolean
         default: false
+      notify_only:
+        description: '仅重推通知，不重新抓取数据/不重跑分析（用于人工修正后重推）'
+        required: false
+        type: boolean
+        default: false
+      notify_target:
+        description: '推送目标群（notify_only 时生效）'
+        required: false
+        type: choice
+        options:
+          - B
+          - A
+        default: 'B'
 
 permissions:
   contents: write
@@ -41,9 +58,13 @@ jobs:
   # ====== 数据更新+验证+部署 ======
   update:
     # final 阶段（次日10点推A）不需要重新抓取/部署，由 17点 preview 阶段已完成；
+    # notify_only=true 时同样跳过——此时数据已由人工修正好，重跑抓取会覆盖校正值、
+    # 重跑 LLM 会冲掉人工精修文案。
     # preview / 无 phase / workflow_dispatch 均正常运行抓取。
     if: |
       github.event.client_payload.phase != 'final' &&
+      github.event.client_payload.notify_only != true &&
+      github.event.inputs.notify_only != 'true' &&
       (github.event.action == 'trigger-update' ||
        github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
@@ -290,7 +311,9 @@ jobs:
         if: >-
           (steps.notify-guard.outputs.cache-hit != 'true' ||
            steps.resolve-force.outputs.force_notify == 'true') &&
-          github.event.client_payload.phase == 'preview'
+          (github.event.client_payload.phase == 'preview' ||
+           (github.event.inputs.notify_only == 'true' && github.event.inputs.notify_target == 'B') ||
+           github.event.client_payload.notify_target == 'B')
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL_B }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
@@ -302,7 +325,9 @@ jobs:
         if: >-
           (steps.notify-guard.outputs.cache-hit != 'true' ||
            steps.resolve-force.outputs.force_notify == 'true') &&
-          github.event.client_payload.phase != 'preview'
+          github.event.client_payload.phase != 'preview' &&
+          github.event.client_payload.notify_target != 'B' &&
+          !(github.event.inputs.notify_only == 'true' && github.event.inputs.notify_target == 'B')
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
