@@ -23,8 +23,11 @@ const DATA_DIR = join(import.meta.dirname || '.', '..', 'data');
 const CONTENT_PATH = join(DATA_DIR, 'content.json');
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://nebula.kr.stock-dashboard.com';
 const FORCE_NOTIFY = String(process.env.FORCE_NOTIFY || '').toLowerCase() === 'true';
-// 单股当日波动达到此阈值(%)才在"市场小结"中附加原因说明，避免琐碎波动也罗列原因刷屏
-const REASON_THRESHOLD = 5;
+// 单股当日波动达到此阈值(%)才在"市场小结"中附加原因说明。
+// 与看板 index.html 个股驱动因素展示阈值(>=2%)对齐：低于此值的琐碎波动不逐条罗列原因，
+// 避免推送刷屏；>=2% 的个股则附上 generate-analysis.mjs --daily 已生成的归因说明。
+// （原为 5%，实测多数交易日个股波动在 2%~5% 区间，5% 会导致推送几乎从不显示原因。）
+const REASON_THRESHOLD = 2;
 
 // ====== 每日去重：基于 KST 日期的标记文件 ======
 function getTodayKSTStr() {
