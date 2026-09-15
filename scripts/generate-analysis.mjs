@@ -564,6 +564,63 @@ async function generateAll(asOfDate, content, entityFilter) {
 // ---------- 单日生成分支（写入 analysis.daily[code][date]，与月度并行） ----------
 
 // 单日新闻窗口：当日及前 3 日（保证时效性，避免把整月事件混入当日解释）
+// 事件变更类关键词：带这些词说明是"档期/发行状态出现新变化"，属真实新增信息，不可当重复报道
+const SCHEDULE_CHANGE_KW = /取消|中止|终止|延期|推迟|提前|变更|改为|退款|下架|停售|暂停|追加|新增|扩大|缩减|涨价|降价|限制|禁止|分级|评级/;
+
+// 从标题中提取"作品名"：《》内文本，或连续 2+ 个首字母大写的拉丁词（如 Crimson Desert Enhanced）
+function extractWorkNames(title) {
+  const t = String(title || '');
+  const names = new Set();
+  for (const m of t.matchAll(/《([^》]{2,40})》/g)) {
+    names.add(m[1].toLowerCase().replace(/\s+/g, ''));
+  }
+  for (const m of t.matchAll(/\b([A-Z][A-Za-z0-9']*(?:\s+[A-Z][A-Za-z0-9']*)+)\b/g)) {
+    names.add(m[1].toLowerCase().replace(/\s+/g, ''));
+  }
+  return names;
+}
+
+// 判断"已公布档期的重复报道"（旧闻重分发）
+//
+// 根因记录（2026-09-15）：Pearl Abyss 的《Crimson Desert Enhanced》首个 DLC 档期
+// （10月16日）在 9/3 已由官方与多家韩媒披露，9/5 又有一条；9/12 出现一条外媒
+// （Sortir à Paris）转载《…：发售日及 DLC 详情》，被当成 9/15 的"当日新增催化剂"，
+// 写出"发售日与DLC详情释出提振预期"——而这已是 12 天前的旧消息。
+// isStaleNews 未能拦住：它要求标题内含明确日期才判定，该转载标题只写"发售日"无日期，
+// dates.length===0 直接放行。
+//
+// 规则：候选条目含档期动词且能提取到作品名时，若更早（间隔 >=2 天、30 天内）已有
+// 同一作品的档期类报道，且候选标题**不含**事件变更词（取消/延期/退款/分级等），
+// 则判为重复报道，不作为当日新增催化剂素材。
+// 含变更词的（如"该 DLC 在部分地区取消发行并退款"）会正常保留——那是真实新增信息。
+function isRepeatScheduleReport(candidate, pools) {
+  const title = String(candidate.title || '');
+  if (!SCHEDULE_KW.test(title)) return null;
+  if (SCHEDULE_CHANGE_KW.test(title)) return null;
+
+  const works = extractWorkNames(title);
+  if (works.size === 0) return null;
+
+  const curKey = candidate.date.replace('.', '');
+  for (const pool of pools) {
+    for (const e of pool) {
+      const d = String(e?.date || '').trim();
+      if (!/^\d{2}\.\d{2}$/.test(d)) continue;
+      const key = d.replace('.', '');
+      if (key >= curKey) continue;                 // 只看更早的
+      const gap = parseInt(curKey, 10) - parseInt(key, 10);
+      if (gap < 2 || gap > 30) continue;           // 间隔过近(同批次)或过远的不算
+      const t2 = String(e.title || '').replace(/<[^>]+>/g, '');
+      if (!SCHEDULE_KW.test(t2)) continue;
+      const works2 = extractWorkNames(t2);
+      for (const w of works) {
+        if (works2.has(w)) return { firstDate: d, firstTitle: t2 };
+      }
+    }
+  }
+  return null;
+}
+
 function getDayNews(content, canonicalName, asOfMmdd, asOfDate) {
   const asOfMM = asOfMmdd.slice(0, 2);
   const asOfDD = parseInt(asOfMmdd.slice(3, 5), 10);
@@ -583,6 +640,11 @@ function getDayNews(content, canonicalName, asOfMmdd, asOfDate) {
       const title = String(e.title || '').replace(/<[^>]+>/g, '').trim();
       if (!title) continue;
       if (isStaleNews(title, asOfDate)) continue;  // 过期档期旧稿 -> 不做素材
+      const repeat = isRepeatScheduleReport({ date, title }, pools);
+      if (repeat) {
+        console.log(`  ⏭️ 跳过旧闻重分发: [${date}] ${title.slice(0, 40)}… (首次披露于 ${repeat.firstDate})`);
+        continue;                                   // 已公布档期的重复报道 -> 非当日新增催化剂
+      }
       const resolved = COMPANY_NAME_MAP[rawCompany] || rawCompany;
       if (rawCompany && COMPANY_NAME_MAP[rawCompany] && COMPANY_NAME_MAP[rawCompany] !== canonicalName) continue;
       if (resolved === canonicalName || titleIncludesAlias(title, [canonicalName])) {
@@ -680,7 +742,9 @@ ${sheet}
 - 【方向一致性硬约束】因果必须与当日涨跌方向严格一致：当日下跌时，所列事件必须是下跌的合理解释（利空事件 / 利好兑现后的获利了结 / 大盘或板块系统性拖累）；严禁用纯利好事件直接当作下跌原因，除非明确表述为"利好不敌系统性抛压 / 获利了结"。当日上涨同理，不得用利空事件直接解释上涨。如当日仅有利好新闻却仍下跌，应表述为"利好未能抵挡板块/大盘回调"，而非"受利好影响下跌"。
 - 【板块方向硬约束】凡涉及"板块整体强/弱、系统性拖累、随板块回调"等表述，必须与事实清单中的"板块方向判定"一致；若板块方向与本股走势相反（如板块偏强而本股下跌），必须写成个股自身原因（获利了结／缺乏新催化／利好兑现），不得谎称"受板块拖累"。
 - 【标的范围硬约束】只能提及事实清单中列出的六家跟踪标的；严禁把不在跟踪范围内的其他公司（如 Devsisters、Wemade 等）的涨跌当作本股的涨跌原因。涨跌榜类新闻只能用于印证板块方向，且须与"板块方向判定"一致，不得只摘取其中与判定相反的半句。
-- 必须以"当日及近3日相关新闻/事件"为主素材构建因果；若该公司有专属新闻，就以这些真实事件为主因，不要写与其他公司雷同的通用行业套话。若确无专属新闻，才可基于行业/大盘通用动向与行情方向说明，但仍不得编造具体事件。
+- 【催化剂时效硬约束】只有"当日或前1-2日首次披露"的事件才算当日催化剂。若清单里的新闻都是常规运营/宣传活动（线下展会、文化节、社区活动、获奖、招聘、ESG 等），或是早已公布事项的重复报道，则**不得**把它们当作驱动股价的主因——这类活动对基本面影响极小，撬动不了 2% 以上的波动。此时应优先归因于可从行情数据本身读出的原因：前期连续下跌后的技术性修复（超跌反弹）、前期连续上涨后的获利了结、板块/大盘联动。
+- 【无催化剂时的写法】若确实找不到有实质影响的当日事件，就如实写"缺乏新增催化剂，主要由前期连续回调后的技术性修复带动"之类，不要为了凑因果而拔高无关新闻的权重。
+- 若该公司确有当日或前1-2日首次披露的实质事件，就以这些真实事件为主因，不要写与其他公司雷同的通用行业套话。
 - 严禁写：公司间排名、PER/估值、最佳↔最差交易日对比、"上涨X天下跌X天"等趋势性数据罗列；不要写"本月累计"等字眼，不要复述界面已展示的当日涨跌幅。
 - 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
 - 所有事实断言必须来自上面的白名单，不得自行编造或引入外部知识。
