@@ -2,7 +2,7 @@
   "meta": {
     "date": "20260915",
     "dateDisplay": "9月（截至15日）",
-    "fetchedAt": "2026-09-15T09:01:36.315Z",
+    "fetchedAt": "2026-09-15T09:37:47.351Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -11,12 +11,12 @@
     "name": "Shift Up",
     "color": "#ff6b9d",
     "price": "32,150",
-    "previousClose": "32,350",
+    "previousClose": "32,100",
     "high": "33,300",
     "low": "31,800",
-    "change": "-200",
-    "changePercent": "-0.62%",
-    "changeClass": "down",
+    "change": "50",
+    "changePercent": "+0.16%",
+    "changeClass": "up",
     "per": "N/A",
     "pbr": "-",
     "marketCap": "-",
@@ -728,7 +728,7 @@
         "open": 31100,
         "high": 32700,
         "low": 31000,
-        "close": 32350,
+        "close": 32100,
         "volume": 62934,
         "foreignRate": 36.93
       },
@@ -738,7 +738,7 @@
         "high": 33300,
         "low": 31800,
         "close": 32150,
-        "volume": 37129,
+        "volume": 37214,
         "foreignRate": 36.93
       }
     ]
@@ -749,8 +749,8 @@
       "name": "Nexon Games",
       "color": "#22c55e",
       "price": "11,630",
-      "change": "0.00%",
-      "changeClass": "neutral",
+      "change": "-0.09%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
@@ -758,8 +758,8 @@
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "35,150",
-      "change": "+0.14%",
-      "changeClass": "up",
+      "change": "-0.71%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
@@ -767,8 +767,8 @@
       "name": "NC",
       "color": "#3b82f6",
       "price": "204,000",
-      "change": "0.00%",
-      "changeClass": "neutral",
+      "change": "-1.21%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
@@ -776,7 +776,7 @@
       "name": "Krafton",
       "color": "#f59e0b",
       "price": "210,500",
-      "change": "-0.24%",
+      "change": "-0.71%",
       "changeClass": "down",
       "per": "N/A"
     },
@@ -785,7 +785,7 @@
       "name": "Pearl Abyss",
       "color": "#ec4899",
       "price": "35,700",
-      "change": "+4.54%",
+      "change": "+3.18%",
       "changeClass": "up",
       "per": "N/A"
     }
@@ -940,7 +940,7 @@
     {
       "date": "20260914",
       "label": "9/14",
-      "price": 32350
+      "price": 32100
     },
     {
       "date": "20260915",

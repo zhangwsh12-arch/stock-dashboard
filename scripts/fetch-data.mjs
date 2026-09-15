@@ -354,8 +354,7 @@ async function fetchRegularSessionClose(code, dateStr) {
     const url = `https://finance.naver.com/item/sise_time.naver?thistime=${dateStr}153000&code=${code}&page=1`;
     const resp = await fetchWithRetry(url, {
       headers: { 'Referer': `https://finance.naver.com/item/sise.naver?code=${code}` },
-    });
-    const buf = await resp.arrayBuffer();
+    });    const buf = await resp.arrayBuffer();
     const html = new TextDecoder('euc-kr').decode(buf);
 
     // 表格每行：时刻 <span class="tah p10 gray03">15:30</span>
@@ -388,54 +387,78 @@ async function fetchRegularSessionClose(code, dateStr) {
  * 只校正"目标交易日"这一天（历史日期在 fchart 中已定稿，无需也无法校正）。
  * 校正失败时打上 _provisional 标记，由 validate-data.mjs 告警、并阻止其覆盖已定稿值。
  */
-function applyRegularCloseCorrection(merged, officialClose, dateStr) {
+/**
+ * 用 15:30 종가단일가成交价校正收盘价，并重算涨跌额/涨跌幅。
+ *
+ * 【必须同时校正"前一交易日"的根因（2026-09-15）】
+ * _allHistory 每次运行都从 fchart 重新拉取，上一次运行的校正结果**不会**被带进来。
+ * 旧实现只校正 targetDate 这一格，涨跌幅却用 hist[idx-1].close（fchart 未校正的原始值），
+ * 于是分子是"校正后的今日 15:30 值"、分母是"未校正的昨日漂移值"，基准不一致。
+ * 2026-09-15 实测因此产生 4 处方向翻转：
+ *   Shift Up  32,150 vs fchart 32,350 = -0.62%（错）；vs 15:30 的 32,100 = +0.16%（对）
+ *   NC       204,000 vs fchart 204,000 = 0.00%（错）；vs 15:30 的 206,500 = -1.21%（对）
+ *   Netmarble 35,150 vs fchart 35,100 = +0.14%（错）；vs 15:30 的 35,400 = -0.71%（对）
+ *   Nexon     11,630 vs fchart 11,630 = 0.00%（错）；vs 15:30 的 11,640 = -0.09%（对）
+ * 故这里把 targetDate 与其前一交易日**一并**校正到 15:30 基准后再算涨跌。
+ *
+ * 校正失败时打上 _provisional 标记，由 validate-data.mjs 告警。
+ */
+async function applyRegularCloseCorrection(merged, code, dateStr) {
   if (!merged) return;
 
-  if (officialClose == null) {
-    // 拿不到官方收盘价：当日数据可能处于时间外交易漂移窗口，标记为临时值
+  const hist = Array.isArray(merged._allHistory) ? merged._allHistory : [];
+  const idx = hist.findIndex(h => h.date === dateStr);
+
+  // 需要统一基准的日期：当日 + 前一交易日（后者是涨跌幅的分母）
+  const targets = [dateStr];
+  const prevDate = idx > 0 ? hist[idx - 1].date : null;
+  if (prevDate) targets.push(prevDate);
+
+  const official = {};
+  for (const d of targets) {
+    official[d] = await fetchRegularSessionClose(code, d);
+  }
+
+  if (official[dateStr] == null) {
+    // 当日拿不到官方收盘价：可能处于时间外交易漂移窗口，标记为临时值
     merged._provisional = true;
     console.warn(`  ⚠️ [Correct] ${dateStr}: 无官方收盘价可校正，标记 _provisional=true`);
     return;
   }
 
-  const hist = Array.isArray(merged._allHistory) ? merged._allHistory : [];
-  const idx = hist.findIndex(h => h.date === dateStr);
-
-  if (idx < 0) {
-    // K 线里还没有当日行（极少见），直接以官方收盘价为准
-    if (merged.price !== officialClose) {
-      console.log(`  🔧 [Correct] ${dateStr}: 收盘 ${Number(merged.price).toLocaleString()} → ${officialClose.toLocaleString()}（15:30 官方值）`);
-      merged.price = officialClose;
-      merged._source = `${merged._source || 'naver_chart_api_v2'}+close_auction`;
-    }
-    return;
+  // 逐日覆盖 _allHistory 中的收盘价
+  for (const d of targets) {
+    const v = official[d];
+    if (v == null) continue;
+    const row = hist.find(h => h.date === d);
+    if (!row || row.close === v) continue;
+    console.log(`  🔧 [Correct] ${d}: 收盘 ${row.close.toLocaleString()} → ${v.toLocaleString()}（15:30 官方值，原值受时间外交易影响）`);
+    row.close = v;
+    if (row.high != null && v > row.high) row.high = v;
+    if (row.low != null && v < row.low) row.low = v;
   }
 
   const cur = hist[idx];
-  if (cur.close === officialClose) {
-    // 已经是官方值（收市后运行时的正常情况）
-    return;
-  }
+  merged.price = official[dateStr];
 
-  console.log(`  🔧 [Correct] ${dateStr}: 收盘 ${cur.close.toLocaleString()} → ${officialClose.toLocaleString()}（15:30 官方值，原值受时间外交易影响）`);
-  cur.close = officialClose;
-
-  // high/low 也需容纳官方收盘价（时间外价可能曾突破正规场区间）
-  if (cur.high != null && officialClose > cur.high) cur.high = officialClose;
-  if (cur.low != null && officialClose < cur.low) cur.low = officialClose;
-
-  // 重算依赖收盘价的派生字段
-  merged.price = officialClose;
   if (idx > 0) {
-    const prev = hist[idx - 1];
-    merged.yesterdayClose = prev.close;
-    merged.change = officialClose - prev.close;
-    merged.changePercent = prev.close > 0
-      ? (((officialClose - prev.close) / prev.close) * 100).toFixed(2)
+    // 分母：优先用已校正的前一交易日 15:30 值；取不到则退回 fchart 值并告警
+    const prevRow = hist[idx - 1];
+    if (official[prevDate] == null) {
+      merged._provisional = true;
+      console.warn(`  ⚠️ [Correct] 前一交易日 ${prevDate} 无官方收盘价，涨跌幅基准可能不一致`);
+    }
+    merged.yesterdayClose = prevRow.close;
+    merged.change = merged.price - prevRow.close;
+    merged.changePercent = prevRow.close > 0
+      ? (((merged.price - prevRow.close) / prevRow.close) * 100).toFixed(2)
       : null;
   }
-  if (cur.high != null) merged.high = cur.high;
-  if (cur.low != null) merged.low = cur.low;
+
+  if (cur) {
+    if (cur.high != null) merged.high = cur.high;
+    if (cur.low != null) merged.low = cur.low;
+  }
   merged._source = `${merged._source || 'naver_chart_api_v2'}+close_auction`;
 }
 
@@ -703,9 +726,9 @@ async function fetchStockData(comp, targetDateStr) {
   // --- 收盘价校正: 15:30 종가단일가（收盘集合竞价）为官方收盘价的唯一权威来源 ---
   // 放在 Yahoo 兜底之前：仅当 Naver 链路成功（有 price）时才校正；
   // 走 Yahoo 兜底的场景本身已有 ±15% sanity 拦截，且无 _allHistory 可校正。
+  // 注意：函数内部会把"当日 + 前一交易日"一并校正到 15:30 基准，避免涨跌幅分子分母基准不一致。
   if (merged.price && targetDateStr) {
-    const officialClose = await fetchRegularSessionClose(code, targetDateStr);
-    applyRegularCloseCorrection(merged, officialClose, targetDateStr);
+    await applyRegularCloseCorrection(merged, code, targetDateStr);
   }
 
   // 计算市值: 股价 × 流通股数
