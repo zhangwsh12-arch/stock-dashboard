@@ -4,26 +4,18 @@
     "dateDisplay": "9月（截至17日）",
     "fetchedAt": "2026-09-17T09:01:53.491Z",
     "source": "Naver Finance / Multi-source v3",
-    "updateCount": 6,
-    "provisional": [
-      "462870",
-      "225570",
-      "251270",
-      "036570",
-      "259960",
-      "263750"
-    ]
+    "updateCount": 6
   },
   "shiftUp": {
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "31,250",
-    "previousClose": "31,550",
+    "price": "31,200",
+    "previousClose": "31,400",
     "high": "31,550",
     "low": "31,050",
-    "change": "-300",
-    "changePercent": "-0.95%",
+    "change": "-200",
+    "changePercent": "-0.64%",
     "changeClass": "down",
     "per": "N/A",
     "pbr": "-",
@@ -745,7 +737,7 @@
         "open": 31400,
         "high": 31550,
         "low": 31050,
-        "close": 31250,
+        "close": 31200,
         "volume": 18440,
         "foreignRate": 36.9
       }
@@ -756,7 +748,7 @@
       "code": "225570",
       "name": "Nexon Games",
       "color": "#22c55e",
-      "price": "11,430",
+      "price": "11,450",
       "change": "-1.12%",
       "changeClass": "down",
       "per": "N/A"
@@ -766,16 +758,16 @@
       "name": "Netmarble",
       "color": "#ef4444",
       "price": "34,150",
-      "change": "-0.29%",
-      "changeClass": "down",
+      "change": "0.00%",
+      "changeClass": "flat",
       "per": "N/A"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "203,500",
-      "change": "+0.99%",
+      "price": "204,500",
+      "change": "+1.74%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -783,17 +775,17 @@
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "203,500",
-      "change": "-0.25%",
-      "changeClass": "down",
+      "price": "203,000",
+      "change": "0.00%",
+      "changeClass": "flat",
       "per": "N/A"
     },
     {
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "34,200",
-      "change": "-1.58%",
+      "price": "34,150",
+      "change": "-1.73%",
       "changeClass": "down",
       "per": "N/A"
     }
@@ -963,7 +955,7 @@
     {
       "date": "20260917",
       "label": "9/17",
-      "price": 31250
+      "price": 31200
     }
   ],
   "indices": [
