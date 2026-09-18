@@ -327,7 +327,7 @@ async function fetchNaverChart(code, targetDateStr) {
 
 
 // ============================================================
-// 数据源1b: Naver 시간별 시세 — 15:30 종가단일가（收盘集合竞价）定向抓取
+// 数据源1b: Naver 分钟线 — 15:30 종가단일가（收盘集合竞价）定向抓取
 // ============================================================
 // 【问题】2026-09-14 抓取（KST 18:01）得到的 6 家收盘价全部与官方收盘价不符。
 //
@@ -347,38 +347,55 @@ async function fetchNaverChart(code, targetDateStr) {
 // 因此从根上绕开漂移。实测：时间外交易进行中反复探测，15:30 行恒定不变；
 // 且对 6 家 × 6 个已定稿交易日交叉比对 fchart 历史收盘，36/36 全中、零误差。
 //
-// 【限制】Naver 逐笔数据仅保留约 7-10 个交易日，更早日期取不到（返回 null），
+// 【2026-09-18 换源】原逐笔页面 finance.naver.com/item/sise_time.naver 随 Naver 证券改版
+// 为 Npay 证券（静态资源版本戳 20260916162232）已返回 HTTP 410 Gone，9/17 六家全部校正
+// 失败、退回 fchart 当日行（时间外漂移值）并被静默发布。现改为请求分钟线接口
+// startTime=endTime=<YYYYMMDD>1530，直接取 15:30 那一根的 종가。实测 9/17 六家 6/6 命中
+// 人工核对值（NC 204,500 / Shift Up 31,200 等），9/16 交叉验证同样命中。
+//
+// 【限制】分钟线仅保留约 7-10 个交易日（实测 20260901 及更早返回空数组），
 // 因此本函数只用于校正"当日"，历史序列仍以 fchart 为准。
+// 分钟线接口域名：主用 api.finance.naver.com，备用 fchart.stock.naver.com
+// （后者在 CI 中已长期验证可达，任一成功即采用，降低单域名不可达风险）
+const MINUTE_HOSTS = [
+  'https://api.finance.naver.com/siseJson.naver',
+  'https://fchart.stock.naver.com/siseJson.naver',
+];
+
 async function fetchRegularSessionClose(code, dateStr) {
-  try {
-    const url = `https://finance.naver.com/item/sise_time.naver?thistime=${dateStr}153000&code=${code}&page=1`;
-    const resp = await fetchWithRetry(url, {
-      headers: { 'Referer': `https://finance.naver.com/item/sise.naver?code=${code}` },
-    });    const buf = await resp.arrayBuffer();
-    const html = new TextDecoder('euc-kr').decode(buf);
+  // 只取 15:30 这一根：startTime/endTime 带 HHMM 后缀时响应仅约 121 字节
+  const target = `${dateStr}1530`;
+  let lastErr = null;
 
-    // 表格每行：时刻 <span class="tah p10 gray03">15:30</span>
-    //           成交价 <td class="num"><span class="tah p11">32,100</span>
-    // thistime=...153000 时首行即 15:30 的종가단일가成交
-    const m = /<span class="tah p10 gray03">(\d{2}):(\d{2})<\/span><\/td>\s*<td class="num"><span class="tah p11">\s*([\d,]+)/.exec(html);
-    if (!m) throw new Error('未解析到分时成交行');
+  for (const host of MINUTE_HOSTS) {
+    try {
+      const url = `${host}?symbol=${code}&requestType=1&startTime=${target}&endTime=${target}&timeframe=minute`;
+      const resp = await fetchWithRetry(url);
+      const buf = await resp.arrayBuffer();
+      // 与 fchart 一致：UTF-8 编码 + 单引号格式（旧逐笔页面是 euc-kr，不要沿用）
+      const text = new TextDecoder('utf-8').decode(buf).trim();
 
-    const hhmm = `${m[1]}:${m[2]}`;
-    // 必须严格等于 15:30：若该股当日收盘竞价无成交，首行会是更早时刻，
-    // 此时宁可放弃校正（返回 null 走 provisional 标记），也不能拿 15:29 的价当收盘价。
-    if (hhmm !== '15:30') {
-      throw new Error(`首行时刻为 ${hhmm} 而非 15:30（收盘竞价可能无成交）`);
+      const startIdx = text.indexOf('[');
+      if (startIdx < 0) throw new Error('响应不是 JSON 数组');
+      const rows = JSON.parse(text.substring(startIdx).replace(/'/g, '"'));
+
+      // 字段: [날짜(YYYYMMDDHHMM), 시가, 고가, 저가, 종가, 거래량, 외국인소진율]
+      const row = rows.find(r => Array.isArray(r) && String(r[0]) === target);
+      if (!row) throw new Error('未取到 15:30 分钟线（尚未收盘或已超保留期）');
+
+      const close = parseFloat(row[4]);
+      if (!isFinite(close) || close <= 0) throw new Error(`收盘价异常: ${row[4]}`);
+
+      console.log(`  🏛️ [CloseAuction] ${code}: ${dateStr} 15:30 종가단일가 = ${close.toLocaleString()} [${new URL(host).host}]`);
+      return close;
+    } catch (err) {
+      lastErr = err;
+      console.warn(`  ⚠️ [CloseAuction] ${code}: ${dateStr} via ${new URL(host).host} 失败(${err.message})`);
     }
-
-    const close = parseFloat(m[3].replace(/,/g, ''));
-    if (!isFinite(close) || close <= 0) throw new Error(`成交价异常: ${m[3]}`);
-
-    console.log(`  🏛️ [CloseAuction] ${code}: ${dateStr} 15:30 종가단일가 = ${close.toLocaleString()}`);
-    return close;
-  } catch (err) {
-    console.warn(`  ⚠️ [CloseAuction] ${code}: ${dateStr} 官方收盘价获取失败(${err.message})`);
-    return null;
   }
+
+  console.warn(`  ⚠️ [CloseAuction] ${code}: ${dateStr} 官方收盘价获取失败(${lastErr ? lastErr.message : '未知原因'})`);
+  return null;
 }
 
 /**
@@ -420,9 +437,10 @@ async function applyRegularCloseCorrection(merged, code, dateStr) {
   }
 
   if (official[dateStr] == null) {
-    // 当日拿不到官方收盘价：可能处于时间外交易漂移窗口，标记为临时值
+    // 当日拿不到 15:30 官方收盘价：可能尚未收盘、超出分钟线保留期或接口异常。
+    // 宁可标为临时值（fchart 当日行 = 时间外漂移值），也不用邻近时刻价格凑数。
     merged._provisional = true;
-    console.warn(`  ⚠️ [Correct] ${dateStr}: 无官方收盘价可校正，标记 _provisional=true`);
+    console.warn(`  ⚠️ [Correct] ${dateStr}: 无 15:30 官方收盘价可校正（未收盘/超保留期/接口异常），标记 _provisional=true`);
     return;
   }
 
