@@ -26,6 +26,9 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 // 复用可配置 LLM 客户端（OpenAI 兼容端点，默认 DeepSeek；本脚本通过 OpenAI 兼容接口做翻译）
 import { callLLM } from './llm-client.mjs';
+// 专名归一 + 拼写防线：AI 译文此前完全绕过校正，导致 Pareidolia 被写成 Paradolia
+// （详见 scripts/term-guard.mjs 顶部说明）
+import { applyCanonicalTerms, alignProperNouns, glossaryBlock, CANONICAL_TERMS } from './term-guard.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, '..');
@@ -184,7 +187,8 @@ async function translateToChinese(texts) {
       systemPrompt: `你是韩国游戏行业新闻翻译专家。将以下韩语/英语新闻标题翻译为简洁的中文。
 规则：
 1. 保留公司名原文（如 Shift Up、NC、Krafton、Pearl Abyss、Netmarble、Nexon）
-2. 保留游戏名原文（如 NIKKE、Stellar Blade、PUBG、Blue Archive、Aion、Crimson Desert）
+2. 保留游戏名原文，且必须严格按下列拼写表书写，不得改写、音译或自创写法（如 Pareidolia 不得写成 Paradolia）：
+${glossaryBlock()}
 3. 保留数字和百分比不变
 4. 翻译要简洁有力，适合作为股票看板的新闻摘要
 5. 输出格式：每行一条翻译结果，严格按顺序对应输入
@@ -199,9 +203,11 @@ async function translateToChinese(texts) {
 
     const lines = translated.split('\n').filter(l => l.trim()).map(l => l.replace(/^\[\d+\]\s*/, '').trim());
 
+    // 专名归一：AI 译文此前完全绕过校正，作品名被"创造性"改写（Pareidolia → Paradolia）也无从拦截
+    const normalized = lines.map((l) => applyCanonicalTerms(l));
     // 确保返回数量一致
-    while (lines.length < texts.length) lines.push(texts[lines.length]);
-    return lines.slice(0, texts.length);
+    while (normalized.length < texts.length) normalized.push(texts[normalized.length]);
+    return normalized.slice(0, texts.length);
   } catch (err) {
     console.log(`  ⚠️ AI 翻译失败: ${err.message}, 降级到免费翻译`);
     return await translateViaFreeApi(texts);
@@ -222,21 +228,9 @@ async function translateToChinese(texts) {
  */
 // 注意：只保留"歧义极低"的映射。诸如「移位/换档/上移」这类词在普通句子里
 // 也会自然出现（如"股价上移"），一旦纳入映射会把正常句子改坏，故一律不收。
-const BRAND_NORMALIZE = [
-  [/网石游戏|网石/g, 'Netmarble'],
-  [/珍珠深渊|珍珠阿比斯|珀尔阿比斯/g, 'Pearl Abyss'],
-  [/奈克森|耐克森/g, 'Nexon'],
-  [/恩西软件|NC ?soft/gi, 'NCSoft'],
-  [/克拉夫顿|克拉夫特顿/g, 'Krafton'],
-  [/绝地求生|战地求生/g, 'PUBG'],
-  [/胜利女神：?妮姬|妮姬/g, 'NIKKE'],
-  [/星刃/g, 'Stellar Blade(剑星)'],
-  [/赤红沙漠|红色沙漠|绯红沙漠/g, 'Crimson Desert(红色沙漠)'],
-  [/永恒之塔/g, 'Aion(永恒之塔)'],
-  [/碧蓝档案|蓝色档案/g, 'Blue Archive(碧蓝档案)'],
-  // 机翻常把 게임업계(游戏行业) 误译为"博彩业/赌博业"，需纠正
-  [/博彩业|赌博业|赌博行业/g, '游戏行业'],
-];
+// 映射表已迁移到 scripts/term-guard.mjs（fetch-news / generate-analysis / validate-data 共用），
+// 这里保留同名常量以兼容既有引用。
+const BRAND_NORMALIZE = CANONICAL_TERMS;
 
 // SEO 垃圾标题特征
 const SPAM_PATTERNS = [
@@ -251,9 +245,7 @@ function isSpamTitle(title) {
 }
 
 function normalizeBrandNames(text) {
-  let out = text;
-  for (const [pattern, replacement] of BRAND_NORMALIZE) out = out.replace(pattern, replacement);
-  return out;
+  return applyCanonicalTerms(text);
 }
 
 async function translateViaFreeApi(texts) {
@@ -297,7 +289,7 @@ async function translateViaFreeApi(texts) {
   if (failed > 0) {
     const localResults = fallbackLocalTranslate(texts);
     for (let i = 0; i < results.length; i++) {
-      if (results[i] == null) results[i] = localResults[i];
+      if (results[i] == null) results[i] = applyCanonicalTerms(localResults[i]);
     }
   }
 
@@ -731,7 +723,11 @@ async function main() {
   console.log(`\n[处理] AI 翻译中（${uniqueEntries.length} 条）...`);
   const translatedTitles = await translateToChinese(uniqueEntries.map(e => e.rawTitle));
   for (let i = 0; i < uniqueEntries.length; i++) {
-    uniqueEntries[i].translatedTitle = translatedTitles[i];
+    // 原文锚定：译文里的拉丁专名若与原文拼写只差 1~2 个字母（Paradolia vs Pareidolia），
+    // 判定为错拼并回改为原文写法。不依赖词典，未来出现新作品名也能自动纠正。
+    uniqueEntries[i].translatedTitle = applyCanonicalTerms(
+      alignProperNouns(uniqueEntries[i].rawTitle, translatedTitles[i])
+    );
   }
 
   console.log('\n[处理] 合并到 content.json...');
@@ -782,7 +778,8 @@ async function main() {
         isFallbackEntry = true;
       }
     }
-    const displayTitle = `<strong>${entry.translatedTitle}</strong>`;
+    // 入库前最后一道兜底：无论走哪条翻译路径，写入的标题都不含已知错拼
+    const displayTitle = `<strong>${applyCanonicalTerms(entry.translatedTitle || '')}</strong>`;
 
     const record = {
       company: entry.detectedCompany || '六大游戏公司',

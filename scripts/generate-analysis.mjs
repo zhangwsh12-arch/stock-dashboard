@@ -24,6 +24,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { callLLM, llmConfig } from './llm-client.mjs';
+// 专名归一/拼写防线：LLM 复述新闻标题时可能把作品名写错（如 Pareidolia → Paradolia），
+// 落盘前统一校正，并在 prompt 中注入正确拼写表（详见 scripts/term-guard.mjs）
+import { applyCanonicalTerms, glossaryBlock } from './term-guard.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -383,7 +386,9 @@ const SYSTEM_PROMPT = `你是一名严谨的韩国游戏股二级市场分析师
 4. 不要复述"本月累计X%"等已在界面单独展示的数字，聚焦驱动逻辑本身。
 5. 用 <strong> 标签标注关键数字（如 <strong>+2.65%</strong>）。
 6. 语言：简体中文，80~150 字，专业、克制、有洞察，不要口号式抒情。
-7. 不要出现韩文。`;
+7. 不要出现韩文。
+8. 公司名/游戏名必须严格按下列拼写表书写，不得改写、音译或自创写法：
+${glossaryBlock()}`;
 
 // 单日驱动因素系统提示（用于 analysis.daily 生成）
 const DAILY_SYSTEM_PROMPT = `你是一名严谨的韩国游戏股二级市场分析师。你的任务：基于用户提供的"已核实事实清单"（含该公司当日及近3日相关新闻/事件白名单），为某只韩国游戏股撰写一句中文【单日驱动因素】，用于股价看板"今日总结"板块的单行展示。
@@ -396,7 +401,9 @@ const DAILY_SYSTEM_PROMPT = `你是一名严谨的韩国游戏股二级市场分
 5. 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
 6. 用 <strong> 标签标注关键数字（如 <strong>+2.65%</strong>）。
 7. 语言：简体中文，40~80 字，专业、克制、有洞察，一句到位，不要标题，不要口号式抒情。
-8. 不要出现韩文。`;
+8. 不要出现韩文。
+9. 公司名/游戏名必须严格按下列拼写表书写，不得改写、音译或自创写法：
+${glossaryBlock()}`;
 
 function buildUserPrompt(fact, news, isSU) {
   const sheet = buildFactsSheet(fact, news);
@@ -519,7 +526,8 @@ async function generateEntityText(fact, news, isSU) {
       temperature: 0.35,
       maxTokens: 400,
     });
-    let text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+    // 先做专名校正再进护栏：错拼的作品名既不通顺，也可能因不在白名单里被误判为幻觉
+    let text = applyCanonicalTerms(raw.replace(/^```(?:json|html)?|```$/g, '').trim());
     if (!text) throw new Error('空回复');
     if (hasHallucination(text, sheet, allowedFacts)) {
       console.warn(`  ↳ ${fact.name} 首次输出疑似含白名单外事实，重试一次`);
@@ -529,16 +537,16 @@ async function generateEntityText(fact, news, isSU) {
         temperature: 0.3,
         maxTokens: 400,
       });
-      text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+      text = applyCanonicalTerms(raw.replace(/^```(?:json|html)?|```$/g, '').trim());
       if (hasHallucination(text, sheet, allowedFacts)) {
         console.warn(`  ↳ ${fact.name} 重试后仍疑似含白名单外事实，回退规则模板`);
-        return ruleFallback(fact, news, isSU);
+        return applyCanonicalTerms(ruleFallback(fact, news, isSU));
       }
     }
     return text;
   } catch (err) {
     console.warn(`  ↳ ${fact.name} LLM 调用失败(${err.message})，使用规则模板`);
-    return ruleFallback(fact, news, isSU);
+    return applyCanonicalTerms(ruleFallback(fact, news, isSU));
   }
 }
 
@@ -849,7 +857,8 @@ async function generateDailyEntityText(fact, news, isSU, dailyPct, peer) {
       temperature: 0.35,
       maxTokens: 300,
     });
-    let text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+    // 先做专名校正再进护栏：错拼的作品名既不通顺，也可能因不在白名单里被误判为幻觉
+    let text = applyCanonicalTerms(raw.replace(/^```(?:json|html)?|```$/g, '').trim());
     if (!text) throw new Error('空回复');
     if (hasHallucination(text, sheet, allowedFacts)) {
       console.warn(`  ↳ ${fact.name} 首次输出疑似含白名单外事实，重试一次`);
@@ -859,16 +868,16 @@ async function generateDailyEntityText(fact, news, isSU, dailyPct, peer) {
         temperature: 0.3,
         maxTokens: 300,
       });
-      text = raw.replace(/^```(?:json|html)?|```$/g, '').trim();
+      text = applyCanonicalTerms(raw.replace(/^```(?:json|html)?|```$/g, '').trim());
       if (hasHallucination(text, sheet, allowedFacts)) {
         console.warn(`  ↳ ${fact.name} 重试后仍疑似含白名单外事实，回退规则模板`);
-        return dailyRuleFallback(fact, news, isSU, dailyPct);
+        return applyCanonicalTerms(dailyRuleFallback(fact, news, isSU, dailyPct));
       }
     }
     return text;
   } catch (err) {
     console.warn(`  ↳ ${fact.name} LLM 调用失败(${err.message})，使用规则模板`);
-    return dailyRuleFallback(fact, news, isSU, dailyPct);
+    return applyCanonicalTerms(dailyRuleFallback(fact, news, isSU, dailyPct));
   }
 }
 

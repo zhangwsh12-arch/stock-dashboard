@@ -7,6 +7,7 @@
 
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { findTermTypos } from './term-guard.mjs';
 
 const DATA_DIR = join(import.meta.dirname || '.', '..', 'data');
 let errors = 0;
@@ -298,6 +299,34 @@ if (content) {
     }
   }
   pass('销量数据来源标注检查完成');
+
+  // 7d-2. 专名拼写检查（已知错拼表）
+  // 背景（2026-09-21）：Nexon Games 新作《Pareidolia》被写成《Paradolia》，一路带进
+  // 个股驱动因素文案。源头已在 fetch-news（翻译出口归一 + 原文锚定）与
+  // generate-analysis（LLM 输出校正）加了防线，这里只做最后一道校验告警。
+  // 注意：资讯/文案类问题一律 warn，不得 fail——2026-08 曾因资讯问题 fail 阻断股价发布。
+  const typoTargets = [];
+  for (const [label, list] of [['events', events], ['industryNews', industryNews]]) {
+    for (const n of list) typoTargets.push([`${label} 标题`, n.title || '']);
+  }
+  for (const [k, v] of Object.entries(content.analysis?.su || {})) {
+    typoTargets.push([`analysis.su[${k}]`, v]);
+  }
+  for (const [code, m] of Object.entries(content.analysis?.company || {})) {
+    for (const [k, v] of Object.entries(m || {})) typoTargets.push([`analysis.company.${code}[${k}]`, v]);
+  }
+  for (const [code, m] of Object.entries(content.analysis?.daily || {})) {
+    for (const [k, v] of Object.entries(m || {})) typoTargets.push([`analysis.daily.${code}[${k}]`, v]);
+  }
+  let typoCount = 0;
+  for (const [where, text] of typoTargets) {
+    const hits = findTermTypos(text);
+    if (hits.length) {
+      typoCount += hits.length;
+      warn(`专名拼写疑似错误（${where}）: ${hits.join('、')} —— 请修正文本，或在 scripts/term-guard.mjs 的 SPELLING_FIXES 登记`);
+    }
+  }
+  if (typoCount === 0) pass('专名拼写检查完成（未发现已知错拼）');
 
   // 7e-pre. 重复新闻检查（events/industryNews 两个数组合并展示时不应出现同一事件重复）
   // 背景：历史上同一天同一公司的同一事件常被同时写入 events 和 industryNews（措辞略有差异），
