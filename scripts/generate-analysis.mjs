@@ -966,12 +966,30 @@ async function main() {
       if (!content.analysis.daily.su) content.analysis.daily.su = {};
       // gen.su 在 --code 过滤到其它实体时为 null，须排除，否则会误清空已有 SU 文案
       if (!entityFilterD || entityFilterD === 'su') {
-        content.analysis.daily.su[td] = gen.su;
-        if (gen.su) wrote++;
-        console.log(`  ✓ SU: ${gen.su ? gen.su.slice(0, 60) : '(波动<1%，跳过)'}`);
+        // 人工数据保护（同下方公司分支）：已有文案不覆盖，除非 --force
+        const suExisting = content.analysis.daily.su[td];
+        // --code su 是"人工指定重算这一家"，属显式意图，可覆盖
+        if (force || entityFilterD === 'su' || suExisting == null) {
+          content.analysis.daily.su[td] = gen.su;
+          if (gen.su) wrote++;
+          console.log(`  ✓ SU: ${gen.su ? gen.su.slice(0, 60) : '(波动<1%，跳过)'}`);
+        } else {
+          console.log('  ⏭️ SU: 已有文案，保留（如需重算请加 --force）');
+        }
       }
       for (const [code, text] of Object.entries(gen.companies)) {
         if (!content.analysis.daily[code]) content.analysis.daily[code] = {};
+        // 【人工数据保护（2026-09-22）】此前这里无条件覆盖，而 hasAll 又要求 6 家全部
+        // 有文案才跳过整天——但当日波动未达阈值的公司本就不生成文案，hasAll 永远为 false，
+        // 于是每次 CI 重跑都会把人工核对过的归因重新用 LLM 覆盖一遍（9/17、9/22 各发生多次，
+        // 9/22 一天内被 09:02/09:26/09:55 三次重跑连续覆盖）。
+        // 现与月度分支保持一致：仅当该日期键不存在时写入；需要重算用 --force 或 --code。
+        // --code <股票代码> 同理：显式指定重算该家时允许覆盖
+        const existing = content.analysis.daily[code][td];
+        if (!force && entityFilterD !== code && existing != null) {
+          console.log(`  ⏭️ ${TRACKED_COMPANY[code]}: 已有文案，保留（如需重算请加 --force）`);
+          continue;
+        }
         content.analysis.daily[code][td] = text;
         wrote++;
         console.log(`  ✓ ${TRACKED_COMPANY[code]}: ${text.slice(0, 50)}...`);
