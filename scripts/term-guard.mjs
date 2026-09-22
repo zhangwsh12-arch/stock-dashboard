@@ -20,6 +20,10 @@
 // ===== 1. 已知错拼修正表（新增错拼时在此追加，validate-data 会自动告警）=====
 export const SPELLING_FIXES = [
   [/Paradolia/gi, 'Pareidolia'],
+  // NCSoft 新作《Astrae Oratio》（简称 AsOla）：2026-09-22 的资讯标题与分析文案被
+  // 写成《Asura》（同一作品在 9/17、9/18 均写作 Astrae Oratio）。Asura（阿修罗）
+  // 本身是常见词，故只在书名号内限定替换，避免误伤正常语句。
+  [/《Asura》/g, '《Astrae Oratio》'],
 ];
 
 // ===== 2. 机翻中文别名 → 项目通用写法 =====
@@ -45,6 +49,7 @@ export const CANONICAL_TERMS = [...SPELLING_FIXES, ...BRAND_ALIASES];
 // 注入 LLM / 翻译 prompt 的专名拼写表，减少"模型自行造词"的概率
 export const TERM_GLOSSARY_LINES = [
   'Pareidolia（Nexon Games 新作，原代号 Project RX；正确拼写 P-a-r-e-i-d-o-l-i-a，不是 Paradolia）',
+  'Astrae Oratio（NCSoft 二次元新作，简称 AsOla；不要写成 Asura 或 Astra）',
   'Blue Archive（碧蓝档案）',
   'NIKKE（胜利女神：妮姬）',
   'Stellar Blade（剑星）',
