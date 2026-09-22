@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-09-22",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-09-22T09:01:51.364Z",
+    "newsAutoUpdatedAt": "2026-09-22T09:25:13.794Z",
     "newsAutoCount": {
-      "events": 19,
-      "industryNews": 3,
+      "events": 2,
+      "industryNews": 0,
       "skippedUntranslated": 0,
-      "skippedByUrl": 18,
+      "skippedByUrl": 37,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -1426,6 +1426,22 @@
     ]
   },
   "events": [
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG赛事\"作弊\"争议…Krafton四天后道歉</strong>",
+      "source": "서울경제TV",
+      "date": "09.22",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9HaG9PNGNPNjJGY1RZbW5MSmV3SWtWUmFMNHV5X1ZQcE44cFBLNTdjWmx6MFR1ZWpJeG5YQmQ2ajJHdXFYTDJVZTdMQWo2a3NuUmFGRnVfdWc2eExfUThDZFFMUXo?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton《PUBG Mobile》亚运会电竞决赛28日举行</strong>",
+      "source": "데일리한국",
+      "date": "09.22",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5FMFYtdFdRTnpfeGNzY01McGJ3MWxfQl9jNmplYVF2amFFaGFuQVpnMGJWWXpycWQ1NFVpaEF6NG5ocURNazYxMldTdDJjVDJvaGhhM2xKVTNoSmJjQ0NwUjJLeDgyZTlvZVdqSDk3V0lkU1nSAXNBVV95cUxORTBWLXRXUU56X3hjc2NNTHBidzFsX0JfYzZqZWFRdmphRWhhbkFaZzBiVll6cnFkNTRVaWhBejRuaHFETWs2MTJXU3QyY1Qyb2hoYTNsSlUzaEpiY0NDcFIyS3g4MmU5b2VXakg5N1dJZFNZ?oc=5"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -3009,22 +3025,6 @@
       "source": "경향게임스",
       "date": "08.29",
       "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5GOTkxcW9pWmRrSEJGMWw4cWQxNkV0TWxRelEtaV9oVUIzNnVwLVNtNHVvb2VQMnhfZVZ0WGIzSW9JeW5fbnNGb3Y3VkZtWkU1UDFVVFkzZTlMRGhwRm92eWVkSGx2eGhycFIxRg?oc=5"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss公开Crimson Desert增强版…剧情大幅强化</strong>",
-      "source": "연합뉴스",
-      "date": "08.25",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9OcWJ5QUFlcW5XNUhhNXZ1dWNBX2tzRUxUelpYX3dQUGZzWDhCd2F3ZDJSVy1HUFRxTzhfc3BoLUhVaVJGOU1tVzN5N2dfSG9Rd0xzdElsQ0VqbTTSAWBBVV95cUxPR0dTa1cta2s3WmgxOE90NDRvRENQOXlHNExwbUMzNVM2MlBTMkwxSW85d1JERDZjVnhwaGVXWWdPY2l4NjBiRXh0V0FWaVQyWk1BRHU4dUdkVnh6VWF6NW0?oc=5"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss黑色沙漠手游'要塞争夺战'测试服9月1日开启 - Pearl Abyss</strong>",
-      "source": "Pearl Abyss",
-      "date": "08.28",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE4zeFdIZ2RmXzQtanRjVlVOaTFDX2JxYmZHZDNkaUZfM0otV18yeTFzNXBkaW1GbWgxYnUwY3A1Y0xpejI0d2hSblZDWWNvb0l2TmNEaElJU3ZrUmtfbEk0U0ZoV04?oc=5"
     }
   ],
   "industryNews": [
