@@ -264,21 +264,43 @@ jobs:
         id: get-date
         run: echo "date=$(TZ=Asia/Seoul date '+%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
-      - name: Check if already notified today
+      # 去重键必须用"数据日期(latest.json 的 meta.date)"而非"运行日期"：
+      # 连休场景下（如 2026 中秋 9/24-9/25 休市），同一份 9/23 数据会在 9/24 10点 final、
+      # 9/25 10点 final、9/28 10点 final 连续被推三次给 A 群（每次运行日期都不同，老逻辑拦不住），
+      # 而 A 其实只应收到一次"最近收盘"。改为数据日期后：数据不更新就不再重复推。
+      - name: Checkout for data date
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Resolve data date (latest.json meta.date)
+        id: get-data-date
+        run: |
+          DD=$(node -p "JSON.parse(require('fs').readFileSync('data/latest.json','utf8')).meta.date" 2>/dev/null || echo "")
+          if [ -z "$DD" ]; then
+            echo "::warning::无法读取 data/latest.json 的 meta.date，回退使用运行日期作为去重键"
+            DD="${{ steps.get-date.outputs.date }}"
+          fi
+          echo "date=$DD" >> "$GITHUB_OUTPUT"
+
+      - name: Check if already notified for this data date
         id: notify-guard
         uses: actions/cache@v4
         with:
           path: /tmp/notify-sent
-          # key 必须带 phase：preview(17点) 与 final(次日10点) 在同一 KST 日历日会共用同一日期，
-          # 若不区分 phase，先跑的 final 会写缓存、导致后跑的 preview 被去重跳过（B 永远收不到预览）。
-          key: notify-sent-${{ github.event.client_payload.phase || 'default' }}-${{ steps.get-date.outputs.date }}
+          # key 必须带 phase：preview(17点→B群) 与 final(次日10点→A群) 是同份数据的两次不同推送，
+          # 若按数据日期不区分 phase，先跑的 preview 会写缓存、导致 final 被去重跳过（A 永远收不到）。
+          key: notify-sent-${{ github.event.client_payload.phase || 'default' }}-${{ steps.get-data-date.outputs.date }}
 
-      - name: Skip — already notified today
+      - name: Skip — already notified for this data date
         if: >-
           steps.notify-guard.outputs.cache-hit == 'true' &&
           steps.resolve-force.outputs.force_notify != 'true'
         run: |
-          echo "⏭️ 今日 (${{ steps.get-date.outputs.date }}) 已推送过，跳过（如需强制推送请勾选 force_notify 或传 client_payload.force_notify=true）"
+          echo "⏭️ 数据日期 ${{ steps.get-data-date.outputs.date }} 已在本群推送过（运行日 ${{ steps.get-date.outputs.date }}），跳过重复推送"
+          echo "（如需强制推送请勾选 force_notify 或传 client_payload.force_notify=true）"
+          echo "### ⏭️ 跳过重复推送" >> "$GITHUB_STEP_SUMMARY"
+          echo "数据日期 ${{ steps.get-data-date.outputs.date }} 已推送给本群，本次未重复发送。" >> "$GITHUB_STEP_SUMMARY"
           exit 0
 
       - name: Force notify — bypassing cache guard
