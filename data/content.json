@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-09-23",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-09-23T09:01:48.541Z",
+    "newsAutoUpdatedAt": "2026-09-24T09:01:44.686Z",
     "newsAutoCount": {
-      "events": 10,
+      "events": 11,
       "industryNews": 3,
       "skippedUntranslated": 0,
-      "skippedByUrl": 23,
+      "skippedByUrl": 22,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -1443,6 +1443,94 @@
     ]
   },
   "events": [
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>陷入作弊疑云的Krafton……越南明星被取消资格后东南亚民心逆转</strong>",
+      "source": "글로벌이코노믹",
+      "date": "09.23",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSUxaV284RlRaSGFXM3lCNlhHeGhyT1h0WlBWVGNLTmF2WkFPQUVoeWE5S3V6OUhPTXRmeGVCOWFCWTU4d2lpZndrZFZJSEtTUEY2dnZHUzFia01zdjZFcU5DLTJuNEE5U3R5cmVtekQtZ0RVNHlXa3g1QlFsTFM0S0VrRTd1aEFM?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG因作弊争议赛事受阻……3家赞助商退出</strong>",
+      "source": "자본시장뉴스",
+      "date": "09.24",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1yQ2RDR2JVTVRYQzdxdkJtMm9zT0E3b2Q3Q0h6UlItZjB0dWE4SU5XVndwak9JLTUzSVZQZWtvTnU5RmxpUkU5b3pEZkNiR1VCd0pka3pXS1FyY3hadzhRSjRvMGdVWjA?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>开发PUBG PC版本的公司规模有多大？</strong>",
+      "source": "Vietnam.vn",
+      "date": "09.24",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5IbEZ0S2xoclk5b1Z1SkZIQmNTUkRvYlJadGhQRzNkZEd5LXNsMGNSZVRSc0VNcHVFR3lLMXQ0ajJpRzhpRm9ULWVuNVlPekNKS3U4M3N0ZVlaRS15emw5Sjh2TlJ6OTdibWJ4WGdPd2E2MEJvTUpiag?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton“作弊”争议选手永久禁赛……所属战队提出异议</strong>",
+      "source": "아시아투데이",
+      "date": "09.24",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5tVEF6d2RlR0dqMk1TSGZYWnRHVzFvVXRyVWtYVXczeGdXNlgtaktJdzZmX1dDTEhPanRmQTZfQ0V3RDM3ZFpZeFJGMncxRTcxckpRWlZjdzQ3LXBaVnlZV19vU2xtZWR4U0dhWER3?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton对《PUBG》争议越南选手处以永久禁赛</strong>",
+      "source": "sports.khan.co.kr",
+      "date": "09.24",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBmcGMyTVdsWGxvMXR2dFc5RDV5bGMxbVE2V19OZFExR3pCX2hoeVdjc3ZKSnFDLXJoUFdTRGpRSVZrT0lxTEZHQjlaNG02LU1vcFdaM21UMlBCY2dRc1HSAWNBVV95cUxPWDYwNHlVUDVjWTd4YzBINGMtTGhKM0JBQm9FOU9PeC1ocWpvNUlEc21fTXpBN0NKQjQ3VW1yQWhrRF9xNUlTaTkwV1RrM0NyNWNtVDNLQXlNY0JXUlUwTGZLRU0?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>《Astrae Oratio》《Aion 2》出击市场……NCSoft的“坚实之秋”</strong>",
+      "source": "게임플",
+      "date": "09.23",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE4yTTNoX2hkcnhDazBGYU9WR0ZYWC1US0c5YzEzd2VIT0d2TXNsMElrOVhNb1p3SFZEYVBac1haYWJ3YlJOVW9YQ3h1eE8zSGh5Z1pTSWltS20tUnVjS3c2VGhnVjIxWUJhUEt1Sg?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft迎中秋 在《天堂》《Aion》等8款游戏中举办活动</strong>",
+      "source": "주간한국",
+      "date": "09.23",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFB0djVjbTh6LVJnX282VVk3Q1BHN0JJNlRNRmJPeVQwdFVFbHJYWDJsUk9aZGdJNGZCUGE3LTBmdUJZWmRteWR0NHZJcXRIeTR3VFBuZUpwSURoZDlfc3R6S01vTEpuN0NlYjJ4QVYwSXLSAXRBVV95cUxNc2RURVBnVDREZlpmTzYyeU1Iek9NUy1wMzhCZGF4T0Y3UGJzVEZ6blhubHFwMnNwanRyYWQyWHNEcDA3NGhDNUM2bWM2d1hMalR6dllVWUE0MXBOQ1J4QVZuSHhsN0xLNTBMRDdPRkNyMnhDUA?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft《Aion 2》全球上线“期待感”……“值得关注的时机”</strong>",
+      "source": "매일경제",
+      "date": "09.21",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE50SzJabmMtUFZpWkhBcW9hUkowa2UtRUlFd3pUeE5yYzZuUHprbHBMd2JEZ1RjbElWcUVxTkJlaFpTZWRBWUlHWUZHNTNyQQ?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>从韩服外观到传说变身挑战券……NCSoft 8款热门游戏“中秋丰盛”</strong>",
+      "source": "파이낸셜포스트",
+      "date": "09.23",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1rSDNNTGFpeHpteTBsRU1vMTFFamlWb1l6VEJhLU5mcHZlRnhjQjN1d1BsSzc3eWd6eUVtMDF4T2dJaElSMmhwdEdCWktPQkRpY085ZEhjNFpNYlZPZ1BOeXlmZF9oVkE2bXNRYU5fdnhPaWhE?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《Blue Archive》招募BM改版，第四季度全球适用</strong>",
+      "source": "게임뷰",
+      "date": "09.24",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1kZDB4V20tWEZqTDU0ZGtRZjAwVUowdHItZ0pYZUVHbUZsNGJkQjJWYjh4VnRLNVZ5anVrRjE1WmkyS2w5SDBUVGRWSVllUkJDWWhtUU8zcnduemhMVDVNYi1CLVQwVWNQYWc?oc=5"
+    },
+    {
+      "company": "Shift Up",
+      "color": "#ff6b9d",
+      "title": "<strong>[TGS 26] 金亨泰“AI视频是实验，我道歉”</strong>",
+      "source": "게임메카",
+      "date": "09.20",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE42ZTVNdUViX1g5YzR6aWJYVk94UEM3UWJUV0dWa0ZraUlub292NHV4VnBScXJ5NEprNUtzUzJNNjdFZ0NOWjAtRy1jWjkyUlJES3p2VTFHTTl0ZlBB?oc=5"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -2954,97 +3042,33 @@
       "source": "네이트",
       "date": "09.02",
       "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFB4TWVUVHBpU3dUUVoxWkxfLXdkeG9uMUVJSW5rdi0za3VmVjRNMFZ6NUFUNDBiLXpVQUNHb1djMm44ODhoVE1XWjdBbXlscGRIcGNV?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>[Blue Archive] 'Neo Avant-Garde'产品开发者评测</strong>",
-      "source": "YouTube",
-      "date": "08.24",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBfdXMzVUVhaC05WWlhX0xHRzJpZGhGaGtMME1ZaFdPLWxOcl9DVEdQb21YRzJobUJTcGZNRERLYi1WYXcyU1piQ3lEUU1XbG9wYnVHYWUyVUVvaFJl?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon《Blue Archive》下一张牌亮相…《Pareidolia》TGS首秀</strong>",
-      "source": "네이트",
-      "date": "08.24",
-      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1wbHRGYVhIVXJMOWxIVHJpd3dSS252WElILWdwWXkzY3Q3cTBUaDZwbmU1RDNvdUJBNkE4SjJGMzJycEpUVHV2NkJfN2M1YlhZY3hLSGYzakMxRVBQWUhOaEVjMlRCS0Y2bVhGNWRuV1lXTkowV0tyYw?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>接棒《Blue Archive》新作…Nexon Games首曝《Pareidolia》BI及预告</strong>",
-      "source": "asiaa.co.kr",
-      "date": "08.24",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5hZFQ4bERiYm9RYjZuLVNOU3M0TWc2dzhINWVCMU1QODZnMFdTajFZOWtjWExjYUQ2THN2Q3R0UXdCWWRnRWhOa2diVXk1dWZ3S1ZmR3hOYUZvY3A5RDYzYXhFMkJCR2ZWRWfSAW5BVV95cUxQRUh3SGtISl9CRXlGdlhTWjhSS3B2emlmTDRhdEhtWkJrU01xSXlvVDVBRW1oY19XSll5bEpGcWFES2tIVlpwVjh3TTN5amZvc293bXR0RlA2R21VWUFfRXJKM0ItVVBRVkM0NVVDQQ?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton股价下跌10,000韩元后收盘</strong>",
-      "source": "아시아뉴스통신",
-      "date": "09.02",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5uTFh3TUdpcG1iZGJXQnpiSlBFcUZpOG5PMDFRWGx0ajNUWXp0Z3Z4M3dtMW9JeWNveGhZYV9wUHkxQkdaTFpsUExkOVhuS2pOWDZkWHI5YkRZaVEw?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>'德国总统首次演讲'地位提升…Krafton·NC存在感凸显</strong>",
-      "source": "v.daum.net",
-      "date": "09.01",
-      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5SSDFDZU5TajJQV19ScE9UNzBHcTQ3VlhNRV9CMHY3QWhxeWs5UnIyZ0QtQlpxN2hTR2xhS3ZDTl9UUVItdTVxbHp0QmVSd1k?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>LoL·Valorant·PUBG校园最强是谁？…'2026 School League'开赛</strong>",
-      "source": "이투데이",
-      "date": "09.02",
-      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBjUVRMV1ozWVVzZXp4MjBfcUNGdF9wZVVMY05TWk55X0JKaUxTRVB5TmJtRzVPWTBva1BaaG53QVZ2cGdwbW5pV01seFlVWlB2UmNhLQ?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton与印度'IIT Madras'携手...\"培养游戏人才\"</strong>",
-      "source": "더트래커",
-      "date": "09.01",
-      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFB4aVFLbVdTM3J1UHlqSXFuT3RsWDJvN3V2bXljaUpPd2Zac0JDY19aVHFzNzZUbUlZZzFmb0laMTlGNWxGOWVZR1lvTGo5QTJSbjQzZlZfc0g?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>国内主要游戏公司缺席'G-Star 2026'，Krafton能否扛大旗？Krafton称\"正在考虑参与\"</strong>",
-      "source": "게임포커스",
-      "date": "09.02",
-      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4wT0F3cThmcDJLZWFmbzZxVFBmU0s5N3dJUDJiRm5ZbjJFdHZQelpsa0FOejdlTFhXWHlKYV90b21ac3dXdFQ0Y2RfT1hKejRyU1hlRERPSzdsUXlxU1RsLQ?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon Games确定'Project RX'正式名称'Pareidolia'…将于TGS 2026首次试玩</strong>",
-      "source": "지디넷코리아",
-      "date": "08.24",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9mVUt1WV8tQWRLekt6OER3MHBMTXVXSjB3ZkJBNHJjTVh3eUdjMG8xR1ZkZ1JoT0pQY0ItVTJPdzNnc0hSeXZVTHUzX0VQdm9HQ1NwN2J3?oc=5"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss‘红色沙漠增强版’上市，全平台首次20%折扣</strong>",
-      "source": "Pearl Abyss",
-      "date": "08.26",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5ka1dQVW0tMnE2QWVVT0hlOHp6Ul94OUhxb0VrUmdacXh3aVZlU2F3cEh0TElhdzRpTkl6WFRYVWFxd203eEVpakdhQndLOVNrbjZTVlJwV1lkVklGcE1vU0NPNlA?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>[gamescom] Krafton大胆挑战…剩下的是‘证明’</strong>",
-      "source": "v.daum.net",
-      "date": "08.30",
-      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBoaFEyRi0xOVcyWmFkQ2I5VU5teXRxd2hQdzFDemhuamRmekxBdHJ5VzEtcnk3MEVpdE1lQXVsMHhMNjlDMUFCcmdYbHpvaTQ?oc=5"
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>检验基本结构是否简洁的德州扑克游戏玩法 - Histoire pour tous</strong>",
+      "source": "Histoire pour tous",
+      "date": "09.11",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPcTZ4MWRUVzRVcExKVDJRTDF5eWdKRkQxcS1IU1puNVNsNWpfcVdIak5BV3JGcGVIU3lMVE5xRHBrSVFjRTlDNkVZM0pkUDhWOHZ0QXl2VGJWbVB0NWpUQ1l5TXdjem5IdzNMNlVZSEVLaV9paXdzSDRsWWpRTHJZeDB5QUx1Y1JvaGJ1dkw0S1BjY3ozbmI2ZTlqTkNrWTdRMWxJ?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[C的突袭]② 侵蚀K游戏的中华资本……中国资金突袭</strong>",
+      "source": "대한경제",
+      "date": "09.22",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1fN1hKa2d2S1FnYTZBNHpQeExkT3NheWM3Zkp5bmZaWVpXUWNYLTNteHVJdWQtczFtdlhqX3p1MEtKUUlyb0ZVaDJudDlxblMydXF4RXBIRjJvaHJPbGxmOHF1ZTM5OUZ1and5TEVxMzhUYm1YNVE?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>游戏业界扩大中秋连休活动</strong>",
+      "source": "소년한국일보",
+      "date": "09.24",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE85UkZIRjIyZ09EMmNEYkd1SnFQdElSdGJqa1pRcmpuOWlqR2Jpc1FCUmFLY2FYY3ZDYmJPT01HS2c2aFNfUDRkeGVybkE1LUpkNDlfS3daTjZIR2VFWEpMV0lvWk9UUllNdENHb9IBcEFVX3lxTE9RTjZLQS1MWHI4ekJoZzNiVkYza3lOYUJUaE56OFR2WTA3Vk5zY3FTVmJZOWh0Q3F1ek51cjhFREcwYlV6OGYtbzRyUHh5T1dDWmpjU3A4S2NkQi1BLUZFOEowX04tLTRpOWlWY1ByRUo?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
