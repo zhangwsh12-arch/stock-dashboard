@@ -29,6 +29,15 @@ const FORCE_NOTIFY = String(process.env.FORCE_NOTIFY || '').toLowerCase() === 't
 // 请勿为"让推送显示更多原因"而下调此值（2026-09-15 曾误降至 2%，已回退）。
 const REASON_THRESHOLD = 5;
 
+// 2026 年 KRX 休市日（与 fetch-data.mjs / validate-data.mjs 保持同步，新增公休日须一并维护）
+const KRX_HOLIDAYS = [
+  '20260101', '20260216', '20260217', '20260218',
+  '20260302', '20260501', '20260505', '20260525',
+  '20260603', '20260717', '20260817',
+  '20260924', '20260925', '20261005',
+  '20261009', '20261225', '20261231'
+];
+
 // ====== 每日去重：基于 KST 日期的标记文件 ======
 function getTodayKSTStr() {
   const now = new Date();
@@ -41,6 +50,26 @@ function getTodayKSTStr() {
 
 const todayStr = getTodayKSTStr();
 const markerPath = join(DATA_DIR, `.notify-sent-${todayStr}`);
+
+// ====== 节假日守卫：KST 今天非交易日则不推送 ======
+// cron-job.org 只按"周一至周五"触发，不识别韩国法定节假日。
+// 休市日当天 17 点 preview 与次日 10 点 final 都会照常触发，若不在此拦截，
+// A/B 群会收到与上次完全相同的旧数据推送（2026-09-24 中秋休市首次暴露此问题）。
+// 规则：KST 今天是周六/周日或 KRX 休市日 → 直接跳过（不写去重标记，不影响正常日推送）。
+function isKRXTradingDayToday() {
+  const kst = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
+  const dow = kst.getUTCDay();
+  if (dow === 0 || dow === 6) return false;
+  const y = kst.getUTCFullYear();
+  const m = String(kst.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(kst.getUTCDate()).padStart(2, '0');
+  return !KRX_HOLIDAYS.includes(`${y}${m}${d}`);
+}
+
+if (!isKRXTradingDayToday() && !FORCE_NOTIFY) {
+  console.log(`[notify] 🏖️ 今日 (${todayStr}) 为韩国股市休市日（周末或公休），跳过推送`);
+  process.exit(0);
+}
 
 if (existsSync(markerPath) && !FORCE_NOTIFY) {
   console.log(`[notify] ⏭️ 今日 (${todayStr}) 已推送过，跳过（如需强制推送请设置环境变量 FORCE_NOTIFY=true）`);
@@ -92,14 +121,6 @@ function getExpectedTradingDay() {
   }
   
   const d = new Date(Date.UTC(targetYear, targetMonth, targetDay));
-
-  const KRX_HOLIDAYS = [
-    '20260101', '20260216', '20260217', '20260218',
-    '20260302', '20260501', '20260505', '20260525',
-    '20260603', '20260717', '20260817',
-    '20260924', '20260925', '20261005',
-    '20261009', '20261225', '20261231'
-  ];
 
   while (true) {
     const day = d.getUTCDay();
