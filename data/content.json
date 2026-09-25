@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-09-23",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-09-24T09:01:44.686Z",
+    "newsAutoUpdatedAt": "2026-09-25T09:01:36.948Z",
     "newsAutoCount": {
-      "events": 11,
-      "industryNews": 3,
+      "events": 6,
+      "industryNews": 0,
       "skippedUntranslated": 0,
-      "skippedByUrl": 22,
+      "skippedByUrl": 27,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -1443,6 +1443,54 @@
     ]
   },
   "events": [
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>\"已卸载PUBG\"认证刷屏…越南反Krafton情绪蔓延</strong>",
+      "source": "아시아타임즈",
+      "date": "09.23",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBxSXlJdEtDb1dzUXMzdmRXQXgxYjlLcnduWmtCc2N2U0xwczNILW1xOUMwNllTYmEzZ2haTFhTZEpqbHJzSkJneGJ4SG1qOS12bFN3ZHpid2pZTzdLcHc?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton封禁两名越南玩家账号后，面临多国抵制运动</strong>",
+      "source": "Vietnam.vn",
+      "date": "09.25",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNSXhXa2o1UjkxOWZkWDB0S2xNN0czOUFWcFFoOUJOcVE5OHRVVllPLTJZbVBkZkVUemFla09RNHFyb25SWVJJd0VCc0ZFUTdRMmtvdGxHR29HNk1vckFDN0VGS2Y4UkJOZl85cFdoLTM5eDZ4ajMwaVhLVWEzS2I1ZUlVVTZqX0VFaW05NGRWbnBQVDk4NlJXMktZRGJKV01SczVIekhPSXNRb1J0?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton招募印度游戏孵化器KIGI第4期…扩大申请对象</strong>",
+      "source": "국민일보",
+      "date": "09.25",
+      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9FV1J0LTJFSWdUelRoMTBzWmwzQTZsUkNSb19UYlF6YlNKQUJXVDJPR2dRNU1xS1FOWFlhdXVMN2JKYjdydTVZd09vRlkwWGYyTzJjeFlfVTEwdzE1MVFoQ2h5ajN5N0Y1MlpWY3E2SWlUSnAyX1JGUktB0gFsQVVfeXFMTkl1YnZRTFJXMXZrbW9Wd1AyQVBvTnFRNjZkTjBVcWhWLUNlUTdEN1RBTHdabnFIeVV1bzlkUFoxNkFJNGFXQnZXSmp2R3hoaG9kdVlaSlY0ZkpyVk5rYXpHUl9CbUxiLVM4SnpC?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton·Neowiz·Shift Up瞄准任天堂Switch…加速平台扩张</strong>",
+      "source": "데일리한국",
+      "date": "09.25",
+      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1Wa3hkZ3JLUnU0WDJ5RWQtQUFUT2VBd19hcXIwVHExZHhWX1F5OGcycW5NV1lrRUNuZ0tLMmwyeHRLX3BmR242YVUxX280NUhRQmhtcE5nV0swYUNsUlVfREtNQ2NpaTNNMFIwNmNOWdIBc0FVX3lxTFByRUUtcC00OHBNSE4yMVpjTGhGWTdWX0RCS1c3a3I0c08wdlQxc1MyODVHOHZyaHZzdEdKcmxFRldlMXI3Q1BaV2c1ZzVOTzFkREdXa3QzcWtjVTNGZmYxVmZlbUZXRWI1RGJ3dlBrcnc3Qjg?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon Blue Archive更新'Ex. 传说追踪篇 第2章'</strong>",
+      "source": "NSP통신",
+      "date": "09.15",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5ha1M0bDhFMzZ0eTdvNll0b1luMHlDMUQzRzZRb0NBQkRNZnVta2ljUGJGS1dYR2tydXNGc0Y0UDdfR1JTSVRncnpBbjZUd2tvNHR5RnE5bUdCbWpZcURXcA?oc=5"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon Games以Blue Archive打开K-二次元市场…凭Pareidolia延续势头</strong>",
+      "source": "v.daum.net",
+      "date": "09.21",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9VSzg3eGpuSFNyYXlrRXJjX0tIS3NTQjZCeXlkRUgxNl9KRlAtVUgwbkM4dHZ4RDdNVHlBZnR1WnUzYlFBTF95S3loaw?oc=5"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -2994,54 +3042,6 @@
       "source": "koreancenter.or.kr",
       "date": "09.03",
       "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1HTzdZdUUxMlA5eHB2TjBHR2NuekVjZW9RTWg1NC1MM1dYeDBTaGlMTVdVVzBRLWd2ODRaeDZORW5wdWNlWjZKeTdGcE5aN1JPVEhNUWpod3ROLVhveUc1eW12QllWSFVzTEw5akdYRndVbW9t?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>在G-Star畅玩Krafton游戏…连续10年参展</strong>",
-      "source": "아시아경제",
-      "date": "09.03",
-      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9qRkxlVFd4YWVPQXJ1aGxadXE4bkdORURfSmxkTWU0MGJEdUR5U0lyRFdvT3plSXRGckI5T1lGRm9RcWVMM2RQaUIyc2hidTdKYk13U3BlY3RucTFpS0FXUQ?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton连续10年参加G-Star - 朝鲜商业</strong>",
-      "source": "Chosunbiz",
-      "date": "09.03",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNMnhrVmlZZkV4QnE3UmNBeWlkX3JfcHZocW01YkJGanFzR0hhM0EyYkd1NUtkampRZjk2MnBJYi1qN3RJMUdPOVJzUnN2VTNnVm00UWNBQWpfbG1kdi1yakk5NVNWc1VDRE00bXdCM21aZmNxVnBDWnNQY0hKYU84ZU5R0gGWAUFVX3lxTE5mLUYzaVJ6eEY5S1R4S2xEWmptRmgzYVZyTjl0SmswbDFuNXRoWWV0VkhHM3F1aXdpQXhEYndWZGxnSUdJb2lITHpJSG8zeENuTkE3N3BsQUhvM0FsNW1IQ1RSdzliTzBxZk9WOHRYQm8zSzdWSk5zS29fejdZcnB3ci1QWGRockFfWTl5X2l4QURmUlU0Zw?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton今年再赴釜山…G-Star连续10年参展</strong>",
-      "source": "v.daum.net",
-      "date": "09.03",
-      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1paHl4TzhRelh4ZWE2ZkxyUWxtNkVBRG5iaDFkSjVxX3NpOWVWYl9ZOTkyTm43b3JwdVkxR2NsSVYzdm5BUG83ejNYWUJOVjg?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton对Deadnet反应\"低于预期\"…下一代PUBG何时来？</strong>",
-      "source": "데일리한국",
-      "date": "09.03",
-      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFA3aDFYV0VPRl90azJRLUtKNk1mZFJ1YVdWdDV1eFFIQlhGY29ORDN0NGRPS2dOSFd0cDMzTy14YjAyYXhIa2tnNGppeXVCbGVLaThjaUx3eGxFakxKZEUzZFRqcmltSnVPYkIzN2sza9IBc0FVX3lxTE5vN2ZPSndzM3B3QXljOWY5MlNZQ2lLWTZnM3lZbkNBZEJLZnZ0Njh5b0FtTTNoVzNVOG4yYXRvZnFxQWNDU2FrWGpIUlNlQzhJeXJ2WGFyRURaaDZCdTI2V1lUUlJKLVlTSnZzU1dsYmhuZEU?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton连续10年参展G-Star…填补韩国游戏空白</strong>",
-      "source": "녹색경제신문",
-      "date": "09.03",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBwV0NCTk9CcF9lc3lxOUI3WHVZV1U0cnlpRi1MSy1FTFQ0cmFfTTBRYVBoLUx6VDhmeHlnZFdjS1BDbkNjVjRtQnhHbGYwejJORnZIeERoMmJLWEdUcWZ4YndKX0lZOTg?oc=5"
-    },
-    {
-      "company": "Netmarble",
-      "color": "#ef4444",
-      "title": "<strong>[NC-Netmarble异动] 巩固主导权的方俊赫，NC友好股份或将不再需要</strong>",
-      "source": "네이트",
-      "date": "09.02",
-      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFB4TWVUVHBpU3dUUVoxWkxfLXdkeG9uMUVJSW5rdi0za3VmVjRNMFZ6NUFUNDBiLXpVQUNHb1djMm44ODhoVE1XWjdBbXlscGRIcGNV?oc=5"
     }
   ],
   "industryNews": [
