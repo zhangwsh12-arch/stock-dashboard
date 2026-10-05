@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-10-02",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-10-02T09:01:53.983Z",
+    "newsAutoUpdatedAt": "2026-10-05T09:01:48.298Z",
     "newsAutoCount": {
-      "events": 18,
-      "industryNews": 1,
+      "events": 11,
+      "industryNews": 4,
       "skippedUntranslated": 0,
-      "skippedByUrl": 12,
+      "skippedByUrl": 13,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -1533,6 +1533,94 @@
   },
   "events": [
     {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton 永久禁赛 2 名“代打”选手…“深感运营责任，将进行内部审查”</strong>",
+      "source": "asiae.co.kr",
+      "date": "09.23",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9SUlY5aFl4ZDdLc3JxM1dnTEVUOXZlOHNmOHVFVGtPSHdmZ3FQaTRLUTZ4amhNMFZlTWhsZXNET1V0WHpTUlNEdDhlS19fM2g3Q1UzZEJCZkJwaU9WeGNMVA?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>越南 800 万 YouTuber 删除 PUBG…“代打”引发反噬</strong>",
+      "source": "게임와이",
+      "date": "09.24",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBWNXpTNE1wRzlpaGxhVjd3RXNSSU5GdkNHZV8zS0JJdnBiTWlZNHpmdkt4VDM0eXNvSkExQ3B3VW5jVXEwT3RMUjZscE54RERHOXN2Z3UxR3RhbmNlSXhEdk1Ga0ZNUdIBakFVX3lxTE1iMzdoR0NZWG9DaWZIZFFEWmpFeUJaS291ZjExeGx5NUMyUHVsQWVzaFBpTXF6NDRVOERmTXpvb0ZVV2xFam9oaVZYTl9icElWRk1XdDROSEthMlRSQTAwZUdGbmJzTDdGMUE?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton《Mountain Dew PMPS 2026 赛季 2》3日开幕</strong>",
+      "source": "지디넷코리아",
+      "date": "10.03",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE05al9kT2lTX2s5eC10blZvaFozYVVqMWVEaWxhdkpIbC1XRW91dXl6bmZGTUk4elNiMG15ejRlalZhV3N2Y1N4SjVRX3laeVlBV0xzUHBn?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>连开发 4 年的作品也砍了…Krafton 对 PUBG 新作大浪淘沙</strong>",
+      "source": "뉴스핌",
+      "date": "10.04",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE96ckRvOGNxclFmNGJZX0tLbDlyT3lLbDBMbEV2dWhTajlUOWxQZ21BaWhvNk5jTFY5bU1XVXBEeThzSmFnMDM3YkhIMzY5d0pOSFNXbTlFU3BERFhf?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>“垃圾游戏”“去煮你的米粉吧”…游戏引发韩越冲突爆发</strong>",
+      "source": "조선일보",
+      "date": "10.01",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPcHlPUU9JczdZanJuLVhKZk5meVpNY0gyRmdIeUp2RVpVUkR1TjlTLUlLQ2ZfakEtWWpScU9lbXdmbmxGeE9Wb0ZXdUdiczJEVWRBdmE1MGVHcUx5NnJPeVlMaV9MUmNvZW1jUUMxMkJhSEVja3Q1VmdkNFZtQTJtVA?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft 终于在 Steam 上爆发了</strong>",
+      "source": "gametoc.co.kr",
+      "date": "10.05",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1INzZ1dmxVRlRORWFja1doaGptLWZadnIzSlAwZ3lWV2QtNkpycTg1dU1MbElPcFhBdzZJSVFFQk5TOEo1N2hkMXJFU3h0NkF1d1YwZzE5RGxPYVhpN3dZOFU4UFNDdUtuNkhDTA?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>《Aion 2》全球初期热销…NCSoft 能否跨越内需 MMORPG' 打赢海外战</strong>",
+      "source": "메트로신문",
+      "date": "10.05",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1BWjZkNTcxZzlZVEFzXzZKX1lJVEVJMVhqcTg5a1JPNXhQQzQwZWpSZUUzb2NaMDlYR1NxcU1qb251b3g1VDVtcC1VMWF6TDVXTi1OSXRsemZEMDc2aWRCTw?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>[周一游戏排行] NCSoft《Aion 2》Steam 同时在线排名第 9 起步</strong>",
+      "source": "월요신문",
+      "date": "10.05",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE02WEppT2VyTDFVcjZjZWVkRjlidnJSYTJxak9XYzJrRnFxSF91Zm5QZVFsRGs2NkhkMmpXeFE5N193cEpqcU96QjZIa2NYS0gtSEM2aEpBdDRxU2ZqV01VQ20zVV94YVFyNGc?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft《Aion 2》全球上线…抢先体验后同时在线 17 万，走势顺畅</strong>",
+      "source": "뉴시스",
+      "date": "10.05",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9pem1IUXdaT3V5MDloMmxWNi1oYWNkYVhGanp5T3lzRUw4UHZmbndNdUJQdFNHeGY4V2ZVcWU5TkxUSmtJU0M3TWRxRW5xcFg4ZklzZFZOMExwZTJPNFJmeW9TdXlRUUJFa0FTMzJoQnhpOWNDZWd1cNIBeEFVX3lxTE9pem1IUXdaT3V5MDloMmxWNi1oYWNkYVhGanp5T3lzRUw4UHZmbndNdUJQdFNHeGY4V2ZVcWU5TkxUSmtJU0M3TWRxRW5xcFg4ZklzZFZOMExwZTJPNFJmeW9TdXlRUUJFa0FTMzJoQnhpOWNDZWd1cA?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft《Aion 2》迎首个周末，Steam 同时在线突破 15 万…全球热销步入正轨</strong>",
+      "source": "지디넷코리아",
+      "date": "10.05",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5QU0o0V0NxNWs4a1lvdXM2SlVzcmhvT1BjZmRqLWNGaVdyUEJ1NHM5S3pWb29DWXc1ekJkbndadjhPNWU0eHBqRGFIaHF0dGU3end6TTd3?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>《Aion 2》5日全球上线…NCSoft 股价能否获支撑</strong>",
+      "source": "조선일보",
+      "date": "10.05",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOODZyOGpsRDNsdXpOTF91NExKYzN1WGIyM0wxLVhlbHlobHIxV2JJWmI4bDJORnpCYnBVZlhzbHdOdnRQbjc0OGpvMlhLSGRrSC1TTGpwY0RNUzl0UzR3eEltTXBLX3JtZGU0OFVDb296MUF3UHdKeUV6Z3JVRlhLMzI2VQ?oc=5"
+    },
+    {
       "company": "Pearl Abyss",
       "color": "#a855f7",
       "title": "<strong>Pearl Abyss Crimson Desert DLC发售日调整为10月30日</strong>",
@@ -3043,97 +3131,41 @@
       "source": "동행미디어 시대",
       "date": "09.14",
       "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1yTXNjcjJYcjZEbktfMjVScERUcVh3TVV6TmtvWVF1bnMzSVdPTFp4R2xkdHVzN2VCeWdWdWxsOHJoSzJWV19lMS1nM0FJX3JaVm5sdTBDWWk1MDNXSlE?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>\"不能只赚钱\"Krafton扎根印度</strong>",
-      "source": "뉴스핌",
-      "date": "09.14",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9aVjlwX0V3NE9jcWNMak1rdXg0Q0xqalIwLWVxV2UxV3lyNy1RbWRETnNteFJ2ODhtUmdLdVZKc1BtR053dmc0VW5lVHJyb2I3WnZtYUM3aWlZTGxx?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton金昌汉《PUBG》坚持结硕果…行使部分股票期权，评估收益达362亿</strong>",
-      "source": "톱데일리",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9lYmtZOWRxZEc1X29YV2s0cUd4d1FfWEpWcVJQU2dOU21hUy1BX3hHcHotbkZLYVZ4S1kzUnh4bU5oYUtzQ1I2MzllYTRrUmhX?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC·韩国MS携手助力《Aion2》全球热销</strong>",
-      "source": "문화일보",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE45TkllRTRlQkRUb0FSbnRjMktZb0VpeDNSOEtUNlA1eGFZWmtfNUJzZnVFNXFhMFRCcUQ0Zk9VdmozSV93Z19WSjVLcmEzcF9i?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC与MS共攻《Aion2》全球市场…加强Azure基础合作</strong>",
-      "source": "news.einfomax.co.kr",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5ERWFzN2tLbzlFTEVnMHFQenhWVVBPdG44WnBiTUlXbk1SNU1jLUk2NjVHT0Z2eUthTHloMEt6N1ZoRlJITnJnamUtWHdQSGJwY2piQ1NXRmQ3bm90NnpXcEJ3VnN2YjIwcGNIRE5qRWM?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC·MS携手…《Aion2》全球热销合作加强</strong>",
-      "source": "연합뉴스",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5EX1lmeVRPWWNSUjRidkh3OEpkMVdNODY4VjNuMmVuYl9IRkV4N3BnUF9iZjhidHBjYmlYR2FWWURjQ0p6M0VuXzNwdGVEQ3ZEcmx4N2VqaE05RUkza3Bta9IBYEFVX3lxTE5EX1lmeVRPWWNSUjRidkh3OEpkMVdNODY4VjNuMmVuYl9IRkV4N3BnUF9iZjhidHBjYmlYR2FWWURjQ0p6M0VuXzNwdGVEQ3ZEcmx4N2VqaE05RUkza3Btaw?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>MS新设《Aion2》专职组织…与NC加强全球服务合作</strong>",
-      "source": "디일렉",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE4wUHVPYW9sYnNoWWRvQ1ZCS0R1VmVEWnFqYTRYSHdyeFdUVkFmQW1LdlZ2X1BRa0gySlhkNHd1X1RVOVQxYXdKY0VPN09EWlNtTXhBbUhDRmgydkNTYkVvdkJ5LW5ZZw?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC《Aion2》全球上线在即与MS合作…利用Azure</strong>",
-      "source": "조선일보",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQRnphbklBQVd4MEpGeHRkZVhtN0g5N0hYV1FLMFdEVEczU0tLVFUyS0tZdmxNY2trZjR6OS1BcmV1NUlWVDB1dWhiaDlCX3U4Vm5xVzI5OVBST3kyMUphcDZMenNfcWZOMDlLaXVsLVUwMmpBRlY4SjJwelRzNjFaR2Z4SQ?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon《Blue Archive》lore追踪第2章是什么？…新Boss·角色2种同步公开</strong>",
-      "source": "창업일보",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFB0aXl3Y0VYaWRUMGpVcHRvdzBYVUp0clA1T2dydzdsNUN3RWtyQzdJOWdXMW92WndGWWZDNU40bVpydVY0S1BSelJPLVhyZzhyMXNCZ1ZHakExZjNLQ3NvNlRKa2NSX3RL?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon《Blue Archive》主线剧情\"Ex. lore追踪篇第2章\"更新</strong>",
-      "source": "파이낸셜신문",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8yaXJoSjluckI0ME54RDRSeTZkYXpuMlpQQjRMVjVDWG5IcGF6WUlHMUpQQnZ0RGJVTENrUWRCTlp5ZVNnRGtHZTJ4azNNOTE3ZW94UFpDWFYtQnlha2lldmlySjdNX2hfQXgw?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon《Blue Archive》Ex.  lore追踪篇第2章更新</strong>",
-      "source": "브레이크뉴스",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMiQkFVX3lxTE0zS0FBT2ZycEFKTS1xUDJwejJSZGkyS2dJTHYya1ZTa1dYNV90NWJJQVBCS29XdUtsSW1OTzN4UU96Zw?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon《Blue Archive》主线剧情第2部第2章更新</strong>",
-      "source": "뉴스핌",
-      "date": "09.15",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5BeVNZZjlKUUZkb3huZjMtWXUtaG5INzJmTTVEeG5qMUIzVkctOUpObGxzUFVPSWNYSTRqU1dDYTVsRUJvclZ3Wk42WkREMWRCOGQ5Vy1GX0Q3MkFr?oc=5"
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>初学者需知的权力的游戏英语进行中锁定标记 - Calgary Roughnecks</strong>",
+      "source": "Calgary Roughnecks",
+      "date": "10.02",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOWnZIVXM0TzZhLVI3eHN1X1hIRVdqamxlWkFtaWY1SHgyeU5ENHNTOG1DaFRsdnpPUVo4WnpfSUNtV09xcHJjX2czZmZOR2t1N3pWUXNUbzhqMDVVMG9wbmFVc1BvTjZKVWNEeE5xNm5iNTZKb25FWUs5WHRsZ2hFZjZNMlFXbmtrTzFUdUpJZVZGb3RRZC0tNUNFNEl0bkZvVGREU3dPTkJmREtWWFpYXy1Wel81Tjc3cnN3MHN3?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>按支持功能比较的吉卜力龙猫游戏列表 - Calgary Roughnecks</strong>",
+      "source": "Calgary Roughnecks",
+      "date": "10.04",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5wR1JlcUNRR0JFR1NhLUZPZ3dESGZXQ3M3U05nNkl2dmEyQkpjX245MGRHSTMyb0xyekF1VWxkZXdybWQ3ODJjZllzMnFjelAta29iLTIwZTZ1bXBSWE16eC05YnFHOGtkeGpsc2lVV1ByaXl5LUFV?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>黄仁勋 CEO 与韩国游戏业界积极沟通…“NVIDIA GeForce 与韩国电竞共同成长”</strong>",
+      "source": "쿠키뉴스",
+      "date": "10.03",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBXbW1fajViQTdYUV9WWXJEYWpxdU5pNVo2SFpfUUx5c0p2NkRpckJGRGJ5UzJ1aHF1d2lKQThycU9EZVFUOF9CTnZXeXFLdW9uNGxZY3NSNWNJVjhOWWw3aXhVbw?oc=5"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[独家] 游戏业界称“工时灵活化？没必要”</strong>",
+      "source": "매일노동뉴스",
+      "date": "10.01",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9sSE9hVF94TkNjWkZsMVpGSXZiaGxXOExEYzlDUFAtS3ppSnNSVW1zbjNCN1BUWncwNVFLaXZqdC1qTldDam5kZzk4V2pZOGNIWnpOZDBqV3BmN3RQUXZPR1FySWNGNmtpaFR3ZEVmbFo?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
