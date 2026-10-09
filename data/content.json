@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-10-08",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-10-08T09:01:53.528Z",
+    "newsAutoUpdatedAt": "2026-10-09T02:20:20.138Z",
     "newsAutoCount": {
-      "events": 9,
-      "industryNews": 6,
+      "events": 5,
+      "industryNews": 1,
       "skippedUntranslated": 0,
-      "skippedByUrl": 9,
+      "skippedByUrl": 18,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -1587,6 +1587,46 @@
     {
       "company": "Krafton",
       "color": "#f59e0b",
+      "title": "<strong>Krafton《PUBG: Dead Net》9日起在北美开启首次CBT</strong>",
+      "source": "국민일보",
+      "date": "10.08",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNck5mdmI5WGU4V0drQWwxRnR0Nm9pV0Zkc1U2dVp4VXlQWTdVS194a0JJd3VzMmhPVTdNVlZkQzhkWjRHZDJwVC1aVVltUGlidU9qVFJnRGlDcy05b1p4eUk4V04ydjk2UDhibTVDUUlCV2MwMWQ1ckkxNGhIQlRfZnAzM29xZw?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG: BATTLEGROUNDS 每周处罚情况公告（09/28~10/04）</strong>",
+      "source": "PUBG: BATTLEGROUNDS",
+      "date": "10.07",
+      "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE9VTUFzRDdmN3I5b3lMSjFlTlNSeS1yeWl6UmtNVEtxYUVXTGtydTBOMUNZN1FRY2lrVDgyMGRvZjdBZE9mQVoxVzJB?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton与首尔大学联合研究世界模型……扩大Physical AI布局</strong>",
+      "source": "FETV",
+      "date": "10.09",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0taTM3TGxPZkhTa3cyZ0pYYWk3ZmVKWGc2MENENkdRaERLRURaQlRxVDJlQmxhdHJzejZOdWdnRlRVU21FcDN6RlBQOThDOHhDZmNPMEVyQmxKWl9JQWtsZDJyaUxiYnBj?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>同时在线40万 NCSoft《Aion 2》全球高歌猛进……首周末爆款期待升温</strong>",
+      "source": "테크M",
+      "date": "10.08",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9JUngzQVBQZWRtUE9XSXlxYVk0MXBSNWVPMmF6Q29kdTNZWmQ4RnN0MkVQaGdqN3B6R1FDbUR3eGQxa1ZwZE01dk1CdlRGd1JnZVAtTW1NLXkwZS1zbDRlUFdxTzNuRmZ6ZkHSAWpBVV95cUxPSVJ4M0FQUGVkbVBPV0l5cWFZNDFwUjVlTzJhekNvZHUzWVpkOEZzdDJFUGhnajdwekdRQ21Ed3hkMWtWcGRNNXZNQnZURndSZ2VQLU1tTS15MGUtc2w0ZVBXcU8zbkZmemZB?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft《Aion 2》全球上线后同时在线逼近40万……首周末成绩可期</strong>",
+      "source": "스포츠한국",
+      "date": "10.09",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5vNmhjWkVfeFhWalZ4VGxNVmM3YlMxSEJMTktNOEJxLUVZWmctMWppQ0oyY3IzMzZzaEN6OXpMaUUxOVJJUFh5OFpvM2lwZ3RtaEo5c2VhLXFHR1J4ZXdYd3pvdlNtZmFQVXRCNDZpNzhKMVQz0gF0QVVfeXFMTm82aGNaRV94WFZqVnhUbE1WYzdiUzFIQkxOS004QnEtRVlaZy0xamlDSjJjcjMzNnNoQ3o5ekxpRTE5UklQWHk4Wm8zaXBndG1oSjlzZWEtcUdHUnhld1h3em92U21mYVBVdEI0Nmk3OEoxVDM?oc=5"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
       "title": "<strong>\"PUBG生存战，扩展为 Roguelite FPS\"……Krafton《Dead Net》首次 CBT</strong>",
       "source": "더게이트",
       "date": "10.08",
@@ -3143,49 +3183,17 @@
       "source": "뉴스투데이",
       "date": "09.16",
       "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1hRmRqeXEwdXl5aDdYNi1FWm9KUlR2azdwbExEbHc2dUk5QndMYXlWQjFiejFYX0FOallhX2x0T2JkRTBSTHNqRzJvX2ptSE0waTdWcXlfQWpFZVphNkE?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton·Nexon全球大获成功…K游戏首个“5万亿俱乐部”有望诞生</strong>",
-      "source": "v.daum.net",
-      "date": "09.16",
-      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBEZXRNbUdHc2xuYXZkZUVPaVFCbk91WWdjdkJTajlvUDJVS0xmLWtVT19iTkoydGRMMGJ1ZmlJOHFXSGlBSmVKLW1naUFaWkU?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>自称PUBG高手们注意 MediaWeb举办《CBL: PUBG with Npay》，最高提供百万Naver Pay里程</strong>",
-      "source": "게임포커스",
-      "date": "09.17",
-      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52QWxtTWRhOThpd2dnSTVCX0pRUUJ4aXhCQWliUFBKRmtfRkpQZGM2SzBXSVFhdzhjbnR5V0p5aXhrTFUzVWhaRldtV0F2YlNRZDlXVnIybWh3UFB6MG05UA?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>PUBG: BATTLEGROUNDS 每周处罚现状公告 (09/07~09/13)</strong>",
-      "source": "PUBG: BATTLEGROUNDS",
-      "date": "09.16",
-      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE9UNU5KbHBSUFRsSFN6MzZoTzRzeWpMY0d2SFJyS1NWeTdGcmVtcjJsYmU2bHZEYno0QXBxVWsydTBMVGc3?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Naver·Kakao·NC·Krafton板桥IT企业“公开招聘”消失，AI转型下“定期招聘”踪迹难寻</strong>",
-      "source": "비즈니스포스트",
-      "date": "09.17",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9URkl2OGNhajVEUXZ4cTY1QnFDUUt6c3hTSDUySXBPSXhzTU5Qd1pBN3lzS0pDUjdKajk3eE5CeU5VbVRIWUtVeVlYcFlsNW4wdWR2bnJ2UXE1X0JRS1JyMUxJRElzc3BUU2syd3hxVWxFVlE?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>[图] NC《Astrae Oratio》TGS首次试玩…“排队1小时”</strong>",
-      "source": "청년일보",
-      "date": "09.17",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5mdk93YTk2LVRndE9vUkVfMUlwVU1nVlFXYXk4WV9qYjBtYi1BM213U3FPSlpVRVF1YUNOTEE1NVE5bS1fdWJoUjByazA0UmN5REZDNTFoaGFtR1hTUkdXY2lnaXdZYU0?oc=5"
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>从全球电竞到K-POP综艺……游戏业界瞄准“游戏之外”的粉丝心</strong>",
+      "source": "청년일보",
+      "date": "10.08",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFA5aUF2anNHTGZvRFJPMmJPUko5TTZaRnAtamFtQlJSc0pRUVNCazhmb0llNGtYOWFheHh5VDctQWEwUEk2aTlzMjlISERVdGlxY05CQ3NGWlk0QkRNN0dESDdYTklnY050ZWc?oc=5"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
