@@ -66,9 +66,19 @@ function emitSent(sent) {
 
 // ====== 节假日守卫：KST 今天非交易日则不推送 ======
 // cron-job.org 只按"周一至周五"触发，不识别韩国法定节假日。
-// 休市日当天 17 点 preview 与次日 10 点 final 都会照常触发，若不在此拦截，
-// A/B 群会收到与上次完全相同的旧数据推送（2026-09-24 中秋休市首次暴露此问题）。
-// 规则：KST 今天是周六/周日或 KRX 休市日 → 直接跳过（不写去重标记，不影响正常日推送）。
+// 休市日当天 17 点 preview 会照常触发并重新抓取——fetch-data 在休市日会回退复用上一个
+// 交易日的收盘数据，此时若照常推送，B 群会收到"看起来像新数据"的重复旧数据
+// （2026-09-24 中秋休市首次暴露此问题）。规则：KST 今天是周六/周日或 KRX 休市日 → 跳过。
+//
+// ⚠️ 此守卫只适用于"今天会重新抓取数据"的场景（preview / 无 phase 的旧版单阶段）。
+// final 阶段（以及 notify_only 场景）根本没有重新抓取，只是把 main 上已有的、
+// 某个真实交易日的收盘数据转发出去——这份数据是否该发，与"今天"是否休市无关，
+// 只取决于这份"数据日期"有没有被推过（已由 daily-update.yml 按数据日期去重的缓存保证）。
+// 2026-10-09（韩文日）曾错误地把这个"今天"判断也套用在 final 上，导致 10/9 当天本该
+// 正常转发 10/8（非休市日）收盘数据给 A 群的推送被误拦截——已通过 NOTIFY_SKIP_HOLIDAY_GUARD
+// 环境变量（由 workflow 在 final/notify_only 场景下设置）跳过此守卫修复。
+const SKIP_HOLIDAY_GUARD = String(process.env.NOTIFY_SKIP_HOLIDAY_GUARD || '').toLowerCase() === 'true';
+
 function isKRXTradingDayToday() {
   const kst = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
   const dow = kst.getUTCDay();
@@ -79,7 +89,7 @@ function isKRXTradingDayToday() {
   return !KRX_HOLIDAYS.includes(`${y}${m}${d}`);
 }
 
-if (!isKRXTradingDayToday() && !FORCE_NOTIFY) {
+if (!isKRXTradingDayToday() && !FORCE_NOTIFY && !SKIP_HOLIDAY_GUARD) {
   console.log(`[notify] 🏖️ 今日 (${todayStr}) 为韩国股市休市日（周末或公休），跳过推送`);
   emitSent(false);
   process.exit(0);

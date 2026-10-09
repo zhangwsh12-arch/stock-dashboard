@@ -340,6 +340,11 @@ jobs:
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL_B }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
+          # 节假日"今天"守卫只应在本次真正重新抓取了数据时生效（对应上面 update job 的跳过条件）；
+          # notify_only 场景没有重新抓取，只是把 main 上已有数据转发，不受"今天"是否休市影响。
+          NOTIFY_SKIP_HOLIDAY_GUARD: >-
+            ${{ github.event.client_payload.notify_only == true ||
+                github.event.inputs.notify_only == 'true' }}
         run: node scripts/notify-wecom.mjs
         continue-on-error: true
 
@@ -354,6 +359,14 @@ jobs:
         env:
           WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
           DASHBOARD_URL: 'https://nebula.stock-dashboard.com'
+          # final 阶段（次日10点）与 notify_only 场景都没有重新抓取，只是转发 main 上
+          # 已有的某个真实交易日收盘数据——这份数据该不该发，只取决于"数据日期"有没有
+          # 被推过（由上面按数据日期去重的 cache 保证），与"今天"是否休市无关。
+          # 2026-10-09 曾因误套用"今天"判断，把本该正常转发 10/8 数据的 final 推送拦截。
+          NOTIFY_SKIP_HOLIDAY_GUARD: >-
+            ${{ github.event.client_payload.phase == 'final' ||
+                github.event.client_payload.notify_only == true ||
+                github.event.inputs.notify_only == 'true' }}
         run: node scripts/notify-wecom.mjs
         continue-on-error: true
 
