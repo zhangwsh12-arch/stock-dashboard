@@ -15,7 +15,7 @@
 // 下次运行时如果标记文件存在（且日期匹配、非强制推送）则跳过推送。
 // 这样无论运行在 GitHub Actions 还是工蜂 CI，逻辑完全一致，不依赖平台特性。
 
-import { readFileSync, existsSync, writeFileSync, readdirSync, unlinkSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, readdirSync, unlinkSync, appendFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DATA_PATH = join(import.meta.dirname || '.', '..', 'data', 'latest.json');
@@ -51,6 +51,19 @@ function getTodayKSTStr() {
 const todayStr = getTodayKSTStr();
 const markerPath = join(DATA_DIR, `.notify-sent-${todayStr}`);
 
+// ====== 向 GitHub Actions 声明本次是否真正推送（sent=true/false）======
+// 工作流据此决定是否保存"每日去重"缓存（actions/cache/save）。
+// 关键：休市日守卫 / 去重跳过 / 推送失败时必须输出 sent=false，
+// 否则 actions/cache 的 post-save 会把本次数据日期记为"已推送"，
+// 导致休市后的下一个交易日 final 阶段命中缓存，A 群永远收不到那份收盘数据
+// （2026-10-09 韩文日首次暴露：10/5 开天节同样烧掉了 final-2026-10-02 的 key）。
+function emitSent(sent) {
+  const ghOut = process.env.GITHUB_OUTPUT;
+  if (ghOut) {
+    try { appendFileSync(ghOut, `sent=${sent ? 'true' : 'false'}\n`); } catch { /* 本地运行时无此变量 */ }
+  }
+}
+
 // ====== 节假日守卫：KST 今天非交易日则不推送 ======
 // cron-job.org 只按"周一至周五"触发，不识别韩国法定节假日。
 // 休市日当天 17 点 preview 与次日 10 点 final 都会照常触发，若不在此拦截，
@@ -68,11 +81,13 @@ function isKRXTradingDayToday() {
 
 if (!isKRXTradingDayToday() && !FORCE_NOTIFY) {
   console.log(`[notify] 🏖️ 今日 (${todayStr}) 为韩国股市休市日（周末或公休），跳过推送`);
+  emitSent(false);
   process.exit(0);
 }
 
 if (existsSync(markerPath) && !FORCE_NOTIFY) {
   console.log(`[notify] ⏭️ 今日 (${todayStr}) 已推送过，跳过（如需强制推送请设置环境变量 FORCE_NOTIFY=true）`);
+  emitSent(false);
   process.exit(0);
 }
 if (existsSync(markerPath) && FORCE_NOTIFY) {
@@ -96,11 +111,13 @@ try {
   data = JSON.parse(readFileSync(DATA_PATH, 'utf8'));
 } catch (e) {
   console.error('[notify] 无法读取 latest.json:', e.message);
+  emitSent(false);
   process.exit(1);
 }
 
 if (!data?.meta) {
   console.error('[notify] latest.json 结构异常，缺少 meta 字段');
+  emitSent(false);
   process.exit(1);
 }
 
@@ -277,6 +294,7 @@ if (webhookUrls.length === 0) {
   console.error('[notify] WECOM_WEBHOOK_URL 未设置或格式不正确');
   console.log('[notify] 消息内容预览:');
   console.log(JSON.stringify(message.markdown.content, null, 2));
+  emitSent(false);
   process.exit(0); // 非致命错误，不阻断 workflow
 }
 
@@ -318,7 +336,10 @@ for (const url of webhookUrls) {
   }
 }
 
-if (successCount === 0) process.exit(1);
+if (successCount === 0) {
+  emitSent(false);
+  process.exit(1);
+}
 console.log(`[notify] 全部完成: ${successCount}/${webhookUrls.length} 个群推送成功`);
 
 // 至少成功推送一个群，才写入今日已推送标记，避免全部失败时误标记导致次日无法重推
@@ -328,3 +349,5 @@ try {
 } catch (e) {
   console.warn('[notify] 写入去重标记失败（非致命）:', e.message);
 }
+emitSent(true);
+

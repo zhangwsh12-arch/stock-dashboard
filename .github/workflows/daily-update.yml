@@ -285,11 +285,12 @@ jobs:
 
       - name: Check if already notified for this data date
         id: notify-guard
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: /tmp/notify-sent
           # key 必须带 phase：preview(17点→B群) 与 final(次日10点→A群) 是同份数据的两次不同推送，
           # 若按数据日期不区分 phase，先跑的 preview 会写缓存、导致 final 被去重跳过（A 永远收不到）。
+          # 注意：这里只做 restore；save 改为 job 末尾条件触发（见 "Save notify dedup cache"）。
           key: notify-sent-${{ github.event.client_payload.phase || 'default' }}-${{ steps.get-data-date.outputs.date }}
 
       - name: Skip — already notified for this data date
@@ -371,3 +372,21 @@ jobs:
           echo "### 企业微信推送失败（A 正式群）" >> "$GITHUB_STEP_SUMMARY"
           echo "notify-wecom.mjs 本次运行失败（多次重试后仍无法送达），A 正式群消息未推送。请检查 WECOM_WEBHOOK_URL 是否有效或网络问题。" >> "$GITHUB_STEP_SUMMARY"
           echo "::warning::notify-wecom.mjs failed (A) — 企业微信通知未推送成功，请检查日志"
+
+      # ====== 去重缓存保存：只有真正推送成功（sent=true）才写入 ======
+      # 不能用 actions/cache@v4 的自动 post-save：休市日（如 2026-10-09 韩文日）脚本
+      # 按节假日守卫跳过推送但仍会 exit 0，post-save 会把本次"数据日期"记为已推送，
+      # 导致休市后下一个交易日的 final 阶段命中缓存被去重跳过，A 群永远收不到那份收盘数据
+      # （2026-10-05 开天节烧掉 final-2026-10-02、2026-10-09 烧掉 final-2026-10-08，均已复现）。
+      # notify-wecom.mjs 会在所有出口输出 sent=true/false 到 GITHUB_OUTPUT，以此判断。
+      - name: Write dedup marker file (sent)
+        if: steps.send-notify-b.outputs.sent == 'true' || steps.send-notify.outputs.sent == 'true'
+        run: mkdir -p /tmp/notify-sent && date > /tmp/notify-sent/last-sent
+
+      - name: Save notify dedup cache (only when actually sent)
+        if: steps.send-notify-b.outputs.sent == 'true' || steps.send-notify.outputs.sent == 'true'
+        uses: actions/cache/save@v4
+        continue-on-error: true  # force_notify 场景下 key 已存在时 save 会报错，不影响结果
+        with:
+          path: /tmp/notify-sent
+          key: notify-sent-${{ github.event.client_payload.phase || 'default' }}-${{ steps.get-data-date.outputs.date }}
