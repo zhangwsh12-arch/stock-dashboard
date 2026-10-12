@@ -260,6 +260,26 @@ jobs:
           fi
           echo "force_notify=${FN:-false}" >> "$GITHUB_OUTPUT"
 
+      # 去重缓存 key 必须按"phase"归类，但 workflow_dispatch 手动补推（notify_only=true）
+      # 不会带 client_payload.phase（它只属于 repository_dispatch），若不归一化会导致
+      # key 落到 'default' 分支，与自动 final/preview 的 key 对不上——
+      # 下一次自动 final 会因为缓存未命中而把同一份数据重新推一遍
+      # （2026-10-09 手动补推 notify_target=A 写成了 notify-sent-default-xxx，
+      #   2026-10-12 自动 final 检查 notify-sent-final-xxx 未命中，重复推送，已复现）。
+      # 手动补推时按 notify_target 等效映射：A→final（正式群），B→preview（预览群）。
+      - name: Resolve effective phase (for cache key)
+        id: resolve-phase
+        run: |
+          PHASE="${{ github.event.client_payload.phase }}"
+          if [ -z "$PHASE" ] && [ "${{ github.event.inputs.notify_only }}" = "true" ]; then
+            if [ "${{ github.event.inputs.notify_target }}" = "B" ]; then
+              PHASE="preview"
+            else
+              PHASE="final"
+            fi
+          fi
+          echo "phase=${PHASE:-default}" >> "$GITHUB_OUTPUT"
+
       - name: Get today's date (KST)
         id: get-date
         run: echo "date=$(TZ=Asia/Seoul date '+%Y-%m-%d')" >> "$GITHUB_OUTPUT"
@@ -291,7 +311,7 @@ jobs:
           # key 必须带 phase：preview(17点→B群) 与 final(次日10点→A群) 是同份数据的两次不同推送，
           # 若按数据日期不区分 phase，先跑的 preview 会写缓存、导致 final 被去重跳过（A 永远收不到）。
           # 注意：这里只做 restore；save 改为 job 末尾条件触发（见 "Save notify dedup cache"）。
-          key: notify-sent-${{ github.event.client_payload.phase || 'default' }}-${{ steps.get-data-date.outputs.date }}
+          key: notify-sent-${{ steps.resolve-phase.outputs.phase }}-${{ steps.get-data-date.outputs.date }}
 
       - name: Skip — already notified for this data date
         if: >-
@@ -402,4 +422,4 @@ jobs:
         continue-on-error: true  # force_notify 场景下 key 已存在时 save 会报错，不影响结果
         with:
           path: /tmp/notify-sent
-          key: notify-sent-${{ github.event.client_payload.phase || 'default' }}-${{ steps.get-data-date.outputs.date }}
+          key: notify-sent-${{ steps.resolve-phase.outputs.phase }}-${{ steps.get-data-date.outputs.date }}
