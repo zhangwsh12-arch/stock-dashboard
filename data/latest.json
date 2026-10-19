@@ -1,8 +1,8 @@
 {
   "meta": {
-    "date": "20261016",
-    "dateDisplay": "10月（截至16日）",
-    "fetchedAt": "2026-10-16T09:01:25.604Z",
+    "date": "20261019",
+    "dateDisplay": "10月（截至19日）",
+    "fetchedAt": "2026-10-19T09:01:28.624Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -10,26 +10,17 @@
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "31,300",
-    "previousClose": "30,300",
-    "high": "32,150",
-    "low": "30,300",
-    "change": "1,000",
-    "changePercent": "+3.30%",
+    "price": "31,400",
+    "previousClose": "31,300",
+    "high": "31,650",
+    "low": "30,450",
+    "change": "100",
+    "changePercent": "+0.32%",
     "changeClass": "up",
     "per": "N/A",
     "pbr": "-",
     "marketCap": "-",
     "_allHistory": [
-      {
-        "date": "20260619",
-        "open": 34400,
-        "high": 36650,
-        "low": 32300,
-        "close": 33300,
-        "volume": 674970,
-        "foreignRate": 37.1
-      },
       {
         "date": "20260622",
         "open": 32950,
@@ -728,7 +719,7 @@
         "open": 29900,
         "high": 30900,
         "low": 29200,
-        "close": 30300,
+        "close": 30000,
         "volume": 42914,
         "foreignRate": 36.78
       },
@@ -738,8 +729,17 @@
         "high": 32150,
         "low": 30300,
         "close": 31300,
-        "volume": 86145,
-        "foreignRate": 36.78
+        "volume": 86607,
+        "foreignRate": 36.85
+      },
+      {
+        "date": "20261019",
+        "open": 31100,
+        "high": 31650,
+        "low": 30450,
+        "close": 31400,
+        "volume": 35395,
+        "foreignRate": 36.85
       }
     ]
   },
@@ -748,17 +748,17 @@
       "code": "225570",
       "name": "Nexon Games",
       "color": "#22c55e",
-      "price": "9,540",
-      "change": "+2.03%",
-      "changeClass": "up",
+      "price": "9,490",
+      "change": "-0.52%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "34,550",
-      "change": "+1.47%",
+      "price": "34,900",
+      "change": "+1.01%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -766,8 +766,8 @@
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "207,000",
-      "change": "+2.99%",
+      "price": "218,000",
+      "change": "+5.31%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -775,8 +775,8 @@
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "194,100",
-      "change": "+0.41%",
+      "price": "201,000",
+      "change": "+3.55%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -784,8 +784,8 @@
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "33,350",
-      "change": "+3.25%",
+      "price": "34,000",
+      "change": "+1.95%",
       "changeClass": "up",
       "per": "N/A"
     }
@@ -935,29 +935,34 @@
     {
       "date": "20261015",
       "label": "10/15",
-      "price": 30300
+      "price": 30000
     },
     {
       "date": "20261016",
       "label": "10/16",
       "price": 31300
+    },
+    {
+      "date": "20261019",
+      "label": "10/19",
+      "price": 31400
     }
   ],
   "indices": [
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "5668.05",
-      "change": "113.83",
-      "changePercent": "2.05",
+      "price": "5768.01",
+      "change": "99.96",
+      "changePercent": "1.76",
       "changeClass": "up"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "794.78",
-      "change": "33.96",
-      "changePercent": "4.46",
+      "price": "808.89",
+      "change": "14.11",
+      "changePercent": "1.78",
       "changeClass": "up"
     }
   ]
