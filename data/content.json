@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-10-19",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-10-19T09:01:40.161Z",
+    "newsAutoUpdatedAt": "2026-10-19T09:31:49.250Z",
     "newsAutoCount": {
-      "events": 16,
-      "industryNews": 6,
+      "events": 2,
+      "industryNews": 0,
       "skippedUntranslated": 0,
-      "skippedByUrl": 11,
+      "skippedByUrl": 32,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -1688,6 +1688,22 @@
   },
   "events": [
     {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG与豪华汽车品牌宾利开展联动</strong>",
+      "source": "크래프톤",
+      "date": "10.15",
+      "url": "https://news.google.com/rss/articles/CBMitgJBVV95cUxNOG9SZ3ZoN1c0anZPV1B6ZTVpY3FsMXRMNUp2SVVncmVObE4yalFCWVdtU3oyVXdfTXEtZ2sybUJzWjNvZ1R0eTEwZ1UtSlBVSVJuSmJlWGoxMkRibFl2TWZDLXdDZ3kzbGhrMk5PeDBaSXhBclFUNHRuZXZnMjRyME1fUG5tUWR2X3dhSkJWZGFOMHZySERyYUVhX0hhMEZvNjZiUDd5aGZZelUxRnBwY0U5QlkzZnBZeWVCTUpYbXdnc1ZaTHQ5YmJkeHNKNUgyNW1FdjRzanJIWWFCTTgzSWVaV0JJSlY5WVpwNGw0a1FmUy1qMGVfbHM3M09ZMnUzendIVDhlb09VQXhxaHpOaG1WaDhWZVBDY2gxQzIxRkFlWmNEQUVnSUdLVXotTEl3VFFDZ0pn?oc=5"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>国内要求的改进先在上海外上线…Aion 2“差别待遇争议”</strong>",
+      "source": "IT조선",
+      "date": "10.19",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBPQ0k4ZzE5MWlydjFuOWR3V0xfSFZuUUJFWFRRVmpXZUU2aHVvWGVPdDFnNkNZMW4tTmFxLVVhaWJ5T21ZdkdPMnJzZzF3RUVxa2IzOVVVRUFvQVZOdkl4RDEzRFJ4bldSQmpuQzhnTF_SAXRBVV95cUxQanVBanlEY3lLTEF1bFAxdnZUYUY3YjdISVJHOGhtZzdaZzdGREVDNU83eF9kbmhvTFEtdm05aVE3NU5FUU1JRmNzXzlySTE4MlU3ZkZ4MEI2R0MyalhOdVlNN0lnVE1kbEFSWFdTMXI0cFZ6Ug?oc=5"
+    },
+    {
       "company": "Pearl Abyss",
       "color": "#a855f7",
       "title": "<strong>《Crimson Desert》因Pearl Abyss自研游戏引擎而备受关注</strong>",
@@ -3270,22 +3286,6 @@
       "source": "v.daum.net",
       "date": "09.18",
       "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1DT21YMUQ3b3VEb0tQSDR6a1FmQkdpd3NIZ3N3YUJ2UWhlbnRzakZ5V2JkRkhYLURkTXBnYzZtTDhFSUZ1QWc?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>白色+白色，Blue Archive推出\"泳装名草\"</strong>",
-      "source": "월요신문",
-      "date": "09.29",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE81Y2xRRDN1NjJCbS1PY2JkZV9JeENXMV9YeUlYZ3JLWWp3YWp4Wm93b3RCZ1pKRGR2dGIyUnByaDg1MkdYWGs4WVQ2a2RlQnFXRldUekxxNkw5OHUwdi1qSFZ5UXZQNjllSXc?oc=5"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss Crimson Desert Enhanced’ 入围金摇杆奖两项提名</strong>",
-      "source": "스포츠경향",
-      "date": "09.28",
-      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE14ZDZVLW1jVG5OSU9kM216cTRWeTIydmNydVk2M0tibjNKMWp3TFdBRGczc01RVXdIZkVyTV9jMUhXRGlDZC1GazNSdjlULVFkMmRnR2VhZmdrWTVCNkM1REpB?oc=5"
     }
   ],
   "industryNews": [
