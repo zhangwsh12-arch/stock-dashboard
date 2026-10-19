@@ -179,9 +179,13 @@ const companies = data.companies || [];
 // ====== 读取 content.json 中的当日归因说明（generate-analysis.mjs --daily 生成）======
 // 非致命：content.json 缺失/解析失败时不影响主推送，仅跳过原因说明
 let dailyAnalysis = {};
+// 当日市场共同背景（人工维护于 content.json 的 analysis.dailyMacro[日期]，
+// 与看板"🌐 今日主线"同源），展示在个股驱动因素之前
+let dailyMacroText = '';
 try {
   const content = JSON.parse(readFileSync(CONTENT_PATH, 'utf8'));
   dailyAnalysis = content?.analysis?.daily || {};
+  dailyMacroText = content?.analysis?.dailyMacro?.[meta.date] || '';
 } catch (e) {
   console.warn('[notify] 读取 content.json 失败，跳过归因说明（非致命）:', e.message);
 }
@@ -291,6 +295,7 @@ ${stockLines.join('\n')}
 ---
 
 ${sentimentEmoji} **市场小结**: ${sentiment}
+${dailyMacroText ? '\n\u{1F310} **今日主线**: ' + stripTags(dailyMacroText) + '\n' : ''}
 ${reasonLines.length ? '\n' + reasonLines.join('\n') + '\n' : ''}
 [\u{1F517} 查看完整看板\u2192](${DASHBOARD_URL})`,
   },

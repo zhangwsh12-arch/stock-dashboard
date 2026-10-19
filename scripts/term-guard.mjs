@@ -24,6 +24,9 @@ export const SPELLING_FIXES = [
   // 写成《Asura》（同一作品在 9/17、9/18 均写作 Astrae Oratio）。Asura（阿修罗）
   // 本身是常见词，故只在书名号内限定替换，避免误伤正常语句。
   [/《Asura》/g, '《Astrae Oratio》'],
+  // NCSoft 休闲手游《星球大破坏喵喵喵》（2026-10-19 上线）：机翻标题曾写作
+  // 《行星破坏喵喵喵》，人工核对确认以"星球大破坏喵喵喵"为准，全局统一。
+  [/《?行星破坏喵喵喵》?/g, '《星球大破坏喵喵喵》'],
 ];
 
 // ===== 2. 机翻中文别名 → 项目通用写法 =====
@@ -50,6 +53,7 @@ export const CANONICAL_TERMS = [...SPELLING_FIXES, ...BRAND_ALIASES];
 export const TERM_GLOSSARY_LINES = [
   'Pareidolia（Nexon Games 新作，原代号 Project RX；正确拼写 P-a-r-e-i-d-o-l-i-a，不是 Paradolia）',
   'Astrae Oratio（NCSoft 二次元新作，简称 AsOla；不要写成 Asura 或 Astra）',
+  '星球大破坏喵喵喵（NCSoft 休闲手游，2026-10-19 上线；不要写成《行星破坏喵喵喵》）',
   'Blue Archive（碧蓝档案）',
   'NIKKE（胜利女神：妮姬）',
   'Stellar Blade（剑星）',
