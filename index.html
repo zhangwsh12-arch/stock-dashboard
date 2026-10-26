@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20260914a'; // 修复：个股驱动因素展示阈值与生成阈值对齐（analysis.daily 存在即展示，补上1%~2%区间）
+      var VER = '20261026a';
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -289,6 +289,7 @@
     <div class="sub">数据仅供参考，不构成投资建议 | 自动更新: 工作日 10:00 KST | PER越低→越被低估</div>
 </footer>
 
+<script src="scripts/daily-attribution.js?v=20261026a"></script>
 <script>
 // ============================================================
 // 全局状态
@@ -1395,20 +1396,13 @@ function renderDailySummary() {
     if (analysisText) {
       return { source: 'daily', text: analysisText, color: stock.color, url: null };
     }
-    // 2. 其次从当日事件数据中精确匹配（跳过韩语/英语标题）
-    const matched = events.find(e => {
-      const ms = matchEventToStock(e);
-      return ms && ms.name === stock.name && !isNonChineseText(e.title);
-    });
-    if (matched) {
-      return { source: 'event', text: matched.title, color: matched.color, url: matched.url };
-    }
-    // 3. fallback 到静态表（4-6月及无 daily 数据的日期仍需）
-    const staticReason = findCompanyReason(stock.name, stock.changeClass);
-    if (staticReason) {
-      return { source: 'static', text: staticReason, color: stock.color, url: null };
-    }
-    return null;
+    const code = stock.name === 'Shift Up' ? '462870' : COMPANY_NAME_TO_CODE[stock.name];
+    const ctx = DailyAttribution.context(code, stock.changePercent, currentData.indices);
+    const matched = events.find(e => matchEventToStock(e)?.name === stock.name && !isNonChineseText(e.title));
+    const selected = matched ? DailyAttribution.selectRecentNews([matched], currentData.meta.date) : [];
+    const candidate = DailyAttribution.fallback(ctx, selected);
+    const text = DailyAttribution.validate(candidate, ctx, selected).length ? DailyAttribution.fallback(ctx) : candidate;
+    return { source: selected.length ? 'event' : 'rules', text, color: stock.color, url: selected[0]?.url || null };
   }
 
   // ====== 信息源索引生成（每次调用 buildDriverFactorsText 时重置）=======
@@ -1443,7 +1437,6 @@ function renderDailySummary() {
     resetSourceIndex(); // 每次调用重置角标计数器
     const THRESHOLD = 2;
     const sigMovers = getSignificantMovers(THRESHOLD);
-    if (sigMovers.length === 0 && todayEvents.length === 0) return '';
 
     const reasons = [];
     const addedStocks = new Set();
@@ -1488,70 +1481,19 @@ function renderDailySummary() {
       }
     }
 
-    // ====== 大盘指数分析 ======
-    const indices = currentData.indices || [];
-    const marketDown = indices.filter(i => i.changeClass === 'down');
-    const marketUp = indices.filter(i => i.changeClass === 'up');
-    const noReasonStocks = reasons.filter(r => r.includes('无特殊原因'));
-    let marketAnalysis = '';
-
-    if (downCount > upCount && marketDown.length > 0 && noReasonStocks.length >= 2) {
-      const marketDetails = marketDown.map(i => `${i.name}<span style="color:#f87171">${i.changePercent >= 0 ? '+' : ''}${i.changePercent}%</span>`).join('、');
-      marketAnalysis = `<br><span style="font-size:13px;color:#9aa0b3">📉 大盘拖累：</span>当日${marketDetails}整体下跌，可能对游戏板块形成拖累。`;
-    } else if (upCount > downCount && marketUp.length > 0 && noReasonStocks.length >= 2) {
-      const marketDetails = marketUp.map(i => `${i.name}<span style="color:#34d399">+${i.changePercent}%</span>`).join('、');
-      marketAnalysis = `<br><span style="font-size:13px;color:#9aa0b3">📈 大盘带动：</span>当日${marketDetails}整体上涨，板块顺势走强。`;
-    }
-
-    if (reasons.length === 0 && !marketAnalysis) return '';
-
-    // 检测是否有全板块性宏观因素需要前置显示
-    // 注意：只用复合短语匹配，避免"板块"等单字误命中个股语境（如"游戏板块情绪"）
-    const macroKeywords = [
-      '特朗普', '美联储',                                  // 政策/人物
-      '大盘', 'KOSPI', 'KOSDAQ',                           // 指数
-      '板块轮动', '板块普涨', '板块普跌', '板块调整', '板块回调', '板块全线',  // 真正的板块级描述
-      '整体偏强', '整体承压', '整体上涨', '整体下跌',        // 整体性行情
-      '全球市场波动', '全球市场情绪', '全球市场拖累', '全球市场承压',  // 全球市场（排除"全球市场谈判"等个股语境）
-      '全球科技股', '外资净流出', '外资净买入', '资金虹吸',  // 资金面/宏观传导
-      '降息', '加息', '利率决议'                            // 货币政策
-    ];
-    const isMacro = text => macroKeywords.some(kw => text.includes(kw));
-
-    // 分类判断：检测每条 reason 是否为纯宏观因素
-    // 规则：如果一条 reason 中所有句子都是宏观关键词 → 归入宏观背景
-    //       如果包含任何个股相关句子 → 整条归入个股层面（不拆分）
-    // 这样避免同一股票因拆分而重复出现在两个分类，也消除双重破折号
-    const macroReasons = [];
-    const individualReasons = [];
-    for (const r of reasons) {
-      const plainText = r.replace(/<[^>]+>/g, '');
-      const sentences = plainText.split(/[。；]/).filter(s => s.trim());
-      const allMacro = sentences.length > 0 && sentences.every(s => isMacro(s));
-      if (allMacro) {
-        macroReasons.push(r);
-      } else {
-        individualReasons.push(r);
-      }
-    }
-
-    // 单日主线（宏观共性事件，全板块共享，只说一遍放在最前）
-    const _dMacro = cachedContent?.analysis?.dailyMacro?.[currentData?.meta?.date];
+    const macroEntries = cachedContent?.analysis?.dailyMacro || {};
+    const date = currentData.meta?.date;
+    const marketText = Object.prototype.hasOwnProperty.call(macroEntries, date)
+      ? macroEntries[date] : DailyAttribution.marketBackground(currentData);
+    if (!reasons.length && !marketText) return '';
     let output = '';
-    if (_dMacro) {
-      output += `<br><br><span style="font-size:13px;color:#9aa0b3">🌐 今日主线：</span>${_dMacro}`;
+    if (marketText) {
+      output += `<br><br><span style="font-size:13px;color:var(--text-muted)">市场共同背景：</span>${marketText}`;
     }
-    output += '<br><br><span style="color:var(--text-muted);font-size:13px">📌 个股驱动因素：</span>';
-    if (macroReasons.length > 0 && individualReasons.length > 0) {
-      // 有宏观因素时，先显示宏观背景，再显示个股因素
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🌐 宏观背景：</span>${macroReasons.join('；')}。`;
-      output += `<br><span style="font-size:13px;color:#9aa0b3">🏢 个股层面：</span>${individualReasons.join('；')}。`;
-    } else if (reasons.length > 0) {
-      output += `${reasons.join('；')}。`;
+    if (reasons.length) {
+      output += '<br><br><span style="color:var(--text-muted);font-size:13px">个股驱动因素：</span>';
+      output += reasons.map(r => `<div style="margin-top:8px;line-height:1.8">${r}</div>`).join('');
     }
-    
-    // 添加大盘分析
-    output += marketAnalysis;
 
     // ====== 信息源索引列表（如果有）=======
     if (sourceIndex > 1) {

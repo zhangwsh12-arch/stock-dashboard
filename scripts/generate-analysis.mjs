@@ -27,6 +27,8 @@ import { callLLM, llmConfig } from './llm-client.mjs';
 // 专名归一/拼写防线：LLM 复述新闻标题时可能把作品名写错（如 Pareidolia → Paradolia），
 // 落盘前统一校正，并在 prompt 中注入正确拼写表（详见 scripts/term-guard.mjs）
 import { applyCanonicalTerms, glossaryBlock } from './term-guard.mjs';
+import dailyRules from './daily-attribution.js';
+const { MARKET_OF } = dailyRules;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -44,19 +46,6 @@ const TRACKED_COMPANY = {
   '036570': 'NCsoft',
   '259960': 'Krafton',
   '263750': 'Pearl Abyss',
-};
-
-// 各标的所属上市市场 —— 决定单日归因时以哪个指数为"主基准"。
-// 2026-10-16 人工核对修正：Shift Up(462870) 与 Krafton(259960) 属 KOSPI，
-// Nexon Games(225570)、Pearl Abyss(263750) 属 KOSDAQ。此前 Shift Up 被误按 KOSDAQ 归因，
-// 出现"KOSDAQ 大涨带动 SU 上涨"这类错基准表述。
-const MARKET_OF = {
-  '462870': 'KOSPI',
-  '036570': 'KOSPI',
-  '251270': 'KOSPI',
-  '259960': 'KOSPI',
-  '225570': 'KOSDAQ',
-  '263750': 'KOSDAQ',
 };
 
 // ---------- 工具函数 ----------
@@ -408,7 +397,7 @@ const DAILY_SYSTEM_PROMPT = `你是一名严谨的韩国游戏股二级市场分
 
 硬性规则：
 1. 只解释"为什么这一天涨/跌"，围绕当日/近三日新闻、催化剂展开因果链条。禁止写：公司间排名、PER/估值、最佳日↔最差日对比、"上涨X天下跌X天"等趋势性数据罗列。
-2. 必须基于"当日及近3日相关新闻/事件"白名单展开；若该公司有专属新闻，应以这些真实事件为主因，严禁套用与其他公司雷同的通用行业套话。
+2. 只引用当日及近3日的公司消息，先判断实质性再分配权重：正式新品上线、财报与运营数据属于公司层面信息；联动、版本更新、庆典、预览版只能作背景。出现新闻不等于证明股价因该新闻变动，跑赢指数也不能单独证明新闻是主因。
 3. 所有事实（数字与事件）只能来自"已核实事实清单"与白名单。严禁引入清单外知识或自行编造。
 4. 不要写"本月累计"等字眼；不要复述已在界面单独展示的当日涨跌幅数字，聚焦驱动逻辑本身。
 5. 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
@@ -642,44 +631,19 @@ function isRepeatScheduleReport(candidate, pools) {
   return null;
 }
 
-function getDayNews(content, canonicalName, asOfMmdd, asOfDate) {
-  const asOfMM = asOfMmdd.slice(0, 2);
-  const asOfDD = parseInt(asOfMmdd.slice(3, 5), 10);
+export function getDayNews(content, canonicalName, asOfMmdd, asOfDate) {
   const companyNews = [];
   const sectorNews = [];
-  const pools = [content?.events || [], content?.industryNews || []];
-  for (const pool of pools) {
-    for (const e of pool) {
-      const date = String(e?.date || '').trim();
-      const m = date.match(/^(\d{2})\.(\d{2})$/);
-      if (!m) continue;
-      if (m[1] !== asOfMM) continue;
-      const dd = parseInt(m[2], 10);
-      if (dd > asOfDD) continue;
-      if (asOfDD - dd > 3) continue; // 仅当日及前3日
-      const rawCompany = e?.company || e?.target || '';
-      const title = String(e.title || '').replace(/<[^>]+>/g, '').trim();
-      if (!title) continue;
-      if (isStaleNews(title, asOfDate)) continue;  // 过期档期旧稿 -> 不做素材
-      const repeat = isRepeatScheduleReport({ date, title }, pools);
-      if (repeat) {
-        console.log(`  ⏭️ 跳过旧闻重分发: [${date}] ${title.slice(0, 40)}… (首次披露于 ${repeat.firstDate})`);
-        continue;                                   // 已公布档期的重复报道 -> 非当日新增催化剂
-      }
-      const resolved = COMPANY_NAME_MAP[rawCompany] || rawCompany;
-      if (rawCompany && COMPANY_NAME_MAP[rawCompany] && COMPANY_NAME_MAP[rawCompany] !== canonicalName) continue;
-      if (resolved === canonicalName || titleIncludesAlias(title, [canonicalName])) {
-        if (companyNews.length < 6) companyNews.push({ date, title });
-      } else if (!rawCompany || SECTOR_TAGS.has(rawCompany)) {
-        if (sectorNews.length < 3) sectorNews.push({ date, title });
-      } else {
-        if (sectorNews.length < 3) sectorNews.push({ date, title });
-      }
-    }
+  const entries = dailyRules.selectRecentNews([...(content?.events || []), ...(content?.industryNews || [])], asOfDate, Infinity);
+  for (const entry of entries) {
+    if (isStaleNews(entry.title, asOfDate)) continue;
+    const rawCompany = entry.company || entry.target || '';
+    const resolved = COMPANY_NAME_MAP[rawCompany] || rawCompany;
+    if (rawCompany && COMPANY_NAME_MAP[rawCompany] && resolved !== canonicalName) continue;
+    if (resolved === canonicalName || titleIncludesAlias(entry.title, [canonicalName])) companyNews.push(entry);
+    else if (!rawCompany || SECTOR_TAGS.has(rawCompany)) sectorNews.push(entry);
   }
-  companyNews.sort((a, b) => a.date.localeCompare(b.date));
-  sectorNews.sort((a, b) => a.date.localeCompare(b.date));
-  return { company: companyNews, sector: sectorNews };
+  return { company: companyNews.slice(0, 6), sector: sectorNews.slice(0, 3) };
 }
 
 // 构造"当日板块行情实况"：把六家同业与大盘的真实涨跌喂给 LLM。
@@ -738,12 +702,9 @@ function buildDailyFactsSheet(fact, news, dailyPct, peer) {
       const primary = peer.indices.find((i) => i.name === mkt);
       const others = peer.indices.filter((i) => i.name !== mkt);
       lines.push(`本股所属市场：${mkt}（引用大盘时以 ${primary ? `${primary.name} ${fmtPct(primary.pct)}` : mkt} 为主基准；${others.map((i) => `${i.name} ${fmtPct(i.pct)}`).join('，')} 仅可作为整体市场背景提及，不得作为本股主基准）`);
-      if (primary && !Number.isNaN(primary.pct) && !Number.isNaN(dailyPct)) {
-        const diff = dailyPct - primary.pct;
-        const rel = Math.abs(diff) < 0.3
-          ? '与所属指数基本同步'
-          : (diff > 0 ? `跑赢所属指数 ${fmtPct(diff)} 个百分点` : `跑输所属指数 ${fmtPct(diff)} 个百分点`);
-        lines.push(`相对强弱判定：本股 ${fmtPct(dailyPct)} vs ${primary.name} ${fmtPct(primary.pct)} → ${rel}`);
+      const ctx = dailyRules.context(fact.code, dailyPct, peer.indices);
+      if (ctx.comparable) {
+        lines.push(`相对强弱判定：${dailyRules.relativeText(ctx)} 差值 ${(ctx.diffBp / 100).toFixed(2)} 个百分点（不得把非零差值归零）`);
       }
     }
     lines.push(`（描述"板块/大盘强弱"时必须严格依据上面这几行行情数据，不得依据新闻标题自行推断板块方向）`);
@@ -753,7 +714,8 @@ function buildDailyFactsSheet(fact, news, dailyPct, peer) {
   const sNews = news.sector || [];
   if (cNews.length) {
     lines.push(`该公司当日及近3日相关新闻/事件（按时间，仅可引用这些，不得自创）：`);
-    for (const n of cNews) lines.push(`- [${n.date}] ${n.title}`);
+    for (const n of cNews) lines.push(`- [${n.dateKey || n.date}] [${n.kind}] [日期依据:${n.dateEvidence}; 来源:${n.source || '未记录'}; URL:${n.url || '未记录'}] ${n.title}`);
+    lines.push('日期为报道发布时间，不等于首次披露日。legacy 日期只有月日，不能据此断言当日首次公布；周末实质增量不可一概视为旧闻。soft 只作背景，launch/operating/material 也不直接证明因果。');
   } else {
     lines.push(`（当日及近3日无该公司专属新闻，仅可基于行情背景与行业通用动向分析，不得编造具体事件）`);
   }
@@ -773,18 +735,18 @@ ${sheet}
 
 【写作要求】
 - 为 ${fact.name} 在 ${fact.asOfDate} 这一天写一句【单日驱动因素】，只解释"为什么这一天涨/跌"，形成因果链条。
-- 【方向一致性硬约束】因果必须与当日涨跌方向严格一致：当日下跌时，所列事件必须是下跌的合理解释（利空事件 / 利好兑现后的获利了结 / 大盘或板块系统性拖累）；严禁用纯利好事件直接当作下跌原因，除非明确表述为"利好不敌系统性抛压 / 获利了结"。当日上涨同理，不得用利空事件直接解释上涨。如当日仅有利好新闻却仍下跌，应表述为"利好未能抵挡板块/大盘回调"，而非"受利好影响下跌"。
-- 【板块方向硬约束】凡涉及"板块整体强/弱、系统性拖累、随板块回调"等表述，必须与事实清单中的"板块方向判定"一致；若板块方向与本股走势相反（如板块偏强而本股下跌），必须写成个股自身原因（获利了结／缺乏新催化／利好兑现），不得谎称"受板块拖累"。
+- 【方向一致性】正面消息不能直接解释下跌，负面消息不能直接解释上涨。与所属指数同向可描述随市回调/回升；反向时只说独立驱动尚不明确，不倒推获利了结、利空已消化或资金轮动。
+- 【证据边界】收盘价只能证明行情和相对表现，不能证明资金动向、盘中V形反转、超跌修复、利好兑现或已提前反映。本流程未提供核实过的因果证据，禁止断言上述内容；新闻标题是公开报道，不是资金交易证据。
 - 【标的范围硬约束】只能提及事实清单中列出的六家跟踪标的；严禁把不在跟踪范围内的其他公司（如 Devsisters、Wemade 等）的涨跌当作本股的涨跌原因。涨跌榜类新闻只能用于印证板块方向，且须与"板块方向判定"一致，不得只摘取其中与判定相反的半句。
-- 【催化剂时效硬约束】只有"当日或前1-2日首次披露"的事件才算当日催化剂。若清单里的新闻都是常规运营/宣传活动（线下展会、文化节、社区活动、获奖、招聘、ESG 等），或是早已公布事项的重复报道，则**不得**把它们当作驱动股价的主因——这类活动对基本面影响极小，撬动不了 2% 以上的波动。此时应优先归因于可从行情数据本身读出的原因：前期连续下跌后的技术性修复（超跌反弹）、前期连续上涨后的获利了结、板块/大盘联动。
-- 【无催化剂时的写法】若确实找不到有实质影响的当日事件，就如实写"缺乏新增催化剂，主要由前期连续回调后的技术性修复带动"之类，不要为了凑因果而拔高无关新闻的权重。
+- 【催化剂时效】以完整报道日期为依据；周末及跨月消息仍可属于近三日背景。日期不完整或事件首次披露未核实，须写近期报道，不能认定为当日首发，也不能称已经兑现。
+- 【无实质消息】写未找到可核实的公司专属重大消息，结合所属指数方向和精确相对表现说明。宁可承认原因不明确，不制造技术性修复或资金行为。
 - 【基准指数硬约束】引用大盘时只能以事实清单中标注的"本股所属市场"指数为主基准；另一市场的指数仅在描述整体市场环境时作为背景提及，严禁写成"受另一市场指数大涨/重挫带动本股"这类错基准归因。
 - 【禁止循环归因】"六家跟踪标的普涨/全线收涨"是当日结果而非原因，不得写成个股上涨的驱动因素；可写"随市回升""市场整体反弹带动"，但不得表述为被其他标的上行带动。
-- 【运营消息权重硬约束】若本股当日涨幅低于其所属市场指数的涨幅，常规的版本更新/联动/庆典等运营消息只能写成背景或情绪支撑，主因须归于市场整体反弹或超跌修复；只有当本股涨幅明显跑赢所属指数时，才可把公司专属事件写成主因。
+- 【运营消息权重】soft 类消息即使股价跑赢指数也只能作背景，不能自动升级为强催化。新品正式上线可描述公司增量消息，运营数据须保留单位，收入与用户留存影响不能自行推断。
 - 【相对强弱表述硬约束】定性必须依据事实清单的"相对强弱判定"：跌幅小于所属指数时写"随市回调但相对抗跌"，不得把系统性抛压写成压倒性主因；跌幅大于所属指数时才可强调跑输与个股自身因素。禁止出现"系统性抛压主导""难敌大盘重挫"这类夸大表述，除非本股确实跑输所属指数。
-- 【时效表述硬约束】凡事实清单中新闻日期等于或最接近当日（含周末/休市期间披露）的消息，只能表述为"当日/周末公布的新增消息"，严禁写成"利好已在前期兑现/已提前反映"。判断是否"兑现"要看该消息首次出现的日期与当日之间是否已有上涨过程，不得凭"题材听起来耳熟"就断定已兑现。
+- 【时效表述】同题材的报道可能有不同增量，不能仅因出现过同一作品就否认新信息；也不能仅因再次报道就认定为新催化。没有完整首次披露证据时，使用近期公开报道，不断言已经兑现或提前反映。
 - 【数据口径硬约束】引用运营数据时必须与新闻标题口径一致（如"累计创建角色数630万个"不得写成"630万用户"）；清单中未给出确切数值或来源的运营指标一律不得引用。
-- 若该公司确有当日或前1-2日首次披露的实质事件，就以这些真实事件为主因，不要写与其他公司雷同的通用行业套话。
+- 公司消息与市场行情分开叙述，区分已知事实与尚待验证的影响；优先提及实质消息，但不要把时间上的同时出现写成已证实的驱动原因。
 - 严禁写：公司间排名、PER/估值、最佳↔最差交易日对比、"上涨X天下跌X天"等趋势性数据罗列；不要写"本月累计"等字眼，不要复述界面已展示的当日涨跌幅。
 - 不要以公司名开头（公司名已在界面单独显示）；直接写驱动逻辑，如"受XX事件提振…"。
 - 所有事实断言必须来自上面的白名单，不得自行编造或引入外部知识。
@@ -857,31 +819,20 @@ function trimNews(t, max = 30, prefer = '') {
   return tidyTail(safeCut(s, max));
 }
 
-function dailyRuleFallback(fact, news, isSU, dailyPct) {
-  const dir = Number.isNaN(dailyPct) ? '震荡' : (dailyPct > 0 ? '上行' : dailyPct < 0 ? '下行' : '盘整');
-  const hasCJK = (t) => /[가-힣一-鿿]/.test(t);
-  const cNews = (news.company || []).map((n) => n.title).filter(hasCJK).map((t) => ({ t, s: classifySentiment(t) }));
-  const sNews = (news.sector || []).map((n) => n.title).filter(hasCJK).map((t) => ({ t, s: classifySentiment(t) }));
-  const posNews = [...cNews, ...sNews].filter((x) => x.s > 0).map((x) => x.t);
-  const negNews = [...cNews, ...sNews].filter((x) => x.s < 0).map((x) => x.t);
-  const brief = (t) => trimNews(t, 30, fact.name);
-  if (dir === '下行') {
-    if (negNews.length) return `受${brief(negNews[0])}等利空拖累，当日下行。`;
-    if (posNews.length) return `当日下行，虽有${brief(posNews[0])}等利好，但未能抵挡板块/大盘回调压力。`;
-    return `当日下行，与板块及大盘氛围相关，未见明确独立催化。`;
-  }
-  if (dir === '上行') {
-    if (posNews.length) return `受${brief(posNews[0])}等利好提振，当日上行。`;
-    if (negNews.length) return `当日逆势上行，虽有${brief(negNews[0])}等利空，但已被市场消化。`;
-    return `当日上行，板块情绪回暖带动，未见明确独立催化。`;
-  }
-  return `当日盘整，多空均衡，方向性催化有限。`;
+function dailyRuleFallback(fact, news, isSU, dailyPct, peer) {
+  const ctx = dailyRules.context(fact.code, dailyPct, peer?.indices);
+  const candidates = (news.company || []).filter(n => !dailyRules.validate(n.title, ctx, [n]).length);
+  const text = applyCanonicalTerms(dailyRules.fallback(ctx, candidates));
+  return dailyRules.validate(text, ctx, candidates).length ? dailyRules.fallback(ctx) : text;
 }
 
 async function generateDailyEntityText(fact, news, isSU, dailyPct, peer) {
   const sheet = buildDailyFactsSheet(fact, news, dailyPct, peer);
   const allowedFacts = buildAllowedFacts(fact, news);
   const userPrompt = buildDailyUserPrompt(fact, news, dailyPct, peer);
+  const ctx = dailyRules.context(fact.code, dailyPct, peer?.indices);
+  const check = text => dailyRules.validate(text, ctx, news.company || []).length > 0 || hasHallucination(text, sheet, allowedFacts);
+  if (!(news.company || []).length) return dailyRuleFallback(fact, news, isSU, dailyPct, peer);
   try {
     let raw = await callLLM({
       systemPrompt: DAILY_SYSTEM_PROMPT,
@@ -892,46 +843,56 @@ async function generateDailyEntityText(fact, news, isSU, dailyPct, peer) {
     // 先做专名校正再进护栏：错拼的作品名既不通顺，也可能因不在白名单里被误判为幻觉
     let text = applyCanonicalTerms(raw.replace(/^```(?:json|html)?|```$/g, '').trim());
     if (!text) throw new Error('空回复');
-    if (hasHallucination(text, sheet, allowedFacts)) {
-      console.warn(`  ↳ ${fact.name} 首次输出疑似含白名单外事实，重试一次`);
+    if (check(text)) {
+      const issues = dailyRules.validate(text, ctx, news.company || []);
+      console.warn(`  ↳ ${fact.name} 首次归因校验失败: ${issues.join(', ') || '事实白名单'}，重试一次`);
       raw = await callLLM({
-        systemPrompt: DAILY_SYSTEM_PROMPT + '\n【警告】上次回答含有白名单外的事实断言。必须严格只使用"允许提及的事实白名单"中的内容，不得添加任何清单外信息。',
+        systemPrompt: DAILY_SYSTEM_PROMPT + '\n上次回答未通过校验：' + issues.join(', ') + '。仅使用已给出的公司事实及所属指数，禁止自行推断资金流向、兑现或用户数量。',
         userPrompt,
-        temperature: 0.3,
-        maxTokens: 300,
+        temperature: 0.2,
+        maxTokens: 400,
       });
       text = applyCanonicalTerms(raw.replace(/^```(?:json|html)?|```$/g, '').trim());
-      if (hasHallucination(text, sheet, allowedFacts)) {
-        console.warn(`  ↳ ${fact.name} 重试后仍疑似含白名单外事实，回退规则模板`);
-        return applyCanonicalTerms(dailyRuleFallback(fact, news, isSU, dailyPct));
-      }
+      if (check(text)) return dailyRuleFallback(fact, news, isSU, dailyPct, peer);
     }
-    return text;
+    const completed = dailyRules.complete(text, ctx);
+    return check(completed) ? dailyRuleFallback(fact, news, isSU, dailyPct, peer) : completed;
   } catch (err) {
     console.warn(`  ↳ ${fact.name} LLM 调用失败(${err.message})，使用规则模板`);
-    return applyCanonicalTerms(dailyRuleFallback(fact, news, isSU, dailyPct));
+    return dailyRuleFallback(fact, news, isSU, dailyPct, peer);
   }
 }
 
 // entityFilter 可选：仅重算指定 code（'su' 或股票代码），用于单点修复某一家的异常驱动因素，
 // 不触动同日其余已生成好的实体（如 2026-09-11 仅需重算 Krafton/Pearl Abyss）
-async function generateDailyAll(asOfDate, content, entityFilter) {
+export async function generateDailyAll(asOfDate, content, entityFilter, options = {}) {
+  if (!Number.isFinite(dailyRules.dayStamp(asOfDate))) throw new Error('无效分析日期');
   const monthSnapshots = loadMonthSnapshots(asOfDate);
-  const snap = readSnapshot(asOfDate) || (fs.existsSync(LATEST_PATH) ? JSON.parse(fs.readFileSync(LATEST_PATH, 'utf8')) : null);
+  const snap = readSnapshot(asOfDate);
+  if (!snap || snap.meta?.date !== asOfDate) throw new Error(`缺少日期匹配的快照: ${asOfDate}`);
   const { facts, entities } = buildQuantContext(asOfDate, monthSnapshots, snap, content);
   const peer = buildPeerContext(snap);
   if (peer) {
     console.log(`[generate-analysis] ${asOfDate} 板块实况：${peer.tone}（上涨${peer.up}／下跌${peer.down}／持平${peer.flat}）`);
   }
-  const result = { su: null, companies: {} };
+  const macro = content.analysis?.dailyMacro || {};
+  const previousDate = collectMonthDates('').filter(d => d < asOfDate).at(-1);
+  const result = {
+    su: null, companies: {},
+    macro: Object.hasOwn(macro, asOfDate) ? macro[asOfDate] : dailyRules.marketBackground(snap, previousDate ? readSnapshot(previousDate) : null),
+  };
   for (const e of entities) {
-    if (entityFilter && (e.isSU ? 'su' : e.code) !== entityFilter) continue;
+    const key = e.isSU ? 'su' : e.code;
+    if (entityFilter && key !== entityFilter) continue;
+    if (!options.force && !entityFilter && Object.hasOwn(content.analysis?.daily?.[key] || {}, asOfDate)) continue;
     const dailyPct = getStockPct(e, snap);
     // 当日波动 <1% 的股票不会在「今日总结」个股驱动中展示，跳过 LLM 调用以节省额度
     if (Number.isNaN(dailyPct) || Math.abs(dailyPct) < 1) continue;
     const fact = { ...facts[e.code], asOfDate };
     const news = getDayNews(content, e.name, mmddOf(asOfDate), asOfDate);
-    const text = await generateDailyEntityText(fact, news, e.isSU, dailyPct, peer);
+    const text = options.rulesOnly
+      ? dailyRuleFallback(fact, news, e.isSU, dailyPct, peer)
+      : await generateDailyEntityText(fact, news, e.isSU, dailyPct, peer);
     if (e.isSU) result.su = text;
     else result.companies[e.code] = text;
   }
@@ -976,10 +937,9 @@ async function main() {
 
   // ===== 单日模式：生成 analysis.daily[code][date]，跳过月度逻辑 =====
   if (dailyMode) {
-    const targetMonths = force ? new Set(['202607', '202608']) : new Set([dateStr.slice(0, 6)]);
-    const targetDates = new Set();
-    for (const m of targetMonths) for (const d of collectMonthDates(m)) targetDates.add(d);
-    targetDates.add(dateStr);
+    const dryRun = process.argv.includes('--dry-run');
+    const rulesOnly = dryRun || process.argv.includes('--rules-only');
+    const targetDates = new Set(process.argv.includes('--backfill-month') ? collectMonthDates(dateStr.slice(0, 6)) : [dateStr]);
     const dateArgIdx = process.argv.indexOf('--date');
     if (dateArgIdx >= 0 && process.argv[dateArgIdx + 1]) {
       targetDates.clear();
@@ -992,9 +952,15 @@ async function main() {
     let wrote = 0;
     for (const td of [...targetDates].sort()) {
       const hasAll = allCodes.every((c) => content.analysis.daily[c] && content.analysis.daily[c][td]);
-      if (!force && !entityFilterD && hasAll) continue;
+      if (!force && !entityFilterD && hasAll && Object.hasOwn(content.analysis.dailyMacro || {}, td)) continue;
       console.log(`[generate-analysis] 生成单日 ${td} ...`);
-      const gen = await generateDailyAll(td, content, entityFilterD);
+      const gen = await generateDailyAll(td, content, entityFilterD, { force, rulesOnly });
+      if (dryRun) {
+        console.log(JSON.stringify(gen, null, 2));
+        continue;
+      }
+      if (!content.analysis.dailyMacro) content.analysis.dailyMacro = {};
+      if (!Object.hasOwn(content.analysis.dailyMacro, td)) content.analysis.dailyMacro[td] = gen.macro;
       if (!content.analysis.daily.su) content.analysis.daily.su = {};
       // gen.su 在 --code 过滤到其它实体时为 null，须排除，否则会误清空已有 SU 文案
       if (!entityFilterD || entityFilterD === 'su') {
@@ -1111,7 +1077,9 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error('[generate-analysis] 致命错误：', err);
-  process.exit(1);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((err) => {
+    console.error('[generate-analysis] 致命错误：', err);
+    process.exitCode = 1;
+  });
+}

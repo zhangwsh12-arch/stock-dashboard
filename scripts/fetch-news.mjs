@@ -29,6 +29,7 @@ import { callLLM } from './llm-client.mjs';
 // 专名归一 + 拼写防线：AI 译文此前完全绕过校正，导致 Pareidolia 被写成 Paradolia
 // （详见 scripts/term-guard.mjs 顶部说明）
 import { applyCanonicalTerms, alignProperNouns, glossaryBlock, CANONICAL_TERMS } from './term-guard.mjs';
+import dailyRules from './daily-attribution.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, '..');
@@ -456,6 +457,7 @@ async function fetchGoogleNewsForCompany(companyName, keywords) {
         description: item.description,
         source: item.source || 'Google News',
         date: formatDate(item.pubDate) || dateInfo.mmdd,
+        publishedAt: Number.isFinite(Date.parse(item.pubDate)) ? new Date(item.pubDate).toISOString() : null,
         url: item.link || '',
       });
       if (entries.length >= 8) break;
@@ -498,6 +500,7 @@ async function fetchGoogleNewsIndustry() {
           description: item.description,
           source: item.source || 'Google News',
           date: formatDate(item.pubDate) || dateInfo.mmdd,
+          publishedAt: Number.isFinite(Date.parse(item.pubDate)) ? new Date(item.pubDate).toISOString() : null,
           url: item.link || '',
           isIndustry: true,
         });
@@ -696,11 +699,16 @@ async function main() {
       .replace(/\/+$/, '')    // 去掉末尾斜杠
       .toLowerCase();
   }
-  const existingUrls = new Set(
-    [...contentData.events, ...contentData.industryNews]
-      .map(e => normalizeUrl(e.url))
-      .filter(Boolean)
-  );
+  const existingRecords = [...contentData.events, ...contentData.industryNews];
+  const existingUrls = new Set(existingRecords.map(e => normalizeUrl(e.url)).filter(Boolean));
+  const observed = new Map(uniqueEntries.map(e => [normalizeUrl(e.url), e]));
+  let evidenceUpdates = 0;
+  for (const record of existingRecords) {
+    const entry = record.url ? observed.get(normalizeUrl(record.url)) : null;
+    if (!entry) continue;
+    if (!record.rawTitle && entry.rawTitle) { record.rawTitle = entry.rawTitle; evidenceUpdates++; }
+    if (!record.publishedAt && entry.publishedAt) { record.publishedAt = entry.publishedAt; evidenceUpdates++; }
+  }
 
   // 翻译前先剔除已入库条目（省下大量翻译请求）
   const beforeUrlFilter = uniqueEntries.length;
@@ -717,7 +725,8 @@ async function main() {
 
   // ===== Step 5: AI 批量翻译（只翻译新条目）=====
   if (uniqueEntries.length === 0) {
-    console.log('\n✔️ 本次无新条目（全部已入库），跳过翻译与写入');
+    if (evidenceUpdates) writeFileSync(CONTENT_FILE, JSON.stringify(contentData, null, 2), 'utf-8');
+    console.log(`\n本次无新条目，跳过翻译；补齐 ${evidenceUpdates} 个证据字段。`);
     return contentData;
   }
   console.log(`\n[处理] AI 翻译中（${uniqueEntries.length} 条）...`);
@@ -728,6 +737,11 @@ async function main() {
     uniqueEntries[i].translatedTitle = applyCanonicalTerms(
       alignProperNouns(uniqueEntries[i].rawTitle, translatedTitles[i])
     );
+    const issues = dailyRules.translationIssues(uniqueEntries[i].rawTitle, uniqueEntries[i].translatedTitle);
+    if (issues.length) {
+      console.warn(`  翻译数字/单位校验未通过，保留原文而不采用错误译文: ${issues.join(', ')}`);
+      uniqueEntries[i].translatedTitle = uniqueEntries[i].rawTitle;
+    }
   }
 
   console.log('\n[处理] 合并到 content.json...');
@@ -788,6 +802,9 @@ async function main() {
       source: entry.source,
       date: entry.date,
       url: entry.url || '',
+      rawTitle: entry.rawTitle || '',
+      publishedAt: entry.publishedAt || null,
+      fetchedAt: new Date().toISOString(),
     };
     // 标记降级条目，便于 validate-data / index.html 识别，也方便日后人工回补中文翻译
     if (isFallbackEntry) {
