@@ -148,7 +148,13 @@
     const parts = indices.map(i => `${i.code || i.name}${number(i.changePercent) > 0 ? '上涨' : number(i.changePercent) < 0 ? '下跌' : '持平'}<strong>${percent(i.changePercent)}</strong>`);
     const prev = previous?.indices || [];
     const rebound = indices.length === 2 && indices.every(i => number(i.changePercent) > 0 && number(prev.find(p => (p.code || p.name) === (i.code || i.name))?.changePercent) < 0);
-    return `${label}韩国股市收盘，${parts.join('、')}。${rebound ? '两指数在前一交易日下跌后回升，属于收盘层面的反弹。' : '以上为当日收盘市场背景。'}仅凭收盘行情不能确认盘中反转、资金流向或宏观事件的影响。`;
+    return `${label}韩国股市收盘，${parts.join('、')}。${rebound ? '两指数在前一交易日下跌后回升，属于收盘层面的反弹。' : ''}`;
+  }
+  function cleanMarketBackground(text) {
+    return String(text ?? '')
+      .replace(/以上为当日收盘市场背景[。.]?/g, '')
+      .replace(/仅凭收盘行情不能确认盘中反转、资金流向或宏观事件的影响[。.]?/g, '')
+      .trim();
   }
   function translationIssues(rawTitle, translatedTitle) {
     const raw = plain(rawTitle), translated = plain(translatedTitle);
@@ -159,7 +165,7 @@
     if (/캐릭터|角色/.test(raw) && !/유저|이용자|사용자|플레이어|用户|玩家/.test(raw) && /用户|玩家/.test(translated)) issues.push('character-user-unit');
     return issues;
   }
-  const api = { MARKET_OF, plain, number, dayStamp, newsDate, newsKind, selectRecentNews, context, relativeText, marketLink, fallback, validate, complete, marketBackground, translationIssues };
+  const api = { MARKET_OF, plain, number, dayStamp, newsDate, newsKind, selectRecentNews, context, relativeText, marketLink, fallback, validate, complete, marketBackground, cleanMarketBackground, translationIssues };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.DailyAttribution = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

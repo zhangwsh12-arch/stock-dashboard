@@ -10,7 +10,7 @@
     <script>
     // 版本检测：HTML更新后自动刷新，解决CDN缓存旧版本问题
     (function() {
-      var VER = '20261026a';
+      var VER = '20261028a';
       var KEY = 'dash_html_ver';
       var prev = localStorage.getItem(KEY);
       if (prev && prev !== VER) {
@@ -289,7 +289,7 @@
     <div class="sub">数据仅供参考，不构成投资建议 | 自动更新: 工作日 10:00 KST | PER越低→越被低估</div>
 </footer>
 
-<script src="scripts/daily-attribution.js?v=20261026a"></script>
+<script src="scripts/daily-attribution.js?v=20261028a"></script>
 <script>
 // ============================================================
 // 全局状态
@@ -1483,8 +1483,8 @@ function renderDailySummary() {
 
     const macroEntries = cachedContent?.analysis?.dailyMacro || {};
     const date = currentData.meta?.date;
-    const marketText = Object.prototype.hasOwnProperty.call(macroEntries, date)
-      ? macroEntries[date] : DailyAttribution.marketBackground(currentData);
+    const marketText = DailyAttribution.cleanMarketBackground(Object.prototype.hasOwnProperty.call(macroEntries, date)
+      ? macroEntries[date] : DailyAttribution.marketBackground(currentData));
     if (!reasons.length && !marketText) return '';
     let output = '';
     if (marketText) {

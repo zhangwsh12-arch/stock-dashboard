@@ -98,7 +98,37 @@ test('安全模板与模型正文共用校验；不按空格截断作品名', ()
 test('市场共同背景自动生成，但不猜盘中V形或机构回补', () => {
   const text = rules.marketBackground({ meta: { date: '20261019' }, indices: indices(1.76, 1.78) }, { indices: indices(-2.05, -4.46) });
   assert.match(text, /收盘层面的反弹/);
-  assert.doesNotMatch(text, /机构资金回补|V形|V型|超跌/);
+  assert.doesNotMatch(text, /机构资金回补|V形|V型|超跌|不能确认|以上为/);
+});
+
+test('历史市场背景只删除无法确认提示，保留行情和人工内容', () => {
+  const facts = '10月28日韩国股市收盘，KOSPI上涨<strong>+6.63%</strong>、KOSDAQ上涨<strong>+3.69%</strong>。';
+  const disclaimer = '仅凭收盘行情不能确认盘中反转、资金流向或宏观事件的影响。';
+  assert.equal(rules.cleanMarketBackground(facts + disclaimer), facts);
+  assert.equal(rules.cleanMarketBackground(facts + '以上为当日收盘市场背景。' + disclaimer), facts);
+  assert.equal(rules.cleanMarketBackground('以上为当日收盘市场背景。' + disclaimer), '');
+  assert.equal(rules.cleanMarketBackground('人工核对的市场背景。'), '人工核对的市场背景。');
+  assert.equal(rules.cleanMarketBackground(disclaimer), '');
+  assert.equal(rules.cleanMarketBackground(null), '');
+  assert.equal(rules.cleanMarketBackground(''), '');
+  const generated = rules.marketBackground({ meta: { date: '20261028' }, indices: indices(6.63, 3.69) });
+  assert.equal(generated, facts);
+});
+
+test('10月28日及后续日期每天生成都不附加空泛提示', () => {
+  for (const date of ['20261028', '20261029', '20261030', '20261102', '20270104']) {
+    for (const [kp, kq] of [[6.63, 3.69], [-1.46, -3.26], [0, 0], [1.2, -0.8]]) {
+      const text = rules.marketBackground({ meta: { date }, indices: indices(kp, kq) });
+      assert.match(text, /KOSPI/);
+      assert.match(text, /KOSDAQ/);
+      assert.doesNotMatch(text, /以上为|不能确认|仅凭收盘/);
+    }
+  }
+  const content = JSON.parse(fs.readFileSync(path.join(root, 'data/content.json'), 'utf8'));
+  const text = rules.cleanMarketBackground(content.analysis.dailyMacro['20261028']);
+  assert.match(text, /6\.63%/);
+  assert.match(text, /3\.69%/);
+  assert.doesNotMatch(text, /以上为|不能确认|仅凭收盘/);
 });
 
 test('共享模块可在浏览器加载，不依赖Node', () => {

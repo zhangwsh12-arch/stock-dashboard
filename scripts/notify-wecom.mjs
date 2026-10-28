@@ -17,6 +17,7 @@
 
 import { readFileSync, existsSync, writeFileSync, readdirSync, unlinkSync, appendFileSync } from 'node:fs';
 import { join } from 'node:path';
+import dailyRules from './daily-attribution.js';
 
 const DATA_PATH = join(import.meta.dirname || '.', '..', 'data', 'latest.json');
 const DATA_DIR = join(import.meta.dirname || '.', '..', 'data');
@@ -185,7 +186,7 @@ let dailyMacroText = '';
 try {
   const content = JSON.parse(readFileSync(CONTENT_PATH, 'utf8'));
   dailyAnalysis = content?.analysis?.daily || {};
-  dailyMacroText = content?.analysis?.dailyMacro?.[meta.date] || '';
+  dailyMacroText = dailyRules.cleanMarketBackground(content?.analysis?.dailyMacro?.[meta.date]);
 } catch (e) {
   console.warn('[notify] 读取 content.json 失败，跳过归因说明（非致命）:', e.message);
 }
