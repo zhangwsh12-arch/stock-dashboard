@@ -85,24 +85,24 @@
     return `表现${ctx.diffBp > 0 ? '高' : '低'}于${ctx.market}${Math.abs(ctx.diffBp) < 30 ? '，幅度较小' : ''}。`;
   }
   function marketLink(ctx) {
-    if (!ctx.comparable) return '当日独立驱动尚不明确，不能仅凭涨跌倒推原因。';
+    if (!ctx.comparable) return '';
     if (ctx.stockPct === 0) return `股价当日持平；${relativeText(ctx)}`;
     if (ctx.stockPct * ctx.indexPct > 0) {
       return `股价与${ctx.market}（<strong>${percent(ctx.indexPct)}</strong>）${ctx.stockPct > 0 ? '同向回升' : '同向回调'}；${relativeText(ctx)}`;
     }
-    return `股价与${ctx.market}（<strong>${percent(ctx.indexPct)}</strong>）走势不同，独立驱动尚不明确；${relativeText(ctx)}`;
+    return `股价当日${ctx.stockPct > 0 ? '上涨' : '下跌'}<strong>${percent(ctx.stockPct)}</strong>，同期${ctx.market}为<strong>${percent(ctx.indexPct)}</strong>；${relativeText(ctx)}`;
   }
   function fallback(ctx, companyNews = []) {
     const news = companyNews.find(n => ['launch', 'operating', 'material'].includes(n.kind || newsKind(n)))
       || companyNews.find(n => /预览|语言模型|LLM|Raon/.test(plain(n.title))) || companyNews[0];
-    if (!news) return `未找到可核实的当日公司专属重大消息。${marketLink(ctx)}`;
+    if (!news) return `当日无经核实的公司专属消息。${marketLink(ctx)}`.trim();
     const kind = news.kind || newsKind(news);
     const title = escapeHTML(plain(news.title).replace(/[。；!?！？]+$/, ''));
     const prefix = news.dateEvidence === 'publication' ? `${news.dateKey.slice(4, 6)}月${news.dateKey.slice(6)}日报道：` : '近期公开报道：';
     const caveat = kind === 'soft' ? '属于常规运营或营销型背景，业绩贡献暂难量化，不能据此认定为强催化。'
       : kind === 'launch' ? '产品上线是公司层面的增量消息，实际收入贡献仍待观察。'
       : kind === 'operating' ? '该运营数据可供参考，但不直接等同于收入或持续增长。'
-      : '该消息提供公司层面背景，其对当日交易的实际影响尚难确认。';
+      : '该消息提供公司层面背景。';
     return `${prefix}${title}。${caveat}${marketLink(ctx)}`;
   }
   function validate(text, ctx, news = []) {
@@ -112,6 +112,7 @@
     if (!t) issues.push('empty');
     if (/<(?!\/?strong>)[^>]*>/i.test(text) || /[가-힣]/.test(t)) issues.push('format');
     if (/兑现|获利了结|已.{0,6}消化|提前反映|资金回流|资金回补|机构资金|外资|净卖出|净买入|虹吸|资金轮动|超跌|V形|V型/.test(t)) issues.push('unsupported-causality');
+    if (/独立驱动尚不明确|走势不同|尚难确认|尚待确认|驱动逻辑尚待确认|不能仅凭涨跌倒推|实际影响尚难确认/.test(t)) issues.push('hedge-speculation');
     if (/(六家|标的|板块).{0,10}(普涨|普跌|全线|多数).{0,20}(带动|导致|驱动|提振|拖累)|领涨|表现最强|排名第一/.test(t)) issues.push('circular-or-ranking');
     if (ctx.comparable) {
       const weaker = /弱于|低于.{0,8}(指数|KOSPI|KOSDAQ)|跑输|涨幅低于|跌幅大于/.test(t);

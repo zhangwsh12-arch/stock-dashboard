@@ -91,8 +91,27 @@ test('安全模板与模型正文共用校验；不按空格截断作品名', ()
   assert.match(text, /相对抗跌/);
   assert.deepEqual(rules.validate(text, ctx, selected), []);
   assert.ok(rules.validate('<strong onclick="alert(1)">错误</strong>', ctx).includes('format'));
-  assert.match(rules.fallback(c('225570', -1.1, 1.76, 1.78)), /走势不同，独立驱动尚不明确/);
-  assert.match(rules.fallback(c('251270', -1.32, NaN, NaN)), /数据不完整|不能仅凭/);
+  const opposite = rules.fallback(c('225570', -1.1, 1.76, 1.78));
+  assert.doesNotMatch(opposite, /走势不同|独立驱动尚不明确|尚难确认|尚待确认/);
+  assert.match(opposite, /KOSDAQ/);
+  assert.match(rules.fallback(c('251270', -1.32, NaN, NaN)), /暂无每日驱动因素说明|当日无经核实的公司专属消息/);
+});
+
+test('任何模板和历史文案都不再出现推断式措辞', () => {
+  const samples = [
+    rules.fallback(c('462870', -2.64)), rules.fallback(c('036570', -1.71)),
+    rules.fallback(c('251270', -1.32)), rules.fallback(c('259960', -1.13)),
+    rules.marketLink(c('225570', -1.1, 1.76, 1.78)), rules.marketLink(c('251270', 0, 1.76, 1.78)),
+  ];
+  for (const text of samples) assert.doesNotMatch(text, /走势不同|独立驱动尚不明确|尚难确认|尚待确认|不能仅凭涨跌倒推/);
+  assert.ok(rules.validate('股价与KOSDAQ走势不同，独立驱动尚不明确；表现低于KOSDAQ', c('225570', -1.1, 1.76, 1.78)).includes('hedge-speculation'));
+  const content = JSON.parse(fs.readFileSync(path.join(root, 'data/content.json'), 'utf8'));
+  for (const [code, entries] of Object.entries(content.analysis.daily)) {
+    for (const [date, text] of Object.entries(entries)) {
+      if (!text) continue;
+      assert.deepEqual(rules.validate(text, rules.context(code, NaN, [])).filter(i => i === 'hedge-speculation'), [], `${date}:${code}`);
+    }
+  }
 });
 
 test('市场共同背景自动生成，但不猜盘中V形或机构回补', () => {
