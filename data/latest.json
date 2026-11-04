@@ -5,9 +5,9 @@
     "fetchedAt": "2026-11-04T09:01:30.571Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6,
-    "provisional": [
-      "259960"
-    ]
+    "manualCloseFix": {
+      "259960": 212000
+    }
   },
   "shiftUp": {
     "code": "462870",
@@ -778,8 +778,8 @@
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "209,500",
-      "change": "+8.16%",
+      "price": "212,000",
+      "change": "+16.55%",
       "changeClass": "up",
       "per": "N/A"
     },
