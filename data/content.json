@@ -2,14 +2,14 @@
   "meta": {
     "version": "3.1",
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
-    "updatedAt": "2026-11-04",
+    "updatedAt": "2026-11-05",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-11-04T09:01:41.839Z",
+    "newsAutoUpdatedAt": "2026-11-05T09:01:34.708Z",
     "newsAutoCount": {
-      "events": 13,
-      "industryNews": 1,
+      "events": 18,
+      "industryNews": 2,
       "skippedUntranslated": 0,
-      "skippedByUrl": 20,
+      "skippedByUrl": 15,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -81,7 +81,8 @@
       "20261030": "本月Shift Up专属催化偏产品端：<strong>10月9日</strong>公布Stellar Blade Complete Edition将于<strong>11月6日</strong>登陆Nintendo Switch 2并免费赠送贝优妮塔服装，属平台扩张与内容加码，但上线时点落在下月，月内难转化为业绩；<strong>10月23日</strong>又公布《剑星》与《守望先锋》联动，偏话题性营销，短期拉动有限。叠加财报季行业业绩分化、大盘KOSPI与KOSDAQ深度回调，资金风险偏好收缩，利好被延后兑现，股价随市走弱。",
       "20261102": "本月 Shift Up 无公司专属新闻披露，股价整体跟随大盘持平，缺乏个股独立催化。行业层面，游戏产业协会于 <strong>11.02</strong> 在国会立法博览会提出税收支持与监管改善等五大课题，属中长期政策面信号，尚未形成对公司业绩的直接传导；同期“搭上微信”等中国平台合作动向亦仅为行业性议题，未涉及该公司具体产品。在无新品、无运营数据更新的背景下，股价缺少方向性驱动，维持横盘。",
       "20261103": "<strong>Shift Up</strong>本月整体上行，相关动向：一场你不能错过的史诗冒险，Stella Blade...我们将对其进行测试并告诉你一切！ - 按巴黎排序。",
-      "20261104": "本月Shift Up的上涨主要由Stellar Blade相关消息驱动：11.02媒体发布测试预告，11.03确认Switch 2发售时间并支持<strong>60fps</strong>及配置详情，平台扩展预期升温，带动买盘。同期KOSPI与KOSDAQ分别下跌<strong>-2.99%</strong>、<strong>-2.64%</strong>，个股逆势走强，说明涨幅更多来自公司专属催化剂而非大盘。"
+      "20261104": "本月Shift Up的上涨主要由Stellar Blade相关消息驱动：11.02媒体发布测试预告，11.03确认Switch 2发售时间并支持<strong>60fps</strong>及配置详情，平台扩展预期升温，带动买盘。同期KOSPI与KOSDAQ分别下跌<strong>-2.99%</strong>、<strong>-2.64%</strong>，个股逆势走强，说明涨幅更多来自公司专属催化剂而非大盘。",
+      "20261105": "本月Shift Up的上涨主要由Stellar Blade的跨平台进展驱动：11.02起该作开启测试并披露详情，11.03确认Switch 2发售时间、支持<strong>60fps</strong>及配置信息，平台扩容预期提振了市场对其销量增量的想象。但11.05 NIKKE PC启动器安全事件持续发酵、业界进入紧急状态，构成潜在声誉与运营风险，限制了涨幅的进一步扩大。整体看，新品平台落地预期压过了短期安全扰动，推动股价在KOSPI、KOSDAQ双双走弱的背景下逆势上行。"
     },
     "company": {
       "225570": {
@@ -148,7 +149,8 @@
         "20261030": "本月Nexon Games承压，主因在于产品线仍处投入期而业绩兑现有限：行业三季度业绩分化的背景下，公司被归入承压一侧。同时，《Blue Archive》日本业务合约终止并归入Nexon旗下，短期引发运营归属与收益结构的担忧。正面催化上，5周年庆典定于11月7·8日举办、邀请<strong>1.2万</strong>人，二次创作生态持续活跃，但利好尚未落地，难敌大盘KOSPI <strong>-17.81%</strong>、KOSDAQ <strong>-19.00%</strong>的系统性拖累。",
         "20261102": "本月Nexon Games的核心驱动来自<strong>11.02</strong> Nexon将《Blue Archive》转为直营的消息。直营意味着发行环节利润回流与运营决策权集中，市场将其解读为业务\"效率化\"的延续，对盈利结构改善形成预期支撑；但直营同时带来渠道与运营成本内部化，短期业绩弹性存在不确定性，多空因素相互抵消，股价月内整体持平。行业层面协会呼吁税收支持与监管改善构成温和背景，但非本月该公司股价的主要变量。",
         "20261103": "<strong>Nexon Games</strong>本月整体下行，相关动向：Nexon 将《Blue Archive》转为直营，业务“效率化”持续推进。",
-        "20261104": "本月Nexon Games上涨，主因来自<strong>11月2日</strong>Nexon将《Blue Archive》转为直营的消息。直营意味着发行环节利润回流母公司体系，配合业务“效率化”推进，市场将其解读为提升IP变现效率与盈利质量的信号，构成个股专属催化。同期KOSPI与KOSDAQ分别下跌<strong>-2.99%</strong>、<strong>-2.64%</strong>，大盘走弱下该股逆势上行，反映资金对直营改革预期的定价。"
+        "20261104": "本月Nexon Games上涨，主因来自<strong>11月2日</strong>Nexon将《Blue Archive》转为直营的消息。直营意味着发行环节利润回流母公司体系，配合业务“效率化”推进，市场将其解读为提升IP变现效率与盈利质量的信号，构成个股专属催化。同期KOSPI与KOSDAQ分别下跌<strong>-2.99%</strong>、<strong>-2.64%</strong>，大盘走弱下该股逆势上行，反映资金对直营改革预期的定价。",
+        "20261105": "本月Nexon Games逆势走强的核心驱动来自《Blue Archive》的运营与IP热度双重强化：公司于11月2日将《Blue Archive》转为直营，业务效率化推进有助于改善收益结构与运营主导权；随后五周年庆典热度高涨，<strong>4000席</strong>预售<strong>1分钟售罄</strong>，验证IP号召力与用户黏性依旧稳固。在KOSPI、KOSDAQ整体走弱背景下，上述专属催化支撑了股价相对强势。"
       },
       "251270": {
         "20260722": "Netmarble本月承压主因系<strong>7月6日以₩3,000亿收购Wemade 19.5%股权</strong>落地，市场对整合风险与ROI周期持谨慎态度，当日股价即承压。随后<strong>7月8日游戏股集体触底</strong>，Netmarble单日下跌<strong>-4.5%</strong>，跌幅居前，主因仍是Wemade收购整合担忧叠加高Beta属性在KOSPI单日-3.2%中的放大效应。尽管7月7日大盘反弹时游戏股全线收红，Netmarble仅微涨<strong>+0.6%</strong>，显示该收购事件持续压制估值修复动能，成为月内拖累股价的核心负面催化剂。",
@@ -214,7 +216,8 @@
         "20261030": "本月Netmarble随游戏板块走弱，主因在于第三季度业绩分化的市场解读：10月27日消息显示Krafton与NCSoft业绩向好，而Nexon、Netmarble、Kakao则被归入承压一方，业绩预期落差直接压制股价。叠加KOSPI月内<strong>-17.81%</strong>、KOSDAQ<strong>-19.00%</strong>的系统性回调，资金对业绩落后者更为谨慎，放大下行压力。",
         "20261102": "本月 Netmarble 无公司专属新闻披露，股价整体持平，缺乏个股层面的独立催化。行业层面，游戏产业协会于 <strong>11.02</strong> 在国会立法博览会提出税收支持与监管改善等五大课题，属中长期政策信号，尚未形成可量化的盈利传导；同期“搭上微信”等中国社交平台合作动向亦仅停留在行业议题层面。在无公司专属事件驱动的情况下，股价缺乏方向性动能，故维持横盘。",
         "20261103": "<strong>Netmarble</strong>本月无专属事件，下行主要受行业与大盘氛围驱动（行业背景：韩国游戏产业协会参加“2026年国会立法博览会”...提出游戏产业5大立法任务）。",
-        "20261104": "本月 Netmarble 无公司专属新闻，股价上涨更多来自大盘背景下的结构性支撑，而非个股催化。行业层面，韩国游戏产业协会在“2026年国会立法博览会”上提出游戏产业<strong>5</strong>大立法任务，政策议程升温有助稳定板块预期；同期业界裁员扩散、“无就业增长”讨论升温，也使市场更倾向关注具备存量产品与成本弹性的标的。在 KOSPI <strong>-2.99%</strong>、KOSDAQ <strong>-2.64%</strong> 的弱势月内，上述因素共同构成相对抗跌的支撑，但缺乏公司级事件驱动，上涨持续性仍需后续催化验证。"
+        "20261104": "本月 Netmarble 无公司专属新闻，股价上涨更多来自大盘背景下的结构性支撑，而非个股催化。行业层面，韩国游戏产业协会在“2026年国会立法博览会”上提出游戏产业<strong>5</strong>大立法任务，政策议程升温有助稳定板块预期；同期业界裁员扩散、“无就业增长”讨论升温，也使市场更倾向关注具备存量产品与成本弹性的标的。在 KOSPI <strong>-2.99%</strong>、KOSDAQ <strong>-2.64%</strong> 的弱势月内，上述因素共同构成相对抗跌的支撑，但缺乏公司级事件驱动，上涨持续性仍需后续催化验证。",
+        "20261105": "本月 Netmarble 无专属新闻披露，股价上行更多体现为大盘系统性回调中的相对韧性。KOSPI 月内下跌 <strong>-8.11%</strong>、KOSDAQ 下跌 <strong>-7.62%</strong>，而业界整体仍处内容扩张节奏（新作上线、大规模更新与活动），为具备在营产品组合的公司提供一定基本面支撑；与此同时，业界裁员与 NIKKE PC 启动器安全事件等负面扰动更多集中于特定标的，未直接波及该公司。在缺乏个股利空的情况下，资金对其相对防御性的配置需求构成主要驱动。"
       },
       "259960": {
         "20260722": "本月Krafton持续走弱，核心矛盾在于市场风险偏好切换与自身催化剂真空共振。7/3大盘史诗级V型反转日，资金100%涌入半导体硬件，Krafton逆势大跌<strong>-3.68%</strong>成为最差权重股，显示其被明确轮出主线；叠加PUBG印度回归谈判无进展、Ascend Zero催化真空，Q1超预期财报利好已充分定价，短期缺乏新驱动。7/7大盘反弹时仅微涨<strong>+0.9%</strong>，7/8大盘再跌即重挫<strong>-3.8%</strong>，高Beta属性在下跌中放大跌幅，弱势格局贯穿全月。",
@@ -280,7 +283,8 @@
         "20261030": "本月Krafton随KOSPI、KOSDAQ深度回调而走弱，大盘系统性压力构成主要拖累。公司层面消息多空交织：Kakao Games与Krafton向EyesEnter押注<strong>200亿</strong>，属对外投资布局；5minlab手游RPG全球累计下载达<strong>300万</strong>，显示中小体量产品仍有增量；印度BGMI国际赛事与《PUBG》Netflix真人剧改编，则强化IP长线运营预期。但上述催化剂多为中长期叙事，难敌月内风险偏好收缩，股价随大盘下行。",
         "20261102": "<strong>Krafton</strong>本月整体盘整，相关动向：与FIFTY FIFTY打造的角色对话，Krafton推出AI聊天“Kip”；“打造与人协作的机器人AI时代”，Krafton推出“Rudy 0.2”。",
         "20261103": "<strong>Krafton</strong>本月整体上行，相关动向：《Battleground × Ive》相约G-Star…4款新作品展示；Krafton 在 G-Star 展示新游戏并呈现 PUBG × Ive 合作。",
-        "20261104": "Krafton本月上涨的核心驱动来自<strong>11月4日</strong>宣布的<strong>3000亿韩元</strong>自家股票回购并注销计划，市场将其解读为股本收缩与股东回报的明确信号，当日股价大涨逾<strong>10%</strong>，成为月内主导催化。同时，PUBG与IVE的联动合作及G-STAR 2026现场活动公开，为PUBG IP的持续运营热度提供支撑，共同强化了买盘情绪。"
+        "20261104": "Krafton本月上涨的核心驱动来自<strong>11月4日</strong>宣布的<strong>3000亿韩元</strong>自家股票回购并注销计划，市场将其解读为股本收缩与股东回报的明确信号，当日股价大涨逾<strong>10%</strong>，成为月内主导催化。同时，PUBG与IVE的联动合作及G-STAR 2026现场活动公开，为PUBG IP的持续运营热度提供支撑，共同强化了买盘情绪。",
+        "20261105": "本月Krafton逆大盘走强，主因PUBG端密集催化：一方面上线与IVE的联动内容，推出角色、服装与武器，借偶像IP激活用户活跃度与付费；另一方面BGMI AER预注册人数突破<strong>1400万</strong>，并定档12月10日上线，提前锁定印度市场增量预期。同时公司以AI智能体引领招聘与游玩创新，强化效率叙事。多重内容与产品管线信号叠加，构成股价上行的主要驱动。"
       },
       "263750": {
         "20260722": "本月Pearl Abyss股价承压，主因《Crimson Desert》DLC利好消化完毕，<strong>7/8</strong>在无新催化剂下随大盘重挫<strong>-6.0%</strong>，高Beta属性放大系统性抛压。尽管同日宣布特别分红、年配当率提升至<strong>2.5%</strong>，且<strong>7/18</strong>获Develop:Star技术创新奖、<strong>7/20</strong>新增云存档功能，但防御性利好未能抵消KOSPI深度调整与外资流出压力，股价整体维持弱势。",
@@ -346,7 +350,8 @@
         "20261030": "本月Pearl Abyss逆大盘走强，核心驱动来自《Crimson Desert》产品周期密集催化：10月27日该作增强版入围2026金摇杆奖“年度最佳游戏”候选，带来奖项曝光；同期“Charting the Unknown”DLC功能指南接连释出，10月28日Epic Games详解无需通关即可体验的海洋DLC内容与时点，10月29日《Crimson Desert Enhanced: 未知之旅》全球上线，形成从预热到落地的完整催化链。叠加《黑色沙漠Mobile》万圣节活动维持存量运营热度，在KOSPI <strong>-17.81%</strong>、KOSDAQ <strong>-19.00%</strong>的弱势背景下，资金向有明确产品催化的标的集中。",
         "20261102": "本月Pearl Abyss股价整体持平，主因围绕《Crimson Desert》的多空消息相互抵消：一方面，该作DLC获沙特阿拉伯销售批准，地区发行推进带来正向预期；另一方面，UAE仍在等待批准，落地节奏存不确定性。同时，《Crimson Desert》入选PlayStation“Players' Choice”候选，并进入与《Aion 2》谁将赢得游戏大奖的讨论，提升市场关注度但尚未形成实质催化，股价因而缺乏明确方向。",
         "20261103": "<strong>Pearl Abyss</strong>本月整体下行，相关动向：《Crimson Desert》DLC获沙特阿拉伯销售批准，UAE仍在等待；无论如何，《Crimson Desert’》或《Aion 2》，谁将赢得游戏大奖？。",
-        "20261104": "本月Pearl Abyss的专属催化集中于《Crimson Desert》：其DLC获沙特阿拉伯销售批准，但UAE仍在等待，中东放量节奏存在不确定性；同时该作入选PlayStation“Players' Choice”候选，并进入与《Aion 2》谁将赢得游戏大奖的讨论，奖项预期升温。上述进展偏中期叙事，缺乏即时业绩兑现，叠加KOSPI月内<strong>-2.99%</strong>、KOSDAQ<strong>-2.64%</strong>的弱势背景，股价整体承压下行。"
+        "20261104": "本月Pearl Abyss的专属催化集中于《Crimson Desert》：其DLC获沙特阿拉伯销售批准，但UAE仍在等待，中东放量节奏存在不确定性；同时该作入选PlayStation“Players' Choice”候选，并进入与《Aion 2》谁将赢得游戏大奖的讨论，奖项预期升温。上述进展偏中期叙事，缺乏即时业绩兑现，叠加KOSPI月内<strong>-2.99%</strong>、KOSDAQ<strong>-2.64%</strong>的弱势背景，股价整体承压下行。",
+        "20261105": "本月Pearl Abyss缺乏实质业绩催化，股价主要随大盘风险偏好走弱而承压。事件面多为预期层面的铺垫：<strong>11.01</strong>《Crimson Desert》DLC获沙特阿拉伯销售批准，但UAE仍在等待，区域放行节奏存在不确定性；<strong>11.02</strong>该作入选PlayStation“Players' Choice”候选，并进入与《Aion 2》相关的大奖讨论，属关注度利好而非收入兑现；<strong>11.05</strong>公司在G-STAR G-CON分享开放世界开发经验，亦难转化为短期业绩。多重预期尚未落地，叠加KOSPI与KOSDAQ整体走弱，股价随之调整。"
       },
       "036570": {
         "20260722": "本月NCsoft走势的核心矛盾在于资金轮动方向反复切换。7月2日大盘熔断、半导体股集体崩塌之际，资金从硬件大规模轮动至软件/内容板块，NCsoft作为唯一收红的游戏股逆势大涨<strong>+3.72%</strong>，成为极端市场中的避风港，叠加6月超跌后的技术性反弹及Aion 2全球发布临近的估值支撑，形成强劲买盘。然而次日大盘史诗级V型反转，资金偏好迅速切回半导体等硬件主线，游戏板块再度被抛弃，NCsoft随板块跑输大盘。整体看，本月NCsoft涨跌完全由市场极端波动下的资金轮动方向主导，自身缺乏独立催化剂，呈现典型的被动跟随特征。",
@@ -412,7 +417,8 @@
         "20261030": "本月NCSoft随KOSPI、KOSDAQ大盘走弱而承压，但《Aion 2》全球表现构成核心支撑：上线1个月Twitch观看时长突破<strong>4000万小时</strong>，日本Steam连续<strong>3周</strong>销售额第一，并在全球<strong>10国</strong>排名前列，同时在线达<strong>40万</strong>、累计游玩<strong>1亿小时</strong>，验证“后《天堂》”转型逻辑。公司同步以二次元与移动休闲游戏瞄准海外，并与迪拜政府签署游戏产业培育MOU，拓展中长期成长叙事；然而行业第三季度业绩分化背景下，新品热度能否实质带动业绩反弹仍待确认，股价整体随大盘下行。",
         "20261102": "本月NCSoft的核心驱动来自基本面重塑与产品线验证：公司以全球、休闲、AI重塑体质，启动企业价值重估，构成中期叙事支撑；《Aion 2》全球服务满月顺利推进、瞄准长线运营，为新品周期提供落地证据；《Crimson Desert》与其同列2026游戏大奖角逐，亦强化市场对产品管线关注度。多重事件交织下，股价月内整体持平，反映重估预期与新品兑现节奏之间的博弈。",
         "20261103": "本月NCSoft承压，主因围绕《Aion 2》的市场检验期展开：该作Twitch观看时长达<strong>4400万小时</strong>、同时在线观看突破<strong>10万</strong>，热度可观，但海外评测同步点出飞行与战斗通行证、计费与成长结构的“功课”，商业化与留存的不确定性压制预期。叠加KOSPI与KOSDAQ月内分别下跌<strong>-3.59%</strong>、<strong>-4.08%</strong>的弱势环境，资金对利好兑现更为审慎。",
-        "20261104": "本月NCSoft上涨主要受Aion2全球表现驱动。Aion2上线一个月进入北美、欧洲、亚洲榜单TOP 5长销榜，Steam全球营收排名第<strong>第3</strong>，Twitch观看时长达<strong>4400万小时</strong>、同时在线观看人数突破<strong>10万</strong>，验证长销与直播热度。11月4日独家消息称Aion2明年第二季度进军中国，瞄准累计用户<strong>1亿</strong>市场，打开增量空间；公司同步向个人创作者开放AI技术，强化内容生态预期。"
+        "20261104": "本月NCSoft上涨主要受Aion2全球表现驱动。Aion2上线一个月进入北美、欧洲、亚洲榜单TOP 5长销榜，Steam全球营收排名第<strong>第3</strong>，Twitch观看时长达<strong>4400万小时</strong>、同时在线观看人数突破<strong>10万</strong>，验证长销与直播热度。11月4日独家消息称Aion2明年第二季度进军中国，瞄准累计用户<strong>1亿</strong>市场，打开增量空间；公司同步向个人创作者开放AI技术，强化内容生态预期。",
+        "20261105": "本月NCSoft上涨的核心驱动来自Aion2的强势表现与出海预期。Aion2登顶Steam周销榜第<strong>第3</strong>，并在日本、德国、法国等<strong>8</strong>国排名第一，验证了产品在全球市场的接受度；公司同步确认Aion2将于明年第二季度进军中国，打开新的增量空间。此外，公司向个人创作者开放AI技术、在G-STAR 2026运营VARCO体验咖啡厅，强化了技术叙事与用户触点，共同支撑股价在弱市中走强。"
       }
     },
     "dailyMacro": {
@@ -425,7 +431,8 @@
       "20261030": "10月30日韩国股市收盘，KOSPI下跌<strong>-3.48%</strong>、KOSDAQ下跌<strong>-3.83%</strong>。",
       "20261102": "11月2日韩国股市收盘，KOSPI上涨<strong>+2.24%</strong>、KOSDAQ上涨<strong>+1.38%</strong>。两指数在前一交易日下跌后回升，属于收盘层面的反弹。",
       "20261103": "11月3日韩国股市收盘，KOSPI下跌<strong>-3.59%</strong>、KOSDAQ下跌<strong>-4.08%</strong>。",
-      "20261104": "11月4日韩国股市收盘，KOSPI上涨<strong>0.62%</strong>、KOSDAQ上涨<strong>1.50%</strong>。两指数在前一交易日大跌后回升，其中KOSPI盘中一度跌近<strong>4%</strong>，尾盘完成深V反转，收盘上涨主要由电池股走强抵消半导体股下跌，并非全面普涨。"
+      "20261104": "11月4日韩国股市收盘，KOSPI上涨<strong>0.62%</strong>、KOSDAQ上涨<strong>1.50%</strong>。两指数在前一交易日大跌后回升，其中KOSPI盘中一度跌近<strong>4%</strong>，尾盘完成深V反转，收盘上涨主要由电池股走强抵消半导体股下跌，并非全面普涨。",
+      "20261105": "11月5日韩国股市收盘，KOSPI下跌<strong>-5.28%</strong>、KOSDAQ下跌<strong>-5.11%</strong>。"
     },
     "daily": {
       "225570": {
@@ -476,7 +483,8 @@
         "20261029": "《Blue Archive》日本业务转入 Nexon 直接运营的报道持续发酵，叠加产品线双轨扩充等背景，提振市场预期；当日股价上涨<strong>+1.05%</strong>，同期KOSDAQ为<strong>-2.34%</strong>，表现高于KOSDAQ。",
         "20261102": "11月02日报道：Nexon 将《Blue Archive》转为直营，业务“效率化”持续推进。该消息提供公司层面背景。股价当日下跌<strong>-2.90%</strong>，同期KOSDAQ为<strong>+1.38%</strong>；表现低于KOSDAQ。",
         "20261103": "11月02日报道：Nexon 将《Blue Archive》转为直营，业务“效率化”持续推进。该消息提供公司层面背景。股价与KOSDAQ（<strong>-4.08%</strong>）同向回调；跌幅小于KOSDAQ，表现相对抗跌。",
-        "20261104": "《Blue Archive》日本发行将转由Nexon负责，有助于整合开发、运营及IP拓展，但短期财务贡献仍待验证。股价随市场回升并跑赢KOSDAQ。"
+        "20261104": "《Blue Archive》日本发行将转由Nexon负责，有助于整合开发、运营及IP拓展，但短期财务贡献仍待验证。股价随市场回升并跑赢KOSDAQ。",
+        "20261105": "在KOSDAQ重挫<strong>-5.11%</strong>的背景下，Blue Archive五周年庆典热度高涨、<strong>4000</strong>席预售<strong>1</strong>分钟售罄的近期报道构成情绪支撑，叠加直营效率化背景，股价逆势收涨，但庆典属软性催化，独立驱动仍待验证；表现高于KOSDAQ。"
       },
       "251270": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI获利了结与外资流出的大盘调整中获资金避险青睐，Netmarble逆势走强，但韩元贬值与地缘风险仍压制反弹空间。",
@@ -528,7 +536,8 @@
         "20261019": "当日无公司专属催化，韩股早盘大跌后V形反转、KOSPI收涨<strong>+1.76%</strong>带动随市回升；但涨幅低于KOSPI，整体表现相对偏弱，缺乏独立驱动逻辑。",
         "20261023": "缺乏专属催化，在KOSPI微涨<strong>+0.30%</strong>背景下仍随游戏板块整体走弱回调，六家跟踪标的中四家下跌，板块偏弱情绪构成主要拖累。",
         "20261026": "当日缺乏明确公司专属催化，主要随韩国市场风险偏好降温而回调；但跌幅小于KOSPI<strong>-1.46%</strong>，表现相对抗跌。",
-        "20261104": "股价随韩国市场尾盘修复而回升，表现高于KOSPI，走势以市场及板块资金回补为主。"
+        "20261104": "股价随韩国市场尾盘修复而回升，表现高于KOSPI，走势以市场及板块资金回补为主。",
+        "20261105": "当日无经核实的公司专属消息。股价当日上涨<strong>+7.31%</strong>，同期KOSPI为<strong>-5.28%</strong>；表现高于KOSPI。"
       },
       "259960": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI获利了结与外资流出的大盘调整中展现防御性，资金转向业绩确定性标的，推动其逆势走强。",
@@ -581,7 +590,8 @@
         "20261023": "新作空窗期叠加Q3营业利润下滑预期构成基本面压制，当日公开的Raon-1 Mini自研LLM与《inZOI》AI模组等AI进展尚处投入期、难抵盈利担忧，股价随板块偏弱回调。",
         "20261026": "周末公开自研语言模型 Raon-1 mini 预览版，形成一定情绪支撑，但商业化贡献尚处早期；股价随大盘回调，不过跌幅小于KOSPI<strong>-1.46%</strong>，表现相对抗跌。",
         "20261029": "随KOSPI走弱回调但相对抗跌，近期公开报道中未见公司专属重大增量：5minlab手游RPG全球累计下载量达<strong>300万</strong>、与Kakao Games共同向EyesEnter投资<strong>200亿</strong>韩元均属背景信息，尚不足以构成明确驱动。",
-        "20261104": "受<strong>3000亿韩元</strong>股份回购并全部注销计划提振，回购股份约占总股本<strong>3.6%</strong>，公司级催化明确，股价显著跑赢KOSPI。"
+        "20261104": "受<strong>3000亿韩元</strong>股份回购并全部注销计划提振，回购股份约占总股本<strong>3.6%</strong>，公司级催化明确，股价显著跑赢KOSPI。",
+        "20261105": "PUBG近期公开报道上线与IVE的联动角色、服装及武器内容，BGMI AER预注册人数突破<strong>1400万</strong>并定档12月10日，构成运营端增量背景；在KOSPI重挫<strong>-5.28%</strong>下仍录得相对抗跌表现，但联动与预注册均属软性消息，尚不足以单独解释涨幅。"
       },
       "263750": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI板块获利了结、外资流出的大盘调整中获避险资金青睐，逆势走强。",
@@ -644,7 +654,8 @@
         "20261022": "《Crimson Desert》DLC“未知之旅”预览视频公开后缺乏新增实质催化，叠加KOSDAQ重挫<strong>-3.62%</strong>的系统性抛压，股价随板块偏弱格局回调。",
         "20261030": "《Crimson Desert Enhanced: 未知之旅》当日全球上线构成公司层面增量催化，叠加近期该作入围金摇杆奖候选与海洋DLC报道预热，在KOSDAQ重挫<strong>-3.83%</strong>背景下支撑独立走强；表现高于KOSDAQ。",
         "20261102": "《Crimson Desert》DLC“未知之旅”近期全球上线，但上线后玩家回流及在线人数提升有限，市场对其收入拉动预期降温；股价在KOSDAQ上涨<strong>+1.38%</strong>的背景下明显跑输。",
-        "20261103": "11月02日报道：无论如何，《Crimson Desert’》或《Aion 2》，谁将赢得游戏大奖。该消息提供公司层面背景。股价与KOSDAQ（<strong>-4.08%</strong>）同向回调；表现低于KOSDAQ。"
+        "20261103": "11月02日报道：无论如何，《Crimson Desert’》或《Aion 2》，谁将赢得游戏大奖。该消息提供公司层面背景。股价与KOSDAQ（<strong>-4.08%</strong>）同向回调；表现低于KOSDAQ。",
+        "20261105": "11月05日报道：Pearl Abyss在&quot;G-STAR G-CON’&quot;分享Crimson Desert开放世界开发经验 - Pearl Abyss官网。该消息提供公司层面背景。股价当日上涨<strong>+3.88%</strong>，同期KOSDAQ为<strong>-5.11%</strong>；表现高于KOSDAQ。"
       },
       "su": {
         "20260701": "受KOSDAQ成立30周年纪念日逆势收涨约<strong>1%</strong>带动，游戏股在AI板块获利了结、外资流出的大盘调整中获资金避风，逆势走强。",
@@ -729,7 +740,8 @@
         "20261030": null,
         "20261102": null,
         "20261103": "11月03日报道：一场你不能错过的史诗冒险，Stella Blade...我们将对其进行测试并告诉你一切！ - 按巴黎排序。该消息提供公司层面背景。股价当日上涨<strong>+2.86%</strong>，同期KOSPI为<strong>-3.59%</strong>；表现高于KOSPI。",
-        "20261104": "《剑星》Switch 2版临近发售，产品覆盖平台进一步扩大，但新增销量及收入贡献仍待观察。股价下跌并显著跑输KOSPI，产品消息未转化为当日股价催化。"
+        "20261104": "《剑星》Switch 2版临近发售，产品覆盖平台进一步扩大，但新增销量及收入贡献仍待观察。股价下跌并显著跑输KOSPI，产品消息未转化为当日股价催化。",
+        "20261105": "在KOSPI重挫<strong>-5.28%</strong>背景下逆势走强，或受近期公开报道的Stellar Blade Switch 2版本发售安排提振，但NIKKE PC启动器安全事件仍在发酵，独立驱动尚待验证；表现高于KOSPI。"
       },
       "036570": {
         "20260702": "受7/2“黑色星期四”KOSPI暴跌<strong>-7.89%</strong>、半导体股集体熔断引发的资金从硬件向软件/内容板块轮动提振，叠加6月累计下跌超20%后的技术性反弹及Aion 2全球发布临近的估值支撑，成为资金避风港，逆势收红。",
@@ -796,7 +808,8 @@
         "20261030": "《Aion 2》近期公开报道显示日本 Steam 连续<strong>3周</strong>销售额第一、上线1个月 Twitch 观看时长突破<strong>4000万</strong>小时，叠加与迪拜政府签署游戏产业培育 MOU，在 KOSPI 重挫背景下支撑相对抗跌表现。",
         "20261102": "11月01日报道：NCSoft《Aion 2》全球上线，累计角色突破630万个。该运营数据可供参考，但不直接等同于收入或持续增长。股价当日下跌<strong>-1.49%</strong>，同期KOSPI为<strong>+2.24%</strong>；表现低于KOSPI。",
         "20261103": "11月03日报道：NC AI 开发 3B 级轻量级视觉语言模型……经过验证的“同类最佳”全球性能。属于常规运营或营销型背景，业绩贡献暂难量化，不能据此认定为强催化。股价与KOSPI（<strong>-3.59%</strong>）同向回调；跌幅小于KOSPI，表现相对抗跌。",
-        "20261104": "股价随韩国市场尾盘反弹而回升，涨幅高于KOSPI，走势以市场修复为主。"
+        "20261104": "股价随韩国市场尾盘反弹而回升，涨幅高于KOSPI，走势以市场修复为主。",
+        "20261105": "11月05日报道：[G-STAR 2026] NC AI运营&quot;VARCO体验咖啡厅&quot;…扩大用户接触点。该消息提供公司层面背景。股价当日上涨<strong>+5.38%</strong>，同期KOSPI为<strong>-5.28%</strong>；表现高于KOSPI。"
       }
     }
   },
@@ -945,7 +958,8 @@
       "10/30",
       "11/2",
       "11/3",
-      "11/4"
+      "11/4",
+      "11/5"
     ],
     "datasets": [
       {
@@ -1094,7 +1108,8 @@
           -4.85,
           0,
           2.86,
-          0.51
+          0.51,
+          7.07
         ],
         "borderColor": "#ff6b9d",
         "backgroundColor": "transparent",
@@ -1251,7 +1266,8 @@
           -9.89,
           0,
           -1.49,
-          -0.11
+          -0.11,
+          1.26
         ],
         "borderColor": "#22c55e",
         "backgroundColor": "transparent",
@@ -1408,7 +1424,8 @@
           -3.3,
           0,
           -0.74,
-          2.09
+          2.09,
+          9.55
         ],
         "borderColor": "#ef4444",
         "backgroundColor": "transparent",
@@ -1565,7 +1582,8 @@
           -12.58,
           0,
           -1.61,
-          -0.15
+          -0.15,
+          5.22
         ],
         "borderColor": "#3b82f6",
         "backgroundColor": "transparent",
@@ -1722,7 +1740,8 @@
           -8.31,
           0,
           0.11,
-          16.67
+          16.67,
+          20.96
         ],
         "borderColor": "#f59e0b",
         "backgroundColor": "transparent",
@@ -1879,7 +1898,8 @@
           4.17,
           0,
           -4.6,
-          -4.78
+          -4.78,
+          -1.08
         ],
         "borderColor": "#a855f7",
         "backgroundColor": "transparent",
@@ -1893,6 +1913,204 @@
     ]
   },
   "events": [
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss Crimson Desert全球累计销量达600万份 - Pearl Abyss官网</strong>",
+      "source": "펄어비스 공식 홈페이지",
+      "date": "10.23",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5XZmJDZy0yQ01STmh2OS1USzgyRXlJU3dIeWdSMDN6cU9zTU1EUUFNTmpuZmZmYmViVkd0M2lYa19ndUdDdEJfTUFNNnNDV0prVm9PLUd0eEZRMWpLUEpFWHl1QTlLUEltbWl3?oc=5",
+      "rawTitle": "펄어비스 붉은사막, 글로벌 누적 판매량 600만 장 달성 - 펄어비스 공식 홈페이지",
+      "publishedAt": "2026-10-23T10:51:28.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.706Z"
+    },
+    {
+      "company": "Pearl Abyss",
+      "color": "#a855f7",
+      "title": "<strong>Pearl Abyss在\"G-STAR G-CON’\"分享Crimson Desert开放世界开发经验 - Pearl Abyss官网</strong>",
+      "source": "펄어비스 공식 홈페이지",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB3N01kOFNjRjEtaVpDR0tpZWp1ZDNoY282b0F4ZzVFR2c0QnZHbzJUNVNNb0RsTEtBOUpaSjlVUjk3aHFmNjYteDZiTW91TFdmTTY1SDJsVXViNWJFSktnVURZSnI?oc=5",
+      "rawTitle": "펄어비스, ‘지스타 G-CON’서 붉은사막 오픈월드 개발 노하우 강연 - 펄어비스 공식 홈페이지",
+      "publishedAt": "2026-11-05T07:05:08.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.706Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>[亚洲AI大奖]Krafton以AI智能体引领招聘与游玩创新</strong>",
+      "source": "아시아경제",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0xTG1yc1RmMWEtMGVjMmxaSl9fd3g2blpUbFJ1YWxqYkVqX3dJY1FpNG1PVWttdEMyM2xGR0pXb0NnSFVLcmt1bzZabEdfOU9TdHZkT0VLOFVHdllYaFptOQ?oc=5",
+      "rawTitle": "[아시아AI대상]크래프톤, AI 에이전트로 채용·플레이 혁신 주도",
+      "publishedAt": "2026-11-05T07:30:00.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.706Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton PUBG更新上线IVE联动内容</strong>",
+      "source": "뉴스핌",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE51cjBUS2FFSU1xbWgtXzNlMnpqYW5MWnRVR0l2ZGFjQmZENUloRFV0QkoxU3ptcGRUa1h0dlNLZzFYNFBuMExsb19iaGMtZXFLdlhVQlh0cDRPOGRJ?oc=5",
+      "rawTitle": "크래프톤 '배틀그라운드', 아이브 콜라보 콘텐츠 적용 업데이트",
+      "publishedAt": "2026-11-05T02:21:00.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.705Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>[游戏更新] PUBG-洛奇Mobile-今日胡桃</strong>",
+      "source": "브릿지경제",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBRX0hTdmZQbXlBUUV0T0o5SmtvbDNOWTRpYm9qQmNPODhwaHZjUW9qaG12dE0tZVozNE1PUkRrQmRXdVBXWWZ1amRTLTNraDd1WVBSUENoWmE4UQ?oc=5",
+      "rawTitle": "[게임 업데이트] 배틀그라운드-마비노기 모바일-오늘두호두",
+      "publishedAt": "2026-11-05T07:08:00.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.705Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton BGMI AER预注册人数突破1400万…12月10日\"出击\"</strong>",
+      "source": "더구루",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5OeGtCUFpmWGE1Sm9Vc2VQb0VMYmhIbFpZVTRxNFVKajBNXzUtWXh5d1A5ZllYZnYycGpVMDViQ3RLRDF0VXlnRFhRUTMyLTVVbHUzUko3ZlNnNXRfcUNBaHM4dw?oc=5",
+      "rawTitle": "크래프톤 'BGMI 에어' 사전등록자 1400만명 돌파…12월 10일 '출격'",
+      "publishedAt": "2026-11-05T06:08:19.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.704Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG携手\"IVE\"联动…推出角色、服装、武器内容</strong>",
+      "source": "중앙일보",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE40S2Z6eTVBalBrenNSbko1ZFVkbjNCRWhWel9lTUhHQmE1dTEzVUtQMDI1aDRqdThpR2hrNXRsemJOOVVFdTgyM2tyLWVZX2hIX3RQa1JR?oc=5",
+      "rawTitle": "배틀그라운드, ‘아이브’ 콜라보…캐릭터·의상·무기 콘텐트 출시",
+      "publishedAt": "2026-11-05T06:38:00.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.704Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Krafton PUBG新增组合IVE合作内容</strong>",
+      "source": "지디넷코리아",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1RSVBsMVUyVHBja2RnMTNWRVZBVkYwQm1mVDFzVTdrMmdXQVF0VDZ3SEFWUEVoOWl4b3kwQkh1N1h1N1NCSTU0S2FHYXhkVkJhMm5WRWNB?oc=5",
+      "rawTitle": "크래프톤 '배틀그라운드', 그룹 '아이브' 협업 콘텐츠 추가",
+      "publishedAt": "2026-11-05T02:45:01.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.704Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>PUBG上线IVE联动内容…高难度PvE模式也将陆续开放</strong>",
+      "source": "전자신문",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE10TC1VMjR0N2FkWWxaSkMyNE5UOENFczBKYmFIM0V6bTVHdVlTMDFLOXlDQWJ6WW84VGdodi1kYVJHbk9keDVXNzNtSkV4dw?oc=5",
+      "rawTitle": "배틀그라운드, 아이브 컬래버 콘텐츠 적용... 고난도 PvE 모드도 순차 운영",
+      "publishedAt": "2026-11-05T04:58:46.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.703Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>补丁说明 - 更新44.1 - 新闻 - PUBG: BATTLEGROUNDS</strong>",
+      "source": "PUBG: BATTLEGROUNDS",
+      "date": "11.02",
+      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE9OWU1jZ2F6MUVDNk1ueGUyaUVfeEx3dkFpTVR3NjJIRzFmZHdONDQzYzJIc3hjZmxWSUNHTEpEd2FTdDQ1?oc=5",
+      "rawTitle": "패치 노트 - 업데이트 44.1 - 뉴스 - PUBG: 배틀그라운드 - PUBG: BATTLEGROUNDS",
+      "publishedAt": "2026-11-02T08:00:00.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.702Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>[G-STAR 2026] NC AI运营\"VARCO体验咖啡厅\"…扩大用户接触点</strong>",
+      "source": "포쓰저널",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE54cWFhRzgxc1VYdjhoODJOcE1aTTQzbFBnXzA2M294cU51bDlXQXZUV1BncU52ZGdYeVNya2ltWU9zTHNOX1RKVnpXdVhyYVhCRVhaZTI0bTlSRlBkUUxWR3drSlc?oc=5",
+      "rawTitle": "[지스타2026] NC AI '바르코 체험 카페' 운영..이용자 접점 확대",
+      "publishedAt": "2026-11-05T00:55:37.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.702Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft Aion2将于明年第二季度进军中国</strong>",
+      "source": "헤럴드경제",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFB0RXU4NWdfRUZMSExTR1lYSmZFZ0xPNDJjMGo1dlZmQXpheDd4MzV2SE5fMWxZbFI0MUF5NWNvQUVjcmxTN2puRGxwTVBndUdsa19FT0hB?oc=5",
+      "rawTitle": "엔씨 아이온2, 내년 2분기 中 출격",
+      "publishedAt": "2026-11-05T02:36:54.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.701Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>Steam全球第3的Aion2，NCSoft沟通方式转变带来的变化</strong>",
+      "source": "게임뷰",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1nX2xCRWFFNnpRQTJtb1BfdjdGekhmNXVJUWlUdGZ5YWRzQ3QweXhINGoxbmFCNDZpUHp5R1dtamoyRWdEMjVqT2pjUUtCalRwTmZDRm9tZWxzNmFFQWNnS2VFQ3lsenlSbFE?oc=5",
+      "rawTitle": "스팀 글로벌 3위 '아이온2', 엔씨의 달라진 소통이 만든 변화",
+      "publishedAt": "2026-11-05T04:14:58.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.701Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft Aion2登顶Steam周销榜第3…在日本、德国、法国等8国排名第一</strong>",
+      "source": "위키트리",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9JSGRqc1NmTGgxbk1XMFd2YXFTUFNqMDhWQjJFTXloWXJDWmFrUWlTWXdJX3k3TnZoUS13RkhjOTlHbk5RMGRoc0FZQ0UxcW0yUGNSWWFB?oc=5",
+      "rawTitle": "엔씨 '아이온2', 스팀 주간 매출 3위…일본·독일·프랑스 등 8개국 1위",
+      "publishedAt": "2026-11-05T06:30:00.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.701Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft Aion2或将于2027年第二季度在中国上线</strong>",
+      "source": "지디넷코리아",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE84SVBMNDNBeDAxRHNrSUozYlF1V25WTG9pRzhEOUpyUUx0bG4xVVQxWU5QMFkwa1ozQ2RaSXJwWHE3cE1XeFdCNWhXQk1oenpxMFBFX1dB?oc=5",
+      "rawTitle": "엔씨 ‘아이온2’, 2027년 2분기 중국 출시되나",
+      "publishedAt": "2026-11-05T06:14:28.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.700Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon将于11月举办\"Blue Archive五周年庆典\"</strong>",
+      "source": "중소기업신문",
+      "date": "10.23",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBMaVNPM2dvN3BBTlM2N3ZrNzFKaW8yWWJCWXI3bGxFb0hBZ0NtMEhpajl2MkN6S3EzaC1yaFk5SURIUjAxWXFzSXhsOGVHNTNCTnJlY0ZESFgxVFRzLVNCWmVhSGx6cm80RmZjVWJ3?oc=5",
+      "rawTitle": "넥슨 ‘블루 아카이브 5주년 페스티벌’ 11월 개최",
+      "publishedAt": "2026-10-23T07:00:00.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.700Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>\"Blue Archive五周年庆典\"热度高涨</strong>",
+      "source": "더게임스",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5MbG1XS0E1NlQ1cXkyVFFFN0R0UVJ3VHBKVUZtYXhEUzl1MDZNNU9Wa1d1MXd0Sk8yeU9FMDlMNGlfUTd4bEQwdDBLRmJydW1yZl9fS2ZpcHFRS3NqRFE1eTVPbGlfR1Z6Smx3UQ?oc=5",
+      "rawTitle": "'블루 아카이브 5주년 페스티벌' 열기 후끈",
+      "publishedAt": "2026-11-05T03:34:20.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.699Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>4000席预售也\"1分钟售罄\"…五周年之际Blue Archive地位依旧稳固</strong>",
+      "source": "플레이포럼",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9Ha0FFWE9iTjhVOWhHdEl1OFdYdlhVQl8zRnUxNjk1Zy1zOWYwYTBXa2xzeXU2cDgxYjU4a1NoRzdqODY4UlZpOTBrQm11ZUx3eGI5SUY1Z1FIM0ZZTGQ3SWhNOVdQeUp0OHJ0aQ?oc=5",
+      "rawTitle": "4000석 예매도 '1분 컷'...5주년에도 굳건한 '블루 아카이브' 위상",
+      "publishedAt": "2026-11-05T01:51:32.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.699Z"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -3700,153 +3918,31 @@
       "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9zUjNwVDktTURJNWR2Ukw4bDl3Q2tvNi1zM2x4LUtfU1pnRHZTT2ZFOUo4c3hETDA2dVRCc3lGdFVRVm9SUFBYdVhGUmdkSjhyVmNhTDNDTjdlUW9HVmgzMnMxeWlsT25WVmdWMDJBQUZJbWPSAXdBVV95cUxNVjFQZ2Y2SVVzUFBsc21vb1BIT1Y5VkppWTRRdWxIbUItOE1oWWllTFJMTFBVbklqdlBWaF8ybF80cUZ1ZUUwN3U1N0N5N0dkS0FEaFVHcFZPb0NzNFV2SkRkb2luLVJmSGdrbGRKOW5DNVFFbmJKUQ?oc=5",
       "rawTitle": "Crimson Desert Draws Attention for Pearl Abyss’s Proprietary Game Engine",
       "publishedAt": "2026-10-19T07:00:00.000Z"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>游戏业界第三季度业绩阴云…“上半年表现亮眼”的Krafton、Nexon放缓 - 朝鲜Biz</strong>",
-      "source": "Chosunbiz",
-      "date": "10.19",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNMV9Ybzd3d1RFblQ0bFJRSlBna2N0QkUzQ0FaMW1USS1FUHhqRGNuOUsyWUdtVE5wTzVWbVRVb0h2NVNxcGw3d19leVlfVDU2c3lSaXNuSWRvbVlVenRZNDBRNzRJcGJYMVBHNmE2b0owMTk0bGlzZ1IwenpyWUNvRWln0gGWAUFVX3lxTE9LTVZfbzRGWDZkczgzNW1aTy1lTGh2d2tvelJOX1VFTm5BQnBHcUl5alJsdWZta3lVUXJwMWpmS2NRd1k2Tl9laDZodzFDbmg3TlYza3d6a1otdDh3c0Y3cDkyZi1UZkRjTmc5U2VSeUw0Z2s5c3pJT3JKWnM0TDgwamxVeWVjSWloQzRfTjVLcERIUXp5QQ?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>“Krafton五款新作均未获有意义反响…目标价下调15.6%”</strong>",
-      "source": "포쓰저널",
-      "date": "10.19",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE8wa0hRWnQ1dDEtWG1GNzNKT29nTzNiR3ppSThRZWFlWGpRam5pLXBKdDdEeHN2M285Wnh5NFlkY0tXSWZhcjkxNHNuVjNYcnF4SHB2ZGFPWVNiVUlaeGR6V0RmWGE?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton“新作动能缺失长期化令人遗憾”目标价270,000韩元 - 富国证券</strong>",
-      "source": "뉴스핌",
-      "date": "10.19",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1QVWtzNW1YTi1FNkU1QUROcUZkeGtnNnpfcFNUM1dqTXlGUHd6akVQSnZVaGNEMmZmenV1V25kV1RqNlE2TGc5eGtmWmc2V25XMEo1TFRaSHo1NUhB?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>为何偏偏选择宾利…《PUBG》所选的厚重驾驶质感</strong>",
-      "source": "이코노미톡뉴스",
-      "date": "10.19",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5pY2R5aXJLSVlpQXRscXpRM1FzQXRBcWVKcTZVUjZXUVZET0RidnZmTVNzWU1yV1N4VUc3b3RKd05wUjVDWVA1cWRIUkQtNm5CUjVWVjh6U1IzNDJKZVZaSFlOcUp0VncxRmE2LQ?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC《Aion2》位列Steam周度热门游戏第二…全球热销持续</strong>",
-      "source": "FETV",
-      "date": "10.16",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE0zYm1QcF9BX0NGR1NQZTFiRVJoMFlnaTIwODNuTXNsQnhVaEllRnpRTkJ0WGlZRjk0REpsOHpvLTZBeUVpT0Nld3pwTnFSdXEtMl9PQnVzMHBtaV83RWxVV1YyeGlOUnRD?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC《Aion》开启“Drakan”更新预约</strong>",
-      "source": "NC",
-      "date": "10.13",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQQVZTUHV3R0tsWjFjdTRsOGl0Z1R0a1RlZ2trZFJZbTZscnZoMXRxcUxqWGpoODFDSmxGY1hjNGc3QWllY2w5NmtJV3VnTUZCZ2ZLcThndWF6VzhGM1VKdjBLZDllYURLSGpsX3NZbGZJcXk2R1kyRUNjTElBZlFNLUJKcmhsaGt3LWphMzhwY2lmSHpscjJGZnBR?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC《Aion2》Steam全球排名第二…奠定长期热销基础</strong>",
-      "source": "매일일보",
-      "date": "10.18",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9VR2ViV1UtdWhfdm9SUktXNDFXdVpIUm53eHBVTXBNWkcwZ1BrcS1qdWdqNmtITktiT01BanVZb2R2Y0VwNmQ2TjBkeXB3b19wYUZFRjlBelBReDhRQUFiZS1rUVo?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>吸引全球游戏用户…《Aion2》最高同时在线人数达40万</strong>",
-      "source": "조선일보",
-      "date": "10.18",
-      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOeVNOSXh0enV3V1FqcmFna1ZCN2RUQTZxNWY2MlE4SV85Rml0eEFacVVtWGtZVFVkMTZNSE12UGMtWXFEZVAzSHlIRlJWd1pzand5ZXdzYkM4VnloYzZrV2NodFZfODY3enZueEJDOFBhaUgxVm9Sc2w4b2FrN0tOWHFCdHIxQU4taUFvNlBn?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC推出《星球大破坏喵喵喵》…扩展休闲游戏组合</strong>",
-      "source": "포쓰저널",
-      "date": "10.19",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1sbDJTWFRPdy1LQUFXQXd3M3BKcUlsODA1djA4Mk0wUm5fWnV1S3lVYkhfWEd6V0plcGNKX3BpcVR3WVZleHcta3M4QmFSdUpfdUsxV1VzSzdEUlJvMFZXYzkxRzM?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>《Aion2》热销带动NC上涨，《投资情绪萎缩》致Webzen下跌</strong>",
-      "source": "경향게임스",
-      "date": "10.19",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE0wcGp4ZFZxZU9NZDN0NmdNLVEtcVVtcTloN25ER1dlOGdMUE5EVXZsLXpaZHU3YlJLTGNWamxPOFE5OTByX3ZUTDRuNUN3MmNROHJhbW1XdVM5SDJiMWtXem5BeFdacUZOZnVZTg?oc=5"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC推出移动休闲新作《星球大破坏喵喵喵》</strong>",
-      "source": "조세금융신문",
-      "date": "10.19",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9Sd2Z4R2JvMldKdEh0ZWVvYndNTThFVUtQN1pndGRzNTJOYkkyZGVhV2s2WmVVR1Y0b2VPXzVucDk5YlJ5T3FoUzJLaE1pcElEdlhIVWg1QmQ0VXFUZDNjTzlUbw?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon《FC Mobile》世界冠军赛21日开幕 等</strong>",
-      "source": "워크투데이",
-      "date": "10.18",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE04eFVPaVNGcDZWQUhwVTdwdkVtVUhONmY0dnBySVJRaW5DRk9aeUVJQzFSVmlyQTJPMEJNZ1FlRm9sa3Mzb0lMci1ESEN1anZxWU9YdlBOQzB2N1JkRmRMcmJiSEYySlNaYkFaeQ?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>“老师，请到便利店上班”…《Blue Archive》与GS25第三次联动上线 - Campaign Insight</strong>",
-      "source": "캠페인 인사이트",
-      "date": "10.14",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE51WGs3OGhfMDVEX29ydHdwX3FZZFVweFVKMUxWQVU1Vnl0RVlJNjh2bHIzYy1YQnNwZENRWTZEaUhPMWo0b19JZ2ZBZGlod3ZocWtkUzU5QzNlOTZ3d19vM3hpcmRUUGpCUGRoQThLWkVLTmMz?oc=5"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Nexon《Blue Archive》新角色上线…Netmarble、Pearl Abyss也强化内容</strong>",
-      "source": "www.ebn.co.kr",
-      "date": "10.13",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFByOVFQZjQ5R3o0WjJVSXlJT3BVWXpVUEgwRlBVWVMyV0NmaUFkN1JrRnF3M2xOczNuX1Y4TTVDQ1dVcjZHTlBaVHN5c2x6UEo5N3V1MmhSSnMtRUdMbFJDWS1laTZGTTc2?oc=5"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon《Blue Archive》与GS25推出第三次联动商品 等</strong>",
-      "source": "워크투데이",
-      "date": "10.18",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5GVWU3bkE0c3o0c3Z1cS1ZN1dBUU5nQV9pYmh6bUxob1ZhM0hjN3VSQjdLUXFzMDUwcF9ULV9jS3NfNkcwWXZ0dHE1Mi1LRDAwdnFCNXhiU0gxOGFETjFzVm05SEpYNG1tVG9KNA?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton在大田决出PUBG Mobile国内最强战队</strong>",
-      "source": "더트래커",
-      "date": "10.16",
-      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5hRHdMWkVfbWY5WTdMM2F3bklyYmFId0RhWElpVUxXalBVWG0wa2loMngwcWF0SUxiTzZtUG9mM1NxbUlXM0FzM1NZVHA1MkpQWXJmaU1Ib1U?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>“PUBG IP扩张暂缓”Krafton金昌汉…目光聚焦“Dead Net”</strong>",
-      "source": "한국금융신문",
-      "date": "10.16",
-      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9PN0htNjNua0RTbTZuRUNoUHo5cDlvUXVNajRIb3ByOUJOMnd0ZFhndDdiUUR4d3EtQ0pNU3dLN1NndGpGLUFXTnBqTWFkWmZZbDNGZ0FzNEVRckpWWVQ4Y3RoWmRpbWNYd2Y5elFkRzhxOFJROWJPN3Zsc0c?oc=5"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton“PMPS 2026 赛季2”决赛17日在大田举行</strong>",
-      "source": "뉴스핌",
-      "date": "10.16",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBLTXJ5blFtX3BSejVmTlVRUHZfeGZ2NDlkcm5lS2RVU09XeU1vektPTERRRDFaelo3V1d5Wlk2Z2Nuc3dzU1NfV0lhdDZTMlRWdDlVakVhM1F2c2pj?oc=5"
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>[游戏业界消息]从新作上线到大规模更新与活动，内容全面扩张</strong>",
+      "source": "이코리아",
+      "date": "11.04",
+      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFA0cXNNczhScW9LOUxVeHBwVmk4XzV2aWRRV1RpNnJvQ09qb0FacDloeUJBeXZwVTE5dXRWMzh6TndwUUtSbkJjM1ZObGFYOU1vMHM5RGhQSGRYYUYyaVlYLVprTzdDOG00Q0J4dld1OA?oc=5",
+      "rawTitle": "[게임업계 소식] 신작 출시부터 대규모 업데이트·이벤트까지 콘텐츠 확대",
+      "publishedAt": "2026-11-04T07:38:02.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.707Z"
+    },
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>Shift Up NIKKE PC启动器安全事件持续发酵…游戏业界也进入紧急状态</strong>",
+      "source": "인사이트코리아",
+      "date": "11.05",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE90QVRDQUQyRmtvRnY0OXlVS29xZ29UMjgtMWhrSjVLNkRuN0s4dHhsbFVaZHVZTEwxVUVwMHVPOWxkUGZpdGhEUTdLOTlzXzhQV2tub0t0MGU1OUl4OGI3ZzBreDhnWFJOQ1c4ZlZPZXM3ZFXSAXdBVV95cUxQM0xfMGl5dEU3N2lfWVYzU2lscHR3NXlpY0VISWQwQnZRZy1VamQ5Qm1DYnF6M3dSMWt1STVrdVVtYUVhZTBwb1poRW5Jbkg3OXh5alhJNHB4cEFNdndYR09Wc2FlbWx6UzRGNlNzZFJKSHJIVjdiQQ?oc=5",
+      "rawTitle": "시프트업 ‘니케’ PC 런처 보안 사고 일파만파…게임업계도 비상",
+      "publishedAt": "2026-11-05T06:46:36.000Z",
+      "fetchedAt": "2026-11-05T09:01:34.706Z"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
@@ -5496,22 +5592,6 @@
       "source": "아시아투데이",
       "date": "08.21",
       "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1QN1RnaldaR0pEWERSZ0lkd25aellDMzFNM1BKZ1FJMXhFTmdpZDIyQ0pwYnJua282R0FiYi05SkdWRllaVnlyU0tjZHlMUV9zYVBMRFhpMXI3U043aVFuTzF6Zkw1ejR1eTB5UllR?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
-      "title": "<strong>NC，《Astra: Ora et Labora》参加东京游戏展2026独立展位</strong>",
-      "source": "서울경제TV",
-      "date": "08.21",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1kYVVkc25iZ0lsMkhiVVdBNnZxWmVaOHBNQ25iODFqSURydHBGRGxpc1lyTWFLRWZKQVhBZXYtUWFiaXk1Snc2c3E4YnZvZl9XelMxLVdkVjEzLWlxWEN1eVlnaHQ?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
-      "title": "<strong>[报告实验室]摆脱“依赖天堂”的NC···券商目标价最高44万韩元</strong>",
-      "source": "Naver Blog",
-      "date": "08.22",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNc3NZNlRnYmNPd21mQTV4RW80RDAzZjlJTnMzQXc0eERYdmZfWnEyMWdfaWFfRmF0SWlTWF9FR19oeXBZc0R3T3NobE9DZlI0ZnNtSDBWV1JJQ3BHNzU5b0l5YWZLU1I1NUpzSEY4SnFadUxLaFJVYktFZFl4OHhMeGI4VlZYWHBWam51cXJfOA?oc=5"
     }
   ]
 }
