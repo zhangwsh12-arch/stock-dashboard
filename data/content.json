@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-11-11",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-11-11T09:01:37.404Z",
+    "newsAutoUpdatedAt": "2026-11-11T11:41:38.499Z",
     "newsAutoCount": {
-      "events": 20,
-      "industryNews": 3,
+      "events": 6,
+      "industryNews": 1,
       "skippedUntranslated": 1,
-      "skippedByUrl": 10,
+      "skippedByUrl": 27,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -1987,6 +1987,72 @@
     ]
   },
   "events": [
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Nexon超越Krafton…重夺游戏业界营收第一</strong>",
+      "source": "이데일리",
+      "date": "11.11",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPTGtUUkh6YlFONWZ2dEp0cWFORnVoS0cyc1NfR2htSlcyZ1JzTEthR2djdTZuelVNOWZpdDBVQUZiMzBOQXF3cnl6T01WWGpwWmduS3JmVTd4MDNVdHpPVUlrTk4xRWNqR0Q4M3FiV0l5V2R5VG5qaGFnMjdvV0ZMSw?oc=5",
+      "rawTitle": "넥슨, 크래프톤 제쳤다…게임업계 매출 1위 탈환",
+      "publishedAt": "2026-11-11T09:51:22.000Z",
+      "fetchedAt": "2026-11-11T11:41:38.498Z"
+    },
+    {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>Nexon表现亮眼、Krafton承压…游戏业界第三季度业绩分化的“IP之力”</strong>",
+      "source": "www.ebn.co.kr",
+      "date": "11.11",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1jM25SVjhhaVhrWTI4b2lZOF9NNFEyT3RyLWJXNkZHYjhDNHg1Y2dTb2FEZk9HcVQ3M1hvcDJlT3daLXh3aWlpTHp4ZUZDS242T0hBN1NDbVdnb0E0MjF4eDkzUmM2SDFN?oc=5",
+      "rawTitle": "넥슨 선전, 크래프톤 고전…게임업계 3분기 실적 가른 'IP의 힘'",
+      "publishedAt": "2026-11-11T10:08:13.000Z",
+      "fetchedAt": "2026-11-11T11:41:38.498Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC第三季度扭亏为盈…《天堂经典》与《Aion 2》立功</strong>",
+      "source": "연합뉴스TV",
+      "date": "11.11",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBrYkNTUUt5VjNaRnJvNjBuUHVwWnd1SURCdUtmdmhSeHp6ZkJYRDVZa1JWX1FyNUhER0xqc0hiajRDOHk4dFFiUVlieUVDVUtGai12MmZfLW05QTJDcXZWNGpxYklwVnc?oc=5",
+      "rawTitle": "엔씨, 3분기 흑자전환…’리니지 클래식·아이온2’ 성과",
+      "publishedAt": "2026-11-11T09:02:00.000Z",
+      "fetchedAt": "2026-11-11T11:41:38.497Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NC“Aion 2付费率及核心用户留存率高于TL”[NC电话会议]</strong>",
+      "source": "IT조선",
+      "date": "11.11",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBmdmFzY0VabkExVkljUGQtcW1wSHlGUUpnRk9zcXRERk95SmkxSjJiazlVNHJacHg1dks5Ry1FSXN5VjZfMnlsMklQV2Zwa1BZRWtId3BIN2t0TDJVMnVBSkNDejRrMXBEb2hCUUMwZ1TSAXRBVV95cUxPamNmaU9mMnRpSkpiRE1YWHk0RUFjeHllTGpJWHdQMXJsdkZfWlZIbmRzRlVQUm96Y3lNOVgzZURCSkN3N2w2cFk3QmJKOWdLOUpyWExjQ1BFR2RnaG5WeWxxdjBpdy11YTBhUzBPT2ZLeUkydA?oc=5",
+      "rawTitle": "엔씨 “아이온2, TL보다 결제·핵심 이용자 유지율 높아” [엔씨 컨콜]",
+      "publishedAt": "2026-11-11T08:56:31.000Z",
+      "fetchedAt": "2026-11-11T11:41:38.497Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《Blue Archive》5周年…赠送200次免费招募及3星角色选择券</strong>",
+      "source": "이뉴스투데이",
+      "date": "11.11",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBWRnI1SEhGRHNNVk40clV3elRKV0Q2aU5zUl9aWkc2U1M4NVZGc3V1cHNkeHBMRkYtN1BUWGx5QmYtYTZ2NGNDNlV0QXhaVHNJaXl2Qm9LdmNteTRZOXpTN3ZOYVpuNXhKeWR3aDdQSHjSAXRBVV95cUxNa1hfMzF5aU5uNjdTYWJNWDdzV0dhdXNHbDVmOEFCcjlFa1VEb1NDSnVmV0xWS19yYVZhRVU5ZXZlUWJPRWZzUFM3ZFZGajJaS2ctM1lIY2lLUFdxS3FucEplaGliRFN2S1hBOHk1UGk3TlYxcA?oc=5",
+      "rawTitle": "넥슨 ‘블루 아카이브’ 5주년···무료 모집 200회·3성 캐릭터 선택권 지급",
+      "publishedAt": "2026-11-11T08:56:57.000Z",
+      "fetchedAt": "2026-11-11T11:41:38.497Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《Blue Archive》5周年更新…公开2种新学生及主线剧情</strong>",
+      "source": "이코노미사이언스",
+      "date": "11.11",
+      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBubG94WE0zbDIwR3RoRV9KSS13WXEtU0FVeU94MUNHX0dVdkx0djFNSDdyNllYem9HMEp2M2h0TFF5OXdwQmU0TG5OZGI0Xy1SRUwzQTJ5QzFtMUE3dUN5anBLR1FsRXRiZlNUTS10MA?oc=5",
+      "rawTitle": "넥슨, 블루 아카이브 5주년 업데이트...신규 학생 2종·메인 스토리 공개",
+      "publishedAt": "2026-11-11T07:39:24.000Z",
+      "fetchedAt": "2026-11-11T11:41:38.496Z"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -4120,72 +4186,20 @@
       "rawTitle": "엔씨 ‘아이온2’, 출시 3주 만에 글로벌 누적 캐릭터 수 630만 개",
       "publishedAt": "2026-10-27T06:43:18.000Z",
       "fetchedAt": "2026-10-27T09:01:44.148Z"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NCSoft 赞助“G-STAR 2026”初创企业参展</strong>",
-      "source": "지디넷코리아",
-      "date": "10.27",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFAyTUNYaUZfV3RhUnFzQ2xodXJDUnJQR1hmUXFKNmh6M3BmSERuMXhnZDlkYk1IeUJLYWY4YlhsUHdpRVdsbWs5ZzdBNWY2RDBTclZFc2dB?oc=5",
-      "rawTitle": "엔씨, '지스타 2026' 스타트업 참가 후원",
-      "publishedAt": "2026-10-27T07:10:01.000Z",
-      "fetchedAt": "2026-10-27T09:01:44.148Z"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon Games 加速扩充产品线……二次元与大片级动作“双轨并行”</strong>",
-      "source": "스포츠경향",
-      "date": "10.26",
-      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE95WDY3S0dmSVdrWUpFY1dDWVZFRG45Y3R3bEROaWZnV3M1YVg2R0ZzZ21Pb0h4VGNFeDZ0d0NySkt3TXFzRElJVVJyUV9GY29kM2R3Yi16b1NPYmZkNEF1UGt3?oc=5",
-      "rawTitle": "Nexon Games races to expand its lineup…a ‘Two-Track’ of subculture and blockbuster action",
-      "publishedAt": "2026-10-26T21:06:00.000Z",
-      "fetchedAt": "2026-10-27T09:01:44.148Z"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>“终止合约”……《Blue Archive》日本业务归入 Nexon 旗下</strong>",
-      "source": "게임와이",
-      "date": "10.26",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9wZ0NaMjAzNEY3RG5JTS16RlNWQjlvTXJYTnZsT1I4ZU1jc2FkMk1LdjFIallHajRLbXc1Y25TX2w1MlAzNWhfa3VlYmxEQS1DNHl1dmJJYW1TVS1VWHkyNVJQYmRLUU5HSXc?oc=5",
-      "rawTitle": "\"계약 끝내자\"...블루 아카이브 日 넥슨 품으로 |",
-      "publishedAt": "2026-10-26T10:12:30.000Z",
-      "fetchedAt": "2026-10-27T09:01:44.147Z"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>日本《Blue Archive》自主运营预告及新作大量推出……Nexon 掌握二次元市场</strong>",
-      "source": "아이뉴스24",
-      "date": "10.26",
-      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE10SWpBM0JQM1R4U2drN1dhcmkyWkVqZ0NaRTRYaTc4X2MteUxrR2FLUjUxaFNxT3F4UkU1bVpQa3lZdHN1dTljRTEySQ?oc=5",
-      "rawTitle": "日 '블루 아카이브' 자체 서비스 예고·신작 대방출…서브컬처 감잡은 넥슨",
-      "publishedAt": "2026-10-26T23:52:02.000Z",
-      "fetchedAt": "2026-10-27T09:01:44.147Z"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon 将直接运营《Blue Archive》日本服务</strong>",
-      "source": "주간한국",
-      "date": "10.26",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1HeXB5TmdYNVRvTW5PNXRrS0Y1eUtManhmTGxLWGt3d2VwOUhyOFVEZllVQjc5LU9YVWp6ODNSQUc5eTB4alVhTjR6M1NHNjhyMXMyck9DaWZoUGh0LU4zWFlwWHNUXzBtMnFfUUJkd29zcVdU0gF0QVVfeXFMTUd5cHlOZ1g1VG9Nbk81dGtLRjV5S0xqeGZMbEtYa3d3ZXA5SHI4VURmWVVCNzktT1hVano4M1JBRzl5MHhqVWFONHozU0c2OHIxczJyT0NpZmhQaHQtTjNYWXBYc1RfMG0ycV9RQmR3b3NxV1Q?oc=5",
-      "rawTitle": "넥슨, '블루 아카이브' 일본 서비스 직접 운영키로",
-      "publishedAt": "2026-10-26T10:27:04.000Z",
-      "fetchedAt": "2026-10-27T09:01:44.145Z"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>成为“K游戏激战地”的南美…Krafton在巴西筑巢</strong>",
-      "source": "한국경제",
-      "date": "10.25",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFB1RmN0QUxQbHFpWGt5YUMzcldOWDI3ckxFQ0xOTmtBekpKdTVOVjJFdVZRWWszZXljMi1hRFY5eno2d2xraWNKXzhEaFZpZDVZQVhkaEhrQ1Z4Zw?oc=5"
     }
   ],
   "industryNews": [
+    {
+      "company": "六大游戏公司",
+      "color": "#6b7280",
+      "title": "<strong>审议引入AI技术？韩国游戏法与政策学会将举办学术大会</strong>",
+      "source": "게임메카",
+      "date": "11.11",
+      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE90QUZmemp2cWFuNnI1YzJqNXEtTmZmekRzd3g3Y0pMcHVTT3JUNXhYekt4ODEyWmRNWDhCYlVzZDBvVHRQVmZYakVVaW5hbHhkczAyUWJJaHrSAVtBVV95cUxNTXRFeGZ4WEg5T3NHOUJfU0cyWHlNcnlETTI0N3g2c0RvUUt2VWNRV1h2ZEZaVnRmdURxdW5KcGlET2REMTdsSGRHM0JfUm1oNTItY1dNaFEzcmpz?oc=5",
+      "rawTitle": "심의에 AI 기술을? 한국게임법과정책학회 학술대회 연다",
+      "publishedAt": "2026-11-11T11:15:37.000Z",
+      "fetchedAt": "2026-11-11T11:41:38.499Z"
+    },
     {
       "company": "六大游戏公司",
       "color": "#6b7280",
@@ -5891,14 +5905,6 @@
       "source": "포쓰저널",
       "date": "08.24",
       "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE84V1JYN1ltNkR6cWd1VVkxa0xxcmc5Z3lzR05Xdk1EamtBSEY1dkhrSU1ZdWJFakJRRzdDSDlQcllJd1FZMTdhVkUyM2VDdldRc0wtSjN5aU1naDZrQ3dHVWZVN2o?oc=5"
-    },
-    {
-      "company": "六大游戏公司",
-      "color": "#6b7280",
-      "title": "<strong>NC Time Takers 9月5日起72小时Steam全球试玩</strong>",
-      "source": "창업일보",
-      "date": "08.24",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBWNjdpNzRXVFNFQkxNLWt0VEdkN3FTX1lSUU9hNDBPbWdUdkl2cnVYeWQtNmpmQkVmMWQwNnUzUlR3Z013RHA2amsycTFUSU92TGRrRkJSeWUzOWZFUlJiZTZLUE1qekE0?oc=5"
     }
   ]
 }
