@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-11-13",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-11-13T09:01:36.715Z",
+    "newsAutoUpdatedAt": "2026-11-13T09:29:08.383Z",
     "newsAutoCount": {
-      "events": 9,
-      "industryNews": 3,
+      "events": 1,
+      "industryNews": 0,
       "skippedUntranslated": 1,
-      "skippedByUrl": 21,
+      "skippedByUrl": 32,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -2026,6 +2026,17 @@
     ]
   },
   "events": [
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《Blue Archive》5周年LP套装登顶Yes24·Aladin销量榜</strong>",
+      "source": "아이뉴스24",
+      "date": "11.13",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBaR3lJN2h0MzF1QkloWDUtR0VaMmFxRWtWNXBVdnhVcjN4dTBPQk5hZld4SmJ4a1VZWjIzdjZSTXZRN2FfMURJUGhsTQ?oc=5",
+      "rawTitle": "넥슨 '블루 아카이브', 5주년 LP 패키지 예스24·알라딘 판매 1위",
+      "publishedAt": "2026-11-13T09:07:02.000Z",
+      "fetchedAt": "2026-11-13T09:29:08.382Z"
+    },
     {
       "company": "Krafton",
       "color": "#f59e0b",
@@ -4214,17 +4225,6 @@
       "rawTitle": "크래프톤, 업무용 PC 351세트 기부",
       "publishedAt": "2026-10-28T04:34:44.000Z",
       "fetchedAt": "2026-10-28T09:01:45.048Z"
-    },
-    {
-      "company": "Krafton",
-      "color": "#f59e0b",
-      "title": "<strong>Krafton向弱势群体捐赠351套公司二手IT设备</strong>",
-      "source": "인더스트리뉴스",
-      "date": "10.28",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTFByMkM4SWZLYkZDZWljT280TDNSTUZaTTJYM1B2ZTlfc3ZOeHJhZE9GNVNIRW4yaGxmc3pMQ2RjQmtpWUFCeUJ0anhnZW9BWUtKaGpVckxJdGczWkRJcElUM1FGUFJwbWtEa2x1YWFpOXA2QQ?oc=5",
-      "rawTitle": "크래프톤, 사내 중고 IT 기기 351세트 취약계층에 기부",
-      "publishedAt": "2026-10-28T02:29:50.000Z",
-      "fetchedAt": "2026-10-28T09:01:45.047Z"
     }
   ],
   "industryNews": [
