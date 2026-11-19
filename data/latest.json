@@ -10,12 +10,12 @@
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "26,600",
+    "price": "27,000",
     "previousClose": "24,350",
     "high": "27,100",
     "low": "25,150",
-    "change": "2,250",
-    "changePercent": "+9.24%",
+    "change": "2,650",
+    "changePercent": "+10.88%",
     "changeClass": "up",
     "per": "N/A",
     "pbr": "-",
@@ -737,7 +737,7 @@
         "open": 25450,
         "high": 27100,
         "low": 25150,
-        "close": 26600,
+        "close": 27000,
         "volume": 114177,
         "foreignRate": 36.67
       }
@@ -748,8 +748,8 @@
       "code": "225570",
       "name": "Nexon Games",
       "color": "#22c55e",
-      "price": "7,175",
-      "change": "+1.77%",
+      "price": "7,190",
+      "change": "+1.99%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -757,8 +757,8 @@
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "32,650",
-      "change": "+4.65%",
+      "price": "32,700",
+      "change": "+4.81%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -784,8 +784,8 @@
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "29,150",
-      "change": "+5.23%",
+      "price": "29,350",
+      "change": "+5.96%",
       "changeClass": "up",
       "per": "N/A"
     }
@@ -960,7 +960,7 @@
     {
       "date": "20261119",
       "label": "11/19",
-      "price": 26600
+      "price": 27000
     }
   ],
   "indices": [
