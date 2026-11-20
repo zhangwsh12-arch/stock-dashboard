@@ -1,8 +1,8 @@
 {
   "meta": {
-    "date": "20261119",
-    "dateDisplay": "11月（截至19日）",
-    "fetchedAt": "2026-11-19T09:01:27.314Z",
+    "date": "20261120",
+    "dateDisplay": "11月（截至20日）",
+    "fetchedAt": "2026-11-20T09:01:21.208Z",
     "source": "Naver Finance / Multi-source v3",
     "updateCount": 6
   },
@@ -10,26 +10,17 @@
     "code": "462870",
     "name": "Shift Up",
     "color": "#ff6b9d",
-    "price": "27,000",
-    "previousClose": "24,350",
-    "high": "27,100",
-    "low": "25,150",
-    "change": "2,650",
-    "changePercent": "+10.88%",
+    "price": "27,550",
+    "previousClose": "26,600",
+    "high": "28,300",
+    "low": "26,300",
+    "change": "950",
+    "changePercent": "+3.57%",
     "changeClass": "up",
     "per": "N/A",
     "pbr": "-",
     "marketCap": "-",
     "_allHistory": [
-      {
-        "date": "20260724",
-        "open": 30900,
-        "high": 31100,
-        "low": 30100,
-        "close": 30650,
-        "volume": 41254,
-        "foreignRate": 36.91
-      },
       {
         "date": "20260727",
         "open": 30500,
@@ -728,7 +719,7 @@
         "open": 24600,
         "high": 25950,
         "low": 24050,
-        "close": 24350,
+        "close": 25650,
         "volume": 44182,
         "foreignRate": 36.67
       },
@@ -737,9 +728,18 @@
         "open": 25450,
         "high": 27100,
         "low": 25150,
-        "close": 27000,
-        "volume": 114177,
-        "foreignRate": 36.67
+        "close": 26600,
+        "volume": 116143,
+        "foreignRate": 36.72
+      },
+      {
+        "date": "20261120",
+        "open": 26300,
+        "high": 28300,
+        "low": 26300,
+        "close": 27550,
+        "volume": 84148,
+        "foreignRate": 36.72
       }
     ]
   },
@@ -748,26 +748,26 @@
       "code": "225570",
       "name": "Nexon Games",
       "color": "#22c55e",
-      "price": "7,190",
-      "change": "+1.99%",
-      "changeClass": "up",
+      "price": "6,910",
+      "change": "-3.69%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
       "code": "251270",
       "name": "Netmarble",
       "color": "#ef4444",
-      "price": "32,700",
-      "change": "+4.81%",
-      "changeClass": "up",
+      "price": "31,900",
+      "change": "-2.30%",
+      "changeClass": "down",
       "per": "N/A"
     },
     {
       "code": "036570",
       "name": "NC",
       "color": "#3b82f6",
-      "price": "184,100",
-      "change": "-0.22%",
+      "price": "179,600",
+      "change": "-2.71%",
       "changeClass": "down",
       "per": "N/A"
     },
@@ -775,8 +775,8 @@
       "code": "259960",
       "name": "Krafton",
       "color": "#f59e0b",
-      "price": "197,100",
-      "change": "+0.20%",
+      "price": "202,500",
+      "change": "+2.74%",
       "changeClass": "up",
       "per": "N/A"
     },
@@ -784,9 +784,9 @@
       "code": "263750",
       "name": "Pearl Abyss",
       "color": "#ec4899",
-      "price": "29,350",
-      "change": "+5.96%",
-      "changeClass": "up",
+      "price": "28,250",
+      "change": "-3.09%",
+      "changeClass": "down",
       "per": "N/A"
     }
   ],
@@ -955,30 +955,35 @@
     {
       "date": "20261118",
       "label": "11/18",
-      "price": 24350
+      "price": 25650
     },
     {
       "date": "20261119",
       "label": "11/19",
-      "price": 27000
+      "price": 26600
+    },
+    {
+      "date": "20261120",
+      "label": "11/20",
+      "price": 27550
     }
   ],
   "indices": [
     {
       "code": "KOSPI",
       "name": "KOSPI",
-      "price": "5137.89",
-      "change": "70.45",
-      "changePercent": "1.39",
-      "changeClass": "up"
+      "price": "4869.96",
+      "change": "-267.93",
+      "changePercent": "-5.21",
+      "changeClass": "down"
     },
     {
       "code": "KOSDAQ",
       "name": "KOSDAQ",
-      "price": "684.81",
-      "change": "22.00",
-      "changePercent": "3.32",
-      "changeClass": "up"
+      "price": "645.68",
+      "change": "-39.13",
+      "changePercent": "-5.71",
+      "changeClass": "down"
     }
   ]
 }
