@@ -44,6 +44,11 @@ on:
           - B
           - A
         default: 'B'
+      deploy_only:
+        description: '仅重新部署页面（不抓取数据、不重跑分析、不推送任何企微群）'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -62,6 +67,7 @@ jobs:
     # 重跑 LLM 会冲掉人工精修文案。
     # preview / 无 phase / workflow_dispatch 均正常运行抓取。
     if: |
+      github.event.inputs.deploy_only != 'true' &&
       github.event.client_payload.phase != 'final' &&
       github.event.client_payload.notify_only != true &&
       github.event.inputs.notify_only != 'true' &&
@@ -236,6 +242,7 @@ jobs:
   # preview/无phase 阶段已由 update job 部署过，此 job 跳过，避免重复部署。
   deploy-final:
     if: |
+      github.event.inputs.deploy_only != 'true' &&
       github.event.client_payload.phase == 'final' &&
       (github.event.action == 'trigger-update' ||
        github.event_name == 'workflow_dispatch')
@@ -266,6 +273,57 @@ jobs:
         if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v4
 
+  # ====== 仅部署入口：只把 main 上现有数据重新发布，不抓取、不推送任何群 ======
+  # 用于 Pages 部署故障修复后的手动补部署：workflow_dispatch 勾选 deploy_only=true，
+  # update/deploy-final/notify 三个 job 全部跳过，只有本 job 运行，绝不会发企微消息。
+  deploy-only:
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.deploy_only == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Wait for artifact metadata
+        run: sleep 30
+
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deploy
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Wait before deployment retry
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 45
+
+      - name: Deploy to GitHub Pages (retry)
+        id: deploy-retry
+        if: steps.deploy.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Wait before second deployment retry
+        if: steps.deploy.outcome == 'failure' && steps.deploy-retry.outcome == 'failure'
+        run: sleep 60
+
+      - name: Deploy to GitHub Pages (second retry)
+        if: steps.deploy.outcome == 'failure' && steps.deploy-retry.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+
   # ====== 企业微信推送（update / deploy-final 完成后自动执行，每日仅1次）======
   # skip_notify=true 时整个 job 不执行——用于"只想更新数据/验证抓取链路，
   # 不想惊动企微群"的手动调试场景（每日去重缓存也不会被写入，不影响当天正常推送）。
@@ -273,6 +331,7 @@ jobs:
     needs: [update, deploy-final]
     if: |
       always() &&
+      github.event.inputs.deploy_only != 'true' &&
       needs.update.result != 'failure' &&
       needs.deploy-final.result != 'failure' &&
       github.event.inputs.skip_notify != 'true' &&
