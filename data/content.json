@@ -4,12 +4,12 @@
     "description": "韩国游戏股价看板 — 动态内容数据（新闻、对比图、分析文字模板）",
     "updatedAt": "2026-11-24",
     "note": "此文件由人工维护 + 自动抓取混合更新。自动抓取内容经中文翻译/关键词映射；韩语残留条目一律跳过；判重以原文 URL 为首要依据（译文措辞会随翻译引擎变化，不能作为唯一判重键）；Key 失效时英文标题作为 translationStatus=fallback 降级条目有限保留（每分类最多3条），以免资讯静默停更。",
-    "newsAutoUpdatedAt": "2026-11-24T09:01:53.131Z",
+    "newsAutoUpdatedAt": "2026-11-24T11:54:09.513Z",
     "newsAutoCount": {
-      "events": 15,
-      "industryNews": 5,
-      "skippedUntranslated": 0,
-      "skippedByUrl": 11,
+      "events": 6,
+      "industryNews": 0,
+      "skippedUntranslated": 1,
+      "skippedByUrl": 29,
       "fallback": 0
     },
     "newsManualBackfillAt": "2026-08-11T03:32:04.008Z",
@@ -2159,6 +2159,72 @@
   },
   "events": [
     {
+      "company": "Krafton",
+      "color": "#f59e0b",
+      "title": "<strong>【游戏 Pick】Nexon《Azur Promilia》开启预下载…Krafton《Subnautica 2》首次大型更新</strong>",
+      "source": "라이센스뉴스",
+      "date": "11.24",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5URjNlUHpOakwxazZ1TGVRLXRZeGpPNGxxd3VxWWJra2ZDZlZscmE3b0UyV3d2dFlFeEVGUzVsdXBOOGpiSncxWTZ4cE1JZi14SmZZeG1UUHhSOHRmb3drZXZHUXBvZllpdUFV?oc=5",
+      "rawTitle": "[게임 Pick] 넥슨, '아주르 프로밀리아' 사전 다운로드 시작…크래프톤, '서브노티카2' 첫 메이저 업데이트",
+      "publishedAt": "2026-11-24T09:11:24.000Z",
+      "fetchedAt": "2026-11-24T11:54:09.512Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>【今日游戏快讯】NCSoft《Aion 2》一周年纪念 OST 专辑发售 等</strong>",
+      "source": "FETV",
+      "date": "11.23",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE40cFljVzJtRVh1dEZoV3NjN3dtNFl5YWpFc0lIa3RBUkJEZXFJVGY2VHItMlZXV3RMbFRUOVZUSTBRNHNOcnViaUpXZnMtbmg2YWZ2N2VLUGxzeS1CYjBOTkFHc08yWG1u?oc=5",
+      "rawTitle": "[오늘의 게임 소식] 엔씨, ‘아이온2’ 1주년 기념 OST 앨범 발매 外",
+      "publishedAt": "2026-11-23T07:36:28.000Z",
+      "fetchedAt": "2026-11-24T11:54:09.512Z"
+    },
+    {
+      "company": "NC",
+      "color": "#3b82f6",
+      "title": "<strong>NCSoft《Aion 2》一周年纪念 OST 发售…共收录49首曲目</strong>",
+      "source": "지디넷코리아",
+      "date": "11.23",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE50U2h2VG1uWHpYdWt6blpCc21oeFUxbDAteEJPcENzd3JIMVNwMWF6RzMxQzZwZHFZNS1DYzZCbl8xVEdXcjNPWkdZcS1Za011dWMwTXZB?oc=5",
+      "rawTitle": "엔씨 '아이온2', 1주년 기념 OST 발매…총 49곡 수록",
+      "publishedAt": "2026-11-23T04:57:01.000Z",
+      "fetchedAt": "2026-11-24T11:54:09.512Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《MapleStory》-《Blue Archive》联动更新</strong>",
+      "source": "뉴스락",
+      "date": "11.19",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE15LUZTdTN5UkRkNjZobTRnRXAzT3QzTWpWNXotU0hRR0JJWXVlaW10UVFWdDhnSE1PbjNhaUNNMmNlWGVNTUZQMHdOZGFYNGR0RG1SeHlJRVVJU242MWdhWWpxcVg2T256ZFp2bw?oc=5",
+      "rawTitle": "넥슨, 메이플스토리-블루 아카이브 컬래버 업데이트",
+      "publishedAt": "2026-11-19T08:32:02.000Z",
+      "fetchedAt": "2026-11-24T11:54:09.512Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon《MapleStory》与《Blue Archive》联动…21名学生登场</strong>",
+      "source": "이코리아",
+      "date": "11.19",
+      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE0tWFBkR1VtX3NvbmFRYnlqQ3ROV2diN2N5enRTRkhBRXBkSTY3X3hnVHc1Tll3aWZIR2gxcm9ZSDRZNjB0azR5Mkwwb0FHRXhVSElnOXp0U1dVZXFOLU1OVUZBckUyX3JYd2NOcnRKSQ?oc=5",
+      "rawTitle": "넥슨 '메이플스토리', '블루 아카이브'와 컬래버...학생 21명 등장",
+      "publishedAt": "2026-11-19T08:01:32.000Z",
+      "fetchedAt": "2026-11-24T11:54:09.511Z"
+    },
+    {
+      "company": "Nexon",
+      "color": "#22c55e",
+      "title": "<strong>Nexon 在《MapleStory》中开启《Blue Archive》联动</strong>",
+      "source": "넥슨 뉴스룸",
+      "date": "11.18",
+      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5odUZjc0Z0Nk9USzFIcm5YWDhEbmYzOWRTSzhZaENmR1M4U0xGbzNDU2MyMWprX1Y0TWYzTk0tUVBCb0FLNDJGMElGLTZON0pOR2NEaHVwS3BjemFQTE5j?oc=5",
+      "rawTitle": "넥슨, '메이플스토리'에 '블루 아카이브' 컬래버레이션 실시 - 넥슨 뉴스룸",
+      "publishedAt": "2026-11-18T18:59:54.000Z",
+      "fetchedAt": "2026-11-24T11:54:09.511Z"
+    },
+    {
       "company": "Pearl Abyss",
       "color": "#a855f7",
       "title": "<strong>《Crimson Desert Enhanced’》在金摇杆大奖获“年度 PC 游戏”</strong>",
@@ -4294,72 +4360,6 @@
       "rawTitle": "아이온2 게임대상 후보 급부상...\"국내 MMO 새 활력\"",
       "publishedAt": "2026-11-06T05:29:41.000Z",
       "fetchedAt": "2026-11-06T09:01:33.721Z"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NC文化财团分发基于“我的AAC”的特殊教育现场教案</strong>",
-      "source": "오늘경제",
-      "date": "11.06",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1selNmd2IxNk1hdjloZEZsbkFHVl9sNTZXRHV4cVYtUnp4OVVnZW1qSU1DNnVkdU1odkdKNlhCNDlQX2pIM0pQNERJS2h0RkJPQ3g3RWxnVFNxM2FyVjFNYkVKWlBZLUxVNE1lazFqOVdMREE?oc=5",
-      "rawTitle": "NC문화재단, 나의AAC 활용한 특수교육 현장 교안 배포",
-      "publishedAt": "2026-11-06T03:15:01.000Z",
-      "fetchedAt": "2026-11-06T09:01:33.721Z"
-    },
-    {
-      "company": "NC",
-      "color": "#3b82f6",
-      "title": "<strong>NCSoft新作生存射击游戏《Time Takers》11月开启第二次全球测试</strong>",
-      "source": "위키트리",
-      "date": "11.06",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1hOEttVUxEQTVoUkgtanFzaTEyMmZPSE9MUVU0Y3Rfanl4bGFTRmZmcEhPb2doN1VpMDgwaXFlbmJ5aDRYUElUdVVCeWVLekR5Qk5KTTFn?oc=5",
-      "rawTitle": "엔씨소프트, 신작 서바이벌 슈터 '타임 테이커스' 11월 2차 글로벌 테스트",
-      "publishedAt": "2026-11-06T07:08:00.000Z",
-      "fetchedAt": "2026-11-06T09:01:33.720Z"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>Nexon Games与Yostar公开Blue Archive日本服务移交对谈视频：“更新方针与开发体制保持不变”</strong>",
-      "source": "게임포커스",
-      "date": "11.06",
-      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1MVWtuTkNULUFRU25JY3c0bnNaYjBhcUdrLXlrVjJTWW1zNzBZVkwwSUVvQ3BiM3VlY2JyNmVVbDN5OVM3OTZiUlo4blJYRHFFdTBxRjN6cnFpQjR3QVk3Ng?oc=5",
-      "rawTitle": "넥슨게임즈·요스타, '블루 아카이브' 日 서비스 이관 대담 영상 공개... \"업데이트 방침 및 개발 체제는 그대로\"",
-      "publishedAt": "2026-11-06T06:16:35.000Z",
-      "fetchedAt": "2026-11-06T09:01:33.720Z"
-    },
-    {
-      "company": "Nexon",
-      "color": "#22c55e",
-      "title": "<strong>金用河谈Blue Archive日本服务决心：“要让玩家20年安心”</strong>",
-      "source": "게임플",
-      "date": "11.06",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE13Z1p1dDRqUlJyNG5hM2JGbXJJUk9tS0tCOXphNjE3T3FEM1ZBVnFUZG5ZRjBWenRaR3JzTUtYWVVRVnNfclgwNEhIY1VwWmNiSWd6Z0tQM3pPS2JlZEdkNUtNS2E2bFQ1cUFNTQ?oc=5",
-      "rawTitle": "김용하의 블루 아카이브 日 서비스 각오 \"20년 안심할 수 있도록\"",
-      "publishedAt": "2026-11-06T07:27:11.000Z",
-      "fetchedAt": "2026-11-06T09:01:33.720Z"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss Crimson Desert全球累计销量达600万份 - Pearl Abyss官网</strong>",
-      "source": "펄어비스 공식 홈페이지",
-      "date": "10.23",
-      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5XZmJDZy0yQ01STmh2OS1USzgyRXlJU3dIeWdSMDN6cU9zTU1EUUFNTmpuZmZmYmViVkd0M2lYa19ndUdDdEJfTUFNNnNDV0prVm9PLUd0eEZRMWpLUEpFWHl1QTlLUEltbWl3?oc=5",
-      "rawTitle": "펄어비스 붉은사막, 글로벌 누적 판매량 600만 장 달성 - 펄어비스 공식 홈페이지",
-      "publishedAt": "2026-10-23T10:51:28.000Z",
-      "fetchedAt": "2026-11-05T09:01:34.706Z"
-    },
-    {
-      "company": "Pearl Abyss",
-      "color": "#a855f7",
-      "title": "<strong>Pearl Abyss在\"G-STAR G-CON’\"分享Crimson Desert开放世界开发经验 - Pearl Abyss官网</strong>",
-      "source": "펄어비스 공식 홈페이지",
-      "date": "11.05",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFB3N01kOFNjRjEtaVpDR0tpZWp1ZDNoY282b0F4ZzVFR2c0QnZHbzJUNVNNb0RsTEtBOUpaSjlVUjk3aHFmNjYteDZiTW91TFdmTTY1SDJsVXViNWJFSktnVURZSnI?oc=5",
-      "rawTitle": "펄어비스, ‘지스타 G-CON’서 붉은사막 오픈월드 개발 노하우 강연 - 펄어비스 공식 홈페이지",
-      "publishedAt": "2026-11-05T07:05:08.000Z",
-      "fetchedAt": "2026-11-05T09:01:34.706Z"
     }
   ],
   "industryNews": [
