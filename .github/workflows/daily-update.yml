@@ -188,11 +188,20 @@ jobs:
         with:
           path: '.'
 
+      # artifact 刚上传后，Pages 的 artifact metadata API 可能短暂读不到它
+      # （2026-11-24 连续两次报 No artifacts named "github-pages"，但 run 里 artifact 确实存在）。
+      - name: Wait for artifact metadata
+        run: sleep 30
+
       # ====== 部署到GitHub Pages（带重试机制）======
       - name: Deploy to GitHub Pages (attempt 1)
         id: deploy
         continue-on-error: true
         uses: actions/deploy-pages@v4
+
+      - name: Wait before deployment retry
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 45
 
       - name: Deploy to GitHub Pages (retry)
         id: deploy-retry
@@ -200,16 +209,26 @@ jobs:
         continue-on-error: true
         uses: actions/deploy-pages@v4
 
+      - name: Wait before second deployment retry
+        if: steps.deploy.outcome == 'failure' && steps.deploy-retry.outcome == 'failure'
+        run: sleep 60
+
+      - name: Deploy to GitHub Pages (second retry)
+        id: deploy-retry2
+        if: steps.deploy.outcome == 'failure' && steps.deploy-retry.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
       # 部署失败不应阻断企业微信推送：notify 的 if 条件含 needs.update.result != 'failure'，
-      # 2026-11-24 曾因 Pages artifact 元数据接口临时故障（两次部署均失败）导致整个 update job
+      # 2026-11-24 曾因 Pages artifact 元数据接口短暂不可用（两次部署均失败）导致整个 update job
       # 失败，preview 阶段的 notify 被连带跳过，B 群什么都没收到。数据抓取/校验/提交都已成功，
       # 推送本身与 Pages 部署无关，故这里只写告警、不让 job 失败。
       - name: Warn if Pages deployment failed
-        if: steps.deploy.outcome == 'failure' && steps.deploy-retry.outcome == 'failure'
+        if: steps.deploy.outcome == 'failure' && steps.deploy-retry.outcome == 'failure' && steps.deploy-retry2.outcome == 'failure'
         run: |
           echo "### ⚠️ GitHub Pages 部署失败" >> "$GITHUB_STEP_SUMMARY"
-          echo "两次部署均失败，页面可能仍停留在旧数据；但数据抓取与推送不受影响，请检查 Pages 服务状态。" >> "$GITHUB_STEP_SUMMARY"
-          echo "::warning::GitHub Pages deployment failed twice — dashboard may show stale data; notification will still be sent"
+          echo "三次部署均失败，页面可能仍停留在旧数据；但数据抓取与推送不受影响，请检查 Pages 服务状态。" >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::GitHub Pages deployment failed 3 times — dashboard may show stale data; notification will still be sent"
 
   # ====== final 阶段专属：重新部署网页（不重新抓取）======
   # 次日10点推A前，把 main 上"用户17点后手动修正的数据/面板"重新部署上线，
